@@ -8,6 +8,9 @@ coverage/
 cypress/
 dist/
 
+# Not included in app code
+timescale/
+
 # Playwright tests
 playwright.config.ts
 test/
