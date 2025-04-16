@@ -13,6 +13,37 @@ services:
     profiles:
       - dev
 
+  timescale:
+    image: timescale/timescaledb:latest-pg14
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - ./timescale:/docker-entrypoint-initdb.d
+    profiles:
+      - dev
+      - main
+      - dependency
+
+  server:
+    build:
+      context: ./timescale
+    ports:
+      - 3001:3001/tcp
+    depends_on:
+      - timescale
+    environment:
+      WAIT_HOSTS: timescale:5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: timescale
+    profiles:
+      - dev
+      - main
+      - dependency
+
   grafana-main:
     image: grafana/grafana:main
     ports:
