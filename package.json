@@ -2,25 +2,15 @@
   "author": "Volkov Labs",
   "dependencies": {
     "@emotion/css": "^11.13.5",
-    "@floating-ui/react": "^0.27.4",
     "@grafana/data": "^11.5.2",
     "@grafana/runtime": "^11.5.2",
     "@grafana/scenes": "^6.1.0",
     "@grafana/ui": "^11.5.2",
     "@hello-pangea/dnd": "^18.0.1",
-    "@react-aria/focus": "^3.19.1",
-    "@tanstack/react-table": "^8.21.2",
-    "@tanstack/react-virtual": "^3.13.0",
     "@volkovlabs/components": "^4.3.0",
-    "file-saver": "^2.0.5",
-    "js-base64": "^3.7.7",
-    "markdown-it": "^14.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "semver": "^7.7.1",
-    "tslib": "^2.8.0",
-    "uuid": "^11.1.0",
-    "xlsx": "^0.18.5"
+    "tslib": "^2.8.0"
   },
   "description": "Simplify links panel",
   "devDependencies": {
