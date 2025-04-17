@@ -1,0 +1,712 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 3,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "external-link-alt",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New tab",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              }
+            ],
+            "name": "Links"
+          }
+        ]
+      },
+      "pluginVersion": "1.0.0",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "External links",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 9,
+      "options": {
+        "dropdowns": [],
+        "groups": []
+      },
+      "pluginVersion": "1.0.0",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Empty links",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      },
+      "id": 8,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "external-link-alt",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link 1",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": "d/deiwbkyv0jif4f/new-dashboard"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link 2",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/deiwbkyv0jif4f/new-dashboard"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link 3",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/deiwbkyv0jif4f"
+              }
+            ],
+            "name": "Links"
+          }
+        ]
+      },
+      "pluginVersion": "1.0.0",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      },
+      "id": 10,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link-broken",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Empty",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Links"
+          }
+        ]
+      },
+      "pluginVersion": "1.0.0",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Empty link",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 11,
+      "options": {
+        "dropdowns": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown Single link",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "external-link-alt",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown External link",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Dropdown Tags All",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "create-dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dropdown Dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Dropdown 1"
+          },
+          {
+            "items": [],
+            "name": "Dropdown 2"
+          }
+        ],
+        "groups": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single link",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": true,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with time range",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": true,
+                "includeVariables": true,
+                "linkType": "single",
+                "name": "Link with time range and variables",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": true,
+                "linkType": "single",
+                "name": "Link with variables",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with variable in url",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second?${device}"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with query",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second?${countrytest:queryparam}"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": true,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard time range",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Empty dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags Real",
+                "tags": ["Real"],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags all dashboards",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags new",
+                "tags": ["new"],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "anchor",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 2",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Empty dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Group1"
+          },
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "bars",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Group2"
+          },
+          {
+            "items": [],
+            "name": "Group3"
+          },
+          {
+            "items": [],
+            "name": "Group4"
+          }
+        ]
+      },
+      "pluginVersion": "1.0.0",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "device1",
+          "value": "device1"
+        },
+        "label": "device",
+        "name": "device",
+        "options": [
+          {
+            "selected": true,
+            "text": "device1",
+            "value": "device1"
+          },
+          {
+            "selected": false,
+            "text": "device2",
+            "value": "device2"
+          },
+          {
+            "selected": false,
+            "text": "device3",
+            "value": "device3"
+          }
+        ],
+        "query": "device1,device2,device3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "USA",
+          "value": "USA"
+        },
+        "label": "country",
+        "name": "country",
+        "options": [
+          {
+            "selected": true,
+            "text": "USA",
+            "value": "USA"
+          },
+          {
+            "selected": false,
+            "text": "Sweden",
+            "value": "Sweden"
+          },
+          {
+            "selected": false,
+            "text": "Spain",
+            "value": "Spain"
+          },
+          {
+            "selected": false,
+            "text": "Italy",
+            "value": "Italy"
+          }
+        ],
+        "query": "USA,Sweden,Spain,Italy",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Sweden",
+          "value": "Sweden"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "timescale"
+        },
+        "definition": "select distinct country from devices;",
+        "label": "countrytest",
+        "name": "countrytest",
+        "options": [],
+        "query": "select distinct country from devices;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Links",
+  "uid": "ee576vdnqy7eoc",
+  "version": 2,
+  "weekStart": ""
+}

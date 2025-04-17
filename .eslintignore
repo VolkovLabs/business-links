@@ -1,0 +1,17 @@
+# Configuration files
+jest-setup.js
+jest.config.js
+webpack.config.ts
+
+# Development folders
+coverage/
+cypress/
+dist/
+
+# Not included in app code
+timescale/
+
+# Playwright tests
+playwright.config.ts
+test/
+playwright-report
