@@ -1,6 +1,6 @@
-const actual = jest.requireActual('@grafana/ui');
-
 import React, { useState } from 'react';
+
+const actual = jest.requireActual('@grafana/ui');
 
 /**
  * Mock Button Row Toolbar
