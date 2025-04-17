@@ -6,4 +6,4 @@ All notable changes to the Business Links panel are documented here.
 
 ### Features & Enhancements
 
-- Initial release based on Volkov Labs ABC Panel template
+- Initial release based on Volkov Labs templates

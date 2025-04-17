@@ -342,7 +342,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
       {renderAlertMessage}
       <InlineFieldRow className={styles.newItem}>
         <InlineField
-          label="New Group"
+          label="New"
           grow={true}
           invalid={isNameExistsError}
           error="Group with the same name already exists."
@@ -354,7 +354,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
           />
         </InlineField>
         <Button icon="plus" title="Add Group" disabled={!newItemName || isNameExistsError} onClick={onAddNewItem}>
-          Add Links Group
+          Add
         </Button>
       </InlineFieldRow>
     </div>
