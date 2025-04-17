@@ -51,7 +51,7 @@ export const prepareUrlWithParams = (
    * Apply replaceVariables
    */
   let currentUrl = replaceVariables(url);
-  console.log('currentUrl -> ', currentUrl);
+
   /**
    * Apply all variables states
    */

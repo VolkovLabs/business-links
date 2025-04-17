@@ -104,8 +104,6 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
     return [activeGroup, ...withoutActive];
   }, [currentGroup, options.groups]);
 
-  console.log('options -> ', options);
-
   /**
    * Is Toolbar Visible
    */
