@@ -196,7 +196,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
         )}
       </FieldsGroup>
       <FieldsGroup label="Configuration">
-        <InlineField label="Icon" grow labelWidth={10}>
+        <InlineField label="Icon" grow labelWidth={12}>
           <Select
             options={iconOptions}
             isClearable
@@ -209,7 +209,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
             value={value.icon}
           />
         </InlineField>
-        <InlineField grow={true} label="Open in" labelWidth={10}>
+        <InlineField grow={true} label="Open in" labelWidth={12}>
           <RadioButtonGroup
             value={value.target}
             onChange={(eventValue) => {
@@ -224,7 +224,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
       </FieldsGroup>
 
       <FieldsGroup label="Include">
-        <InlineField label="Include current time range" grow={true} labelWidth={32}>
+        <InlineField label="Current time range" grow={true} labelWidth={32}>
           <InlineSwitch
             value={value.includeTimeRange}
             onChange={(event) => {
@@ -235,7 +235,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
             }}
           />
         </InlineField>
-        <InlineField label="Include current template variable values" grow={true} labelWidth={32}>
+        <InlineField label="Current template variable values" grow={true} labelWidth={32}>
           <InlineSwitch
             value={value.includeVariables}
             onChange={(event) => {
