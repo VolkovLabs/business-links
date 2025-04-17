@@ -10,7 +10,7 @@ import { filterDashboardsByTags } from './dashboards';
  * @param search
  * @param prefix
  */
-const extractParamsByPrefix = (search: string, prefix: string): string => {
+export const extractParamsByPrefix = (search: string, prefix: string): string => {
   const params = new URLSearchParams(search);
   const result = new URLSearchParams();
 
@@ -32,7 +32,7 @@ const extractParamsByPrefix = (search: string, prefix: string): string => {
  * @param params
  * @param url
  */
-const prepareUrlWithParams = (
+export const prepareUrlWithParams = (
   includeTimeRange: boolean,
   includeVariables: boolean,
   timeRange: TimeRange,
@@ -51,7 +51,7 @@ const prepareUrlWithParams = (
    * Apply replaceVariables
    */
   let currentUrl = replaceVariables(url);
-
+  console.log('currentUrl -> ', currentUrl);
   /**
    * Apply all variables states
    */
