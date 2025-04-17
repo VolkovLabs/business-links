@@ -161,7 +161,7 @@ describe('prepareLinksToRender', () => {
     expect(result[0].links[0].url).toBe('/d/1');
   });
 
-  it('should process nested DROPDOWN group', () => {
+  it('Should process nested DROPDOWN group', () => {
     const dropdowns = [
       {
         name: 'Nested',
@@ -248,7 +248,7 @@ describe('prepareLinksToRender', () => {
     expect(result[0].links[0].url).toEqual('/d/urldashboard1');
   });
 
-  it('Ыhould skip items with unknown linkType', () => {
+  it('Should skip items with unknown linkType', () => {
     const currentGroup = {
       name: 'Test',
       items: [
