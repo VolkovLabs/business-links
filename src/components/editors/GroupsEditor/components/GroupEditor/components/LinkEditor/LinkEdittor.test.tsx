@@ -1,13 +1,12 @@
-import { toDataFrame } from '@grafana/data';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
+import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { LinkTarget, LinkType } from '@/types';
 import { createLinkConfig } from '@/utils';
 
 import { LinkEditor } from './LinkEditor';
-import { LinkTarget, LinkType } from '@/types';
 
 type Props = React.ComponentProps<typeof LinkEditor>;
 

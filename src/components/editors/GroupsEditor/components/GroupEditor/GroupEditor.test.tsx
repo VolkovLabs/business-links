@@ -1,12 +1,10 @@
-import { toDataFrame } from '@grafana/data';
-import { Select } from '@grafana/ui';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { createGroupConfig, createLinkConfig } from '@/utils';
+import { createLinkConfig } from '@/utils';
 
 import { LinkEditor } from './components';
 import { GroupEditor } from './GroupEditor';
