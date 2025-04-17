@@ -76,6 +76,7 @@ describe('LinksPanel', () => {
   };
 
   beforeEach(() => {
+    replaceVariables.mockImplementation((str: string) => str);
     jest.mocked(useSavedState).mockImplementation(jest.requireActual('../../hooks/useSavedState').useSavedState);
   });
 
@@ -99,72 +100,41 @@ describe('LinksPanel', () => {
       expect(selectors.alert()).toBeInTheDocument();
     });
   });
-  describe('Links', () => {
-    it('Should show links ', async () => {
-      const replaceVariables = jest.fn();
-      replaceVariables.mockImplementation((str: string) => str);
 
-      jest.mocked(getAllDashboards).mockReturnValue([
-        {
-          id: 1,
-          tags: [],
-          title: 'Test dashboard 1',
-          type: 'dash-db',
-          uid: 'test123',
-          uri: 'db/test',
-          url: '/d/test123/test',
-        },
-        {
-          id: 2,
-          tags: [],
-          title: 'Test dashboard 2',
-          type: 'dash-db',
-          uid: 'test12345',
-          uri: 'db/test2',
-          url: '/d/test12345/test',
-        },
-      ] as any);
+  it('Should display links and groups', async () => {
+    jest.mocked(getAllDashboards).mockReturnValue([
+      {
+        id: 1,
+        tags: [],
+        title: 'Test dashboard 1',
+        type: 'dash-db',
+        uid: 'test123',
+        uri: 'db/test',
+        url: '/d/test123/test',
+      },
+      {
+        id: 2,
+        tags: [],
+        title: 'Test dashboard 2',
+        type: 'dash-db',
+        uid: 'test12345',
+        uri: 'db/test2',
+        url: '/d/test12345/test',
+      },
+    ] as any);
 
-      const links = [
-        createLinkConfig(),
-        createLinkConfig({ name: 'Empty link' }),
-        createLinkConfig({ name: 'Link 2', url: 'test.com' }),
-        createLinkConfig({ name: 'Tags', tags: [], linkType: LinkType.TAGS }),
-      ];
-
-      const options = createPanelOptions({
-        groups: [
-          createGroupConfig({
-            name: 'Test ',
-            items: links,
-          }),
-        ],
-      });
-
-      await act(async () => render(getComponent({ options, replaceVariables })));
-
-      expect(selectors.root()).toBeInTheDocument();
-
-      expect(selectors.buttonEmptySingleLink(false, 'Empty link')).toBeInTheDocument();
-      expect(selectors.buttonSingleLink(false, 'Link 2')).toBeInTheDocument();
-
-      expect(selectors.dropdown(false, 'Tags')).toBeInTheDocument();
-      expect(selectors.buttonDropdown(false, 'Tags')).toBeInTheDocument();
-    });
-  });
-
-  it('Should switch groups', async () => {
-    const replaceVariables = jest.fn();
-    replaceVariables.mockImplementation((str: string) => str);
+    const links = [
+      createLinkConfig(),
+      createLinkConfig({ name: 'Empty link' }),
+      createLinkConfig({ name: 'Link 2', url: 'test.com' }),
+      createLinkConfig({ name: 'Tags', tags: [], linkType: LinkType.TAGS }),
+    ];
 
     const options = createPanelOptions({
       groups: [
         createGroupConfig({
           name: 'Group1',
-          items: [
-            createLinkConfig({ name: 'Link 1', url: 'test1.com' }),
-            createLinkConfig({ name: 'Link 2', url: 'test2.com' }),
-          ],
+          items: links,
         }),
         createGroupConfig({
           name: 'Group2',
@@ -176,13 +146,25 @@ describe('LinksPanel', () => {
       ],
     });
 
-    await act(async () => render(getComponent({ options, replaceVariables })));
+    await act(async () => render(getComponent({ options })));
 
+    /**
+     * Container
+     */
     expect(selectors.root()).toBeInTheDocument();
 
-    expect(selectors.buttonSingleLink(false, 'Link 1')).toBeInTheDocument();
+    /**
+     * Links
+     */
     expect(selectors.buttonSingleLink(false, 'Link 2')).toBeInTheDocument();
+    expect(selectors.buttonEmptySingleLink(false, 'Empty link')).toBeInTheDocument();
+    expect(selectors.buttonSingleLink(false, 'Link 2')).toBeInTheDocument();
+    expect(selectors.dropdown(false, 'Tags')).toBeInTheDocument();
+    expect(selectors.buttonDropdown(false, 'Tags')).toBeInTheDocument();
 
+    /**
+     * Groups
+     */
     expect(selectors.tab(false, 'Group2')).toBeInTheDocument();
 
     /**
