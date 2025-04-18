@@ -83,4 +83,28 @@ describe('getAllDashboards', () => {
     expect(lastValueFrom).toHaveBeenCalled();
     expect(result).toEqual(mockDashboards);
   });
+
+  it('Should return an empty array if request fails (catch block)', async () => {
+    jest.mocked(getBackendSrv).mockReturnValue({
+      fetch: jest.fn(),
+    } as any);
+
+    jest.mocked(lastValueFrom).mockRejectedValue(new Error('Network error'));
+
+    const result = await getAllDashboards();
+
+    expect(lastValueFrom).toHaveBeenCalled();
+    expect(result).toEqual([]);
+  });
+
+  it('should return an empty array if response or response.data is missing', async () => {
+    jest.mocked(getBackendSrv).mockReturnValue({
+      fetch: jest.fn(),
+    } as any);
+
+    jest.mocked(lastValueFrom).mockResolvedValue({});
+    const result = await getAllDashboards();
+
+    expect(result).toEqual([]);
+  });
 });

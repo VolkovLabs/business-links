@@ -6,6 +6,7 @@ import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDr
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { TEST_IDS } from '@/constants';
 import { DashboardMeta, GroupConfig, LinkConfig, PanelOptions } from '@/types';
 import { getAllDashboards, reorder } from '@/utils';
 
@@ -27,10 +28,10 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
   ...draggableStyle,
 });
 
-// /**
-//  * Test Ids
-//  */
-// const testIds = TEST_IDS.tablesEditor;
+/**
+ * Test Ids
+ */
+const testIds = TEST_IDS.groupsEditor;
 
 /**
  * Groups Editor
@@ -60,14 +61,14 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
    * All dashboards exclude current
    */
   const availableDashboards = useMemo(() => {
-    return dashboards.filter((dashboard) => dashboard.url !== location.pathname);
+    return dashboards?.filter((dashboard) => dashboard.url !== location.pathname);
   }, [dashboards, location.pathname]);
 
   /**
    * List of available dropdowns
    */
   const availableDropdowns = useMemo(() => {
-    return options?.dropdowns.map((dropdown) => dropdown.name);
+    return options?.dropdowns?.map((dropdown) => dropdown.name);
   }, [options?.dropdowns]);
 
   /**
@@ -121,8 +122,8 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
         },
       ])
     );
-    // onToggleItemExpandedState(newItemName);
-  }, [value, newItemName, onChangeItems]);
+    onToggleItemExpandedState(newItemName);
+  }, [onChangeItems, value, newItemName, onToggleItemExpandedState]);
 
   /**
    * Is Name Exists error
@@ -187,10 +188,13 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
     getDashboards();
   }, []);
 
+  /**
+   * Alert Message
+   */
   const renderAlertMessage = useMemo(() => {
     if (value.length < 1) {
       return (
-        <Alert severity="info" title="No Items">
+        <Alert severity="info" title="No Items" {...testIds.noItemsMessage.apply()}>
           Please add at least one new item to proceed.
         </Alert>
       );
@@ -213,7 +217,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                         {...provided.draggableProps}
                         style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
                         className={styles.item}
-                        // {...testIds.item.apply(item.name)}
+                        {...testIds.item.apply(item.name)}
                       >
                         <Collapse
                           key={item.name}
@@ -237,7 +241,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                                         onCancelEdit();
                                       }
                                     }}
-                                    // {...testIds.fieldName.apply()}
+                                    {...testIds.fieldName.apply()}
                                   />
                                 </InlineField>
                                 <Button
@@ -247,7 +251,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                                   icon="times"
                                   size="sm"
                                   onClick={onCancelEdit}
-                                  // {...testIds.buttonCancelRename.apply()}
+                                  {...testIds.buttonCancelRename.apply()}
                                 />
                                 <Button
                                   variant="secondary"
@@ -262,13 +266,15 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                                       ? ''
                                       : 'Name is empty or group with the same name already exists.'
                                   }
-                                  // {...testIds.buttonSaveRename.apply()}
+                                  {...testIds.buttonSaveRename.apply()}
                                 />
                               </div>
                             ) : (
                               <div className={cx(styles.itemHeader, styles.itemHeaderText)}>{item.name}</div>
                             )
                           }
+                          headerTestId={testIds.itemHeader.selector(item.name)}
+                          contentTestId={testIds.itemContent.selector(item.name)}
                           actions={
                             <>
                               {editItem !== item.name && (
@@ -285,6 +291,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                                     setEditName(item.name);
                                     setEditItem(item.name);
                                   }}
+                                  {...testIds.buttonStartRename.apply()}
                                 />
                               )}
                               <Button
@@ -299,6 +306,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                                    */
                                   onChangeItems(value.filter((group) => group.name !== item.name));
                                 }}
+                                {...testIds.buttonRemove.apply()}
                               />
                               <div className={styles.dragHandle} {...provided.dragHandleProps}>
                                 <Icon name="draggabledots" className={styles.dragIcon} />
@@ -340,7 +348,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
         </DragDropContext>
       )}
       {renderAlertMessage}
-      <InlineFieldRow className={styles.newItem}>
+      <InlineFieldRow className={styles.newItem} {...testIds.newItem.apply()}>
         <InlineField
           label="New"
           grow={true}
@@ -351,9 +359,16 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
             placeholder="Unique name"
             value={newItemName}
             onChange={(event) => setNewItemName(event.currentTarget.value.trim())}
+            {...testIds.newItemName.apply()}
           />
         </InlineField>
-        <Button icon="plus" title="Add Group" disabled={!newItemName || isNameExistsError} onClick={onAddNewItem}>
+        <Button
+          icon="plus"
+          title="Add Group"
+          disabled={!newItemName || isNameExistsError}
+          onClick={onAddNewItem}
+          {...testIds.buttonAddNew.apply()}
+        >
           Add
         </Button>
       </InlineFieldRow>

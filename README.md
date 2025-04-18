@@ -1,16 +1,16 @@
 # Business Links Panel for Grafana
 
+![Links Screenshot](https://github.com/VolkovLabs/business-links/raw/main/src/img/panel.png)
+
+![Grafana](https://img.shields.io/badge/Grafana-11.5-orange)
+![CI](https://github.com/volkovlabs/business-links/workflows/CI/badge.svg)
+![E2E](https://github.com/volkovlabs/business-links/workflows/E2E/badge.svg)
+[![Codecov](https://codecov.io/gh/VolkovLabs/business-links/branch/main/graph/badge.svg)](https://codecov.io/gh/VolkovLabs/business-links)
+[![CodeQL](https://github.com/VolkovLabs/business-links/actions/workflows/codeql.yml/badge.svg)](https://github.com/VolkovLabs/business-links/actions/workflows/codeql-analysis.yml)
+
 ## Introduction
 
 The Business Links panel for Grafana provides a streamlined interface to navigate effortlessly using external links, internal dashboards, and dynamic dropdown menus. Designed for seamless integration, it enables users to access critical resources, switch between dashboards, or interact with custom workflows efficiently, all within a single, intuitive panel.
-
-## Key Features
-
-- External Links: Connect to external tools, documentation, or websites directly from the panel.
-- Dashboard Navigation: Quickly jump to other Grafana dashboards for a cohesive monitoring experience.
-- Dynamic Dropdowns: Utilize interactive dropdown menus to filter data or trigger actions, enhancing user control and flexibility.
-
-Ideal for teams needing centralized access to diverse resources, the Business Links panel boosts productivity and simplifies navigation in Grafana environments.
 
 ## Requirements
 
@@ -36,9 +36,15 @@ Check out our installation guide:
 
 ## Features
 
+- External Links: Connect to external tools, documentation, or websites directly from the panel.
+- Dashboard Navigation: Quickly jump to other Grafana dashboards for a cohesive monitoring experience.
+- Dynamic Dropdowns: Utilize interactive dropdown menus to filter data or trigger actions, enhancing user control and flexibility.
+
+Ideal for teams needing centralized access to diverse resources, the Business Links panel boosts productivity and simplifies navigation in Grafana environments.
+
 ## Business Suite for Grafana
 
-The Business Table Panel is part of the **Business Suite**, a collection of open-source plugins by [Volkov Labs](https://volkovlabs.io/). These plugins solve common business needs with intuitive interfaces, detailed documentation, and video tutorials.
+The Business Links Panel is part of the **Business Suite**, a collection of open-source plugins by [Volkov Labs](https://volkovlabs.io/). These plugins solve common business needs with intuitive interfaces, detailed documentation, and video tutorials.
 
 Explore the suite:
 [![Business Suite for Grafana](https://raw.githubusercontent.com/VolkovLabs/.github/main/business.png)](https://volkovlabs.io/plugins/)

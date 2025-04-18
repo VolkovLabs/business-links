@@ -4,6 +4,7 @@ import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDr
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useMemo, useState } from 'react';
 
+import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, LinkConfig, LinkConfigType, LinkTarget, LinkType } from '@/types';
 import { reorder } from '@/utils';
 
@@ -52,6 +53,11 @@ interface Props extends EditorProps<LinkConfig[]> {
    */
   dropdowns?: string[];
 }
+
+/**
+ * Test Ids
+ */
+const testIds = TEST_IDS.groupEditor;
 
 /**
  * Group Editor
@@ -135,6 +141,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
         target: LinkTarget.SELF_TAB,
         tags: [],
         dashboardUrl: '',
+        url: '',
       },
     ]);
     setNewLinkName('');
@@ -166,7 +173,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
   }, [onChangeItems, items, onCancelEdit, editItem, editName]);
 
   return (
-    <div>
+    <div {...testIds.root.apply()}>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={name}>
           {(provided) => (
@@ -181,6 +188,8 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                       className={styles.item}
                     >
                       <Collapse
+                        headerTestId={testIds.itemHeader.selector(item.name)}
+                        contentTestId={testIds.itemContent.selector(item.name)}
                         fill="solid"
                         title={
                           editItem === item.name ? (
@@ -202,6 +211,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                                       onCancelEdit();
                                     }
                                   }}
+                                  {...testIds.fieldName.apply()}
                                 />
                               </InlineField>
                               <Button
@@ -211,6 +221,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                                 icon="times"
                                 size="sm"
                                 onClick={onCancelEdit}
+                                {...testIds.buttonCancelRename.apply()}
                               />
                               <Button
                                 variant="secondary"
@@ -223,6 +234,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                                 tooltip={
                                   isUpdatedNameValid ? '' : 'Name is empty or group with the same name already exists.'
                                 }
+                                {...testIds.buttonSaveRename.apply()}
                               />
                             </div>
                           ) : (
@@ -245,6 +257,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                                   setEditName(item.name);
                                   setEditItem(item.name);
                                 }}
+                                {...testIds.buttonStartRename.apply()}
                               />
                             )}
                             <IconButton
@@ -263,11 +276,13 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
                                 );
                               }}
                               tooltip={item.enable ? 'Hide' : 'Show'}
+                              {...testIds.buttonToggleVisibility.apply()}
                             />
                             <IconButton
                               name="trash-alt"
                               onClick={() => onChangeItems(items.filter((link) => link.name !== item.name))}
                               aria-label="Remove"
+                              {...testIds.buttonRemove.apply()}
                             />
                             <div className={styles.dragHandle} {...provided.dragHandleProps}>
                               <Icon
@@ -307,7 +322,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
         </Droppable>
       </DragDropContext>
 
-      <InlineFieldRow className={styles.newItem}>
+      <InlineFieldRow className={styles.newItem} {...testIds.newItem.apply()}>
         <InlineField
           label="New Link"
           grow={true}
@@ -318,9 +333,16 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
             placeholder="Unique label name"
             value={newLinkName}
             onChange={(event) => setNewLinkName(event.currentTarget.value)}
+            {...testIds.newItemName.apply()}
           />
         </InlineField>
-        <Button icon="plus" title="Add Link" disabled={!newLinkName || isNameExistsError} onClick={onAddNewItem}>
+        <Button
+          icon="plus"
+          title="Add Link"
+          disabled={!newLinkName || isNameExistsError}
+          onClick={onAddNewItem}
+          {...testIds.buttonAddNew.apply()}
+        >
           Add Link
         </Button>
       </InlineFieldRow>

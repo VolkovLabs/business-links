@@ -3,6 +3,7 @@ import { getAvailableIcons, InlineField, InlineSwitch, Input, RadioButtonGroup, 
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
+import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, LinkConfig, LinkTarget, LinkType } from '@/types';
 
 /**
@@ -85,11 +86,13 @@ export const linkTargetOptions = [
   {
     label: 'Same Tab',
     value: LinkTarget.SELF_TAB,
+    ariaLabel: TEST_IDS.linkEditor.fieldTargetOption.selector(LinkTarget.SELF_TAB),
   },
   {
     label: 'New Tab',
     value: LinkTarget.NEW_TAB,
     icon: 'external-link-alt',
+    ariaLabel: TEST_IDS.linkEditor.fieldTargetOption.selector(LinkTarget.NEW_TAB),
   },
 ];
 
@@ -136,9 +139,11 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
           <Select
             options={optionId === 'groups' ? linkTypeOptions : linkTypeOptionsInDropdown}
             value={value.linkType}
+            isMulti={false}
             onChange={(event) => {
               onChange({ ...value, linkType: event.value! });
             }}
+            {...TEST_IDS.linkEditor.fieldLinkType.apply()}
           />
         </InlineField>
 
@@ -146,12 +151,13 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
           <InlineField label="URL" grow={true} labelWidth={12}>
             <Input
               value={value.url}
-              onChange={(event) =>
+              onChange={(event) => {
                 onChange({
                   ...value,
                   url: event.currentTarget.value,
-                })
-              }
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldUrl.apply()}
             />
           </InlineField>
         )}
@@ -167,6 +173,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                   tags: cookies,
                 })
               }
+              {...TEST_IDS.linkEditor.fieldTags.apply()}
             />
           </InlineField>
         )}
@@ -179,6 +186,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
               onChange={(event) => {
                 onChange({ ...value, dashboardUrl: event.value! });
               }}
+              {...TEST_IDS.linkEditor.fieldDashboard.apply()}
             />
           </InlineField>
         )}
@@ -191,6 +199,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
               onChange={(event) => {
                 onChange({ ...value, dropdownName: event.value! });
               }}
+              {...TEST_IDS.linkEditor.fieldDropdown.apply()}
             />
           </InlineField>
         )}
@@ -206,10 +215,11 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                 icon: event?.value as IconName | undefined,
               });
             }}
+            {...TEST_IDS.linkEditor.fieldIcon.apply()}
             value={value.icon}
           />
         </InlineField>
-        <InlineField grow={true} label="Open in" labelWidth={12}>
+        <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
           <RadioButtonGroup
             value={value.target}
             onChange={(eventValue) => {
@@ -233,6 +243,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                 includeTimeRange: event.currentTarget.checked,
               });
             }}
+            {...TEST_IDS.linkEditor.fieldIncludeTimeRange.apply()}
           />
         </InlineField>
         <InlineField label="Current template variable values" grow={true} labelWidth={32}>
@@ -244,6 +255,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                 includeVariables: event.currentTarget.checked,
               });
             }}
+            {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
           />
         </InlineField>
       </FieldsGroup>
