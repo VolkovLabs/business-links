@@ -8,6 +8,7 @@ export const TEST_IDS = {
     root: createSelector('data-testid panel'),
     alert: createSelector('data-testid panel alert'),
     tab: createSelector((name: unknown) => `data-testid panel tab-${name}`),
+    tabRow: createSelector('data-testid panel tab-row'),
     buttonEmptyLink: createSelector((name: unknown) => `data-testid panel button empty-link-${name}`),
     buttonEmptySingleLink: createSelector((name: unknown) => `data-testid panel button empty-single-link-${name}`),
     buttonSingleLink: createSelector((name: unknown) => `data-testid panel button single-link-${name}`),

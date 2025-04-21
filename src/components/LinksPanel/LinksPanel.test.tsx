@@ -131,6 +131,7 @@ describe('LinksPanel', () => {
     ];
 
     const options = createPanelOptions({
+      groupsSorting: true,
       groups: [
         createGroupConfig({
           name: 'Group1',
@@ -166,6 +167,8 @@ describe('LinksPanel', () => {
      * Groups
      */
     expect(selectors.tab(false, 'Group2')).toBeInTheDocument();
+    expect(selectors.tabRow()).toBeInTheDocument();
+    expect(selectors.tabRow()).toHaveTextContent('Group1Group2');
 
     /**
      * Select group2
@@ -177,5 +180,10 @@ describe('LinksPanel', () => {
 
     expect(selectors.buttonSingleLink(false, 'Link 3')).toBeInTheDocument();
     expect(selectors.buttonSingleLink(false, 'Link 4')).toBeInTheDocument();
+
+    /**
+     * Selected group shows first
+     */
+    expect(selectors.tabRow()).toHaveTextContent('Group2Group1');
   });
 });
