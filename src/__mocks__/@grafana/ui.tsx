@@ -6,12 +6,12 @@ const actual = jest.requireActual('@grafana/ui');
 /**
  * Mock Button Row Toolbar
  */
-const ToolbarButtonRowMock = ({ leftItems, children }: any) => {
+const ToolbarButtonRowMock = ({ leftItems, children, ...restProps }: any) => {
   return (
-    <>
+    <div data-testid={restProps['data-testid']}>
       {leftItems}
       {children}
-    </>
+    </div>
   );
 };
 
