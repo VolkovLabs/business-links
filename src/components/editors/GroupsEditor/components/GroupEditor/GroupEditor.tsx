@@ -142,6 +142,7 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
         tags: [],
         dashboardUrl: '',
         url: '',
+        showMenuOnHover: false,
       },
     ]);
     setNewLinkName('');

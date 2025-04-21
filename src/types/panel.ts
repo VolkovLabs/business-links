@@ -118,6 +118,13 @@ export interface LinkConfig {
    * @type {string}
    */
   dropdownName?: string;
+
+  /**
+   * Show menu (tags,dropdown) on hover
+   *
+   * @type {boolean}
+   */
+  showMenuOnHover?: boolean;
 }
 
 /**

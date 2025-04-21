@@ -1,23 +1,14 @@
 import { PanelProps } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
-import {
-  Alert,
-  Button,
-  Dropdown,
-  LinkButton,
-  MenuItem,
-  ToolbarButton,
-  ToolbarButtonRow,
-  useStyles2,
-} from '@grafana/ui';
+import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { useSavedState } from '@/hooks';
 import { DashboardMeta, PanelOptions } from '@/types';
-import { VisualLink } from '@/types/links';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
+import { LinkElement } from './components';
 import { getStyles } from './LinksPanel.styles';
 
 /**
@@ -123,106 +114,6 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
     getDashboards();
   }, []);
 
-  const renderLink = (link: VisualLink) => {
-    /**
-     * Dropdown render
-     */
-    if (link.links.length > 1) {
-      /**
-       * Menu links
-       */
-      const menuLinks = link.links.map((dropdownLink) => {
-        return (
-          <MenuItem
-            key={dropdownLink.url}
-            label={dropdownLink.name}
-            url={dropdownLink.url}
-            target={dropdownLink.target}
-            className={styles.menuItem}
-            icon={dropdownLink.icon}
-            {...TEST_IDS.panel.dropdownMenuItem.apply(dropdownLink.name)}
-          />
-        );
-      });
-
-      return (
-        <Dropdown
-          key={link.name}
-          overlay={<div className={styles.menu}>{menuLinks}</div>}
-          {...TEST_IDS.panel.dropdown.apply(link.name)}
-        >
-          <Button
-            variant="secondary"
-            className={styles.link}
-            size="md"
-            icon={link.icon}
-            fill="outline"
-            {...TEST_IDS.panel.buttonDropdown.apply(link.name)}
-          >
-            {link.name}
-          </Button>
-        </Dropdown>
-      );
-    }
-
-    /**
-     * One link available
-     */
-    if (link.links.length === 1) {
-      const currentLink = link.links[0];
-
-      if (currentLink.url) {
-        return (
-          <LinkButton
-            key={currentLink.url}
-            className={styles.link}
-            icon={currentLink.icon}
-            href={currentLink.url}
-            title={currentLink.name}
-            target={currentLink.target}
-            variant="secondary"
-            fill="outline"
-            {...TEST_IDS.panel.buttonSingleLink.apply(link.name)}
-          >
-            {currentLink.name}
-          </LinkButton>
-        );
-      }
-
-      return (
-        <Button
-          variant="secondary"
-          className={styles.link}
-          key={currentLink.name}
-          fill="outline"
-          title={currentLink.name}
-          icon={currentLink.icon}
-          tooltip="Empty URL"
-          {...TEST_IDS.panel.buttonEmptySingleLink.apply(link.name)}
-        >
-          {currentLink.name}
-        </Button>
-      );
-    }
-
-    /**
-     * Default empty link
-     */
-    return (
-      <Button
-        variant="secondary"
-        className={styles.link}
-        key={link.name}
-        fill="outline"
-        title={link.name}
-        tooltip="Empty URL"
-        {...TEST_IDS.panel.buttonEmptyLink.apply(link.name)}
-      >
-        {link.name}
-      </Button>
-    );
-  };
-
   /**
    * Return
    */
@@ -230,7 +121,12 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
     <div {...testIds.root.apply()}>
       {isToolbarVisible && (
         <div className={styles.header}>
-          <ToolbarButtonRow alignment="left" key={currentGroup} className={styles.tabs}>
+          <ToolbarButtonRow
+            alignment="left"
+            key={currentGroup}
+            className={styles.tabs}
+            {...TEST_IDS.panel.tabRow.apply()}
+          >
             {sortedGroups.length > 1 &&
               sortedGroups.map((group, index) => (
                 <ToolbarButton
@@ -243,7 +139,7 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
                   style={{
                     maxWidth: index === 0 ? width - 60 : undefined,
                   }}
-                  {...TEST_IDS.panel.tab.apply(group.name)}
+                  {...testIds.tab.apply(group.name)}
                 >
                   {group.name}
                 </ToolbarButton>
@@ -253,12 +149,12 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
       )}
       <div>
         {currentLinks.length < 1 && (
-          <Alert severity="info" title="Links" {...TEST_IDS.panel.alert.apply()}>
+          <Alert severity="info" title="Links" {...testIds.alert.apply()}>
             Please add at least one link to proceed.
           </Alert>
         )}
         {currentLinks.map((link) => {
-          return renderLink(link);
+          return <LinkElement key={link.name} link={link} />;
         })}
       </div>
     </div>

@@ -6,12 +6,12 @@ const actual = jest.requireActual('@grafana/ui');
 /**
  * Mock Button Row Toolbar
  */
-const ToolbarButtonRowMock = ({ leftItems, children }: any) => {
+const ToolbarButtonRowMock = ({ leftItems, children, ...restProps }: any) => {
   return (
-    <>
+    <div data-testid={restProps['data-testid']}>
       {leftItems}
       {children}
-    </>
+    </div>
   );
 };
 
@@ -156,6 +156,20 @@ const ButtonMock = ({ children, ...restProps }: any) => {
 };
 const Button = jest.fn(ButtonMock);
 
+/**
+ * Tooltip
+ */
+const TooltipMock = ({ content, children, ...restProps }: any) => {
+  return (
+    <div data-testid={restProps['data-testid']}>
+      <div>{content}</div>
+      {children}
+    </div>
+  );
+};
+
+const Tooltip = jest.fn(TooltipMock);
+
 beforeEach(() => {
   ToolbarButtonRow.mockImplementation(ToolbarButtonRowMock);
   MenuItem.mockImplementation(MenuItemMock);
@@ -163,6 +177,7 @@ beforeEach(() => {
   Select.mockImplementation(SelectMock);
   TagsInput.mockImplementation(TagsInputMock);
   Button.mockImplementation(ButtonMock);
+  Tooltip.mockImplementation(TooltipMock);
 });
 
 module.exports = {
@@ -173,4 +188,5 @@ module.exports = {
   MenuItem,
   Dropdown,
   TagsInput,
+  Tooltip,
 };

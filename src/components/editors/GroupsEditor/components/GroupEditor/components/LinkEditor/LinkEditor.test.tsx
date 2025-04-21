@@ -151,6 +151,50 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change menu action for DROPDOWN type', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.DROPDOWN, dropdownName: 'dropdown-1' }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldShowMenu()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldShowMenu());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+      })
+    );
+  });
+
+  it('Should allow change menu action for TAGS type', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TAGS }) }));
+
+    expect(selectors.fieldShowMenu()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldShowMenu());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+      })
+    );
+  });
+
+  it('Should not display the showMenuOnHover option for the TAGS type if the editor is not groups.', () => {
+    render(getComponent({ optionId: 'dropdowns', value: createLinkConfig({ linkType: LinkType.TAGS }) }));
+    expect(selectors.fieldShowMenu(true)).not.toBeInTheDocument();
+  });
+
+  it('Should not display the showMenuOnHover option for the DROPDOWN type if the editor is not groups.', () => {
+    render(getComponent({ optionId: 'dropdowns', value: createLinkConfig({ linkType: LinkType.DROPDOWN }) }));
+    expect(selectors.fieldDropdown(true)).not.toBeInTheDocument();
+    expect(selectors.fieldShowMenu(true)).not.toBeInTheDocument();
+  });
+
   it('Should allow change Icon', () => {
     render(
       getComponent({

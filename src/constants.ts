@@ -8,12 +8,18 @@ export const TEST_IDS = {
     root: createSelector('data-testid panel'),
     alert: createSelector('data-testid panel alert'),
     tab: createSelector((name: unknown) => `data-testid panel tab-${name}`),
-    buttonEmptyLink: createSelector((name: unknown) => `data-testid panel button empty-link-${name}`),
-    buttonEmptySingleLink: createSelector((name: unknown) => `data-testid panel button empty-single-link-${name}`),
-    buttonSingleLink: createSelector((name: unknown) => `data-testid panel button single-link-${name}`),
-    buttonDropdown: createSelector((name: unknown) => `data-testid panel button dropdown-${name}`),
-    dropdown: createSelector((name: unknown) => `data-testid panel dropdown-${name}`),
-    dropdownMenuItem: createSelector((name: unknown) => `data-testid panel dropdown menu-item-${name}`),
+    tabRow: createSelector('data-testid panel tab-row'),
+  },
+  linkElement: {
+    buttonEmptyLink: createSelector((name: unknown) => `data-testid link-element button empty-link-${name}`),
+    buttonEmptySingleLink: createSelector(
+      (name: unknown) => `data-testid link-element button empty-single-link-${name}`
+    ),
+    buttonSingleLink: createSelector((name: unknown) => `data-testid link-element button single-link-${name}`),
+    buttonDropdown: createSelector((name: unknown) => `data-testid link-element button dropdown-${name}`),
+    dropdown: createSelector((name: unknown) => `data-testid link-element dropdown-${name}`),
+    dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
+    tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
   },
   linkEditor: {
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),
@@ -26,6 +32,7 @@ export const TEST_IDS = {
     fieldTarget: createSelector('data-testid link-editor field-target'),
     fieldTargetOption: createSelector((name: unknown) => `link-editor field-target-option-${name}`),
     fieldTags: createSelector('data-testid link-editor field-tags'),
+    fieldShowMenu: createSelector('data-testid link-editor field-show-menu'),
   },
   groupsEditor: {
     buttonAddNew: createSelector('data-testid groups-editor button-add-new'),

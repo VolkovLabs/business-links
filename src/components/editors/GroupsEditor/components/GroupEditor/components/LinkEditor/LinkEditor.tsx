@@ -135,7 +135,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
   return (
     <>
       <FieldsGroup label="Link">
-        <InlineField label="Link Type" grow={true} labelWidth={12}>
+        <InlineField label="Link Type" grow={true} labelWidth={20}>
           <Select
             options={optionId === 'groups' ? linkTypeOptions : linkTypeOptionsInDropdown}
             value={value.linkType}
@@ -148,7 +148,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
         </InlineField>
 
         {value.linkType === LinkType.SINGLE && (
-          <InlineField label="URL" grow={true} labelWidth={12}>
+          <InlineField label="URL" grow={true} labelWidth={20}>
             <Input
               value={value.url}
               onChange={(event) => {
@@ -163,23 +163,39 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
         )}
 
         {value.linkType === LinkType.TAGS && (
-          <InlineField label="With Tags" grow={true} labelWidth={12}>
-            <TagsInput
-              tags={value.tags}
-              width={40}
-              onChange={(cookies) =>
-                onChange({
-                  ...value,
-                  tags: cookies,
-                })
-              }
-              {...TEST_IDS.linkEditor.fieldTags.apply()}
-            />
-          </InlineField>
+          <>
+            <InlineField label="With Tags" grow={true} labelWidth={20}>
+              <TagsInput
+                tags={value.tags}
+                width={40}
+                onChange={(cookies) =>
+                  onChange({
+                    ...value,
+                    tags: cookies,
+                  })
+                }
+                {...TEST_IDS.linkEditor.fieldTags.apply()}
+              />
+            </InlineField>
+            {optionId === 'groups' && (
+              <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
+                <InlineSwitch
+                  value={value.showMenuOnHover}
+                  onChange={(event) => {
+                    onChange({
+                      ...value,
+                      showMenuOnHover: event.currentTarget.checked,
+                    });
+                  }}
+                  {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
+                />
+              </InlineField>
+            )}
+          </>
         )}
 
         {value.linkType === LinkType.DASHBOARD && (
-          <InlineField label="Dashboard" grow={true} labelWidth={12}>
+          <InlineField label="Dashboard" grow={true} labelWidth={20}>
             <Select
               options={availableDashboardOptions}
               value={value.dashboardUrl}
@@ -192,16 +208,30 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
         )}
 
         {value.linkType === LinkType.DROPDOWN && optionId === 'groups' && (
-          <InlineField label="Dropdown" grow={true} labelWidth={12}>
-            <Select
-              options={availableDropdownsOptions}
-              value={value.dropdownName}
-              onChange={(event) => {
-                onChange({ ...value, dropdownName: event.value! });
-              }}
-              {...TEST_IDS.linkEditor.fieldDropdown.apply()}
-            />
-          </InlineField>
+          <>
+            <InlineField label="Dropdown" grow={true} labelWidth={20}>
+              <Select
+                options={availableDropdownsOptions}
+                value={value.dropdownName}
+                onChange={(event) => {
+                  onChange({ ...value, dropdownName: event.value! });
+                }}
+                {...TEST_IDS.linkEditor.fieldDropdown.apply()}
+              />
+            </InlineField>
+            <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
+              <InlineSwitch
+                value={value.showMenuOnHover}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    showMenuOnHover: event.currentTarget.checked,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
+              />
+            </InlineField>
+          </>
         )}
       </FieldsGroup>
       <FieldsGroup label="Configuration">

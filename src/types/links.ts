@@ -18,6 +18,13 @@ export interface VisualLink {
   icon?: IconName;
 
   /**
+   * Icon
+   *
+   * @type {boolean}
+   */
+  showMenuOnHover?: boolean;
+
+  /**
    * links
    *
    * @type {LinkConfig[]}

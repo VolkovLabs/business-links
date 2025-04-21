@@ -142,6 +142,7 @@ describe('ColumnsEditor', () => {
       createLinkConfig({
         name: 'Link3',
         tags: [],
+        showMenuOnHover: false,
       }),
     ]);
   });

@@ -6,9 +6,6 @@ import { GrafanaTheme2 } from '@grafana/data';
  */
 export const getStyles = (theme: GrafanaTheme2) => {
   return {
-    link: css`
-      margin: ${theme.spacing(0.5)};
-    `,
     header: css`
       position: sticky;
       top: 0;
@@ -34,17 +31,6 @@ export const getStyles = (theme: GrafanaTheme2) => {
       > div {
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-    `,
-    menu: css`
-      background: ${theme.colors.background.secondary};
-      padding: ${theme.spacing(0.5)};
-    `,
-    menuItem: css`
-      background: ${theme.colors.background.primary};
-      &:hover {
-        z-index: ${theme.zIndex.dropdown};
-        background: ${theme.colors.background.secondary};
       }
     `,
   };

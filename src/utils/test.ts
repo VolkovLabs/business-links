@@ -1,4 +1,5 @@
 import { GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType, PanelOptions } from '@/types';
+import { VisualLink } from '@/types/links';
 
 /**
  * Create Link
@@ -13,6 +14,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   includeVariables: false,
   dashboardUrl: '',
   target: LinkTarget.SELF_TAB,
+  showMenuOnHover: false,
   ...item,
 });
 
@@ -32,4 +34,14 @@ export const createPanelOptions = (options: Partial<PanelOptions> = {}): PanelOp
   groups: [],
   dropdowns: [],
   ...options,
+});
+
+/**
+ * Create Link
+ */
+export const createVisualLinkConfig = (item: Partial<VisualLink> = {}): VisualLink => ({
+  name: 'Link1',
+  showMenuOnHover: false,
+  links: [],
+  ...item,
 });

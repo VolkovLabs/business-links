@@ -171,6 +171,7 @@ export const prepareLinksToRender = ({
         result.push({
           name: item.name,
           icon: item.icon,
+          showMenuOnHover: item.showMenuOnHover,
           links: availableDashboards.map((availableDashboard) => ({
             ...item,
             name: availableDashboard.title,
@@ -223,6 +224,7 @@ export const prepareLinksToRender = ({
         result.push({
           name: item.name,
           icon: item.icon,
+          showMenuOnHover: item.showMenuOnHover,
           links: dropdownLinks,
         });
         break;
