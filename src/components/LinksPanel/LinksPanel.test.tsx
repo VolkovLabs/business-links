@@ -45,6 +45,7 @@ describe('LinksPanel', () => {
   } as any;
 
   const replaceVariables = jest.fn();
+  const defaultDashboardId = 'test123';
 
   /**
    * Panel Data
@@ -76,7 +77,12 @@ describe('LinksPanel', () => {
   };
 
   beforeEach(() => {
-    replaceVariables.mockImplementation((str: string) => str);
+    replaceVariables.mockImplementation((str: string) => {
+      if (str === '${__dashboard.uid}') {
+        return defaultDashboardId;
+      }
+      return str;
+    });
     jest.mocked(useSavedState).mockImplementation(jest.requireActual('../../hooks/useSavedState').useSavedState);
   });
 

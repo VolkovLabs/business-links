@@ -150,7 +150,7 @@ const TagsInput = jest.fn(TagsInputMock);
  */
 const ButtonMock = ({ children, ...restProps }: any) => {
   return (
-    <button {...restProps} disabled={restProps.disabled}>
+    <button {...restProps} disabled={restProps.disabled} className={restProps['className']}>
       {children}
     </button>
   );

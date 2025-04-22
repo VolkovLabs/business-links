@@ -89,7 +89,8 @@ export const prepareLinksToRender = ({
   timeRange,
   dashboards,
   params,
-  dashboardPath,
+  dashboardId,
+  highlightCurrentLink,
 }: {
   currentGroup?: GroupConfig;
   dropdowns: GroupConfig[];
@@ -97,7 +98,8 @@ export const prepareLinksToRender = ({
   timeRange: TimeRange;
   dashboards: DashboardMeta[];
   params: string;
-  dashboardPath: string;
+  dashboardId: string;
+  highlightCurrentLink?: boolean;
 }): VisualLink[] => {
   /**
    * Return empty [] if no groups
@@ -128,7 +130,10 @@ export const prepareLinksToRender = ({
           item.url
         );
 
-        const isCurrentDashboard = preparedUrl.includes(dashboardPath.replace(/^\/+|\/+$/g, ''));
+        /**
+         * Is current dashboard/link
+         */
+        const isCurrentDashboard = !!highlightCurrentLink && preparedUrl.includes(dashboardId);
 
         result.push({
           name: item.name,
@@ -227,7 +232,8 @@ export const prepareLinksToRender = ({
             timeRange,
             dashboards,
             params,
-            dashboardPath,
+            dashboardId,
+            highlightCurrentLink,
           });
         }
 

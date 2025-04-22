@@ -143,5 +143,23 @@ describe('LinkElement', () => {
         `background-color: ${theme.colors.background.primary}`
       );
     });
+
+    it('Should render single link with current style', async () => {
+      const nestedLink = createNestedLinkConfig({ name: 'Link1', url: 'test.com', isCurrentLink: true });
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Link1',
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+      expect(selectors.buttonSingleLink(false, 'Link1')).toBeInTheDocument();
+      expect(selectors.buttonSingleLink(false, 'Link1')).toHaveStyle(
+        `background-color: ${theme.colors.warning.borderTransparent}`
+      );
+    });
   });
 });

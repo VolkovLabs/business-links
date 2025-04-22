@@ -184,18 +184,20 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
 
   return (
     <div {...testIds.root.apply()}>
-      <InlineField label="Highlight the link" tooltip="Highlight the current dashboard/link ">
-        <InlineSwitch
-          value={value.highlightCurrentLink}
-          onChange={(event) =>
-            onChange({
-              ...value,
-              highlightCurrentLink: event.currentTarget.checked,
-            })
-          }
-          {...testIds.fieldHighlight.apply()}
-        />
-      </InlineField>
+      {optionId === 'groups' && (
+        <InlineField label="Highlight the link" tooltip="Highlight the current dashboard/link ">
+          <InlineSwitch
+            value={value.highlightCurrentLink}
+            onChange={(event) =>
+              onChange({
+                ...value,
+                highlightCurrentLink: event.currentTarget.checked,
+              })
+            }
+            {...testIds.fieldHighlight.apply()}
+          />
+        </InlineField>
+      )}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={name}>
           {(provided) => (

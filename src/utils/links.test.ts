@@ -90,7 +90,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: 'var-x=1',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result).toEqual([]);
@@ -123,11 +123,48 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result).toHaveLength(1);
     expect(result[0].links[0].url).toEqual('https://google.com');
+    expect(result[0].links[0].isCurrentLink).toEqual(false);
+  });
+
+  it('Should generate SINGLE link correctly with Highlight option', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          type: LinkConfigType.LINK,
+          name: 'Link',
+          enable: true,
+          linkType: LinkType.SINGLE,
+          url: 'd/test123/?params=test',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: 'test123',
+      highlightCurrentLink: true,
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].links[0].url).toEqual('d/test123/?params=test');
+    expect(result[0].links[0].isCurrentLink).toEqual(true);
   });
 
   it('Should generate TAGS links correctly', () => {
@@ -157,7 +194,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result[0].links).toHaveLength(2);
@@ -212,7 +249,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result).toHaveLength(1);
@@ -246,7 +283,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result).toHaveLength(1);
@@ -280,7 +317,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
-      dashboardPath: '',
+      dashboardId: '',
     });
 
     expect(result).toHaveLength(0);

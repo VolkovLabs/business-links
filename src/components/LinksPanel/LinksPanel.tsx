@@ -36,6 +36,11 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
   const location = locationService.getLocation();
 
   /**
+   * currentDashboardId
+   */
+  const currentDashboardId = useMemo(() => replaceVariables('${__dashboard.uid}'), [replaceVariables]);
+
+  /**
    * State
    */
   const [dashboards, setDashboards] = useState<DashboardMeta[]>([]);
@@ -60,8 +65,10 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
    * All dashboards exclude current
    */
   const availableDashboards = useMemo(() => {
-    return dashboards?.filter((dashboard) => dashboard.url !== location.pathname);
-  }, [dashboards, location.pathname]);
+    return dashboards?.filter(
+      (dashboard) => !dashboard.url.includes(currentDashboardId) || dashboard.url !== location.pathname
+    );
+  }, [currentDashboardId, dashboards, location.pathname]);
 
   /**
    * Links for render
@@ -74,12 +81,13 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
       timeRange,
       dashboards: availableDashboards,
       params: location.search,
-      dashboardPath: location.pathname,
+      dashboardId: currentDashboardId,
+      highlightCurrentLink: activeGroup?.highlightCurrentLink,
     });
   }, [
     activeGroup,
     availableDashboards,
-    location.pathname,
+    currentDashboardId,
     location.search,
     options.dropdowns,
     replaceVariables,
