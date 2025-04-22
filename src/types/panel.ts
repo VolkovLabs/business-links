@@ -139,6 +139,13 @@ export interface GroupConfig {
   name: string;
 
   /**
+   * Highlight the current dashboard/link
+   *
+   * @type {boolean}
+   */
+  highlightCurrentLink?: boolean;
+
+  /**
    * Items
    *
    * @type {LinkConfig[]}

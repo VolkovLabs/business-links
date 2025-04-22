@@ -187,7 +187,7 @@ describe('TablesEditor', () => {
      */
     await act(() => fireEvent.click(item2Selectors.buttonRemove()));
 
-    expect(onChange).toHaveBeenCalledWith([{ name: 'Group', items: [] }]);
+    expect(onChange).toHaveBeenCalledWith([{ name: 'Group', items: [], highlightCurrentLink: false }]);
   });
 
   describe('Rename', () => {
@@ -249,8 +249,8 @@ describe('TablesEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith([
-        { name: 'Group', items: [] },
-        { name: 'hello', items: [] },
+        { name: 'Group', items: [], highlightCurrentLink: false },
+        { name: 'hello', items: [], highlightCurrentLink: false },
       ]);
     });
 
@@ -413,8 +413,8 @@ describe('TablesEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith([
-        { name: 'Group', items: [] },
-        { name: 'hello', items: [] },
+        { name: 'Group', items: [], highlightCurrentLink: false },
+        { name: 'hello', items: [], highlightCurrentLink: false },
       ]);
     });
 
@@ -607,7 +607,7 @@ describe('TablesEditor', () => {
             /**
              * Simulate group change remove links
              */
-            onChange([]);
+            onChange({ ...group1, items: [] });
           }}
         />
       </div>
@@ -690,10 +690,12 @@ describe('TablesEditor', () => {
       {
         name: 'Group 2',
         items: expect.any(Array),
+        highlightCurrentLink: false,
       },
       {
         name: 'Group',
         items: expect.any(Array),
+        highlightCurrentLink: false,
       },
     ]);
   });

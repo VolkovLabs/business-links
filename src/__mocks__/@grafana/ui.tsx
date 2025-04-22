@@ -26,6 +26,7 @@ const MenuItemMock = ({ onClick, children, currentPage, numberOfPages, ...restPr
       onClick={() => {
         onClick();
       }}
+      className={restProps['className']}
       aria-label={restProps['aria-label']}
       data-testid={restProps['data-testid']}
     >

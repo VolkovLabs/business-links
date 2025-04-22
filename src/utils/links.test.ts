@@ -90,6 +90,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: 'var-x=1',
+      dashboardPath: '',
     });
 
     expect(result).toEqual([]);
@@ -122,6 +123,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
+      dashboardPath: '',
     });
 
     expect(result).toHaveLength(1);
@@ -155,6 +157,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
+      dashboardPath: '',
     });
 
     expect(result[0].links).toHaveLength(2);
@@ -209,6 +212,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
+      dashboardPath: '',
     });
 
     expect(result).toHaveLength(1);
@@ -242,6 +246,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
+      dashboardPath: '',
     });
 
     expect(result).toHaveLength(1);
@@ -275,6 +280,7 @@ describe('prepareLinksToRender', () => {
       timeRange,
       dashboards,
       params: '',
+      dashboardPath: '',
     });
 
     expect(result).toHaveLength(0);

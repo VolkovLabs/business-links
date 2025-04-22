@@ -1,9 +1,10 @@
+import { createTheme } from '@grafana/data';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { createLinkConfig, createVisualLinkConfig } from '@/utils';
+import { createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from './LinkElement';
 
@@ -21,6 +22,11 @@ describe('LinkElement', () => {
    */
   const getSelectors = getJestSelectors(TEST_IDS.linkElement);
   const selectors = getSelectors(screen);
+
+  /**
+   * Selectors
+   */
+  const theme = createTheme();
 
   /**
    * Panel Options
@@ -101,6 +107,41 @@ describe('LinkElement', () => {
       expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
       expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
       expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
+    });
+
+    it('Should render dropdown with Highlight current link', async () => {
+      const nestedLink1 = createNestedLinkConfig({ name: 'Link1', url: 'test.com', isCurrentLink: true });
+      const nestedLink2 = createNestedLinkConfig();
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
+      expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
+      expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+
+      expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
+
+      /**
+       * Current ds link styles
+       */
+      expect(selectors.dropdownMenuItem(false, 'Link1')).toHaveStyle(
+        `background-color: ${theme.colors.warning.borderTransparent}`
+      );
+
+      expect(selectors.dropdownMenuItem(false, 'Link')).toBeInTheDocument();
+      expect(selectors.dropdownMenuItem(false, 'Link')).toHaveStyle(
+        `background-color: ${theme.colors.background.primary}`
+      );
     });
   });
 });

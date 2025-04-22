@@ -49,6 +49,8 @@ export const TEST_IDS = {
     newItemName: createSelector('data-testid groups-editor new-item-name'),
   },
   groupEditor: {
+    root: createSelector('data-testid group-editor'),
+    fieldHighlight: createSelector('data-testid group-editor field-highlight'),
     buttonAddNew: createSelector('data-testid group-editor button-add-new'),
     buttonRemove: createSelector('data-testid group-editor button-remove'),
     buttonToggleVisibility: createSelector('data-testid group-editor button-toggle-visibility'),
@@ -60,6 +62,5 @@ export const TEST_IDS = {
     buttonSaveRename: createSelector('data-testid group-editor button-save-rename'),
     fieldName: createSelector('data-testid group-editor field-name'),
     newItemName: createSelector('data-testid group-editor new-item-name'),
-    root: createSelector('data-testid group-editor'),
   },
 };

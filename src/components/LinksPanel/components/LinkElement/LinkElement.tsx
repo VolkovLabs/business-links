@@ -43,7 +43,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
           label={dropdownLink.name}
           url={dropdownLink.url}
           target={dropdownLink.target}
-          className={styles.menuItem}
+          className={dropdownLink.isCurrentLink ? styles.currentMenuItem : styles.menuItem}
           icon={dropdownLink.icon}
           {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
         />
@@ -103,7 +103,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
       return (
         <LinkButton
           key={currentLink.url}
-          className={styles.link}
+          className={currentLink.isCurrentLink ? styles.currentDashboard : styles.link}
           icon={currentLink.icon}
           href={currentLink.url}
           title={currentLink.name}

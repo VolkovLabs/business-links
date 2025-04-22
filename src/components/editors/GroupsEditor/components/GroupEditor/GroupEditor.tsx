@@ -1,11 +1,11 @@
 import { cx } from '@emotion/css';
-import { Button, Icon, IconButton, InlineField, InlineFieldRow, Input, useTheme2 } from '@grafana/ui';
+import { Button, Icon, IconButton, InlineField, InlineFieldRow, InlineSwitch, Input, useTheme2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, LinkConfig, LinkConfigType, LinkTarget, LinkType } from '@/types';
+import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType } from '@/types';
 import { reorder } from '@/utils';
 
 import { LinkEditor } from './components';
@@ -24,7 +24,7 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
 /**
  * Properties
  */
-interface Props extends EditorProps<LinkConfig[]> {
+interface Props extends EditorProps<GroupConfig> {
   /**
    * Name
    *
@@ -62,7 +62,7 @@ const testIds = TEST_IDS.groupEditor;
 /**
  * Group Editor
  */
-export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, dashboards, optionId, dropdowns }) => {
+export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards, optionId, dropdowns }) => {
   /**
    * Styles and Theme
    */
@@ -78,13 +78,22 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
   const [editName, setEditName] = useState('');
 
   /**
+   * Links
+   */
+  const items = useMemo(() => value.items, [value.items]);
+
+  /**
    * Change Items
    */
   const onChangeItems = useCallback(
-    (items: LinkConfig[]) => {
-      onChange(items);
+    (newItems: LinkConfig[]) => {
+      const updatedGroup = {
+        ...value,
+        items: newItems,
+      };
+      onChange(updatedGroup);
     },
-    [onChange]
+    [onChange, value]
   );
 
   /**
@@ -175,6 +184,18 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
 
   return (
     <div {...testIds.root.apply()}>
+      <InlineField label="Highlight the link" tooltip="Highlight the current dashboard/link ">
+        <InlineSwitch
+          value={value.highlightCurrentLink}
+          onChange={(event) =>
+            onChange({
+              ...value,
+              highlightCurrentLink: event.currentTarget.checked,
+            })
+          }
+          {...testIds.fieldHighlight.apply()}
+        />
+      </InlineField>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={name}>
           {(provided) => (
@@ -322,7 +343,6 @@ export const GroupEditor: React.FC<Props> = ({ value: items, name, onChange, das
           )}
         </Droppable>
       </DragDropContext>
-
       <InlineFieldRow className={styles.newItem} {...testIds.newItem.apply()}>
         <InlineField
           label="New Link"

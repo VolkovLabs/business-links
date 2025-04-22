@@ -74,8 +74,17 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
       timeRange,
       dashboards: availableDashboards,
       params: location.search,
+      dashboardPath: location.pathname,
     });
-  }, [activeGroup, availableDashboards, location.search, options.dropdowns, replaceVariables, timeRange]);
+  }, [
+    activeGroup,
+    availableDashboards,
+    location.pathname,
+    location.search,
+    options.dropdowns,
+    replaceVariables,
+    timeRange,
+  ]);
 
   /**
    * Show selected group first
