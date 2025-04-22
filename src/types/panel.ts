@@ -118,6 +118,13 @@ export interface LinkConfig {
    * @type {string}
    */
   dropdownName?: string;
+
+  /**
+   * Show menu (tags,dropdown) on hover
+   *
+   * @type {boolean}
+   */
+  showMenuOnHover?: boolean;
 }
 
 /**
@@ -130,6 +137,13 @@ export interface GroupConfig {
    * @type {string}
    */
   name: string;
+
+  /**
+   * Highlight the current dashboard/link
+   *
+   * @type {boolean}
+   */
+  highlightCurrentLink?: boolean;
 
   /**
    * Items

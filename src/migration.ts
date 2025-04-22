@@ -1,6 +1,6 @@
 import { PanelModel } from '@grafana/data';
 
-import { PanelOptions } from './types';
+import { GroupConfig, PanelOptions } from './types';
 
 /**
  * Outdated Panel Options
@@ -20,6 +20,24 @@ interface OutdatedPanelOptions extends Omit<PanelOptions, 'groupsSorting'> {
  */
 export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>): Promise<PanelOptions> => {
   const { ...options } = panel.options;
+
+  /**
+   * Normalize groups
+   */
+  if (options.groups && options.groups.length > 0) {
+    const items = options.groups;
+    options.groups = items.map((group) => {
+      const normalizedGroup = {
+        ...group,
+      } as GroupConfig;
+
+      if (normalizedGroup.highlightCurrentLink === undefined) {
+        normalizedGroup.highlightCurrentLink = false;
+      }
+
+      return normalizedGroup;
+    });
+  }
 
   /**
    * Normalize toolbar download formats if undefined

@@ -7,7 +7,7 @@ import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, GroupConfig, LinkConfig, PanelOptions } from '@/types';
+import { DashboardMeta, GroupConfig, PanelOptions } from '@/types';
 import { getAllDashboards, reorder } from '@/utils';
 
 import { GroupEditor } from './components';
@@ -119,6 +119,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
         {
           name: newItemName,
           items: [],
+          highlightCurrentLink: false,
         },
       ])
     );
@@ -318,17 +319,14 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                         >
                           <GroupEditor
                             name={item.name}
-                            value={item.items}
+                            value={item}
                             dashboards={availableDashboards}
                             optionId={id}
                             dropdowns={availableDropdowns}
-                            onChange={(newItems: LinkConfig[]) => {
+                            onChange={(newGroup: GroupConfig) => {
                               const updatedGroups = value.map((group) => {
-                                if (group.name === item.name) {
-                                  return {
-                                    ...group,
-                                    items: newItems,
-                                  };
+                                if (group.name === newGroup.name) {
+                                  return newGroup;
                                 }
 
                                 return group;

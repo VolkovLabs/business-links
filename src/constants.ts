@@ -9,12 +9,17 @@ export const TEST_IDS = {
     alert: createSelector('data-testid panel alert'),
     tab: createSelector((name: unknown) => `data-testid panel tab-${name}`),
     tabRow: createSelector('data-testid panel tab-row'),
-    buttonEmptyLink: createSelector((name: unknown) => `data-testid panel button empty-link-${name}`),
-    buttonEmptySingleLink: createSelector((name: unknown) => `data-testid panel button empty-single-link-${name}`),
-    buttonSingleLink: createSelector((name: unknown) => `data-testid panel button single-link-${name}`),
-    buttonDropdown: createSelector((name: unknown) => `data-testid panel button dropdown-${name}`),
-    dropdown: createSelector((name: unknown) => `data-testid panel dropdown-${name}`),
-    dropdownMenuItem: createSelector((name: unknown) => `data-testid panel dropdown menu-item-${name}`),
+  },
+  linkElement: {
+    buttonEmptyLink: createSelector((name: unknown) => `data-testid link-element button empty-link-${name}`),
+    buttonEmptySingleLink: createSelector(
+      (name: unknown) => `data-testid link-element button empty-single-link-${name}`
+    ),
+    buttonSingleLink: createSelector((name: unknown) => `data-testid link-element button single-link-${name}`),
+    buttonDropdown: createSelector((name: unknown) => `data-testid link-element button dropdown-${name}`),
+    dropdown: createSelector((name: unknown) => `data-testid link-element dropdown-${name}`),
+    dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
+    tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
   },
   linkEditor: {
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),
@@ -27,6 +32,7 @@ export const TEST_IDS = {
     fieldTarget: createSelector('data-testid link-editor field-target'),
     fieldTargetOption: createSelector((name: unknown) => `link-editor field-target-option-${name}`),
     fieldTags: createSelector('data-testid link-editor field-tags'),
+    fieldShowMenu: createSelector('data-testid link-editor field-show-menu'),
   },
   groupsEditor: {
     buttonAddNew: createSelector('data-testid groups-editor button-add-new'),
@@ -43,6 +49,8 @@ export const TEST_IDS = {
     newItemName: createSelector('data-testid groups-editor new-item-name'),
   },
   groupEditor: {
+    root: createSelector('data-testid group-editor'),
+    fieldHighlight: createSelector('data-testid group-editor field-highlight'),
     buttonAddNew: createSelector('data-testid group-editor button-add-new'),
     buttonRemove: createSelector('data-testid group-editor button-remove'),
     buttonToggleVisibility: createSelector('data-testid group-editor button-toggle-visibility'),
@@ -54,6 +62,5 @@ export const TEST_IDS = {
     buttonSaveRename: createSelector('data-testid group-editor button-save-rename'),
     fieldName: createSelector('data-testid group-editor field-name'),
     newItemName: createSelector('data-testid group-editor new-item-name'),
-    root: createSelector('data-testid group-editor'),
   },
 };

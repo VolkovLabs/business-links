@@ -26,6 +26,7 @@ const MenuItemMock = ({ onClick, children, currentPage, numberOfPages, ...restPr
       onClick={() => {
         onClick();
       }}
+      className={restProps['className']}
       aria-label={restProps['aria-label']}
       data-testid={restProps['data-testid']}
     >
@@ -149,12 +150,26 @@ const TagsInput = jest.fn(TagsInputMock);
  */
 const ButtonMock = ({ children, ...restProps }: any) => {
   return (
-    <button {...restProps} disabled={restProps.disabled}>
+    <button {...restProps} disabled={restProps.disabled} className={restProps['className']}>
       {children}
     </button>
   );
 };
 const Button = jest.fn(ButtonMock);
+
+/**
+ * Tooltip
+ */
+const TooltipMock = ({ content, children, ...restProps }: any) => {
+  return (
+    <div data-testid={restProps['data-testid']}>
+      <div>{content}</div>
+      {children}
+    </div>
+  );
+};
+
+const Tooltip = jest.fn(TooltipMock);
 
 beforeEach(() => {
   ToolbarButtonRow.mockImplementation(ToolbarButtonRowMock);
@@ -163,6 +178,7 @@ beforeEach(() => {
   Select.mockImplementation(SelectMock);
   TagsInput.mockImplementation(TagsInputMock);
   Button.mockImplementation(ButtonMock);
+  Tooltip.mockImplementation(TooltipMock);
 });
 
 module.exports = {
@@ -173,4 +189,5 @@ module.exports = {
   MenuItem,
   Dropdown,
   TagsInput,
+  Tooltip,
 };

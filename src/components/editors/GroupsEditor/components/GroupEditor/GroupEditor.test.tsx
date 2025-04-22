@@ -4,7 +4,7 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { createLinkConfig } from '@/utils';
+import { createGroupConfig, createLinkConfig } from '@/utils';
 
 import { LinkEditor } from './components';
 import { GroupEditor } from './GroupEditor';
@@ -52,9 +52,12 @@ describe('ColumnsEditor', () => {
    */
   const defaultDropdowns = [{ name: 'Dropdown1', items: [] }];
   const defaultOptionId = 'groups';
-
   const link1 = createLinkConfig({ name: 'Link1' });
   const link2 = createLinkConfig({ name: 'Link2' });
+  const defaultGroupConfig = createGroupConfig({
+    name: 'group1',
+    items: [link1, link2],
+  });
 
   const dashboardsMock = [
     {
@@ -98,7 +101,7 @@ describe('ColumnsEditor', () => {
   it('Should render items', () => {
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
       })
     );
 
@@ -109,7 +112,7 @@ describe('ColumnsEditor', () => {
   it('Should render if no items', () => {
     render(
       getComponent({
-        value: [],
+        value: { ...defaultGroupConfig, items: [] },
       })
     );
 
@@ -124,7 +127,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -136,14 +139,19 @@ describe('ColumnsEditor', () => {
 
     await act(() => fireEvent.click(selectors.buttonAddNew()));
 
-    expect(onChange).toHaveBeenCalledWith([
-      link1,
-      link2,
-      createLinkConfig({
-        name: 'Link3',
-        tags: [],
-      }),
-    ]);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        items: [
+          link1,
+          link2,
+          createLinkConfig({
+            name: 'Link3',
+            tags: [],
+            showMenuOnHover: false,
+          }),
+        ],
+      })
+    );
   });
 
   describe('Rename', () => {
@@ -152,7 +160,7 @@ describe('ColumnsEditor', () => {
 
       render(
         getComponent({
-          value: [link1, link2],
+          value: defaultGroupConfig,
           onChange,
         })
       );
@@ -199,10 +207,12 @@ describe('ColumnsEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          expect.objectContaining({ name: link1.name }),
-          expect.objectContaining({ name: 'hello' }),
-        ])
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link1.name }),
+            expect.objectContaining({ name: 'hello' }),
+          ]),
+        })
       );
     });
 
@@ -211,7 +221,7 @@ describe('ColumnsEditor', () => {
 
       render(
         getComponent({
-          value: [link1, link2],
+          value: defaultGroupConfig,
           onChange,
         })
       );
@@ -260,7 +270,7 @@ describe('ColumnsEditor', () => {
 
       render(
         getComponent({
-          value: [link1, link2],
+          value: defaultGroupConfig,
           onChange,
         })
       );
@@ -309,7 +319,7 @@ describe('ColumnsEditor', () => {
 
       render(
         getComponent({
-          value: [link1, link2],
+          value: defaultGroupConfig,
           onChange,
         })
       );
@@ -346,10 +356,12 @@ describe('ColumnsEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          expect.objectContaining({ name: link1.name }),
-          expect.objectContaining({ name: 'hello' }),
-        ])
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link1.name }),
+            expect.objectContaining({ name: 'hello' }),
+          ]),
+        })
       );
     });
 
@@ -358,7 +370,7 @@ describe('ColumnsEditor', () => {
 
       render(
         getComponent({
-          value: [link1, link2],
+          value: defaultGroupConfig,
           onChange,
         })
       );
@@ -408,7 +420,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -425,7 +437,11 @@ describe('ColumnsEditor', () => {
      */
     await act(() => fireEvent.click(getSelectors(within(field2)).buttonRemove()));
 
-    expect(onChange).toHaveBeenCalledWith([link2]);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        items: [link2],
+      })
+    );
   });
 
   it('Should hide item', async () => {
@@ -433,7 +449,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -451,10 +467,12 @@ describe('ColumnsEditor', () => {
     await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
 
     expect(onChange).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ name: link1.name, enable: false }),
-        expect.objectContaining({ name: link2.name }),
-      ])
+      expect.objectContaining({
+        items: expect.arrayContaining([
+          expect.objectContaining({ name: link1.name, enable: false }),
+          expect.objectContaining({ name: link2.name }),
+        ]),
+      })
     );
   });
 
@@ -463,13 +481,16 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [
-          {
-            ...link1,
-            enable: false,
-          },
-          link2,
-        ],
+        value: {
+          ...defaultGroupConfig,
+          items: [
+            {
+              ...link1,
+              enable: false,
+            },
+            link2,
+          ],
+        },
         onChange,
       })
     );
@@ -487,10 +508,12 @@ describe('ColumnsEditor', () => {
     await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
 
     expect(onChange).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ name: link1.name, enable: true }),
-        expect.objectContaining({ name: link2.name }),
-      ])
+      expect.objectContaining({
+        items: expect.arrayContaining([
+          expect.objectContaining({ name: link1.name, enable: true }),
+          expect.objectContaining({ name: link2.name }),
+        ]),
+      })
     );
   });
 
@@ -505,13 +528,16 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [
-          {
-            ...link1,
-            enable: true,
-          },
-          link2,
-        ],
+        value: {
+          ...defaultGroupConfig,
+          items: [
+            {
+              ...link1,
+              enable: false,
+            },
+            link2,
+          ],
+        },
         onChange,
       })
     );
@@ -531,10 +557,12 @@ describe('ColumnsEditor', () => {
     );
 
     expect(onChange).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ name: link2.name }),
-        expect.objectContaining({ name: link1.name }),
-      ])
+      expect.objectContaining({
+        items: expect.arrayContaining([
+          expect.objectContaining({ name: link2.name }),
+          expect.objectContaining({ name: link1.name }),
+        ]),
+      })
     );
   });
 
@@ -549,7 +577,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -574,7 +602,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -619,7 +647,7 @@ describe('ColumnsEditor', () => {
 
     render(
       getComponent({
-        value: [link1, link2],
+        value: defaultGroupConfig,
         onChange,
       })
     );
@@ -637,10 +665,35 @@ describe('ColumnsEditor', () => {
     fireEvent.click(selectors.buttonLevelsUpdate());
 
     expect(onChange).toHaveBeenCalledWith(
-      expect.arrayContaining([
-        expect.objectContaining({ name: link1.name, tags: tagsMock }),
-        expect.objectContaining({ name: link2.name }),
-      ])
+      expect.objectContaining({
+        items: expect.arrayContaining([
+          expect.objectContaining({ name: link1.name, tags: tagsMock }),
+          expect.objectContaining({ name: link2.name }),
+        ]),
+      })
+    );
+  });
+
+  it('Should allow change Highlight option', () => {
+    const onChange = jest.fn();
+
+    render(
+      getComponent({
+        value: {
+          ...defaultGroupConfig,
+          highlightCurrentLink: false,
+        },
+        onChange,
+      })
+    );
+
+    expect(selectors.fieldHighlight()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldHighlight());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        highlightCurrentLink: true,
+      })
     );
   });
 });

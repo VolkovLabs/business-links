@@ -1,15 +1,19 @@
 # Changelog
 
-All notable changes to the Business Links panel are documented here.
+All notable changes to the **Business Links** panel will be documented in this file.
 
-## 1.1.0 (In progress)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### Features & Enhancements
+## [1.1.0] - 2025-04-22
 
-- Added an option to sorting tabs to show select first (#6)
+### Added
 
-## 1.0.0 (2025-04-17)
+- Option to sort tabs and prioritize selected tabs first (#6)
+- Option to highlight the current dashboard or link (#4)
+- Option to display dropdown menus on hover instead of click (#3)
 
-### Features & Enhancements
+## [1.0.0] - 2025-04-17
 
-- Initial release based on Volkov Labs templates
+### Added
+
+- Initial release of the Business Links panel based on Volkov Labs templates

@@ -89,6 +89,8 @@ export const prepareLinksToRender = ({
   timeRange,
   dashboards,
   params,
+  dashboardId,
+  highlightCurrentLink,
 }: {
   currentGroup?: GroupConfig;
   dropdowns: GroupConfig[];
@@ -96,6 +98,8 @@ export const prepareLinksToRender = ({
   timeRange: TimeRange;
   dashboards: DashboardMeta[];
   params: string;
+  dashboardId: string;
+  highlightCurrentLink?: boolean;
 }): VisualLink[] => {
   /**
    * Return empty [] if no groups
@@ -117,11 +121,26 @@ export const prepareLinksToRender = ({
        * Single link
        */
       case LinkType.SINGLE: {
+        const preparedUrl = prepareUrlWithParams(
+          item.includeTimeRange,
+          item.includeVariables,
+          timeRange,
+          replaceVariables,
+          params,
+          item.url
+        );
+
+        /**
+         * Is current dashboard/link
+         */
+        const isCurrentDashboard = !!highlightCurrentLink && preparedUrl.includes(dashboardId);
+
         result.push({
           name: item.name,
           links: [
             {
               ...item,
+              isCurrentLink: isCurrentDashboard,
               url: prepareUrlWithParams(
                 item.includeTimeRange,
                 item.includeVariables,
@@ -171,6 +190,7 @@ export const prepareLinksToRender = ({
         result.push({
           name: item.name,
           icon: item.icon,
+          showMenuOnHover: item.showMenuOnHover,
           links: availableDashboards.map((availableDashboard) => ({
             ...item,
             name: availableDashboard.title,
@@ -212,6 +232,8 @@ export const prepareLinksToRender = ({
             timeRange,
             dashboards,
             params,
+            dashboardId,
+            highlightCurrentLink,
           });
         }
 
@@ -223,6 +245,7 @@ export const prepareLinksToRender = ({
         result.push({
           name: item.name,
           icon: item.icon,
+          showMenuOnHover: item.showMenuOnHover,
           links: dropdownLinks,
         });
         break;

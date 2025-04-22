@@ -45,6 +45,7 @@ describe('LinksPanel', () => {
   } as any;
 
   const replaceVariables = jest.fn();
+  const defaultDashboardId = 'test123';
 
   /**
    * Panel Data
@@ -76,7 +77,12 @@ describe('LinksPanel', () => {
   };
 
   beforeEach(() => {
-    replaceVariables.mockImplementation((str: string) => str);
+    replaceVariables.mockImplementation((str: string) => {
+      if (str === '${__dashboard.uid}') {
+        return defaultDashboardId;
+      }
+      return str;
+    });
     jest.mocked(useSavedState).mockImplementation(jest.requireActual('../../hooks/useSavedState').useSavedState);
   });
 
@@ -101,7 +107,7 @@ describe('LinksPanel', () => {
     });
   });
 
-  it('Should display links and groups', async () => {
+  it('Should display groups', async () => {
     jest.mocked(getAllDashboards).mockReturnValue([
       {
         id: 1,
@@ -155,18 +161,13 @@ describe('LinksPanel', () => {
     expect(selectors.root()).toBeInTheDocument();
 
     /**
-     * Links
-     */
-    expect(selectors.buttonSingleLink(false, 'Link 2')).toBeInTheDocument();
-    expect(selectors.buttonEmptySingleLink(false, 'Empty link')).toBeInTheDocument();
-    expect(selectors.buttonSingleLink(false, 'Link 2')).toBeInTheDocument();
-    expect(selectors.dropdown(false, 'Tags')).toBeInTheDocument();
-    expect(selectors.buttonDropdown(false, 'Tags')).toBeInTheDocument();
-
-    /**
      * Groups
      */
+    expect(selectors.tab(false, 'Group1')).toBeInTheDocument();
     expect(selectors.tab(false, 'Group2')).toBeInTheDocument();
+    expect(selectors.tabRow()).toBeInTheDocument();
+    expect(selectors.tabRow()).toHaveTextContent('Group1Group2');
+
     expect(selectors.tabRow()).toBeInTheDocument();
     expect(selectors.tabRow()).toHaveTextContent('Group1Group2');
 
@@ -174,12 +175,6 @@ describe('LinksPanel', () => {
      * Select group2
      */
     await act(async () => fireEvent.click(selectors.tab(false, 'Group2')));
-
-    expect(selectors.buttonSingleLink(true, 'Link 1')).not.toBeInTheDocument();
-    expect(selectors.buttonSingleLink(true, 'Link 2')).not.toBeInTheDocument();
-
-    expect(selectors.buttonSingleLink(false, 'Link 3')).toBeInTheDocument();
-    expect(selectors.buttonSingleLink(false, 'Link 4')).toBeInTheDocument();
 
     /**
      * Selected group shows first
