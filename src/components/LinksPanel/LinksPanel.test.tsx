@@ -131,6 +131,7 @@ describe('LinksPanel', () => {
     ];
 
     const options = createPanelOptions({
+      groupsSorting: true,
       groups: [
         createGroupConfig({
           name: 'Group1',
@@ -158,6 +159,8 @@ describe('LinksPanel', () => {
      */
     expect(selectors.tab(false, 'Group1')).toBeInTheDocument();
     expect(selectors.tab(false, 'Group2')).toBeInTheDocument();
+    expect(selectors.tabRow()).toBeInTheDocument();
+    expect(selectors.tabRow()).toHaveTextContent('Group1Group2');
 
     expect(selectors.tabRow()).toBeInTheDocument();
     expect(selectors.tabRow()).toHaveTextContent('Group1Group2');

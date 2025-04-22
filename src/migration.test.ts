@@ -2,6 +2,24 @@ import { getMigratedOptions } from './migration';
 import { createGroupConfig } from './utils';
 
 describe('migration', () => {
+  it('Should normalize groupsSorting', async () => {
+    expect(await getMigratedOptions({ options: {} } as any)).toEqual(
+      expect.objectContaining({
+        groupsSorting: false,
+      })
+    );
+    expect(await getMigratedOptions({ options: { groupsSorting: false } } as any)).toEqual(
+      expect.objectContaining({
+        groupsSorting: false,
+      })
+    );
+    expect(await getMigratedOptions({ options: { groupsSorting: true } } as any)).toEqual(
+      expect.objectContaining({
+        groupsSorting: true,
+      })
+    );
+  });
+
   it('Should keep empty groups', async () => {
     expect(await getMigratedOptions({ options: { groups: [] } } as any)).toEqual(
       expect.objectContaining({
@@ -46,15 +64,5 @@ describe('migration', () => {
         ]),
       })
     );
-    // expect(await getMigratedOptions({ options: { groupsSorting: false } } as any)).toEqual(
-    //   expect.objectContaining({
-    //     groupsSorting: false,
-    //   })
-    // );
-    // expect(await getMigratedOptions({ options: { groupsSorting: true } } as any)).toEqual(
-    //   expect.objectContaining({
-    //     groupsSorting: true,
-    //   })
-    // );
   });
 });

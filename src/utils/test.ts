@@ -34,6 +34,7 @@ export const createGroupConfig = (options: Partial<GroupConfig> = {}): GroupConf
 export const createPanelOptions = (options: Partial<PanelOptions> = {}): PanelOptions => ({
   groups: [],
   dropdowns: [],
+  groupsSorting: false,
   ...options,
 });
 

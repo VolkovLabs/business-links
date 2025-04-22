@@ -94,15 +94,16 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
 
     /**
      * Selected group is not found
+     * Or tabsSorting disabled
      */
-    if (!activeGroup) {
+    if (!activeGroup || !options.groupsSorting) {
       return options.groups;
     }
 
     const withoutActive = options.groups.filter((group) => group.name !== currentGroup);
 
     return [activeGroup, ...withoutActive];
-  }, [currentGroup, options.groups]);
+  }, [currentGroup, options.groups, options.groupsSorting]);
 
   /**
    * Is Toolbar Visible

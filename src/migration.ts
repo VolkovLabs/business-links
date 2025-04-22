@@ -39,5 +39,12 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
     });
   }
 
+  /**
+   * Normalize toolbar download formats if undefined
+   */
+  if (options.groupsSorting === undefined) {
+    options.groupsSorting = false;
+  }
+
   return options as PanelOptions;
 };

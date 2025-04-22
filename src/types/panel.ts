@@ -158,6 +158,13 @@ export interface GroupConfig {
  */
 export interface PanelOptions {
   /**
+   * Tabs Sorting
+   *
+   * @type {boolean}
+   */
+  groupsSorting: boolean;
+
+  /**
    * Groups
    *
    * @type {GroupConfig[]}

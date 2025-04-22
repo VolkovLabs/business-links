@@ -15,6 +15,12 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
      * Options
      */
     builder
+      .addBooleanSwitch({
+        path: 'groupsSorting',
+        name: 'Groups Sorting',
+        description: 'Show selected Group first',
+        showIf: (config) => config.groups?.length > 1,
+      })
       .addCustomEditor({
         id: 'groups',
         path: 'groups',
