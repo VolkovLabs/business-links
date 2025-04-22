@@ -185,7 +185,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
   return (
     <div {...testIds.root.apply()}>
       {optionId === 'groups' && (
-        <InlineField label="Highlight the link" tooltip="Highlight the current dashboard/link ">
+        <InlineField label="Highlight the current link">
           <InlineSwitch
             value={value.highlightCurrentLink}
             onChange={(event) =>
