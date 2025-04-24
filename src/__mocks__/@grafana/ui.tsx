@@ -1,6 +1,8 @@
 import { SelectableValue } from '@grafana/data';
 import React, { useState } from 'react';
 
+import { TEST_IDS } from '@/constants';
+
 const actual = jest.requireActual('@grafana/ui');
 
 /**
@@ -160,9 +162,10 @@ const Button = jest.fn(ButtonMock);
 /**
  * Tooltip
  */
-const TooltipMock = ({ content, children, ...restProps }: any) => {
+const TooltipMock = ({ content, children, placement, ...restProps }: any) => {
   return (
     <div data-testid={restProps['data-testid']}>
+      <p {...TEST_IDS.general.tooltipPosition.apply()}>{placement}</p>
       <div>{content}</div>
       {children}
     </div>

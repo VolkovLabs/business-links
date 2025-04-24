@@ -3,7 +3,7 @@ import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { LinkTarget, LinkType } from '@/types';
+import { HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
 import { createLinkConfig } from '@/utils';
 
 import { LinkEditor } from './LinkEditor';
@@ -169,6 +169,154 @@ describe('LinkEditor', () => {
         showMenuOnHover: true,
       })
     );
+  });
+
+  it('Should allow change menu position for DROPDOWN type if not specified', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: true,
+          hoverMenuPosition: undefined,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition()).toBeInTheDocument();
+    expect(selectors.fieldHoverPosition()).toHaveValue(HoverMenuPositionType.BOTTOM);
+
+    fireEvent.change(selectors.fieldHoverPosition(), { target: { values: HoverMenuPositionType.TOP } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+        hoverMenuPosition: HoverMenuPositionType.TOP,
+      })
+    );
+  });
+
+  it('Should allow change menu position for DROPDOWN type ', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: true,
+          hoverMenuPosition: HoverMenuPositionType.LEFT,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition()).toBeInTheDocument();
+    expect(selectors.fieldHoverPosition()).toHaveValue(HoverMenuPositionType.LEFT);
+
+    fireEvent.change(selectors.fieldHoverPosition(), { target: { values: HoverMenuPositionType.TOP } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+        hoverMenuPosition: HoverMenuPositionType.TOP,
+      })
+    );
+  });
+
+  it('Should allow change menu position for TAGS type if not specified', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.TAGS,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: true,
+          hoverMenuPosition: undefined,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition()).toBeInTheDocument();
+    expect(selectors.fieldHoverPosition()).toHaveValue(HoverMenuPositionType.BOTTOM);
+
+    fireEvent.change(selectors.fieldHoverPosition(), { target: { values: HoverMenuPositionType.TOP } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+        hoverMenuPosition: HoverMenuPositionType.TOP,
+      })
+    );
+  });
+
+  it('Should allow change menu position for Tags type ', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.TAGS,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: true,
+          hoverMenuPosition: HoverMenuPositionType.LEFT,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition()).toBeInTheDocument();
+    expect(selectors.fieldHoverPosition()).toHaveValue(HoverMenuPositionType.LEFT);
+
+    fireEvent.change(selectors.fieldHoverPosition(), { target: { values: HoverMenuPositionType.TOP } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showMenuOnHover: true,
+        hoverMenuPosition: HoverMenuPositionType.TOP,
+      })
+    );
+  });
+
+  it('Should not show menuPosition for Tags if showMenuOnHover is false ', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.TAGS,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: false,
+          hoverMenuPosition: HoverMenuPositionType.LEFT,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition(true)).not.toBeInTheDocument();
+  });
+
+  it('Should not show menuPosition for DROPDOWN if showMenuOnHover is false ', () => {
+    const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownName: 'dropdown-1',
+          showMenuOnHover: false,
+          hoverMenuPosition: HoverMenuPositionType.LEFT,
+        }),
+        dropdowns,
+      })
+    );
+
+    expect(selectors.fieldHoverPosition(true)).not.toBeInTheDocument();
   });
 
   it('Should allow change menu action for TAGS type', () => {

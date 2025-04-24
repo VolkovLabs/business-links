@@ -1,6 +1,6 @@
 import { IconName } from '@grafana/ui';
 
-import { LinkConfig } from './panel';
+import { HoverMenuPositionType, LinkConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
   /**
@@ -32,6 +32,13 @@ export interface VisualLink {
    * @type {boolean}
    */
   showMenuOnHover?: boolean;
+
+  /**
+   * Hover menu position
+   *
+   * @type {HoverMenuPositionType}
+   */
+  hoverMenuPosition?: HoverMenuPositionType;
 
   /**
    * links

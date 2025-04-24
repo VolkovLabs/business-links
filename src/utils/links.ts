@@ -191,6 +191,7 @@ export const prepareLinksToRender = ({
           name: item.name,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
+          hoverMenuPosition: item.hoverMenuPosition,
           links: availableDashboards.map((availableDashboard) => ({
             ...item,
             name: availableDashboard.title,
@@ -246,6 +247,7 @@ export const prepareLinksToRender = ({
           name: item.name,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
+          hoverMenuPosition: item.hoverMenuPosition,
           links: dropdownLinks,
         });
         break;

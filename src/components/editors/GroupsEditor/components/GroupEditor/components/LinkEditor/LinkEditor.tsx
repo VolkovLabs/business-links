@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, LinkConfig, LinkTarget, LinkType } from '@/types';
+import { DashboardMeta, EditorProps, HoverMenuPositionType, LinkConfig, LinkTarget, LinkType } from '@/types';
 
 /**
  * Properties
@@ -76,6 +76,28 @@ export const linkTypeOptionsInDropdown = [
     value: LinkType.TAGS,
     label: 'Tags',
     description: 'Return available dashboards. Includes filtering by tags.',
+  },
+];
+
+/**
+ * Hover menu position options
+ */
+export const hoverMenuPositionOptions = [
+  {
+    value: HoverMenuPositionType.BOTTOM,
+    label: 'Bottom',
+  },
+  {
+    value: HoverMenuPositionType.LEFT,
+    label: 'Left',
+  },
+  {
+    value: HoverMenuPositionType.RIGHT,
+    label: 'Right',
+  },
+  {
+    value: HoverMenuPositionType.TOP,
+    label: 'Top',
   },
 ];
 
@@ -177,20 +199,6 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                 {...TEST_IDS.linkEditor.fieldTags.apply()}
               />
             </InlineField>
-            {optionId === 'groups' && (
-              <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
-                <InlineSwitch
-                  value={value.showMenuOnHover}
-                  onChange={(event) => {
-                    onChange({
-                      ...value,
-                      showMenuOnHover: event.currentTarget.checked,
-                    });
-                  }}
-                  {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
-                />
-              </InlineField>
-            )}
           </>
         )}
 
@@ -219,20 +227,38 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
                 {...TEST_IDS.linkEditor.fieldDropdown.apply()}
               />
             </InlineField>
-            <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
-              <InlineSwitch
-                value={value.showMenuOnHover}
-                onChange={(event) => {
-                  onChange({
-                    ...value,
-                    showMenuOnHover: event.currentTarget.checked,
-                  });
-                }}
-                {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
-              />
-            </InlineField>
           </>
         )}
+
+        {optionId === 'groups' && (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) && (
+          <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
+            <InlineSwitch
+              value={value.showMenuOnHover}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  showMenuOnHover: event.currentTarget.checked,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
+            />
+          </InlineField>
+        )}
+
+        {optionId === 'groups' &&
+          (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) &&
+          value.showMenuOnHover && (
+            <InlineField label="Menu position" grow={true} labelWidth={20} tooltip={'Bottom position by default'}>
+              <Select
+                options={hoverMenuPositionOptions}
+                value={value.hoverMenuPosition ?? HoverMenuPositionType.BOTTOM}
+                onChange={(event) => {
+                  onChange({ ...value, hoverMenuPosition: event.value! });
+                }}
+                {...TEST_IDS.linkEditor.fieldHoverPosition.apply()}
+              />
+            </InlineField>
+          )}
       </FieldsGroup>
       <FieldsGroup label="Configuration">
         <InlineField label="Icon" grow labelWidth={12}>
