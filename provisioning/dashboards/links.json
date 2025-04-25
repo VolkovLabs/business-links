@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -173,12 +173,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 16,
-        "w": 6,
+        "h": 8,
+        "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 12,
+      "id": 13,
       "options": {
         "dropdowns": [
           {
@@ -248,145 +248,12 @@
               {
                 "dashboardUrl": "",
                 "enable": true,
-                "icon": "link",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Single link",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": true,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Link with time range",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": true,
-                "includeVariables": true,
-                "linkType": "single",
-                "name": "Link with time range and variables",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": false,
-                "includeVariables": true,
-                "linkType": "single",
-                "name": "Link with variables",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "icon": "link",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Link with variable in url",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second?${device}"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Link with query",
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/aeivkiz2o5csga/panels-second?${countrytest:queryparam}"
-              },
-              {
-                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
-                "enable": true,
-                "icon": "dashboard",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "dashboard",
-                "name": "Dashboard",
-                "tags": [],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
-                "enable": true,
-                "icon": "dashboard",
-                "includeTimeRange": true,
-                "includeVariables": false,
-                "linkType": "dashboard",
-                "name": "Dashboard time range",
-                "tags": [],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "icon": "dashboard",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "dashboard",
-                "name": "Empty dashboard",
-                "tags": [],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "icon": "dashboard",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "tags",
-                "name": "Tags Real",
-                "tags": ["Real"],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags all dashboards",
+                "showMenuOnHover": true,
                 "tags": [],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "icon": "dashboard",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "tags",
-                "name": "Tags new",
-                "tags": ["new"],
                 "target": "_self",
                 "type": "link"
               },
@@ -399,18 +266,7 @@
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
-                "tags": [],
-                "target": "_self",
-                "type": "link"
-              },
-              {
-                "dashboardUrl": "",
-                "dropdownName": "Dropdown 2",
-                "enable": true,
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "dropdown",
-                "name": "Empty dropdown",
+                "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
                 "type": "link"
@@ -448,14 +304,14 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": true
+        "groupsSorting": false
       },
       "targets": [
         {
           "refId": "A"
         }
       ],
-      "title": "Selected group first",
+      "title": "Hover menu",
       "type": "volkovlabs-links-panel"
     },
     {
@@ -971,10 +827,10 @@
       "gridPos": {
         "h": 8,
         "w": 12,
-        "x": 0,
-        "y": 16
+        "x": 12,
+        "y": 8
       },
-      "id": 13,
+      "id": 15,
       "options": {
         "dropdowns": [
           {
@@ -1044,10 +900,11 @@
               {
                 "dashboardUrl": "",
                 "enable": true,
+                "hoverMenuPosition": "left",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
-                "name": "Tags all dashboards",
+                "name": "Left",
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
@@ -1061,11 +918,39 @@
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
-                "name": "Dropdown",
+                "name": "Bottom",
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
                 "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Right",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "hoverMenuPosition": "top",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Top",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
               }
             ],
             "name": "Group1"
@@ -1107,7 +992,7 @@
           "refId": "A"
         }
       ],
-      "title": "Hover menu",
+      "title": "Hover menu position",
       "type": "volkovlabs-links-panel"
     },
     {
@@ -1125,8 +1010,319 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 12,
+      "options": {
+        "dropdowns": [
+          {
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown Single link",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "external-link-alt",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown External link",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Dropdown Tags All",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "create-dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dropdown Dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Dropdown 1"
+          },
+          {
+            "items": [],
+            "name": "Dropdown 2"
+          }
+        ],
+        "groups": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single link",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": true,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with time range",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": true,
+                "includeVariables": true,
+                "linkType": "single",
+                "name": "Link with time range and variables",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": true,
+                "linkType": "single",
+                "name": "Link with variables",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with variable in url",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second?${device}"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link with query",
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second?${countrytest:queryparam}"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": true,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard time range",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Empty dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags Real",
+                "tags": ["Real"],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags all dashboards",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags new",
+                "tags": ["new"],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "anchor",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 2",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Empty dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Group1"
+          },
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "bars",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Group2"
+          },
+          {
+            "highlightCurrentLink": false,
+            "items": [],
+            "name": "Group3"
+          },
+          {
+            "highlightCurrentLink": false,
+            "items": [],
+            "name": "Group4"
+          }
+        ],
+        "groupsSorting": true
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Selected group first",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1253,7 +1449,7 @@
     }
   ],
   "preload": false,
-  "schemaVersion": 40,
+  "schemaVersion": 41,
   "tags": [],
   "templating": {
     "list": [
@@ -1344,6 +1540,5 @@
   "timezone": "browser",
   "title": "Links",
   "uid": "ee576vdnqy7eoc",
-  "version": 6,
-  "weekStart": ""
+  "version": 1
 }

@@ -55,7 +55,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
         <Tooltip
           content={<div className={styles.menu}>{menuLinks}</div>}
           theme="info"
-          placement="right"
+          placement={link.hoverMenuPosition ? link.hoverMenuPosition : 'bottom'}
           interactive
           {...testIds.tooltipMenu.apply(link.name)}
         >

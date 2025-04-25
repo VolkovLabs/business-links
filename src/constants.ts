@@ -1,3 +1,4 @@
+import { selectors } from '@grafana/e2e-selectors';
 import { createSelector } from '@volkovlabs/jest-selectors';
 
 /**
@@ -27,6 +28,7 @@ export const TEST_IDS = {
     fieldIncludeVariables: createSelector('data-testid link-editor field-include-variables'),
     fieldDashboard: createSelector('data-testid link-editor field-dashboard'),
     fieldDropdown: createSelector('data-testid link-editor field-dropdown'),
+    fieldHoverPosition: createSelector('data-testid link-editor field-hover-position'),
     fieldIcon: createSelector('data-testid link-editor field-icon'),
     fieldUrl: createSelector('data-testid link-editor field-url'),
     fieldTarget: createSelector('data-testid link-editor field-target'),
@@ -62,5 +64,8 @@ export const TEST_IDS = {
     buttonSaveRename: createSelector('data-testid group-editor button-save-rename'),
     fieldName: createSelector('data-testid group-editor field-name'),
     newItemName: createSelector('data-testid group-editor new-item-name'),
+  },
+  general: {
+    tooltipPosition: createSelector(selectors.components.Tooltip.container),
   },
 };

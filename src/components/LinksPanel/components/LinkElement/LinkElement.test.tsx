@@ -4,6 +4,7 @@ import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { HoverMenuPositionType } from '@/types';
 import { createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from './LinkElement';
@@ -20,7 +21,8 @@ describe('LinkElement', () => {
   /**
    * Selectors
    */
-  const getSelectors = getJestSelectors(TEST_IDS.linkElement);
+  const getSelectors = getJestSelectors({ ...TEST_IDS.linkElement, ...TEST_IDS.general });
+
   const selectors = getSelectors(screen);
 
   /**
@@ -107,6 +109,52 @@ describe('LinkElement', () => {
       expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
       expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
       expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
+    });
+
+    it('Should render tooltip with correct menu position if not specified', async () => {
+      const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+      const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              showMenuOnHover: true,
+              name: 'TooltipLink',
+              hoverMenuPosition: undefined,
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
+      expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
+      expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
+      expect(selectors.tooltipPosition()).toBeInTheDocument();
+      expect(selectors.tooltipPosition()).toHaveTextContent('bottom');
+    });
+
+    it('Should render tooltip with correct menu position from link option', async () => {
+      const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+      const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              showMenuOnHover: true,
+              name: 'TooltipLink',
+              hoverMenuPosition: HoverMenuPositionType.LEFT,
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
+      expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
+      expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
+      expect(selectors.tooltipPosition()).toBeInTheDocument();
+      expect(selectors.tooltipPosition()).toHaveTextContent(HoverMenuPositionType.LEFT);
     });
 
     it('Should render dropdown with Highlight current link', async () => {

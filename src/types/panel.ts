@@ -32,6 +32,16 @@ export enum LinkType {
 }
 
 /**
+ * Hover Menu Position Type
+ */
+export enum HoverMenuPositionType {
+  BOTTOM = 'bottom',
+  TOP = 'top',
+  RIGHT = 'right',
+  LEFT = 'left',
+}
+
+/**
  * Base Link Config
  */
 export interface LinkConfig {
@@ -125,6 +135,13 @@ export interface LinkConfig {
    * @type {boolean}
    */
   showMenuOnHover?: boolean;
+
+  /**
+   * Hover menu position
+   *
+   * @type {HoverMenuPositionType}
+   */
+  hoverMenuPosition?: HoverMenuPositionType;
 }
 
 /**
