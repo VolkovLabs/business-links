@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 
 - Option to specify menu position (#8)
+- Community signature (#10)
 
 ## [1.1.0] - 2025-04-22
 
