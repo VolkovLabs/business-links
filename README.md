@@ -2,7 +2,7 @@
 
 ![Links Screenshot](https://github.com/VolkovLabs/business-links/raw/main/src/img/panel.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-11.5-orange)
+![Grafana](https://img.shields.io/badge/Grafana-11.6-orange)
 ![CI](https://github.com/volkovlabs/business-links/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/business-links/workflows/E2E/badge.svg)
 [![Codecov](https://codecov.io/gh/VolkovLabs/business-links/branch/main/graph/badge.svg)](https://codecov.io/gh/VolkovLabs/business-links)
@@ -10,7 +10,9 @@
 
 ## Introduction
 
-The Business Links panel for Grafana provides a streamlined interface to navigate effortlessly using external links, internal dashboards, and dynamic dropdown menus. Designed for seamless integration, it enables users to access critical resources, switch between dashboards, or interact with custom workflows efficiently, all within a single, intuitive panel.
+The Business Links panel for Grafana provides a streamlined interface to navigate effortlessly using external links, internal dashboards, and dynamic dropdown menus.
+
+Designed for seamless integration, it enables users to access critical resources, switch between dashboards, or interact with custom workflows efficiently, all within a single, intuitive panel.
 
 ## Requirements
 
@@ -30,15 +32,17 @@ Visit [grafana.com/plugins/volkovlabs-links-panel](https://grafana.com/grafana/p
 grafana cli plugins install volkovlabs-links-panel
 ```
 
+## Getting Started
+
 Check out our installation guide:
 
 [![Install Business Suite Plugins in Cloud, OSS, Enterprise](https://raw.githubusercontent.com/volkovlabs/.github/main/started.png)](https://youtu.be/1qYzHfPXJF8)
 
 ## Features
 
-- External Links: Connect to external tools, documentation, or websites directly from the panel.
-- Dashboard Navigation: Quickly jump to other Grafana dashboards for a cohesive monitoring experience.
-- Dynamic Dropdowns: Utilize interactive dropdown menus to filter data or trigger actions, enhancing user control and flexibility.
+- **External Links**: Connect to external tools, documentation, or websites directly from the panel.
+- **Dashboard Navigation**: Quickly jump to other Grafana dashboards for a cohesive monitoring experience.
+- **Dynamic Dropdowns**: Utilize interactive dropdown menus to filter data or trigger actions, enhancing user control and flexibility.
 
 Ideal for teams needing centralized access to diverse resources, the Business Links panel boosts productivity and simplifies navigation in Grafana environments.
 
