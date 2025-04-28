@@ -1,4 +1,4 @@
-import { PanelPlugin } from '@grafana/data';
+import { FieldConfigProperty, PanelPlugin } from '@grafana/data';
 
 import { GroupsEditor, LinksPanel } from './components';
 import { getMigratedOptions } from './migration';
@@ -10,6 +10,22 @@ import { PanelOptions } from './types';
 export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
   .useFieldConfig({})
   .setMigrationHandler(getMigratedOptions)
+  .useFieldConfig({
+    disableStandardOptions: [
+      FieldConfigProperty.Color,
+      FieldConfigProperty.Decimals,
+      FieldConfigProperty.DisplayName,
+      FieldConfigProperty.Filterable,
+      FieldConfigProperty.Mappings,
+      FieldConfigProperty.NoValue,
+      FieldConfigProperty.Thresholds,
+      FieldConfigProperty.Links,
+      FieldConfigProperty.Unit,
+      FieldConfigProperty.Min,
+      FieldConfigProperty.Max,
+      FieldConfigProperty.FieldMinMax,
+    ],
+  })
   .setPanelOptions((builder) => {
     /**
      * Options
