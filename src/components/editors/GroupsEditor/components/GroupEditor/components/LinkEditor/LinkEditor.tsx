@@ -130,6 +130,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
       return {
         value: icon,
         label: icon,
+        icon: icon,
       };
     });
   }, []);
