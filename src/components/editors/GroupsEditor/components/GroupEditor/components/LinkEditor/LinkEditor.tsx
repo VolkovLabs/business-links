@@ -126,13 +126,15 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
    * Icon Options
    */
   const iconOptions = useMemo((): Array<SelectableValue<string>> => {
-    return getAvailableIcons().map((icon) => {
-      return {
-        value: icon,
-        label: icon,
-        icon: icon,
-      };
-    });
+    return getAvailableIcons()
+      .sort((a, b) => a.localeCompare(b))
+      .map((icon) => {
+        return {
+          value: icon,
+          label: icon,
+          icon: icon,
+        };
+      });
   }, []);
 
   /**
