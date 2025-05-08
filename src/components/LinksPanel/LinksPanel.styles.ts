@@ -7,7 +7,6 @@ import { GrafanaTheme2 } from '@grafana/data';
 export const getStyles = (theme: GrafanaTheme2) => {
   return {
     header: css`
-      position: sticky;
       top: 0;
       background-color: ${theme.colors.background.primary};
       z-index: 120;

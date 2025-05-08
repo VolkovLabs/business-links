@@ -1,4 +1,6 @@
 import { IconName } from '@grafana/ui';
+// eslint-disable-next-line @typescript-eslint/naming-convention
+import ReactGridLayout from 'react-grid-layout';
 
 import { LinkTarget } from './editor';
 
@@ -142,6 +144,13 @@ export interface LinkConfig {
    * @type {HoverMenuPositionType}
    */
   hoverMenuPosition?: HoverMenuPositionType;
+
+  /**
+   * Unique Link id
+   *
+   * @type {string}
+   */
+  id: string;
 }
 
 /**
@@ -161,6 +170,27 @@ export interface GroupConfig {
    * @type {boolean}
    */
   highlightCurrentLink?: boolean;
+
+  /**
+   * Manual layout (grid)
+   *
+   * @type {boolean}
+   */
+  gridLayout?: boolean;
+
+  /**
+   * Manual grid Layout
+   *
+   * @type {ReactGridLayout.Layout[]}
+   */
+  manualGridLayout?: ReactGridLayout.Layout[];
+
+  /**
+   * Grid columns
+   *
+   * @type {[]}
+   */
+  gridColumns?: number;
 
   /**
    * Items

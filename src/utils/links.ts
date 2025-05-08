@@ -136,6 +136,7 @@ export const prepareLinksToRender = ({
         const isCurrentDashboard = !!highlightCurrentLink && preparedUrl.includes(dashboardId);
 
         result.push({
+          id: item.id,
           name: item.name,
           links: [
             {
@@ -161,6 +162,7 @@ export const prepareLinksToRender = ({
       case LinkType.DASHBOARD: {
         result.push({
           name: item.name,
+          id: item.id,
           links: [
             {
               ...item,
@@ -192,6 +194,7 @@ export const prepareLinksToRender = ({
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
+          id: item.id,
           links: availableDashboards.map((availableDashboard) => ({
             ...item,
             name: availableDashboard.title,
@@ -244,6 +247,7 @@ export const prepareLinksToRender = ({
          * Return Dropdown with all links
          */
         result.push({
+          id: item.id,
           name: item.name,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,

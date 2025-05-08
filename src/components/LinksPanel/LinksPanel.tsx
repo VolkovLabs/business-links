@@ -1,14 +1,14 @@
 import { PanelProps } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
 import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { useSavedState } from '@/hooks';
 import { DashboardMeta, PanelOptions } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
-import { LinkElement } from './components';
+import { LinkElement, LinksGridLayout } from './components';
 import { getStyles } from './LinksPanel.styles';
 
 /**
@@ -24,11 +24,25 @@ type Props = PanelProps<PanelOptions>;
 /**
  * Links Panel
  */
-export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariables, timeRange }) => {
+export const LinksPanel: React.FC<Props> = ({
+  id,
+  width,
+  options,
+  replaceVariables,
+  timeRange,
+  height,
+  title,
+  onOptionsChange,
+}) => {
   /**
    * Styles
    */
   const styles = useStyles2(getStyles);
+
+  /**
+   * Ref`s
+   */
+  const toolbarRowRef = useRef<HTMLDivElement>(null);
 
   /**
    * location service
@@ -138,7 +152,7 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
   return (
     <div {...testIds.root.apply()}>
       {isToolbarVisible && (
-        <div className={styles.header}>
+        <div className={styles.header} ref={toolbarRowRef}>
           <ToolbarButtonRow
             alignment="left"
             key={currentGroup}
@@ -171,9 +185,22 @@ export const LinksPanel: React.FC<Props> = ({ id, width, options, replaceVariabl
             Please add at least one link to proceed.
           </Alert>
         )}
-        {currentLinks.map((link) => {
-          return <LinkElement key={link.name} link={link} />;
-        })}
+        {!activeGroup?.gridLayout &&
+          currentLinks.map((link) => {
+            return <LinkElement key={link.name} link={link} />;
+          })}
+        {activeGroup?.gridLayout && (
+          <LinksGridLayout
+            panelTitle={title}
+            options={options}
+            links={currentLinks}
+            width={width}
+            height={height}
+            activeGroup={activeGroup}
+            onOptionsChange={onOptionsChange}
+            toolbarRowRef={toolbarRowRef}
+          />
+        )}
       </div>
     </div>
   );
