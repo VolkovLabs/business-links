@@ -127,7 +127,7 @@ describe('Grid layout', () => {
     );
 
     expect(selectors.root()).toBeInTheDocument();
-    expect(selectors.root()).toHaveStyle('max-height: 362px');
+    expect(selectors.root()).toHaveStyle('height: 362px');
   });
 
   it('Should render Layout and calculate max height if no title', async () => {
@@ -157,7 +157,7 @@ describe('Grid layout', () => {
     );
 
     expect(selectors.root()).toBeInTheDocument();
-    expect(selectors.root()).toHaveStyle('max-height: 400px');
+    expect(selectors.root()).toHaveStyle('height: 400px');
   });
 
   it('Should render Layout and apply styles for edit mode', async () => {
