@@ -1,0 +1,732 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 8,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 15,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "6fe08d9e-fba2-40c0-bb14-63acc12c89ad",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "741003ef-d39f-4263-bf43-6399ffc8a67f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Drop1"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 3",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags",
+                "showMenuOnHover": false,
+                "tags": ["new"],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "240b7402-664e-4178-9189-604cca5d3337",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 2",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 2
+              },
+              {
+                "h": 2,
+                "i": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 3,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 3,
+                "y": 2
+              },
+              {
+                "h": 13,
+                "i": "240b7402-664e-4178-9189-604cca5d3337",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 9,
+                "y": 0
+              }
+            ],
+            "name": "Group"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple Grid ",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 15,
+        "x": 0,
+        "y": 11
+      },
+      "id": 3,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "6fe08d9e-fba2-40c0-bb14-63acc12c89ad",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "741003ef-d39f-4263-bf43-6399ffc8a67f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Drop1"
+          }
+        ],
+        "groups": [
+          {
+            "gridColumns": 18,
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 3",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags",
+                "showMenuOnHover": false,
+                "tags": ["new"],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "240b7402-664e-4178-9189-604cca5d3337",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 2",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 1,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 2
+              },
+              {
+                "h": 2,
+                "i": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 3,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 3,
+                "y": 2
+              },
+              {
+                "h": 9,
+                "i": "240b7402-664e-4178-9189-604cca5d3337",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 3,
+                "y": 4
+              }
+            ],
+            "name": "Group"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple Grid 18 columns",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 15,
+        "x": 0,
+        "y": 20
+      },
+      "id": 2,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "6fe08d9e-fba2-40c0-bb14-63acc12c89ad",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "741003ef-d39f-4263-bf43-6399ffc8a67f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Drop1"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Single 3",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 1",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tags",
+                "showMenuOnHover": false,
+                "tags": ["new"],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownName": "Drop1",
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "240b7402-664e-4178-9189-604cca5d3337",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown 2",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "bcfb2351-fa6a-4785-ae80-a5cd190b503f",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "50cd89b6-6fbd-4f77-ab56-4de63936ceda",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 2,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "d67986bc-cdff-418a-87be-74d62c8612da",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 3,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "956740d1-e7ca-46b6-9e6b-963986da881f",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 4,
+                "y": 0
+              },
+              {
+                "h": 14,
+                "i": "240b7402-664e-4178-9189-604cca5d3337",
+                "moved": false,
+                "static": false,
+                "w": 5,
+                "x": 0,
+                "y": 2
+              }
+            ],
+            "name": "Group"
+          },
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "e14075b5-8f6f-4faf-91c7-32136b2549b5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Simple ",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "id": "c6d9748a-291f-45ac-b0c1-ff4a9dac87a5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Simple 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Group2"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple Grid And default",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": ["grid"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Grid Layout",
+  "uid": "bel9rx73yz7r4f",
+  "version": 13
+}

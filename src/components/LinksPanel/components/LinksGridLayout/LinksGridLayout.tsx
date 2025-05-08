@@ -178,7 +178,7 @@ export const LinksGridLayout: React.FC<Props> = ({
   return (
     <div
       {...testIds.root.apply()}
-      style={{ maxHeight: currentMaxHeight }}
+      style={{ height: currentMaxHeight }}
       className={styles.gridLayoutWrapper}
       ref={gridWrapRef}
     >

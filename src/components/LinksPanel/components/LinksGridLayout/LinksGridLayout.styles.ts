@@ -30,16 +30,16 @@ export const getStyles = (theme: GrafanaTheme2) => {
       display: flex;
       align-items: center;
 
-      &:hover {
-        box-shadow: ${theme.colors.secondary.border} 0 0 5px;
-      }
-
       &:hover .react-grid-dragHandleExample {
         visibility: visible;
       }
     `,
     columnItemBorder: css`
       border: 1px solid ${theme.colors.border.weak};
+
+      &:hover {
+        box-shadow: ${theme.colors.secondary.border} 0 0 5px;
+      }
     `,
   };
 };
