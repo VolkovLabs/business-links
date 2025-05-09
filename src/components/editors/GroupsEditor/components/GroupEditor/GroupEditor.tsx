@@ -188,7 +188,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
   return (
     <div {...testIds.root.apply()}>
       {optionId === 'groups' && (
-        <InlineField label="Highlight the current link">
+        <InlineField label="Highlight the current link" labelWidth={25}>
           <InlineSwitch
             value={value.highlightCurrentLink}
             onChange={(event) =>
@@ -202,7 +202,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
         </InlineField>
       )}
       {optionId === 'groups' && (
-        <InlineField label="Grid layout">
+        <InlineField label="Grid layout" labelWidth={25}>
           <InlineSwitch
             value={value.gridLayout}
             onChange={(event) =>
@@ -216,7 +216,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
         </InlineField>
       )}
       {optionId === 'groups' && value.gridLayout && (
-        <InlineField label="Grid columns size" grow={true}>
+        <InlineField label="Grid columns size" grow={true} labelWidth={25}>
           <Slider
             value={gridColumnsSize}
             min={1}
