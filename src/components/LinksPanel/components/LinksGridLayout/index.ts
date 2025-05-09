@@ -1,2 +1,1 @@
-export * from './LinkElement';
 export * from './LinksGridLayout';

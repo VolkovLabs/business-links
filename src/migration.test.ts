@@ -1,5 +1,12 @@
 import { getMigratedOptions } from './migration';
-import { createGroupConfig } from './utils';
+import { createGroupConfig, createLinkConfig } from './utils';
+
+/**
+ * Mock uuid v4
+ */
+jest.mock('uuid', () => ({
+  v4: () => 'abc-123',
+}));
 
 describe('migration', () => {
   it('Should normalize groupsSorting', async () => {
@@ -64,5 +71,160 @@ describe('migration', () => {
         ]),
       })
     );
+  });
+
+  it('Should migrate gridLayout option', async () => {
+    const group1 = createGroupConfig({ name: 'Group1', gridLayout: undefined });
+
+    expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridLayout: false,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridLayout: false }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridLayout: false,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridLayout: true }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridLayout: true,
+          }),
+        ]),
+      })
+    );
+  });
+
+  it('Should migrate gridColumns option', async () => {
+    const group1 = createGroupConfig({ name: 'Group1', gridColumns: undefined });
+
+    expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridColumns: 10,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridColumns: 15 }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridColumns: 15,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridColumns: 0 }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridColumns: 0,
+          }),
+        ]),
+      })
+    );
+  });
+
+  it('Should migrate manualGridLayout option', async () => {
+    const group1 = createGroupConfig({ name: 'Group1', manualGridLayout: undefined });
+
+    expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            manualGridLayout: [],
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, manualGridLayout: [] }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            manualGridLayout: [],
+          }),
+        ]),
+      })
+    );
+
+    expect(
+      await getMigratedOptions({ options: { groups: [{ ...group1, manualGridLayout: [{ i: 'key' }] }] } } as any)
+    ).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            manualGridLayout: [{ i: 'key' }],
+          }),
+        ]),
+      })
+    );
+  });
+
+  describe('Items in group normalization', () => {
+    it('Should normalize item if "id" in item is undefined ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].id).toEqual('item-1-test-id');
+      expect(items[1].id).toEqual('abc-123');
+    });
+
+    it('Should normalize item if "id" in item is empty string or null ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+      });
+      const item2 = createLinkConfig({
+        id: '',
+      });
+      const item3 = createLinkConfig({
+        id: null,
+      } as any);
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].id).toEqual('item-1-test-id');
+      expect(items[1].id).toEqual('abc-123');
+      expect(items[2].id).toEqual('abc-123');
+    });
   });
 });

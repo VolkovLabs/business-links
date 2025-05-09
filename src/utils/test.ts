@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 import { GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType, PanelOptions } from '@/types';
 import { NestedLinkConfig, VisualLink } from '@/types/links';
 
@@ -15,6 +17,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   dashboardUrl: '',
   target: LinkTarget.SELF_TAB,
   showMenuOnHover: false,
+  id: uuidv4(),
   ...item,
 });
 
@@ -45,6 +48,7 @@ export const createVisualLinkConfig = (item: Partial<VisualLink> = {}): VisualLi
   name: 'Link1',
   showMenuOnHover: false,
   links: [],
+  id: uuidv4(),
   ...item,
 });
 
@@ -62,5 +66,6 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   dashboardUrl: '',
   target: LinkTarget.SELF_TAB,
   showMenuOnHover: false,
+  id: uuidv4(),
   ...item,
 });

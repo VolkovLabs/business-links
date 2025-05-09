@@ -9,6 +9,9 @@ export const getStyles = (theme: GrafanaTheme2) => {
     link: css`
       margin: ${theme.spacing(0.5)};
     `,
+    linkGridMode: css`
+      width: 100%;
+    `,
     currentDashboard: css`
       margin: ${theme.spacing(0.5)};
       background: ${theme.colors.warning.borderTransparent};

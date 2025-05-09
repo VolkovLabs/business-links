@@ -22,6 +22,14 @@ export const TEST_IDS = {
     dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
     tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
   },
+  gridLayout: {
+    root: createSelector('data-testid grid-layout'),
+    columnItem: createSelector((name: unknown) => `data-testid grid-layout column-item-${name}`),
+    linkWrapper: createSelector((name: unknown) => `data-testid grid-layout link-wrapper-${name}`),
+    dragHandle: createSelector((name: unknown) => `data-testid grid-layout drag-handle-${name}`),
+    mockGridLayout: createSelector('data-testid grid-layout mock-grid-layout'),
+    mockFieldInputChangeLayout: createSelector('data-testid grid-layout mock-field-input-change-layout'),
+  },
   linkEditor: {
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),
     fieldIncludeTimeRange: createSelector('data-testid link-editor field-include-time-range'),
@@ -53,6 +61,8 @@ export const TEST_IDS = {
   groupEditor: {
     root: createSelector('data-testid group-editor'),
     fieldHighlight: createSelector('data-testid group-editor field-highlight'),
+    fieldGridLayout: createSelector('data-testid group-editor field-manual-layout'),
+    fieldColumnsInManualLayout: createSelector('data-testid group-editor field-columns-in-manual-layout'),
     buttonAddNew: createSelector('data-testid group-editor button-add-new'),
     buttonRemove: createSelector('data-testid group-editor button-remove'),
     buttonToggleVisibility: createSelector('data-testid group-editor button-toggle-visibility'),

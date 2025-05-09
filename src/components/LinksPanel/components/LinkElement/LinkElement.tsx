@@ -1,3 +1,4 @@
+import { cx } from '@emotion/css';
 import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
 import React from 'react';
 
@@ -21,12 +22,19 @@ interface Props {
    * @type {VisualLink}
    */
   link: VisualLink;
+
+  /**
+   * Is link use for grid mode
+   *
+   * @type {VisualLink}
+   */
+  gridMode?: boolean;
 }
 
 /**
  * Links Element
  */
-export const LinkElement: React.FC<Props> = ({ link }) => {
+export const LinkElement: React.FC<Props> = ({ link, gridMode = false }) => {
   /**
    * Styles
    */
@@ -50,6 +58,20 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
       );
     });
 
+    const dropdownButton = () => {
+      return (
+        <Button
+          variant="secondary"
+          className={cx(styles.link, gridMode && styles.linkGridMode)}
+          size="md"
+          icon={link.icon}
+          fill="outline"
+          {...testIds.buttonDropdown.apply(link.name)}
+        >
+          {link.name}
+        </Button>
+      );
+    };
     if (link.showMenuOnHover) {
       return (
         <Tooltip
@@ -59,16 +81,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
           interactive
           {...testIds.tooltipMenu.apply(link.name)}
         >
-          <Button
-            variant="secondary"
-            className={styles.link}
-            size="md"
-            icon={link.icon}
-            fill="outline"
-            {...testIds.buttonDropdown.apply(link.name)}
-          >
-            {link.name}
-          </Button>
+          {dropdownButton()}
         </Tooltip>
       );
     }
@@ -79,16 +92,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
         overlay={<div className={styles.menu}>{menuLinks}</div>}
         {...testIds.dropdown.apply(link.name)}
       >
-        <Button
-          variant="secondary"
-          className={styles.link}
-          size="md"
-          icon={link.icon}
-          fill="outline"
-          {...testIds.buttonDropdown.apply(link.name)}
-        >
-          {link.name}
-        </Button>
+        {dropdownButton()}
       </Dropdown>
     );
   }
@@ -103,7 +107,10 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
       return (
         <LinkButton
           key={currentLink.url}
-          className={currentLink.isCurrentLink ? styles.currentDashboard : styles.link}
+          className={cx(
+            currentLink.isCurrentLink ? styles.currentDashboard : styles.link,
+            gridMode && styles.linkGridMode
+          )}
           icon={currentLink.icon}
           href={currentLink.url}
           title={currentLink.name}
@@ -124,7 +131,7 @@ export const LinkElement: React.FC<Props> = ({ link }) => {
   return (
     <Button
       variant="secondary"
-      className={styles.link}
+      className={cx(styles.link, gridMode && styles.linkGridMode)}
       key={link.name}
       fill="outline"
       title={link.name}

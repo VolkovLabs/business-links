@@ -209,5 +209,65 @@ describe('LinkElement', () => {
         `background-color: ${theme.colors.warning.borderTransparent}`
       );
     });
+
+    describe('Grid mode', () => {
+      it('Should Apply grid style for link', async () => {
+        const nestedLink = createNestedLinkConfig({ name: 'Link1', url: 'test.com', isCurrentLink: true });
+        await act(async () =>
+          render(
+            getComponent({
+              gridMode: true,
+              link: createVisualLinkConfig({
+                name: 'Link1',
+                links: [nestedLink],
+              }),
+            })
+          )
+        );
+        expect(selectors.buttonSingleLink(false, 'Link1')).toBeInTheDocument();
+        expect(selectors.buttonSingleLink(false, 'Link1')).toHaveStyle(
+          `background-color: ${theme.colors.warning.borderTransparent}`
+        );
+        expect(selectors.buttonSingleLink(false, 'Link1')).toHaveStyle(`width: 100%`);
+      });
+
+      it('Should Apply grid style for empty link', async () => {
+        const nestedLink = createNestedLinkConfig({ name: 'Link1', url: '', isCurrentLink: true });
+        await act(async () =>
+          render(
+            getComponent({
+              gridMode: true,
+              link: createVisualLinkConfig({
+                name: 'Link1',
+                links: [nestedLink],
+              }),
+            })
+          )
+        );
+        expect(selectors.buttonEmptyLink(false, 'Link1')).toBeInTheDocument();
+        expect(selectors.buttonEmptyLink(false, 'Link1')).toHaveStyle(`width: 100%`);
+      });
+
+      it('Should Apply grid style for dropdown type links', async () => {
+        const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+        const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
+        await act(async () =>
+          render(
+            getComponent({
+              gridMode: true,
+              link: createVisualLinkConfig({
+                name: 'Dropdown',
+                links: [nestedLink1, nestedLink2],
+              }),
+            })
+          )
+        );
+
+        expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
+        expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
+        expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
+        expect(selectors.buttonDropdown(false, 'Dropdown')).toHaveStyle(`width: 100%`);
+      });
+    });
   });
 });

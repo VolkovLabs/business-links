@@ -1,8 +1,9 @@
 import { cx } from '@emotion/css';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, InlineSwitch, Input, useTheme2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
-import { Collapse } from '@volkovlabs/components';
+import { Collapse, Slider } from '@volkovlabs/components';
 import React, { useCallback, useMemo, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType } from '@/types';
@@ -76,6 +77,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
   const [newLinkName, setNewLinkName] = useState('');
   const [editItem, setEditItem] = useState('');
   const [editName, setEditName] = useState('');
+  const [gridColumnsSize, setGridColumnsSize] = useState(value.gridColumns ?? 10);
 
   /**
    * Links
@@ -152,6 +154,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
         dashboardUrl: '',
         url: '',
         showMenuOnHover: false,
+        id: uuidv4(),
       },
     ]);
     setNewLinkName('');
@@ -185,7 +188,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
   return (
     <div {...testIds.root.apply()}>
       {optionId === 'groups' && (
-        <InlineField label="Highlight the current link">
+        <InlineField label="Highlight the current link" labelWidth={25}>
           <InlineSwitch
             value={value.highlightCurrentLink}
             onChange={(event) =>
@@ -195,6 +198,40 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
               })
             }
             {...testIds.fieldHighlight.apply()}
+          />
+        </InlineField>
+      )}
+      {optionId === 'groups' && (
+        <InlineField label="Grid layout" labelWidth={25}>
+          <InlineSwitch
+            value={value.gridLayout}
+            onChange={(event) =>
+              onChange({
+                ...value,
+                gridLayout: event.currentTarget.checked,
+              })
+            }
+            {...testIds.fieldGridLayout.apply()}
+          />
+        </InlineField>
+      )}
+      {optionId === 'groups' && value.gridLayout && (
+        <InlineField label="Grid columns size" grow={true} labelWidth={25}>
+          <Slider
+            value={gridColumnsSize}
+            min={1}
+            max={24}
+            step={1}
+            onChange={(size) => {
+              setGridColumnsSize(size);
+            }}
+            onAfterChange={(size) => {
+              onChange({
+                ...value,
+                gridColumns: size,
+              });
+            }}
+            {...testIds.fieldColumnsInManualLayout.apply()}
           />
         </InlineField>
       )}
