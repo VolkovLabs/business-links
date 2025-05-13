@@ -1,4 +1,4 @@
-import { SelectableValue } from '@grafana/data';
+import { dateTime, SelectableValue } from '@grafana/data';
 import React, { useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -85,13 +85,7 @@ const SelectMock = ({
       const option = plainOptions.find((option: any) => option.value == event.currentTarget.values);
 
       if (onChange) {
-        onChange(
-          option
-            ? option
-            : {
-                value: 'unable to find option',
-              }
-        );
+        onChange(option ? option : undefined);
       }
     }}
     /**
@@ -174,6 +168,52 @@ const TooltipMock = ({ content, children, placement, ...restProps }: any) => {
 
 const Tooltip = jest.fn(TooltipMock);
 
+/**
+ * Mock DatetimePicker component
+ */
+const DateTimePickerMock = ({ onChange, ...restProps }: any) => {
+  return (
+    <input
+      data-testid={restProps['data-testid']}
+      value={restProps.value}
+      onChange={(event) => {
+        /**
+         * Clear
+         */
+        if (event.target.value === 'clear') {
+          onChange(null);
+          return;
+        }
+
+        if (onChange) {
+          onChange(dateTime(event.target.value));
+        }
+      }}
+    />
+  );
+};
+
+const DateTimePicker = jest.fn(DateTimePickerMock);
+
+/**
+ * Mock DatetimePicker component
+ */
+const RelativeTimeRangePickerMock = ({ onChange, ...restProps }: any) => {
+  return (
+    <input
+      data-testid={restProps['data-testid']}
+      value={JSON.stringify(restProps.timeRange)}
+      onChange={(event) => {
+        if (onChange) {
+          onChange(JSON.parse(event.target.value));
+        }
+      }}
+    />
+  );
+};
+
+const RelativeTimeRangePicker = jest.fn(RelativeTimeRangePickerMock);
+
 beforeEach(() => {
   ToolbarButtonRow.mockImplementation(ToolbarButtonRowMock);
   MenuItem.mockImplementation(MenuItemMock);
@@ -182,6 +222,8 @@ beforeEach(() => {
   TagsInput.mockImplementation(TagsInputMock);
   Button.mockImplementation(ButtonMock);
   Tooltip.mockImplementation(TooltipMock);
+  DateTimePicker.mockImplementation(DateTimePickerMock);
+  RelativeTimeRangePicker.mockImplementation(RelativeTimeRangePickerMock);
 });
 
 module.exports = {
@@ -192,5 +234,7 @@ module.exports = {
   MenuItem,
   Dropdown,
   TagsInput,
+  DateTimePicker,
+  RelativeTimeRangePicker,
   Tooltip,
 };

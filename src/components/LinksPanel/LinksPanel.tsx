@@ -5,10 +5,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { useSavedState } from '@/hooks';
-import { DashboardMeta, PanelOptions } from '@/types';
+import { DashboardMeta, PanelOptions, VisualLinkType } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
-import { LinkElement, LinksGridLayout } from './components';
+import { LinkElement, LinksGridLayout, TimePickerElement } from './components';
 import { getStyles } from './LinksPanel.styles';
 
 /**
@@ -32,6 +32,7 @@ export const LinksPanel: React.FC<Props> = ({
   timeRange,
   height,
   title,
+  data,
   onOptionsChange,
 }) => {
   /**
@@ -97,11 +98,13 @@ export const LinksPanel: React.FC<Props> = ({
       params: location.search,
       dashboardId: currentDashboardId,
       highlightCurrentLink: activeGroup?.highlightCurrentLink,
+      series: data.series,
     });
   }, [
     activeGroup,
     availableDashboards,
     currentDashboardId,
+    data.series,
     location.search,
     options.dropdowns,
     replaceVariables,
@@ -187,6 +190,9 @@ export const LinksPanel: React.FC<Props> = ({
         )}
         {!activeGroup?.gridLayout &&
           currentLinks.map((link) => {
+            if (link.type === VisualLinkType.TIMEPICKER) {
+              return <TimePickerElement key={link.name} link={link} />;
+            }
             return <LinkElement key={link.name} link={link} />;
           })}
         {activeGroup?.gridLayout && (

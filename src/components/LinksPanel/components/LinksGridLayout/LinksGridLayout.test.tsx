@@ -8,7 +8,9 @@ import { TEST_IDS } from '@/constants';
 import { createGroupConfig, createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from '../LinkElement';
+import { TimePickerElement } from '../TimePickerElement';
 import { LinksGridLayout } from './LinksGridLayout';
+import { VisualLinkType } from '@/types';
 
 /**
  * Props
@@ -32,6 +34,7 @@ jest.mock('@grafana/runtime', () => ({
  */
 const inTestIds = {
   linkElement: createSelector('data-testid link-element'),
+  timePickerElement: createSelector('data-testid time-picker-element'),
   buttonLevelsUpdate: createSelector('data-testid button-levels-update'),
 };
 
@@ -42,6 +45,15 @@ const LinkElementMock = () => <div {...inTestIds.linkElement.apply()} />;
 
 jest.mock('../LinkElement', () => ({
   LinkElement: jest.fn(),
+}));
+
+/**
+ * Mock Time Picker Element
+ */
+const TimePickerMock = () => <div {...inTestIds.timePickerElement.apply()} />;
+
+jest.mock('../TimePickerElement', () => ({
+  TimePickerElement: jest.fn(),
 }));
 
 describe('Grid layout', () => {
@@ -95,6 +107,7 @@ describe('Grid layout', () => {
 
   beforeEach(() => {
     jest.mocked(LinkElement).mockImplementation(LinkElementMock);
+    jest.mocked(TimePickerElement).mockImplementation(TimePickerMock);
     jest.mocked(locationService.getLocation).mockReturnValue({
       search: '?panel=16',
     } as Location);
@@ -112,12 +125,22 @@ describe('Grid layout', () => {
       items: [createLinkConfig({ name: 'Link1', url: '' })],
     });
 
+    const defaultLink = createVisualLinkConfig({
+      name: 'Link1',
+      links: [nestedLink],
+    });
+
+    const defaultTimePickerLink = createVisualLinkConfig({
+      name: 'Link2',
+      type: VisualLinkType.TIMEPICKER,
+    });
+
     await act(async () =>
       render(
         getComponent({
           width: 400,
           height: 400,
-          links: defaultLinks,
+          links: [defaultLink, defaultTimePickerLink],
           options: options,
           onOptionsChange: onOptionsChange,
           activeGroup: activeGroup,
@@ -128,6 +151,7 @@ describe('Grid layout', () => {
 
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.root()).toHaveStyle('height: 362px');
+    expect(selectors.timePickerElement()).toBeInTheDocument();
   });
 
   it('Should render Layout and calculate max height if no title', async () => {

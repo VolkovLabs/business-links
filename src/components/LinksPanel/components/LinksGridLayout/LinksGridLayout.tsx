@@ -8,9 +8,10 @@ import React, { RefObject, useMemo, useRef } from 'react';
 import ReactGridLayout from 'react-grid-layout';
 
 import { TEST_IDS } from '@/constants';
-import { GroupConfig, PanelOptions, VisualLink } from '@/types';
+import { GroupConfig, PanelOptions, VisualLink, VisualLinkType } from '@/types';
 
 import { LinkElement } from '../LinkElement';
+import { TimePickerElement } from '../TimePickerElement';
 import { getStyles } from './LinksGridLayout.styles';
 
 /**
@@ -220,7 +221,10 @@ export const LinksGridLayout: React.FC<Props> = ({
               {...testIds.columnItem.apply(link.name)}
             >
               <div className={styles.linkWrapper} {...testIds.linkWrapper.apply(link.name)}>
-                <LinkElement key={link.id} link={link} gridMode={true} />
+                {link.type === VisualLinkType.TIMEPICKER && (
+                  <TimePickerElement key={link.name} link={link} gridMode={true} />
+                )}
+                {link.type === VisualLinkType.LINK && <LinkElement key={link.id} link={link} gridMode={true} />}
               </div>
               {isEditMode && (
                 <span

@@ -1,4 +1,5 @@
 import { cx } from '@emotion/css';
+import { DataFrame } from '@grafana/data';
 import { Button, Icon, IconButton, InlineField, InlineFieldRow, InlineSwitch, Input, useTheme2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse, Slider } from '@volkovlabs/components';
@@ -6,7 +7,16 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType } from '@/types';
+import {
+  DashboardMeta,
+  EditorProps,
+  GroupConfig,
+  LinkConfig,
+  LinkConfigType,
+  LinkTarget,
+  LinkType,
+  TimeConfigType,
+} from '@/types';
 import { reorder } from '@/utils';
 
 import { LinkEditor } from './components';
@@ -53,6 +63,8 @@ interface Props extends EditorProps<GroupConfig> {
    * @type {string[]}
    */
   dropdowns?: string[];
+
+  data: DataFrame[];
 }
 
 /**
@@ -63,7 +75,7 @@ const testIds = TEST_IDS.groupEditor;
 /**
  * Group Editor
  */
-export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards, optionId, dropdowns }) => {
+export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dashboards, optionId, dropdowns }) => {
   /**
    * Styles and Theme
    */
@@ -155,6 +167,9 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
         url: '',
         showMenuOnHover: false,
         id: uuidv4(),
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
       },
     ]);
     setNewLinkName('');
@@ -368,6 +383,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, onChange, dashboards
                           onChange={(link) => {
                             onChangeItems(items.map((itemLink) => (itemLink.name === link.name ? link : itemLink)));
                           }}
+                          data={data}
                           optionId={optionId}
                           dropdowns={dropdowns}
                           dashboards={dashboards}

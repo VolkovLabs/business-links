@@ -1,10 +1,12 @@
-import { IconName, SelectableValue } from '@grafana/data';
+import { DataFrame, IconName, SelectableValue } from '@grafana/data';
 import { getAvailableIcons, InlineField, InlineSwitch, Input, RadioButtonGroup, Select, TagsInput } from '@grafana/ui';
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, HoverMenuPositionType, LinkConfig, LinkTarget, LinkType } from '@/types';
+
+import { TimePickerEditor } from './components';
 
 /**
  * Properties
@@ -30,6 +32,13 @@ interface Props extends EditorProps<LinkConfig> {
    * @type {string[]}
    */
   dropdowns?: string[];
+
+  /**
+   * Data
+   *
+   * @type {DataFrame[]}
+   */
+  data: DataFrame[];
 }
 
 /**
@@ -45,6 +54,11 @@ export const linkTypeOptions = [
     value: LinkType.DASHBOARD,
     label: 'Dashboard',
     description: 'Select the dashboard.',
+  },
+  {
+    value: LinkType.TIMEPICKER,
+    label: 'Timepicker',
+    description: 'Set time range',
   },
   {
     value: LinkType.TAGS,
@@ -121,7 +135,7 @@ export const linkTargetOptions = [
 /**
  * Link Editor
  */
-export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optionId, dropdowns }) => {
+export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards, optionId, dropdowns }) => {
   /**
    * Icon Options
    */
@@ -160,13 +174,15 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
   return (
     <>
       <FieldsGroup label="Link">
-        <InlineField label="Link Type" grow={true} labelWidth={20}>
+        <InlineField label="Type" grow={true} labelWidth={20}>
           <Select
             options={optionId === 'groups' ? linkTypeOptions : linkTypeOptionsInDropdown}
             value={value.linkType}
             isMulti={false}
             onChange={(event) => {
-              onChange({ ...value, linkType: event.value! });
+              if (event) {
+                onChange({ ...value, linkType: event.value! });
+              }
             }}
             {...TEST_IDS.linkEditor.fieldLinkType.apply()}
           />
@@ -233,6 +249,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
           </>
         )}
 
+        {value.linkType === LinkType.TIMEPICKER && <TimePickerEditor value={value} data={data} onChange={onChange} />}
+
         {optionId === 'groups' && (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) && (
           <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
             <InlineSwitch
@@ -278,46 +296,50 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, dashboards, optio
             value={value.icon}
           />
         </InlineField>
-        <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
-          <RadioButtonGroup
-            value={value.target}
-            onChange={(eventValue) => {
-              onChange({
-                ...value,
-                target: eventValue,
-              });
-            }}
-            options={linkTargetOptions}
-          />
-        </InlineField>
+        {value.linkType !== LinkType.TIMEPICKER && (
+          <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+            <RadioButtonGroup
+              value={value.target}
+              onChange={(eventValue) => {
+                onChange({
+                  ...value,
+                  target: eventValue,
+                });
+              }}
+              options={linkTargetOptions}
+            />
+          </InlineField>
+        )}
       </FieldsGroup>
 
-      <FieldsGroup label="Include">
-        <InlineField label="Current time range" grow={true} labelWidth={32}>
-          <InlineSwitch
-            value={value.includeTimeRange}
-            onChange={(event) => {
-              onChange({
-                ...value,
-                includeTimeRange: event.currentTarget.checked,
-              });
-            }}
-            {...TEST_IDS.linkEditor.fieldIncludeTimeRange.apply()}
-          />
-        </InlineField>
-        <InlineField label="Current template variable values" grow={true} labelWidth={32}>
-          <InlineSwitch
-            value={value.includeVariables}
-            onChange={(event) => {
-              onChange({
-                ...value,
-                includeVariables: event.currentTarget.checked,
-              });
-            }}
-            {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
-          />
-        </InlineField>
-      </FieldsGroup>
+      {value.linkType !== LinkType.TIMEPICKER && (
+        <FieldsGroup label="Include">
+          <InlineField label="Current time range" grow={true} labelWidth={32}>
+            <InlineSwitch
+              value={value.includeTimeRange}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  includeTimeRange: event.currentTarget.checked,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldIncludeTimeRange.apply()}
+            />
+          </InlineField>
+          <InlineField label="Current template variable values" grow={true} labelWidth={32}>
+            <InlineSwitch
+              value={value.includeVariables}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  includeVariables: event.currentTarget.checked,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
+            />
+          </InlineField>
+        </FieldsGroup>
+      )}
     </>
   );
 };

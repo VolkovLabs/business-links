@@ -11,6 +11,14 @@ export interface NestedLinkConfig extends LinkConfig {
   isCurrentLink?: boolean;
 }
 
+/**
+ * Visual Link Type
+ */
+export enum VisualLinkType {
+  LINK = 'link',
+  TIMEPICKER = 'timepicker',
+}
+
 export interface VisualLink {
   /**
    * Name
@@ -25,6 +33,13 @@ export interface VisualLink {
    * @type {string}
    */
   id: string;
+
+  /**
+   * Visual link type
+   *
+   * @type {VisualLinkType}
+   */
+  type: VisualLinkType;
 
   /**
    * Icon
@@ -53,4 +68,41 @@ export interface VisualLink {
    * @type {NestedLinkConfig[]}
    */
   links: NestedLinkConfig[];
+
+  /**
+   * Time picker range
+   *
+   */
+  timeRange?: {
+    /**
+     * From range
+     *
+     * @type {string | number}
+     */
+    from: string | number;
+
+    /**
+     * To range
+     *
+     * @type {string | number}
+     */
+    to: string | number;
+  };
+}
+
+/**
+ * Field Source
+ */
+export interface FieldSource {
+  /**
+   * Field Name
+   *
+   * @type {string}
+   */
+  name: string;
+
+  /**
+   * Data Frame ID or Frame Index if no specified
+   */
+  source: string | number;
 }

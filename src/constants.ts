@@ -11,6 +11,20 @@ export const TEST_IDS = {
     tab: createSelector((name: unknown) => `data-testid panel tab-${name}`),
     tabRow: createSelector('data-testid panel tab-row'),
   },
+  fieldPicker: {
+    root: createSelector('data-testid field-picker'),
+  },
+  timePickerEditor: {
+    fieldTimeRangeType: createSelector('data-testid time-picker-editor field-time-range-type'),
+    fieldTimeRangeTypeOption: createSelector(
+      (name: unknown) => `time-picker-editor field-time-range-type-option-${name}`
+    ),
+    fieldFromPicker: createSelector('data-testid time-picker-editor field-from-picker'),
+    fieldToPicker: createSelector('data-testid time-picker-editor field-to-picker'),
+    fieldFromDateTimePicker: createSelector('data-testid time-picker-editor field-from-date-time-picker'),
+    fieldToDateTimePicker: createSelector('data-testid time-picker-editor field-to-date-time-picker'),
+    fieldRelativeTimeRange: createSelector('data-testid time-picker-editor field-field-relative-time-range'),
+  },
   linkElement: {
     buttonEmptyLink: createSelector((name: unknown) => `data-testid link-element button empty-link-${name}`),
     buttonEmptySingleLink: createSelector(
@@ -21,6 +35,9 @@ export const TEST_IDS = {
     dropdown: createSelector((name: unknown) => `data-testid link-element dropdown-${name}`),
     dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
     tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
+  },
+  timePickerElement: {
+    buttonPicker: createSelector((name: unknown) => `data-testid time-picker-element button-picker-${name}`),
   },
   gridLayout: {
     root: createSelector('data-testid grid-layout'),
