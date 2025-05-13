@@ -2,7 +2,7 @@
 
 ![Links Screenshot](https://github.com/VolkovLabs/business-links/raw/main/src/img/panel.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-11.6-orange)
+![Grafana](https://img.shields.io/badge/Grafana-12.0-orange)
 ![CI](https://github.com/volkovlabs/business-links/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/business-links/workflows/E2E/badge.svg)
 [![Codecov](https://codecov.io/gh/VolkovLabs/business-links/branch/main/graph/badge.svg)](https://codecov.io/gh/VolkovLabs/business-links)
@@ -10,13 +10,13 @@
 
 ## Introduction
 
-The Business Links panel for Grafana provides a streamlined interface to navigate effortlessly using external links, internal dashboards, and dynamic dropdown menus.
+The Business Links panel for Grafana provides a streamlined interface to navigate effortlessly using external links, internal dashboards, time pickers, and dynamic dropdown menus.
 
 Designed for seamless integration, it enables users to access critical resources, switch between dashboards, or interact with custom workflows efficiently, all within a single, intuitive panel.
 
 ## Requirements
 
-- **Business Links Panel 1.x** requires **Grafana 11**.
+- **Business Links Panel 1.x** requires **Grafana 11 or 12**.
 
 ## Installation
 
