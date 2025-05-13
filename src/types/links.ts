@@ -20,6 +20,13 @@ export interface VisualLink {
   name: string;
 
   /**
+   * Id
+   *
+   * @type {string}
+   */
+  id: string;
+
+  /**
    * Icon
    *
    * @type {IconName}

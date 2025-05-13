@@ -10,6 +10,13 @@ import { LinkEditor } from './components';
 import { GroupEditor } from './GroupEditor';
 
 /**
+ * Mock uuid v4
+ */
+jest.mock('uuid', () => ({
+  v4: () => 'abc-123',
+}));
+
+/**
  * Props
  */
 type Props = React.ComponentProps<typeof GroupEditor>;
@@ -154,6 +161,55 @@ describe('ColumnsEditor', () => {
     );
   });
 
+  it('Should expand item content', () => {
+    const onChange = jest.fn();
+
+    render(
+      getComponent({
+        value: defaultGroupConfig,
+        onChange,
+      })
+    );
+
+    expect(selectors.itemHeader(false, link1.name)).toBeInTheDocument();
+    expect(selectors.itemContent(true, link1.name)).not.toBeInTheDocument();
+
+    /**
+     * Expand
+     */
+    fireEvent.click(selectors.itemHeader(false, link1.name));
+
+    expect(selectors.itemContent(false, link1.name)).toBeInTheDocument();
+  });
+
+  it('Should remove item', async () => {
+    const onChange = jest.fn();
+
+    render(
+      getComponent({
+        value: defaultGroupConfig,
+        onChange,
+      })
+    );
+
+    const field2 = selectors.itemHeader(false, link1.name);
+
+    /**
+     * Check field presence
+     */
+    expect(field2).toBeInTheDocument();
+
+    /**
+     * Remove
+     */
+    await act(() => fireEvent.click(getSelectors(within(field2)).buttonRemove()));
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        items: [link2],
+      })
+    );
+  });
   describe('Rename', () => {
     it('Should save new Link name', async () => {
       const onChange = jest.fn();
@@ -415,285 +471,337 @@ describe('ColumnsEditor', () => {
     });
   });
 
-  it('Should remove item', async () => {
-    const onChange = jest.fn();
+  describe('Item visibility', () => {
+    it('Should hide item', async () => {
+      const onChange = jest.fn();
 
-    render(
-      getComponent({
-        value: defaultGroupConfig,
-        onChange,
-      })
-    );
+      render(
+        getComponent({
+          value: defaultGroupConfig,
+          onChange,
+        })
+      );
 
-    const field2 = selectors.itemHeader(false, link1.name);
+      const field = selectors.itemHeader(false, link1.name);
 
-    /**
-     * Check field presence
-     */
-    expect(field2).toBeInTheDocument();
+      /**
+       * Check field presence
+       */
+      expect(field).toBeInTheDocument();
 
-    /**
-     * Remove
-     */
-    await act(() => fireEvent.click(getSelectors(within(field2)).buttonRemove()));
+      /**
+       * Hide
+       */
+      await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        items: [link2],
-      })
-    );
-  });
-
-  it('Should hide item', async () => {
-    const onChange = jest.fn();
-
-    render(
-      getComponent({
-        value: defaultGroupConfig,
-        onChange,
-      })
-    );
-
-    const field = selectors.itemHeader(false, link1.name);
-
-    /**
-     * Check field presence
-     */
-    expect(field).toBeInTheDocument();
-
-    /**
-     * Hide
-     */
-    await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        items: expect.arrayContaining([
-          expect.objectContaining({ name: link1.name, enable: false }),
-          expect.objectContaining({ name: link2.name }),
-        ]),
-      })
-    );
-  });
-
-  it('Should show item', async () => {
-    const onChange = jest.fn();
-
-    render(
-      getComponent({
-        value: {
-          ...defaultGroupConfig,
-          items: [
-            {
-              ...link1,
-              enable: false,
-            },
-            link2,
-          ],
-        },
-        onChange,
-      })
-    );
-
-    const field = selectors.itemHeader(false, link1.name);
-
-    /**
-     * Check field presence
-     */
-    expect(field).toBeInTheDocument();
-
-    /**
-     * Show
-     */
-    await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        items: expect.arrayContaining([
-          expect.objectContaining({ name: link1.name, enable: true }),
-          expect.objectContaining({ name: link2.name }),
-        ]),
-      })
-    );
-  });
-
-  it('Should reorder items', async () => {
-    let onDragEndHandler: (result: DropResult) => void = () => {};
-    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
-      onDragEndHandler = onDragEnd;
-      return children;
-    });
-
-    const onChange = jest.fn();
-
-    render(
-      getComponent({
-        value: {
-          ...defaultGroupConfig,
-          items: [
-            {
-              ...link1,
-              enable: false,
-            },
-            link2,
-          ],
-        },
-        onChange,
-      })
-    );
-
-    /**
-     * Simulate drop field 1 to index 0
-     */
-    act(() =>
-      onDragEndHandler({
-        destination: {
-          index: 0,
-        },
-        source: {
-          index: 1,
-        },
-      } as any)
-    );
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        items: expect.arrayContaining([
-          expect.objectContaining({ name: link2.name }),
-          expect.objectContaining({ name: link1.name }),
-        ]),
-      })
-    );
-  });
-
-  it('Should not reorder items if drop outside the list', async () => {
-    let onDragEndHandler: (result: DropResult) => void = () => {};
-    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
-      onDragEndHandler = onDragEnd;
-      return children;
-    });
-
-    const onChange = jest.fn();
-
-    render(
-      getComponent({
-        value: defaultGroupConfig,
-        onChange,
-      })
-    );
-
-    /**
-     * Simulate drop field 1 to outside the list
-     */
-    act(() =>
-      onDragEndHandler({
-        destination: null,
-        source: {
-          index: 1,
-        },
-      } as any)
-    );
-
-    expect(onChange).not.toHaveBeenCalled();
-  });
-
-  it('Should expand item content', () => {
-    const onChange = jest.fn();
-
-    render(
-      getComponent({
-        value: defaultGroupConfig,
-        onChange,
-      })
-    );
-
-    expect(selectors.itemHeader(false, link1.name)).toBeInTheDocument();
-    expect(selectors.itemContent(true, link1.name)).not.toBeInTheDocument();
-
-    /**
-     * Expand
-     */
-    fireEvent.click(selectors.itemHeader(false, link1.name));
-
-    expect(selectors.itemContent(false, link1.name)).toBeInTheDocument();
-  });
-
-  it('Should allow to change item', () => {
-    /**
-     * Value for test
-     */
-    const tagsMock = ['tag', 'oldTag'];
-
-    /**
-     * LinkEditor mock
-     */
-    jest.mocked(LinkEditor).mockImplementation(({ value, onChange }) => {
-      return (
-        <div {...inTestIds.linkEditor.apply()}>
-          <button
-            {...inTestIds.buttonLevelsUpdate.apply()}
-            onClick={() => {
-              /**
-               * Simulate link change
-               */
-              onChange({ ...value, tags: tagsMock });
-            }}
-          />
-        </div>
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link1.name, enable: false }),
+            expect.objectContaining({ name: link2.name }),
+          ]),
+        })
       );
     });
 
-    const onChange = jest.fn();
+    it('Should show item', async () => {
+      const onChange = jest.fn();
 
-    render(
-      getComponent({
-        value: defaultGroupConfig,
-        onChange,
-      })
-    );
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            items: [
+              {
+                ...link1,
+                enable: false,
+              },
+              link2,
+            ],
+          },
+          onChange,
+        })
+      );
 
-    /**
-     * Expand
-     */
-    fireEvent.click(selectors.itemHeader(false, link1.name));
+      const field = selectors.itemHeader(false, link1.name);
 
-    expect(selectors.linkEditor()).toBeInTheDocument();
+      /**
+       * Check field presence
+       */
+      expect(field).toBeInTheDocument();
 
-    /**
-     * Simulate change
-     */
-    fireEvent.click(selectors.buttonLevelsUpdate());
+      /**
+       * Show
+       */
+      await act(() => fireEvent.click(getSelectors(within(field)).buttonToggleVisibility()));
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        items: expect.arrayContaining([
-          expect.objectContaining({ name: link1.name, tags: tagsMock }),
-          expect.objectContaining({ name: link2.name }),
-        ]),
-      })
-    );
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link1.name, enable: true }),
+            expect.objectContaining({ name: link2.name }),
+          ]),
+        })
+      );
+    });
   });
 
-  it('Should allow change Highlight option', () => {
-    const onChange = jest.fn();
+  describe('Reorder Items', () => {
+    it('Should reorder items', async () => {
+      let onDragEndHandler: (result: DropResult) => void = () => {};
+      jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+        onDragEndHandler = onDragEnd;
+        return children;
+      });
 
-    render(
-      getComponent({
-        value: {
-          ...defaultGroupConfig,
-          highlightCurrentLink: false,
-        },
-        onChange,
-      })
-    );
+      const onChange = jest.fn();
 
-    expect(selectors.fieldHighlight()).toBeInTheDocument();
-    fireEvent.click(selectors.fieldHighlight());
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            items: [
+              {
+                ...link1,
+                enable: false,
+              },
+              link2,
+            ],
+          },
+          onChange,
+        })
+      );
 
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        highlightCurrentLink: true,
-      })
-    );
+      /**
+       * Simulate drop field 1 to index 0
+       */
+      act(() =>
+        onDragEndHandler({
+          destination: {
+            index: 0,
+          },
+          source: {
+            index: 1,
+          },
+        } as any)
+      );
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link2.name }),
+            expect.objectContaining({ name: link1.name }),
+          ]),
+        })
+      );
+    });
+
+    it('Should not reorder items if drop outside the list', async () => {
+      let onDragEndHandler: (result: DropResult) => void = () => {};
+      jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+        onDragEndHandler = onDragEnd;
+        return children;
+      });
+
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: defaultGroupConfig,
+          onChange,
+        })
+      );
+
+      /**
+       * Simulate drop field 1 to outside the list
+       */
+      act(() =>
+        onDragEndHandler({
+          destination: null,
+          source: {
+            index: 1,
+          },
+        } as any)
+      );
+
+      expect(onChange).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Change options', () => {
+    it('Should allow to change item', () => {
+      /**
+       * Value for test
+       */
+      const tagsMock = ['tag', 'oldTag'];
+
+      /**
+       * LinkEditor mock
+       */
+      jest.mocked(LinkEditor).mockImplementation(({ value, onChange }) => {
+        return (
+          <div {...inTestIds.linkEditor.apply()}>
+            <button
+              {...inTestIds.buttonLevelsUpdate.apply()}
+              onClick={() => {
+                /**
+                 * Simulate link change
+                 */
+                onChange({ ...value, tags: tagsMock });
+              }}
+            />
+          </div>
+        );
+      });
+
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: defaultGroupConfig,
+          onChange,
+        })
+      );
+
+      /**
+       * Expand
+       */
+      fireEvent.click(selectors.itemHeader(false, link1.name));
+
+      expect(selectors.linkEditor()).toBeInTheDocument();
+
+      /**
+       * Simulate change
+       */
+      fireEvent.click(selectors.buttonLevelsUpdate());
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ name: link1.name, tags: tagsMock }),
+            expect.objectContaining({ name: link2.name }),
+          ]),
+        })
+      );
+    });
+
+    it('Should allow change Highlight option', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            highlightCurrentLink: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldHighlight()).toBeInTheDocument();
+      fireEvent.click(selectors.fieldHighlight());
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          highlightCurrentLink: true,
+        })
+      );
+    });
+
+    it('Should allow change gridLayout layout', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      fireEvent.click(selectors.fieldGridLayout());
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gridLayout: true,
+        })
+      );
+    });
+
+    it('Should don`t display grid columns if manual layout is disabled', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldColumnsInManualLayout(true)).not.toBeInTheDocument();
+    });
+
+    it('Should allow change Grid columns for manual if gridColumns undefined', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: true,
+            gridColumns: undefined,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldColumnsInManualLayout()).toBeInTheDocument();
+      expect(selectors.fieldColumnsInManualLayout()).toHaveValue('10');
+
+      fireEvent.change(selectors.fieldColumnsInManualLayout(), { target: { value: 5 } });
+      fireEvent.blur(selectors.fieldColumnsInManualLayout(), { target: { value: 5 } });
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gridColumns: 5,
+        })
+      );
+    });
+
+    it('Should allow change Grid columns for manual ', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: true,
+            gridColumns: 15,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldColumnsInManualLayout()).toBeInTheDocument();
+      expect(selectors.fieldColumnsInManualLayout()).toHaveValue('15');
+
+      fireEvent.change(selectors.fieldColumnsInManualLayout(), { target: { value: 5 } });
+      fireEvent.blur(selectors.fieldColumnsInManualLayout(), { target: { value: 5 } });
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gridColumns: 5,
+        })
+      );
+    });
   });
 });

@@ -112,6 +112,7 @@ describe('prepareLinksToRender', () => {
           tags: [],
           dashboardUrl: '',
           dropdownName: '',
+          id: 'test-link0-id',
         },
       ],
     };
@@ -147,6 +148,7 @@ describe('prepareLinksToRender', () => {
           tags: [],
           dashboardUrl: '',
           dropdownName: '',
+          id: 'test-link0-id',
         },
       ],
     };
@@ -183,6 +185,7 @@ describe('prepareLinksToRender', () => {
           tags: ['env'],
           dashboardUrl: '',
           dropdownName: '',
+          id: 'test-link0-id',
         },
       ],
     };
@@ -218,6 +221,7 @@ describe('prepareLinksToRender', () => {
             tags: [],
             dashboardUrl: '',
             dropdownName: '',
+            id: 'test-link0-dp-id',
           },
         ],
       },
@@ -238,6 +242,7 @@ describe('prepareLinksToRender', () => {
           tags: ['env'],
           dashboardUrl: '',
           dropdownName: 'Nested',
+          id: 'test-link0-id',
         },
       ],
     };
@@ -272,6 +277,7 @@ describe('prepareLinksToRender', () => {
           tags: [],
           dashboardUrl: '/d/urldashboard1',
           dropdownName: '',
+          id: 'test-link0-id',
         },
       ],
     };
@@ -306,6 +312,7 @@ describe('prepareLinksToRender', () => {
           tags: [],
           dashboardUrl: '/d/urldashboard1',
           dropdownName: '',
+          id: 'test-link0-id',
         },
       ],
     };
