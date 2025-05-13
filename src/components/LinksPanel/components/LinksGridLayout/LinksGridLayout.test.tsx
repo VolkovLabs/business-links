@@ -5,12 +5,12 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React, { useRef } from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { VisualLinkType } from '@/types';
 import { createGroupConfig, createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from '../LinkElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { LinksGridLayout } from './LinksGridLayout';
-import { VisualLinkType } from '@/types';
 
 /**
  * Props
