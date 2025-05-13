@@ -217,7 +217,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         </InlineField>
       )}
       {optionId === 'groups' && (
-        <InlineField label="Grid layout">
+        <InlineField label="Grid layout" labelWidth={25}>
           <InlineSwitch
             value={value.gridLayout}
             onChange={(event) =>
@@ -231,7 +231,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         </InlineField>
       )}
       {optionId === 'groups' && value.gridLayout && (
-        <InlineField label="Grid columns size" grow={true}>
+        <InlineField label="Grid columns size" labelWidth={25} grow={true}>
           <Slider
             value={gridColumnsSize}
             min={1}

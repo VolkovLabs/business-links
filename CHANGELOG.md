@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Icons to editor component (#19)
 - Horizontal and vertial layouts (#21)
+- Time-Picker type (#23)
 
 ## [1.2.1] - 2025-04-29
 
