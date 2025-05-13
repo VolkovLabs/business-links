@@ -1,7 +1,7 @@
 import { PanelModel } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
-import { GroupConfig, PanelOptions } from './types';
+import { GroupConfig, PanelOptions, TimeConfigType } from './types';
 
 /**
  * Outdated Panel Options
@@ -32,14 +32,21 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
        * Normalize links items
        */
       const normalizedItems = group.items.map((item) => {
-        if (!item.id || item.id === undefined) {
-          return {
-            ...item,
-            id: uuidv4(),
-          };
-        }
+        const normalizedId = !item.id || item.id === undefined ? uuidv4() : item.id;
 
-        return item;
+        const normalizedTimeConfigType =
+          !item.timePickerConfig?.type || item.timePickerConfig?.type === undefined
+            ? TimeConfigType.FIELD
+            : item.timePickerConfig.type;
+
+        return {
+          ...item,
+          id: normalizedId,
+          timePickerConfig: {
+            ...item.timePickerConfig,
+            type: normalizedTimeConfigType,
+          },
+        };
       });
 
       /**
