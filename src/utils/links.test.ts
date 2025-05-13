@@ -1,18 +1,20 @@
-import { LinkConfigType, LinkTarget, LinkType } from '@/types';
+import { DataFrame, Field } from '@grafana/data';
 
-import { extractParamsByPrefix, prepareLinksToRender, prepareUrlWithParams } from './links';
+import { LinkConfigType, LinkTarget, LinkType, TimeConfigType } from '@/types';
+
+import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 
 /**
  * extractParamsByPrefix
  */
 describe('extractParamsByPrefix', () => {
-  it('should extract only parameters with specified prefix', () => {
+  it('Should extract only parameters with specified prefix', () => {
     const search = 'var-host=server01&var-env=prod&unrelated=value';
     const result = extractParamsByPrefix(search, 'var-');
     expect(result).toEqual('var-host=server01&var-env=prod');
   });
 
-  it('should return empty string if no matching prefix found', () => {
+  it('Should return empty string if no matching prefix found', () => {
     const search = 'foo=bar&baz=qux';
     const result = extractParamsByPrefix(search, 'var-');
     expect(result).toEqual('');
@@ -69,6 +71,10 @@ describe('prepareLinksToRender', () => {
   const timeRange = {
     from: new Date('2023-01-01T00:00:00Z'),
     to: new Date('2023-01-02T00:00:00Z'),
+    raw: {
+      from: 'now-1h',
+      to: 'now',
+    },
   } as any;
 
   const dashboards = [
@@ -91,6 +97,7 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: 'var-x=1',
       dashboardId: '',
+      series: [],
     });
 
     expect(result).toEqual([]);
@@ -125,6 +132,7 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: '',
       dashboardId: '',
+      series: [],
     });
 
     expect(result).toHaveLength(1);
@@ -162,6 +170,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: 'test123',
       highlightCurrentLink: true,
+      series: [],
     });
 
     expect(result).toHaveLength(1);
@@ -198,6 +207,7 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: '',
       dashboardId: '',
+      series: [],
     });
 
     expect(result[0].links).toHaveLength(2);
@@ -255,6 +265,7 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: '',
       dashboardId: '',
+      series: [],
     });
 
     expect(result).toHaveLength(1);
@@ -290,6 +301,7 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: '',
       dashboardId: '',
+      series: [],
     });
 
     expect(result).toHaveLength(1);
@@ -325,9 +337,250 @@ describe('prepareLinksToRender', () => {
       dashboards,
       params: '',
       dashboardId: '',
+      series: [],
     });
 
     expect(result).toHaveLength(0);
     expect(result).toEqual([]);
+  });
+
+  it('Should generate TIMEPICKER link correctly', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          type: LinkConfigType.LINK,
+          name: 'Time Picker',
+          enable: true,
+          linkType: LinkType.TIMEPICKER,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].timeRange).toEqual({
+      from: timeRange.raw.from,
+      to: timeRange.raw.to,
+    });
+  });
+
+  it('Should generate TIMEPICKER link correctly with dashboard time range if raw is not a string', () => {
+    const currentTimeRange = {
+      from: new Date('2023-01-01T00:00:00Z'),
+      to: new Date('2023-01-02T00:00:00Z'),
+      raw: {
+        from: new Date('2025-01-01T00:00:00Z'),
+        to: new Date('2025-02-01T00:00:00Z'),
+      },
+    } as any;
+
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          type: LinkConfigType.LINK,
+          name: 'Time Picker',
+          enable: true,
+          linkType: LinkType.TIMEPICKER,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange: currentTimeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].timeRange).toEqual({
+      from: 1672531200000,
+      to: 1672617600000,
+    });
+  });
+});
+
+describe('preparePickerTimeRange', () => {
+  const defaultDashboardTimeRange = {
+    from: 'now-6h',
+    to: 'now',
+  };
+
+  const mockField: Field = {
+    name: 'timeField',
+    type: 'time' as any,
+    config: {},
+    values: [1625097600000],
+  };
+
+  const mockFrame: DataFrame = {
+    fields: [mockField],
+    length: 1,
+    refId: 'A',
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('Should return dashboardTimeRange if no timePickerConfig', () => {
+    const result = preparePickerTimeRange({
+      item: {},
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+    expect(result).toEqual(defaultDashboardTimeRange);
+  });
+
+  it('Should handle Relative type with valid relativeTimeRange', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.RELATIVE,
+          relativeTimeRange: { from: 3600, to: 0 },
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({ from: 'now-1h', to: 'now' });
+  });
+
+  it('Should handle Relative type with empty relativeTimeRange', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.RELATIVE,
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual(defaultDashboardTimeRange);
+  });
+
+  it('Should handle Manual type with valid manualTimeRange', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.MANUAL,
+          manualTimeRange: { from: 1747144711, to: 1747144715 },
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({ from: 1747144711, to: 1747144715 });
+  });
+
+  it('Should handle Manual type with partial manualTimeRange', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.MANUAL,
+          manualTimeRange: { from: 1747144711 },
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({ from: 1747144711, to: defaultDashboardTimeRange.to });
+  });
+
+  it('Should handle Manual type with partial manualTimeRange to', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.MANUAL,
+          manualTimeRange: { to: 1747144711 },
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({ from: defaultDashboardTimeRange.from, to: 1747144711 });
+  });
+
+  it('Should handle Field type with valid Field values', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+          fieldFrom: { name: 'timeField', source: 'A' },
+          fieldTo: { name: 'timeField', source: 'A' },
+        },
+      },
+      series: [mockFrame],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({ from: 1625097600000, to: 1625097600000 });
+  });
+
+  it('Should handle Field type with missing Field values', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+          fieldFrom: { name: 'timeField', source: 'A' },
+          fieldTo: { name: 'timeField', source: 'A' },
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual(defaultDashboardTimeRange);
+  });
+
+  it('Should return dashboardTimeRange for unknown config type', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: 'UNKNOWN' as any,
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual(defaultDashboardTimeRange);
   });
 });

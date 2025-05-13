@@ -1,9 +1,11 @@
-import { InterpolateFunction, TimeRange } from '@grafana/data';
+import { DataFrame, dateTime, InterpolateFunction, TimeRange } from '@grafana/data';
 
-import { DashboardMeta, GroupConfig, LinkConfig, LinkType } from '@/types';
-import { VisualLink } from '@/types/links';
+import { DashboardMeta, GroupConfig, LinkConfig, LinkType, TimeConfig, TimeConfigType } from '@/types';
+import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { filterDashboardsByTags } from './dashboards';
+import { getFieldFromFrame, getFrameBySource } from './fields';
+import { mapRelativeTimeRangeToOption } from './timeRange';
 
 /**
  * extractParamsByPrefix
@@ -73,6 +75,93 @@ export const prepareUrlWithParams = (
 };
 
 /**
+ * Prepares a time range based on the time picker configuration.
+ * @param item - The item containing the time picker configuration.
+ * @param series - The data series.
+ * @param dashboardTimeRange - Dashboard Time Range
+ * @returns A time range object
+ */
+export const preparePickerTimeRange = ({
+  item,
+  series,
+  dashboardTimeRange,
+}: {
+  item: { timePickerConfig?: TimeConfig };
+  series: DataFrame[];
+  dashboardTimeRange: {
+    from: string | number;
+    to: string | number;
+  };
+}): {
+  from: string | number;
+  to: string | number;
+} => {
+  const config = item.timePickerConfig;
+
+  /**
+   * Return by default
+   */
+  if (!config) {
+    return dashboardTimeRange;
+  }
+
+  switch (config.type) {
+    case TimeConfigType.RELATIVE: {
+      /**
+       * Map relative options to raw correct time range
+       * if no relative options return empty it will return by default
+       */
+      const options =
+        config.relativeTimeRange?.from || config.relativeTimeRange?.to
+          ? mapRelativeTimeRangeToOption(config.relativeTimeRange)
+          : { from: '', to: '' };
+
+      return {
+        from: options.from || dashboardTimeRange.from,
+        to: options.to || dashboardTimeRange.to,
+      };
+    }
+
+    case TimeConfigType.MANUAL: {
+      /**
+       * Return manual values
+       * or default range
+       */
+      return {
+        from: config.manualTimeRange?.from ?? dashboardTimeRange.from,
+        to: config.manualTimeRange?.to ?? dashboardTimeRange.to,
+      };
+    }
+
+    case TimeConfigType.FIELD: {
+      /**
+       * Get Frames
+       */
+      const fromFrame = getFrameBySource(series, config.fieldFrom);
+      const toFrame = getFrameBySource(series, config.fieldTo);
+
+      /**
+       * Get Values from fields
+       */
+      const fromValue = getFieldFromFrame(fromFrame, config.fieldFrom)?.values?.[0];
+      const toValue = getFieldFromFrame(toFrame, config.fieldTo)?.values?.[0];
+
+      /**
+       * return values
+       * otherwise return default Range
+       */
+      return {
+        from: fromValue ? dateTime(fromValue)?.valueOf() : dashboardTimeRange.from,
+        to: toValue ? dateTime(toValue)?.valueOf() : dashboardTimeRange.to,
+      };
+    }
+
+    default:
+      return dashboardTimeRange;
+  }
+};
+
+/**
  * prepareLinksToRender
  *
  * @param currentGroup
@@ -91,6 +180,7 @@ export const prepareLinksToRender = ({
   params,
   dashboardId,
   highlightCurrentLink,
+  series,
 }: {
   currentGroup?: GroupConfig;
   dropdowns: GroupConfig[];
@@ -100,6 +190,7 @@ export const prepareLinksToRender = ({
   params: string;
   dashboardId: string;
   highlightCurrentLink?: boolean;
+  series: DataFrame[];
 }): VisualLink[] => {
   /**
    * Return empty [] if no groups
@@ -117,6 +208,32 @@ export const prepareLinksToRender = ({
 
   for (const item of enabledItems) {
     switch (item.linkType) {
+      /**
+       * Time picker
+       */
+      case LinkType.TIMEPICKER: {
+        /**
+         * Dashboard Time Range
+         */
+        const dashboardTimeRange = {
+          from: typeof timeRange.raw.from === 'string' ? timeRange.raw.from : timeRange.from.valueOf(),
+          to: typeof timeRange.raw.to === 'string' ? timeRange.raw.to : timeRange.to.valueOf(),
+        };
+
+        result.push({
+          type: VisualLinkType.TIMEPICKER,
+          id: item.id,
+          name: item.name,
+          timeRange: preparePickerTimeRange({
+            dashboardTimeRange: dashboardTimeRange,
+            item: item,
+            series: series,
+          }),
+          links: [],
+        });
+        break;
+      }
+
       /**
        * Single link
        */
@@ -138,6 +255,7 @@ export const prepareLinksToRender = ({
         result.push({
           id: item.id,
           name: item.name,
+          type: VisualLinkType.LINK,
           links: [
             {
               ...item,
@@ -163,6 +281,7 @@ export const prepareLinksToRender = ({
         result.push({
           name: item.name,
           id: item.id,
+          type: VisualLinkType.LINK,
           links: [
             {
               ...item,
@@ -191,6 +310,7 @@ export const prepareLinksToRender = ({
 
         result.push({
           name: item.name,
+          type: VisualLinkType.LINK,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
@@ -238,6 +358,7 @@ export const prepareLinksToRender = ({
             params,
             dashboardId,
             highlightCurrentLink,
+            series,
           });
         }
 
@@ -249,6 +370,7 @@ export const prepareLinksToRender = ({
         result.push({
           id: item.id,
           name: item.name,
+          type: VisualLinkType.LINK,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,

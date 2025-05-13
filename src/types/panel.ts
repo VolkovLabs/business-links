@@ -3,6 +3,7 @@ import { IconName } from '@grafana/ui';
 import ReactGridLayout from 'react-grid-layout';
 
 import { LinkTarget } from './editor';
+import { FieldSource } from './links';
 
 /**
  * Recursive Partial
@@ -31,6 +32,7 @@ export enum LinkType {
   DROPDOWN = 'dropdown',
   TAGS = 'tags',
   DASHBOARD = 'dashboard',
+  TIMEPICKER = 'timepicker',
 }
 
 /**
@@ -43,6 +45,80 @@ export enum HoverMenuPositionType {
   LEFT = 'left',
 }
 
+/**
+ * Time config type
+ */
+export enum TimeConfigType {
+  FIELD = 'field',
+  MANUAL = 'manual',
+  RELATIVE = 'relative',
+}
+
+/**
+ * Time Config
+ *
+ */
+export interface TimeConfig {
+  /**
+   * Type
+   *
+   * @type {TimeConfigType}
+   */
+  type?: TimeConfigType;
+
+  /**
+   * Field from
+   *
+   * @type {FieldSource}
+   */
+  fieldFrom?: FieldSource;
+
+  /**
+   * Field to
+   *
+   * @type {FieldSource}
+   */
+  fieldTo?: FieldSource;
+
+  /**
+   * Manual time range config
+   */
+  manualTimeRange?: {
+    /**
+     * From
+     *
+     * @type {number}
+     */
+    from?: number;
+
+    /**
+     * To
+     *
+     * @type {number}
+     */
+    to?: number;
+  };
+
+  /**
+   * Relative Time Range
+   *
+   */
+  relativeTimeRange?: {
+    /**
+     * From
+     *
+     * @type {number}
+     */
+    from: number;
+
+    /**
+     * To
+     *
+     * @type {number}
+     */
+    to: number;
+  };
+}
 /**
  * Base Link Config
  */
@@ -151,6 +227,13 @@ export interface LinkConfig {
    * @type {string}
    */
   id: string;
+
+  /**
+   * Time picker config
+   *
+   * @type {TimeConfig}
+   */
+  timePickerConfig?: TimeConfig;
 }
 
 /**

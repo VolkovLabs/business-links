@@ -1,7 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { GroupConfig, LinkConfig, LinkConfigType, LinkTarget, LinkType, PanelOptions } from '@/types';
-import { NestedLinkConfig, VisualLink } from '@/types/links';
+import {
+  GroupConfig,
+  LinkConfig,
+  LinkConfigType,
+  LinkTarget,
+  LinkType,
+  PanelOptions,
+  TimeConfig,
+  TimeConfigType,
+} from '@/types';
+import { NestedLinkConfig, VisualLink, VisualLinkType } from '@/types/links';
 
 /**
  * Create Link
@@ -18,6 +27,9 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   target: LinkTarget.SELF_TAB,
   showMenuOnHover: false,
   id: uuidv4(),
+  timePickerConfig: {
+    type: TimeConfigType.FIELD,
+  },
   ...item,
 });
 
@@ -47,6 +59,7 @@ export const createPanelOptions = (options: Partial<PanelOptions> = {}): PanelOp
 export const createVisualLinkConfig = (item: Partial<VisualLink> = {}): VisualLink => ({
   name: 'Link1',
   showMenuOnHover: false,
+  type: VisualLinkType.LINK,
   links: [],
   id: uuidv4(),
   ...item,
@@ -67,5 +80,13 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   target: LinkTarget.SELF_TAB,
   showMenuOnHover: false,
   id: uuidv4(),
+  ...item,
+});
+
+/**
+ * Create Time Config
+ */
+export const createTimeConfig = (item: Partial<TimeConfig> = {}): TimeConfig => ({
+  type: TimeConfigType.RELATIVE,
   ...item,
 });

@@ -1,3 +1,5 @@
+import { FieldSource } from '@/types';
+
 /**
  * Reorder
  * @param list
@@ -11,3 +13,8 @@ export const reorder = <T>(list: T[], startIndex: number, endIndex: number) => {
 
   return result;
 };
+
+/**
+ * Get Field Key
+ */
+export const getFieldKey = (field: FieldSource): string => `${field.source}:${field.name}`;

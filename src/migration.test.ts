@@ -1,4 +1,5 @@
 import { getMigratedOptions } from './migration';
+import { TimeConfigType } from './types';
 import { createGroupConfig, createLinkConfig } from './utils';
 
 /**
@@ -225,6 +226,62 @@ describe('migration', () => {
       expect(items[0].id).toEqual('item-1-test-id');
       expect(items[1].id).toEqual('abc-123');
       expect(items[2].id).toEqual('abc-123');
+    });
+
+    it('Should normalize time config type if it is undefined ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: undefined,
+        },
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: undefined,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[1].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[2].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+    });
+
+    it('Should normalize time config type if it is empty string or null ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: null as any,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[1].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[2].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
     });
   });
 });

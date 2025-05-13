@@ -1,0 +1,71 @@
+import { cx } from '@emotion/css';
+import { locationService } from '@grafana/runtime';
+import { Button, useStyles2 } from '@grafana/ui';
+import React from 'react';
+
+import { TEST_IDS } from '@/constants';
+import { VisualLink } from '@/types/links';
+
+import { getStyles } from './TimePickerElement.styles';
+
+/**
+ * Test Ids
+ */
+const testIds = TEST_IDS.timePickerElement;
+
+/**
+ * Properties
+ */
+interface Props {
+  /**
+   * Link
+   *
+   * @type {VisualLink}
+   */
+  link: VisualLink;
+
+  /**
+   * Is link use for grid mode
+   *
+   * @type {VisualLink}
+   */
+  gridMode?: boolean;
+}
+
+/**
+ * Time Picker Element
+ */
+export const TimePickerElement: React.FC<Props> = ({ link, gridMode = false }) => {
+  /**
+   * Styles
+   */
+  const styles = useStyles2(getStyles);
+
+  /**
+   * Return
+   */
+  return (
+    <Button
+      variant="secondary"
+      className={cx(styles.link, gridMode && styles.linkGridMode)}
+      key={link.name}
+      fill="outline"
+      onClick={() => {
+        if (link.timeRange) {
+          locationService.partial(
+            {
+              [`from`]: link.timeRange.from,
+              [`to`]: link.timeRange.to,
+            },
+            true
+          );
+        }
+      }}
+      title={link.name}
+      tooltip={link.name}
+      {...testIds.buttonPicker.apply(link.name)}
+    >
+      {link.name}
+    </Button>
+  );
+};

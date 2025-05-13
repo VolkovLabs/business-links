@@ -1,0 +1,651 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 8,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 23,
+        "x": 0,
+        "y": 8
+      },
+      "id": 1,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "7d",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 604800,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "1h",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 3600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range from fields",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range only TO from field",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "491ef2ac-27af-407b-aed5-212e218b955d",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range only FROM with field",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "from": 1743524821671,
+                    "to": 1746030427982
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range From only",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "from": 1743524850656
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "45db9278-a559-4816-8f78-86a896b9f347",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range TO only",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "to": 1746635272039
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "timeFrom",
+                "type": "string",
+                "values": ["2025-05-01"]
+              },
+              {
+                "config": {},
+                "name": "timeTo",
+                "type": "string",
+                "values": ["2025-05-11"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Date picker",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 23,
+        "x": 0,
+        "y": 14
+      },
+      "id": 2,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "7d",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 604800,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "1h",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 3600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range from fields",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range only TO from field",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "491ef2ac-27af-407b-aed5-212e218b955d",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range only FROM with field",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "from": 1743524821671,
+                    "to": 1746030427982
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range From only",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "from": 1743524850656
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "45db9278-a559-4816-8f78-86a896b9f347",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Manual range TO only",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "manualTimeRange": {
+                    "to": 1746635272039
+                  },
+                  "type": "manual"
+                },
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 6,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 7,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 0,
+                "y": 2
+              },
+              {
+                "h": 2,
+                "i": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 2,
+                "y": 2
+              },
+              {
+                "h": 2,
+                "i": "491ef2ac-27af-407b-aed5-212e218b955d",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 2,
+                "y": 4
+              },
+              {
+                "h": 2,
+                "i": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 2,
+                "y": 6
+              },
+              {
+                "h": 2,
+                "i": "fb8f25de-211b-4715-9335-a8c171cbf121",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "45db9278-a559-4816-8f78-86a896b9f347",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 0,
+                "y": 4
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "timeFrom",
+                "type": "string",
+                "values": ["2025-05-01"]
+              },
+              {
+                "config": {},
+                "name": "timeTo",
+                "type": "string",
+                "values": ["2025-05-11"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Date picker Grid",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": ["datePicker"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2025-04-01T16:27:01.671Z",
+    "to": "2025-04-30T16:27:07.982Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Date picker",
+  "uid": "belrzzddl9lvke",
+  "version": 14
+}

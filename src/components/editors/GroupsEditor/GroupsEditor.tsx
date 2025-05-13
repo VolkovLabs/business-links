@@ -36,7 +36,7 @@ const testIds = TEST_IDS.groupsEditor;
 /**
  * Groups Editor
  */
-export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, value, id }) => {
+export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onChange, value, id }) => {
   /**
    * Styles and Theme
    */
@@ -318,6 +318,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options }, onChange, 
                           onToggle={() => onToggleItemExpandedState(item.name)}
                         >
                           <GroupEditor
+                            data={data}
                             name={item.name}
                             value={item}
                             dashboards={availableDashboards}

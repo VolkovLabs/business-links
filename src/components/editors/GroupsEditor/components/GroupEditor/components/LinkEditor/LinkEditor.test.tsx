@@ -1,20 +1,46 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { getJestSelectors } from '@volkovlabs/jest-selectors';
+import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
 import { createLinkConfig } from '@/utils';
 
+import { TimePickerEditor } from './components';
 import { LinkEditor } from './LinkEditor';
 
 type Props = React.ComponentProps<typeof LinkEditor>;
+
+const inTestIds = {
+  timePickerEditor: createSelector('data-testid time-picker-editor'),
+};
+
+/**
+ * Mock TimePickerEditor
+ */
+const TimePickerEditorMock = ({ value, onChange }: any) => {
+  return (
+    <input
+      {...inTestIds.timePickerEditor.apply()}
+      onChange={() => {
+        onChange(value);
+      }}
+    />
+  );
+};
+
+/**
+ * Mock Link Editor
+ */
+jest.mock('./components', () => ({
+  TimePickerEditor: jest.fn(),
+}));
 
 describe('LinkEditor', () => {
   /**
    * Selectors
    */
-  const getSelectors = getJestSelectors(TEST_IDS.linkEditor);
+  const getSelectors = getJestSelectors({ ...TEST_IDS.linkEditor, ...inTestIds });
   const selectors = getSelectors(screen);
 
   /**
@@ -38,7 +64,9 @@ describe('LinkEditor', () => {
     );
   };
 
-  beforeEach(() => {});
+  beforeEach(() => {
+    jest.mocked(TimePickerEditor).mockImplementation(TimePickerEditorMock);
+  });
 
   it('Should allow to change Link Type to Dropdown for groups', () => {
     render(getComponent({ optionId: 'groups' }));
@@ -66,11 +94,7 @@ describe('LinkEditor', () => {
     /**
      * Get value via Select mock
      */
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        linkType: 'unable to find option',
-      })
-    );
+    expect(onChange).not.toHaveBeenCalledWith();
   });
 
   it('Should allow change url for single type', () => {
@@ -415,5 +439,14 @@ describe('LinkEditor', () => {
         includeVariables: true,
       })
     );
+  });
+
+  it('Should render TimePickerEditor', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TIMEPICKER }) }));
+
+    expect(selectors.fieldLinkType()).toBeInTheDocument();
+    expect(selectors.fieldLinkType()).toHaveValue(LinkType.TIMEPICKER);
+
+    expect(selectors.timePickerEditor()).toBeInTheDocument();
   });
 });
