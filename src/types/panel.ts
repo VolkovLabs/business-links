@@ -17,14 +17,6 @@ export type RecursivePartial<T> = {
 };
 
 /**
- * Link config type
- */
-export enum LinkConfigType {
-  LINK = 'link',
-  HTML_CONTENT = 'html_content',
-}
-
-/**
  * Link type
  */
 export enum LinkType {
@@ -123,13 +115,6 @@ export interface TimeConfig {
  * Base Link Config
  */
 export interface LinkConfig {
-  /**
-   * Type
-   *
-   * @type {LinkConfigType}
-   */
-  type: LinkConfigType;
-
   /**
    * Link type
    *
