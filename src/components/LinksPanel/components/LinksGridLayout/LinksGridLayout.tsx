@@ -222,7 +222,7 @@ export const LinksGridLayout: React.FC<Props> = ({
             >
               <div className={styles.linkWrapper} {...testIds.linkWrapper.apply(link.name)}>
                 {link.type === VisualLinkType.TIMEPICKER && (
-                  <TimePickerElement key={link.name} link={link} gridMode={true} />
+                  <TimePickerElement key={link.id} link={link} gridMode={true} />
                 )}
                 {link.type === VisualLinkType.LINK && <LinkElement key={link.id} link={link} gridMode={true} />}
               </div>
