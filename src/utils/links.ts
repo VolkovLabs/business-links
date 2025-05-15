@@ -235,6 +235,20 @@ export const prepareLinksToRender = ({
       }
 
       /**
+       * HTML
+       */
+      case LinkType.HTML: {
+        result.push({
+          type: VisualLinkType.HTML,
+          id: item.id,
+          name: item.name,
+          content: item.htmlConfig?.content,
+          links: [],
+        });
+        break;
+      }
+
+      /**
        * Single link
        */
       case LinkType.SINGLE: {

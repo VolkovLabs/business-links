@@ -2,6 +2,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { cx } from '@emotion/css';
+import { DataFrame, InterpolateFunction } from '@grafana/data';
 import { locationService } from '@grafana/runtime';
 import { Icon, useStyles2 } from '@grafana/ui';
 import React, { RefObject, useMemo, useRef } from 'react';
@@ -10,6 +11,7 @@ import ReactGridLayout from 'react-grid-layout';
 import { TEST_IDS } from '@/constants';
 import { GroupConfig, PanelOptions, VisualLink, VisualLinkType } from '@/types';
 
+import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { getStyles } from './LinksGridLayout.styles';
@@ -77,6 +79,10 @@ interface Props {
    * @type {string}
    */
   panelTitle: string;
+
+  data: DataFrame[];
+
+  replaceVariables: InterpolateFunction;
 }
 
 /**
@@ -91,6 +97,8 @@ export const LinksGridLayout: React.FC<Props> = ({
   height,
   panelTitle,
   onOptionsChange,
+  data,
+  replaceVariables,
 }) => {
   /**
    * Styles
@@ -223,6 +231,15 @@ export const LinksGridLayout: React.FC<Props> = ({
               <div className={styles.linkWrapper} {...testIds.linkWrapper.apply(link.name)}>
                 {link.type === VisualLinkType.TIMEPICKER && (
                   <TimePickerElement key={link.id} link={link} gridMode={true} />
+                )}
+                {link.type === VisualLinkType.HTML && (
+                  <ContentElement
+                    key={link.id}
+                    link={link}
+                    panelData={data}
+                    gridMode={true}
+                    replaceVariables={replaceVariables}
+                  />
                 )}
                 {link.type === VisualLinkType.LINK && <LinkElement key={link.id} link={link} gridMode={true} />}
               </div>

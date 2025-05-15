@@ -1,6 +1,6 @@
 import { DataFrame, Field } from '@grafana/data';
 
-import { LinkTarget, LinkType, TimeConfigType } from '@/types';
+import { LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 
@@ -419,6 +419,50 @@ describe('prepareLinksToRender', () => {
     expect(result[0].timeRange).toEqual({
       from: 1672531200000,
       to: 1672617600000,
+    });
+  });
+
+  it('Should generate HTML link correctly', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'HTML',
+          enable: true,
+          linkType: LinkType.HTML,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          htmlConfig: {
+            content: 'line',
+          },
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      content: 'line',
+      id: 'test-link0-id',
+      links: [],
+      name: 'HTML',
+      type: VisualLinkType.HTML,
     });
   });
 });

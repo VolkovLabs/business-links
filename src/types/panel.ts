@@ -25,6 +25,7 @@ export enum LinkType {
   TAGS = 'tags',
   DASHBOARD = 'dashboard',
   TIMEPICKER = 'timepicker',
+  HTML = 'html',
 }
 
 /**
@@ -111,6 +112,20 @@ export interface TimeConfig {
     to: number;
   };
 }
+
+/**
+ * HTML Config
+ *
+ */
+export interface HtmlConfig {
+  /**
+   * Content manual
+   *
+   * @type {string}
+   */
+  content?: string;
+}
+
 /**
  * Base Link Config
  */
@@ -219,6 +234,13 @@ export interface LinkConfig {
    * @type {TimeConfig}
    */
   timePickerConfig?: TimeConfig;
+
+  /**
+   * Time picker config
+   *
+   * @type {HtmlConfig}
+   */
+  htmlConfig?: HtmlConfig;
 }
 
 /**

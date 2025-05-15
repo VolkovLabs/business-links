@@ -6,13 +6,14 @@ import { TEST_IDS } from '@/constants';
 import { HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
 import { createLinkConfig } from '@/utils';
 
-import { TimePickerEditor } from './components';
+import { ContentEditor, TimePickerEditor } from './components';
 import { LinkEditor } from './LinkEditor';
 
 type Props = React.ComponentProps<typeof LinkEditor>;
 
 const inTestIds = {
   timePickerEditor: createSelector('data-testid time-picker-editor'),
+  contentEditor: createSelector('data-testid content-editor'),
 };
 
 /**
@@ -30,10 +31,22 @@ const TimePickerEditorMock = ({ value, onChange }: any) => {
 };
 
 /**
- * Mock Link Editor
+ * Mock ContentEditor
  */
+const ContentEditorMock = ({ value, onChange }: any) => {
+  return (
+    <input
+      {...inTestIds.contentEditor.apply()}
+      onChange={() => {
+        onChange(value);
+      }}
+    />
+  );
+};
+
 jest.mock('./components', () => ({
   TimePickerEditor: jest.fn(),
+  ContentEditor: jest.fn(),
 }));
 
 describe('LinkEditor', () => {
@@ -66,6 +79,7 @@ describe('LinkEditor', () => {
 
   beforeEach(() => {
     jest.mocked(TimePickerEditor).mockImplementation(TimePickerEditorMock);
+    jest.mocked(ContentEditor).mockImplementation(ContentEditorMock);
   });
 
   it('Should allow to change Link Type to Dropdown for groups', () => {
@@ -448,5 +462,14 @@ describe('LinkEditor', () => {
     expect(selectors.fieldLinkType()).toHaveValue(LinkType.TIMEPICKER);
 
     expect(selectors.timePickerEditor()).toBeInTheDocument();
+  });
+
+  it('Should render ContentEditor', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.HTML }) }));
+
+    expect(selectors.fieldLinkType()).toBeInTheDocument();
+    expect(selectors.fieldLinkType()).toHaveValue(LinkType.HTML);
+
+    expect(selectors.contentEditor()).toBeInTheDocument();
   });
 });
