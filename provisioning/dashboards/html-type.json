@@ -1,0 +1,993 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 9,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single empty link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "icon": "anchor",
+                "id": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "<span style=\"background:antiquewhite; border-radius:5px; position:absolute; padding:0px 5px; border:1px solid red\">I am HTML</span>"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple in one row",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 16,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single empty link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "icon": "anchor",
+                "id": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 1</div>\n<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 2</div>\n<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 3</div>\n<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 4</div>\n<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 5</div>\n<div style=\"background:antiquewhite; border-radius:5px; padding:0px 5px; border:1px solid red\">I am HTML 6</div>\n"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "moved": false,
+                "static": false,
+                "w": 2,
+                "x": 1,
+                "y": 11
+              },
+              {
+                "h": 11,
+                "i": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 2,
+                "y": 0
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple Grid",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 12,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single empty link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "icon": "anchor",
+                "id": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "<span style=\"background:antiquewhite; border-radius:5px; position:absolute; padding:0px 5px; border:1px solid red\">I am HTML</span>"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Group1"
+          },
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "<div>\n<span style=\"background:antiquewhite; border-radius:5px; position:absolute; padding:0px 5px; border:1px solid red\">I am HTML Too</span>\n<div>"
+                },
+                "id": "0d42b30b-722a-47f6-a2a3-81f23dfd2477",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "Html",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Group2"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Simple HTML in different groups",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "id": 4,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single empty link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "/d/ee576vdnqy7eoc/links",
+                "enable": true,
+                "icon": "anchor",
+                "id": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "{{variableUndefinedHelper __from}}"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 3,
+                "i": "3e3855ba-66dd-45bc-aa95-e8d424471bf5",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "03e9b484-74c1-471a-a6d5-f78196e504d6",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 2,
+                "y": 16
+              },
+              {
+                "h": 13,
+                "i": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 2,
+                "y": 3
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Show Alert if error",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 6,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "  <div style=\"width: 80%; margin: 20px auto; padding: 20px; background-color: #f5f5f5; border: 1px solid #ccc;\">\n    \n    <div style=\"padding: 15px; background-color: #e0f7fa; margin-bottom: 10px; border-radius: 8px;\">\n      <h2 style=\"margin-top: 0;\">Block 1</h2>\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>\n    </div>\n\n    <div style=\"padding: 15px; background-color: #ffe0b2; margin-bottom: 10px; border-radius: 8px;\">\n      <h2 style=\"margin-top: 0;\">Block 2</h2>\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</p>\n    </div>\n\n    <div style=\"padding: 15px; background-color: #dcedc8; border-radius: 8px;\">\n      <h2 style=\"margin-top: 0;\">Block 3</h2>\n      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sagittis ipsum. Praesent mauris.</p>\n    </div>\n\n  </div>"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 13,
+                "i": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 0,
+                "y": 0
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Overflow in element",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 20
+      },
+      "id": 5,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "From in TS: {{variable \"__from\"}}\n<br>\nDashboard: {{variable \"__dashboard\"}}\n<br>\nFrom in TS: {{variable \"__from\"}}\n<br>\nInterval: {{variable \"__interval\"}}\n<br>\nUser Email: {{variable \"__user.email\"}}\n<br>\n\netc."
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "Variable panel: {{variableValue \"$variableTest\"}}"
+                },
+                "id": "0f54b1e0-22e0-4d63-ab74-bab5496af78d",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "html2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 13,
+                "i": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 9,
+                "i": "0f54b1e0-22e0-4d63-ab74-bab5496af78d",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 3,
+                "y": 0
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Variables",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "id": 7,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "e2751279-bcb7-495f-a7f4-2f9327fae5b9",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Dropdowntest"
+          }
+        ],
+        "groups": [
+          {
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "{{{json @root}}}"
+                },
+                "id": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "I am HTML",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "htmlConfig": {
+                  "content": "First value from query A, field Device: {{{json data.[0].[0].Device}}}\n\n<br>\nFirst value from query B, field City: {{{json data.[1].[0].city}}}"
+                },
+                "id": "16bfe4eb-9b88-4ca0-886f-78f0e4a13655",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "html",
+                "name": "html 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 13,
+                "i": "f48c7278-eae0-493d-ba5d-9deb4d56d686",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 9,
+                "i": "16bfe4eb-9b88-4ca0-886f-78f0e4a13655",
+                "moved": false,
+                "static": false,
+                "w": 3,
+                "x": 3,
+                "y": 0
+              }
+            ],
+            "name": "Group1"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "Device",
+                "type": "string",
+                "values": ["device 0", "device1"]
+              },
+              {
+                "config": {},
+                "name": "value",
+                "type": "string",
+                "values": ["10", "15"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "marcusolsson-static-datasource",
+            "uid": "P1D2C73DC01F2359B"
+          },
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "Country",
+                "type": "string",
+                "values": ["USA", "Sweden", "Japan"]
+              },
+              {
+                "config": {},
+                "name": "State",
+                "type": "string",
+                "values": ["FL", "unknown", "Kantō"]
+              },
+              {
+                "config": {},
+                "name": "city",
+                "type": "string",
+                "values": ["Tampa", "Nacka", "Tokyo"]
+              }
+            ],
+            "meta": {},
+            "name": "New"
+          },
+          "hide": false,
+          "refId": "B"
+        }
+      ],
+      "title": "Support data frame as ALL data",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "device1",
+          "value": "device1"
+        },
+        "label": "variableTest",
+        "name": "variableTest",
+        "options": [
+          {
+            "selected": true,
+            "text": "device1",
+            "value": "device1"
+          },
+          {
+            "selected": false,
+            "text": "device2",
+            "value": "device2"
+          },
+          {
+            "selected": false,
+            "text": "device3",
+            "value": "device3"
+          }
+        ],
+        "query": "device1,device2,device3",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "HTML TYPE",
+  "uid": "delyvx86ho6iof",
+  "version": 22
+}
