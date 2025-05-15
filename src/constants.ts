@@ -11,6 +11,14 @@ export const TEST_IDS = {
     tab: createSelector((name: unknown) => `data-testid panel tab-${name}`),
     tabRow: createSelector('data-testid panel tab-row'),
   },
+  contentElement: {
+    root: createSelector('data-testid content-element'),
+    alert: createSelector('data-testid content-element alert'),
+    alertText: createSelector('data-testid content-element alert-text'),
+  },
+  customCodeEditor: {
+    root: createSelector('data-testid custom-code-editor'),
+  },
   fieldPicker: {
     root: createSelector('data-testid field-picker'),
   },
@@ -46,6 +54,9 @@ export const TEST_IDS = {
     dragHandle: createSelector((name: unknown) => `data-testid grid-layout drag-handle-${name}`),
     mockGridLayout: createSelector('data-testid grid-layout mock-grid-layout'),
     mockFieldInputChangeLayout: createSelector('data-testid grid-layout mock-field-input-change-layout'),
+  },
+  linksLayout: {
+    root: createSelector('data-testid links-layout'),
   },
   linkEditor: {
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),

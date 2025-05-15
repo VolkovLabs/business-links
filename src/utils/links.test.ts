@@ -1,6 +1,6 @@
 import { DataFrame, Field } from '@grafana/data';
 
-import { LinkConfigType, LinkTarget, LinkType, TimeConfigType } from '@/types';
+import { LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 
@@ -108,7 +108,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Link',
           enable: true,
           linkType: LinkType.SINGLE,
@@ -145,7 +144,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Link',
           enable: true,
           linkType: LinkType.SINGLE,
@@ -183,7 +181,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Tags',
           enable: true,
           linkType: LinkType.TAGS,
@@ -220,7 +217,6 @@ describe('prepareLinksToRender', () => {
         name: 'Nested',
         items: [
           {
-            type: LinkConfigType.LINK,
             name: 'Link',
             enable: true,
             linkType: LinkType.SINGLE,
@@ -241,7 +237,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Dropdown',
           enable: true,
           linkType: LinkType.DROPDOWN,
@@ -277,7 +272,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Link',
           enable: true,
           linkType: LinkType.DASHBOARD,
@@ -313,7 +307,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Link',
           enable: true,
           linkType: 'unknown' as any,
@@ -349,7 +342,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Time Picker',
           enable: true,
           linkType: LinkType.TIMEPICKER,
@@ -397,7 +389,6 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
           name: 'Time Picker',
           enable: true,
           linkType: LinkType.TIMEPICKER,
@@ -428,6 +419,50 @@ describe('prepareLinksToRender', () => {
     expect(result[0].timeRange).toEqual({
       from: 1672531200000,
       to: 1672617600000,
+    });
+  });
+
+  it('Should generate HTML link correctly', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'HTML',
+          enable: true,
+          linkType: LinkType.HTML,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          htmlConfig: {
+            content: 'line',
+          },
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      content: 'line',
+      id: 'test-link0-id',
+      links: [],
+      name: 'HTML',
+      type: VisualLinkType.HTML,
     });
   });
 });

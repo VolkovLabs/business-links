@@ -7,7 +7,6 @@ import { TEST_IDS } from '@/constants';
 import { LinkType, TimeConfigType } from '@/types';
 import { createLinkConfig, createTimeConfig } from '@/utils';
 
-// import { TimePickerEditor } from './components';
 import { TimePickerEditor } from './TimePickerEditor';
 
 type Props = React.ComponentProps<typeof TimePickerEditor>;
@@ -60,6 +59,7 @@ describe('LinkEditor', () => {
       },
     ],
   });
+
   /**
    * Get component
    */

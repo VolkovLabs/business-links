@@ -17,6 +17,7 @@ export interface NestedLinkConfig extends LinkConfig {
 export enum VisualLinkType {
   LINK = 'link',
   TIMEPICKER = 'timepicker',
+  HTML = 'html',
 }
 
 export interface VisualLink {
@@ -88,6 +89,12 @@ export interface VisualLink {
      */
     to: string | number;
   };
+
+  /**
+   * HTML content
+   *
+   */
+  content?: string;
 }
 
 /**

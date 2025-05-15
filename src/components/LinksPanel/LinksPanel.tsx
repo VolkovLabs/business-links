@@ -5,10 +5,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { useSavedState } from '@/hooks';
-import { DashboardMeta, PanelOptions, VisualLinkType } from '@/types';
+import { DashboardMeta, PanelOptions } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
-import { LinkElement, LinksGridLayout, TimePickerElement } from './components';
+import { LinksGridLayout, LinksLayout } from './components';
 import { getStyles } from './LinksPanel.styles';
 
 /**
@@ -188,13 +188,12 @@ export const LinksPanel: React.FC<Props> = ({
             Please add at least one link to proceed.
           </Alert>
         )}
-        {!activeGroup?.gridLayout &&
-          currentLinks.map((link) => {
-            if (link.type === VisualLinkType.TIMEPICKER) {
-              return <TimePickerElement key={link.name} link={link} />;
-            }
-            return <LinkElement key={link.name} link={link} />;
-          })}
+        <LinksLayout
+          activeGroup={activeGroup}
+          currentLinks={currentLinks}
+          panelData={data.series}
+          replaceVariables={replaceVariables}
+        />
         {activeGroup?.gridLayout && (
           <LinksGridLayout
             panelTitle={title}
@@ -205,6 +204,8 @@ export const LinksPanel: React.FC<Props> = ({
             activeGroup={activeGroup}
             onOptionsChange={onOptionsChange}
             toolbarRowRef={toolbarRowRef}
+            data={data.series}
+            replaceVariables={replaceVariables}
           />
         )}
       </div>
