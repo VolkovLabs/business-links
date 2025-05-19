@@ -10,7 +10,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       overflow: auto;
     `,
     linkWrapper: css`
-      max-width: 98%;
+      width: 98%;
       height: 98%;
     `,
     dragIcon: css`

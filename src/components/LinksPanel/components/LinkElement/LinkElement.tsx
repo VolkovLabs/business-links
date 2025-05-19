@@ -3,6 +3,7 @@ import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@gr
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { ButtonSize } from '@/types';
 import { VisualLink } from '@/types/links';
 
 import { getStyles } from './LinkElement.styles';
@@ -29,12 +30,19 @@ interface Props {
    * @type {VisualLink}
    */
   gridMode?: boolean;
+
+  /**
+   * Button size
+   *
+   * @type {VisualLink}
+   */
+  buttonSize?: ButtonSize;
 }
 
 /**
  * Links Element
  */
-export const LinkElement: React.FC<Props> = ({ link, gridMode = false }) => {
+export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = false }) => {
   /**
    * Styles
    */
@@ -63,7 +71,7 @@ export const LinkElement: React.FC<Props> = ({ link, gridMode = false }) => {
         <Button
           variant="secondary"
           className={cx(styles.link, gridMode && styles.linkGridMode)}
-          size="md"
+          size={buttonSize}
           icon={link.icon}
           fill="outline"
           {...testIds.buttonDropdown.apply(link.name)}
@@ -117,6 +125,7 @@ export const LinkElement: React.FC<Props> = ({ link, gridMode = false }) => {
           target={currentLink.target}
           variant="secondary"
           fill="outline"
+          size={buttonSize}
           {...testIds.buttonSingleLink.apply(link.name)}
         >
           {currentLink.name}
@@ -134,6 +143,7 @@ export const LinkElement: React.FC<Props> = ({ link, gridMode = false }) => {
       className={cx(styles.link, gridMode && styles.linkGridMode)}
       key={link.name}
       fill="outline"
+      size={buttonSize}
       title={link.name}
       tooltip="Empty URL"
       {...testIds.buttonEmptyLink.apply(link.name)}

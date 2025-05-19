@@ -359,6 +359,7 @@ export const prepareLinksToRender = ({
          */
         let nestedLinks: Array<{
           name: string;
+          type: VisualLinkType;
           links: LinkConfig[];
         }> = [];
 
@@ -376,7 +377,17 @@ export const prepareLinksToRender = ({
           });
         }
 
-        const dropdownLinks = nestedLinks.flatMap((nestedLink) => nestedLink.links);
+        const dropdownLinks = nestedLinks.flatMap((nestedLink) => {
+          if (nestedLink.type === VisualLinkType.TIMEPICKER) {
+            return [
+              {
+                linkType: LinkType.TIMEPICKER,
+                ...nestedLink,
+              },
+            ] as unknown as LinkConfig[];
+          }
+          return nestedLink.links;
+        });
 
         /**
          * Return Dropdown with all links
@@ -384,7 +395,8 @@ export const prepareLinksToRender = ({
         result.push({
           id: item.id,
           name: item.name,
-          type: VisualLinkType.LINK,
+          type: VisualLinkType.MENU,
+          dropdownConfig: item.dropdownConfig,
           icon: item.icon,
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,

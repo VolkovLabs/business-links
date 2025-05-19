@@ -1,6 +1,6 @@
 import { IconName } from '@grafana/ui';
 
-import { HoverMenuPositionType, LinkConfig } from './panel';
+import { DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
   /**
@@ -18,6 +18,7 @@ export enum VisualLinkType {
   LINK = 'link',
   TIMEPICKER = 'timepicker',
   HTML = 'html',
+  MENU = 'menu',
 }
 
 export interface VisualLink {
@@ -95,6 +96,13 @@ export interface VisualLink {
    *
    */
   content?: string;
+
+  /**
+   * Dropdown config
+   *
+   * @type {DropdownConfig}
+   */
+  dropdownConfig?: DropdownConfig;
 }
 
 /**

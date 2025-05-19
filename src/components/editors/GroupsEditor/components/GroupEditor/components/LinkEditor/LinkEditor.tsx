@@ -4,7 +4,17 @@ import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, HoverMenuPositionType, LinkConfig, LinkTarget, LinkType } from '@/types';
+import {
+  ButtonSize,
+  DashboardMeta,
+  DropdownAlign,
+  DropdownType,
+  EditorProps,
+  HoverMenuPositionType,
+  LinkConfig,
+  LinkTarget,
+  LinkType,
+} from '@/types';
 
 import { ContentEditor, TimePickerEditor } from './components';
 
@@ -39,6 +49,13 @@ interface Props extends EditorProps<LinkConfig> {
    * @type {DataFrame[]}
    */
   data: DataFrame[];
+
+  /**
+   * is Grid Mode
+   *
+   * @type {boolean}
+   */
+  isGrid?: boolean;
 }
 
 /**
@@ -57,8 +74,8 @@ export const linkTypeOptions = [
   },
   {
     value: LinkType.DROPDOWN,
-    label: 'Dropdown',
-    description: 'A configured list of links.',
+    label: 'Menu',
+    description: 'A configured list of nested elements.',
   },
   {
     value: LinkType.TAGS,
@@ -95,6 +112,11 @@ export const linkTypeOptionsInDropdown = [
     value: LinkType.TAGS,
     label: 'Tags',
     description: 'Return available dashboards. Includes filtering by tags.',
+  },
+  {
+    value: LinkType.TIMEPICKER,
+    label: 'Timepicker',
+    description: 'Set time range',
   },
 ];
 
@@ -138,9 +160,62 @@ export const linkTargetOptions = [
 ];
 
 /**
+ * Dropdown Type Options
+ */
+export const dropdownTypeOptions = [
+  {
+    label: 'Dropdown',
+    value: DropdownType.DROPDOWN,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownTypeOption.selector(DropdownType.DROPDOWN),
+  },
+  {
+    label: 'Row',
+    value: DropdownType.ROW,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownTypeOption.selector(DropdownType.ROW),
+  },
+];
+
+/**
+ * Dropdown align options
+ */
+export const dropdownAlignOptions = [
+  {
+    label: 'Left',
+    value: DropdownAlign.LEFT,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownAlignOption.selector(DropdownAlign.LEFT),
+  },
+  {
+    label: 'Right',
+    value: DropdownAlign.RIGHT,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownAlignOption.selector(DropdownAlign.RIGHT),
+  },
+];
+
+/**
+ * Dropdown buttons size options
+ */
+export const dropdownButtonsSizeOptions = [
+  {
+    label: 'sm',
+    value: ButtonSize.SM,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.SM),
+  },
+  {
+    label: 'md',
+    value: ButtonSize.MD,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.MD),
+  },
+  {
+    label: 'lg',
+    value: ButtonSize.LG,
+    ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.LG),
+  },
+];
+
+/**
  * Link Editor
  */
-export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards, optionId, dropdowns }) => {
+export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, dashboards, optionId, dropdowns }) => {
   /**
    * Icon Options
    */
@@ -241,7 +316,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
 
         {value.linkType === LinkType.DROPDOWN && optionId === 'groups' && (
           <>
-            <InlineField label="Dropdown" grow={true} labelWidth={20}>
+            <InlineField label="Menu" grow={true} labelWidth={20}>
               <Select
                 options={availableDropdownsOptions}
                 value={value.dropdownName}
@@ -258,20 +333,88 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
 
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
-        {optionId === 'groups' && (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) && (
-          <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
-            <InlineSwitch
-              value={value.showMenuOnHover}
-              onChange={(event) => {
+        {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (
+          <InlineField grow={true} label="Menu Type" labelWidth={12} {...TEST_IDS.linkEditor.fieldDropdownType.apply()}>
+            <RadioButtonGroup
+              value={value.dropdownConfig?.type}
+              onChange={(eventValue) => {
                 onChange({
                   ...value,
-                  showMenuOnHover: event.currentTarget.checked,
+                  dropdownConfig: {
+                    ...value.dropdownConfig,
+                    type: eventValue,
+                  },
                 });
               }}
-              {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
+              options={dropdownTypeOptions}
             />
           </InlineField>
         )}
+
+        {optionId === 'groups' &&
+          value.linkType === LinkType.DROPDOWN &&
+          value.dropdownConfig?.type === DropdownType.ROW &&
+          isGrid && (
+            <>
+              <InlineField
+                grow={true}
+                label="Align"
+                labelWidth={12}
+                {...TEST_IDS.linkEditor.fieldDropdownAlign.apply()}
+              >
+                <RadioButtonGroup
+                  value={value.dropdownConfig?.align}
+                  onChange={(eventValue) => {
+                    onChange({
+                      ...value,
+                      dropdownConfig: {
+                        ...value.dropdownConfig,
+                        align: eventValue,
+                      },
+                    });
+                  }}
+                  options={dropdownAlignOptions}
+                />
+              </InlineField>
+              <InlineField
+                grow={true}
+                label="Buttons size"
+                labelWidth={12}
+                {...TEST_IDS.linkEditor.fieldDropdownButtonSize.apply()}
+              >
+                <RadioButtonGroup
+                  value={value.dropdownConfig?.buttonSize}
+                  onChange={(eventValue) => {
+                    onChange({
+                      ...value,
+                      dropdownConfig: {
+                        ...value.dropdownConfig,
+                        buttonSize: eventValue,
+                      },
+                    });
+                  }}
+                  options={dropdownButtonsSizeOptions}
+                />
+              </InlineField>
+            </>
+          )}
+
+        {optionId === 'groups' &&
+          (value.linkType === LinkType.TAGS ||
+            (value.linkType === LinkType.DROPDOWN && value.dropdownConfig?.type !== DropdownType.ROW)) && (
+            <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
+              <InlineSwitch
+                value={value.showMenuOnHover}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    showMenuOnHover: event.currentTarget.checked,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldShowMenu.apply()}
+              />
+            </InlineField>
+          )}
 
         {optionId === 'groups' &&
           (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) &&
@@ -288,7 +431,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
             </InlineField>
           )}
       </FieldsGroup>
-      {value.linkType !== LinkType.HTML && (
+      {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
           <InlineField label="Icon" grow labelWidth={12}>
             <Select
@@ -304,7 +447,6 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
               value={value.icon}
             />
           </InlineField>
-
           {value.linkType !== LinkType.TIMEPICKER && (
             <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
               <RadioButtonGroup
@@ -322,34 +464,36 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
         </FieldsGroup>
       )}
 
-      {value.linkType !== LinkType.TIMEPICKER && value.linkType !== LinkType.HTML && (
-        <FieldsGroup label="Include">
-          <InlineField label="Current time range" grow={true} labelWidth={32}>
-            <InlineSwitch
-              value={value.includeTimeRange}
-              onChange={(event) => {
-                onChange({
-                  ...value,
-                  includeTimeRange: event.currentTarget.checked,
-                });
-              }}
-              {...TEST_IDS.linkEditor.fieldIncludeTimeRange.apply()}
-            />
-          </InlineField>
-          <InlineField label="Current template variable values" grow={true} labelWidth={32}>
-            <InlineSwitch
-              value={value.includeVariables}
-              onChange={(event) => {
-                onChange({
-                  ...value,
-                  includeVariables: event.currentTarget.checked,
-                });
-              }}
-              {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
-            />
-          </InlineField>
-        </FieldsGroup>
-      )}
+      {value.linkType !== LinkType.TIMEPICKER &&
+        value.linkType !== LinkType.HTML &&
+        value.linkType !== LinkType.DROPDOWN && (
+          <FieldsGroup label="Include">
+            <InlineField label="Current time range" grow={true} labelWidth={32}>
+              <InlineSwitch
+                value={value.includeTimeRange}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    includeTimeRange: event.currentTarget.checked,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldIncludeTimeRange.apply()}
+              />
+            </InlineField>
+            <InlineField label="Current template variable values" grow={true} labelWidth={32}>
+              <InlineSwitch
+                value={value.includeVariables}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    includeVariables: event.currentTarget.checked,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
+              />
+            </InlineField>
+          </FieldsGroup>
+        )}
     </>
   );
 };

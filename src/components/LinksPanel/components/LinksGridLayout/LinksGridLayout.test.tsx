@@ -10,6 +10,7 @@ import { createGroupConfig, createLinkConfig, createNestedLinkConfig, createVisu
 
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
+import { MenuElement } from '../MenuElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { LinksGridLayout } from './LinksGridLayout';
 
@@ -37,6 +38,7 @@ const inTestIds = {
   linkElement: createSelector('data-testid link-element'),
   timePickerElement: createSelector('data-testid time-picker-element'),
   contentElement: createSelector('data-testid content-element'),
+  menuElement: createSelector('data-testid menu-element'),
   buttonLevelsUpdate: createSelector('data-testid button-levels-update'),
 };
 
@@ -56,6 +58,15 @@ const TimePickerMock = () => <div {...inTestIds.timePickerElement.apply()} />;
 
 jest.mock('../TimePickerElement', () => ({
   TimePickerElement: jest.fn(),
+}));
+
+/**
+ * Menu Element
+ */
+const MenuElementMock = () => <div {...inTestIds.menuElement.apply()} />;
+
+jest.mock('../MenuElement', () => ({
+  MenuElement: jest.fn(),
 }));
 
 /**
@@ -120,6 +131,7 @@ describe('Grid layout', () => {
     jest.mocked(LinkElement).mockImplementation(LinkElementMock);
     jest.mocked(TimePickerElement).mockImplementation(TimePickerMock);
     jest.mocked(ContentElement).mockImplementation(ContentElementMock);
+    jest.mocked(MenuElement).mockImplementation(MenuElementMock);
     jest.mocked(locationService.getLocation).mockReturnValue({
       search: '?panel=16',
     } as Location);
@@ -153,12 +165,17 @@ describe('Grid layout', () => {
       content: 'line',
     });
 
+    const defaultMenuElement = createVisualLinkConfig({
+      name: 'Link4',
+      type: VisualLinkType.MENU,
+    });
+
     await act(async () =>
       render(
         getComponent({
           width: 400,
           height: 400,
-          links: [defaultLink, defaultTimePickerLink, defaultContentElement],
+          links: [defaultLink, defaultTimePickerLink, defaultContentElement, defaultMenuElement],
           options: options,
           onOptionsChange: onOptionsChange,
           activeGroup: activeGroup,
@@ -170,6 +187,7 @@ describe('Grid layout', () => {
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.root()).toHaveStyle('height: 362px');
     expect(selectors.timePickerElement()).toBeInTheDocument();
+    expect(selectors.menuElement()).toBeInTheDocument();
   });
 
   it('Should render Layout and calculate max height if no title', async () => {

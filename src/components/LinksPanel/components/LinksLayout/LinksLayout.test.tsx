@@ -9,6 +9,7 @@ import { createGroupConfig, createLinkConfig, createNestedLinkConfig, createVisu
 
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
+import { MenuElement } from '../MenuElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { LinksLayout } from './LinksLayout';
 
@@ -23,6 +24,7 @@ type Props = React.ComponentProps<typeof LinksLayout>;
 const inTestIds = {
   linkElement: createSelector('data-testid link-element'),
   timePickerElement: createSelector('data-testid time-picker-element'),
+  menuElement: createSelector('data-testid menu-element'),
   contentElement: createSelector('data-testid content-element'),
 };
 
@@ -42,6 +44,15 @@ const TimePickerMock = () => <div {...inTestIds.timePickerElement.apply()} />;
 
 jest.mock('../TimePickerElement', () => ({
   TimePickerElement: jest.fn(),
+}));
+
+/**
+ * Menu element mock
+ */
+const MenuElementMock = () => <div {...inTestIds.menuElement.apply()} />;
+
+jest.mock('../MenuElement', () => ({
+  MenuElement: jest.fn(),
 }));
 
 /**
@@ -113,6 +124,7 @@ describe('Links layout', () => {
     jest.mocked(LinkElement).mockImplementation(LinkElementMock);
     jest.mocked(TimePickerElement).mockImplementation(TimePickerMock);
     jest.mocked(ContentElement).mockImplementation(ContentElementMock);
+    jest.mocked(MenuElement).mockImplementation(MenuElementMock);
   });
 
   it('Should render Layout', async () => {
@@ -136,10 +148,16 @@ describe('Links layout', () => {
       content: 'line',
     });
 
+    const defaultMenuElement = createVisualLinkConfig({
+      name: 'Link4',
+      type: VisualLinkType.MENU,
+      content: 'line',
+    });
+
     await act(async () =>
       render(
         getComponent({
-          currentLinks: [defaultLink, defaultTimePickerLink, defaultContentElement],
+          currentLinks: [defaultLink, defaultTimePickerLink, defaultContentElement, defaultMenuElement],
           activeGroup: activeGroup,
           panelData: defaultData,
           replaceVariables: replaceVariables,
@@ -151,5 +169,6 @@ describe('Links layout', () => {
     expect(selectors.timePickerElement()).toBeInTheDocument();
     expect(selectors.contentElement()).toBeInTheDocument();
     expect(selectors.linkElement()).toBeInTheDocument();
+    expect(selectors.menuElement()).toBeInTheDocument();
   });
 });

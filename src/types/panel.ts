@@ -48,6 +48,31 @@ export enum TimeConfigType {
 }
 
 /**
+ * Dropdown type
+ */
+export enum DropdownType {
+  DROPDOWN = 'dropdown',
+  ROW = 'row',
+}
+
+/**
+ * Dropdown align
+ */
+export enum DropdownAlign {
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+/**
+ * Button size
+ */
+export enum ButtonSize {
+  SM = 'sm',
+  MD = 'md',
+  LG = 'lg',
+}
+
+/**
  * Time Config
  *
  */
@@ -124,6 +149,33 @@ export interface HtmlConfig {
    * @type {string}
    */
   content?: string;
+}
+
+/**
+ * Dropdown Config
+ *
+ */
+export interface DropdownConfig {
+  /**
+   * Type
+   *
+   * @type {DropdownType}
+   */
+  type?: DropdownType;
+
+  /**
+   * Type
+   *
+   * @type {DropdownAlign}
+   */
+  align?: DropdownAlign;
+
+  /**
+   * Button size
+   *
+   * @type {ButtonSize}
+   */
+  buttonSize?: ButtonSize;
 }
 
 /**
@@ -241,6 +293,13 @@ export interface LinkConfig {
    * @type {HtmlConfig}
    */
   htmlConfig?: HtmlConfig;
+
+  /**
+   * Dropdown config
+   *
+   * @type {DropdownConfig}
+   */
+  dropdownConfig?: DropdownConfig;
 }
 
 /**

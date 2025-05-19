@@ -3,6 +3,7 @@ import { DataFrame, Field } from '@grafana/data';
 import { LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
+import { createDropdownConfig } from './test';
 
 /**
  * extractParamsByPrefix
@@ -119,6 +120,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -155,6 +157,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -192,6 +195,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -228,6 +232,7 @@ describe('prepareLinksToRender', () => {
             dashboardUrl: '',
             dropdownName: '',
             id: 'test-link0-dp-id',
+            dropdownConfig: createDropdownConfig(),
           },
         ],
       },
@@ -248,6 +253,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: 'Nested',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -265,6 +271,80 @@ describe('prepareLinksToRender', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].links[0].url).toBe('https://google.com');
+  });
+
+  it('Should process nested DROPDOWN group with time picker', () => {
+    const dropdowns = [
+      {
+        name: 'Nested',
+        items: [
+          {
+            name: 'Link',
+            enable: true,
+            linkType: LinkType.SINGLE,
+            url: 'https://google.com',
+            includeVariables: false,
+            includeTimeRange: false,
+            target: LinkTarget.NEW_TAB,
+            tags: [],
+            dashboardUrl: '',
+            dropdownName: '',
+            id: 'test-link0-dp-id',
+            dropdownConfig: createDropdownConfig(),
+          },
+          {
+            name: 'Link-2',
+            enable: true,
+            linkType: LinkType.TIMEPICKER,
+            url: '',
+            includeVariables: false,
+            includeTimeRange: false,
+            target: LinkTarget.NEW_TAB,
+            tags: [],
+            dashboardUrl: '',
+            dropdownName: '',
+            id: 'test-link0-dp-id-2',
+            dropdownConfig: createDropdownConfig(),
+          },
+        ],
+      },
+    ];
+
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'Dropdown',
+          enable: true,
+          linkType: LinkType.DROPDOWN,
+          url: 'https://google.com',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: ['env'],
+          dashboardUrl: '',
+          dropdownName: 'Nested',
+          id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns,
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+
+    expect(result[0].links[0].url).toBe('https://google.com');
+    expect(result[0].links[1].linkType).toBe(LinkType.TIMEPICKER);
   });
 
   it('Should generate DASHBOARD link correctly', () => {
