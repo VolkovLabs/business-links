@@ -255,6 +255,13 @@ export interface GroupConfig {
   highlightCurrentLink?: boolean;
 
   /**
+   * Highlight the current timepicker
+   *
+   * @type {boolean}
+   */
+  highlightCurrentTimepicker?: boolean;
+
+  /**
    * Manual layout (grid)
    *
    * @type {boolean}

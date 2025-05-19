@@ -187,7 +187,9 @@ describe('TablesEditor', () => {
      */
     await act(() => fireEvent.click(item2Selectors.buttonRemove()));
 
-    expect(onChange).toHaveBeenCalledWith([{ name: 'Group', items: [], highlightCurrentLink: false }]);
+    expect(onChange).toHaveBeenCalledWith([
+      { name: 'Group', items: [], highlightCurrentLink: false, highlightCurrentTimepicker: false },
+    ]);
   });
 
   describe('Rename', () => {
@@ -249,8 +251,8 @@ describe('TablesEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith([
-        { name: 'Group', items: [], highlightCurrentLink: false },
-        { name: 'hello', items: [], highlightCurrentLink: false },
+        { name: 'Group', items: [], highlightCurrentLink: false, highlightCurrentTimepicker: false },
+        { name: 'hello', items: [], highlightCurrentLink: false, highlightCurrentTimepicker: false },
       ]);
     });
 
@@ -413,8 +415,8 @@ describe('TablesEditor', () => {
        * Check if saved
        */
       expect(onChange).toHaveBeenCalledWith([
-        { name: 'Group', items: [], highlightCurrentLink: false },
-        { name: 'hello', items: [], highlightCurrentLink: false },
+        { name: 'Group', items: [], highlightCurrentLink: false, highlightCurrentTimepicker: false },
+        { name: 'hello', items: [], highlightCurrentLink: false, highlightCurrentTimepicker: false },
       ]);
     });
 
@@ -691,11 +693,13 @@ describe('TablesEditor', () => {
         name: 'Group 2',
         items: expect.any(Array),
         highlightCurrentLink: false,
+        highlightCurrentTimepicker: false,
       },
       {
         name: 'Group',
         items: expect.any(Array),
         highlightCurrentLink: false,
+        highlightCurrentTimepicker: false,
       },
     ]);
   });

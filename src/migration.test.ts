@@ -37,37 +37,48 @@ describe('migration', () => {
   });
 
   it('Should migrate highlightCurrentLink option', async () => {
-    const group1 = createGroupConfig({ name: 'Group1', highlightCurrentLink: undefined });
+    const group1 = createGroupConfig({
+      name: 'Group1',
+      highlightCurrentLink: undefined,
+      highlightCurrentTimepicker: undefined,
+    });
     expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
       expect.objectContaining({
         groups: expect.arrayContaining([
           expect.objectContaining({
             name: 'Group1',
             highlightCurrentLink: false,
+            highlightCurrentTimepicker: false,
           }),
         ]),
       })
     );
     expect(
-      await getMigratedOptions({ options: { groups: [{ ...group1, highlightCurrentLink: false }] } } as any)
+      await getMigratedOptions({
+        options: { groups: [{ ...group1, highlightCurrentLink: false, highlightCurrentTimepicker: false }] },
+      } as any)
     ).toEqual(
       expect.objectContaining({
         groups: expect.arrayContaining([
           expect.objectContaining({
             name: 'Group1',
             highlightCurrentLink: false,
+            highlightCurrentTimepicker: false,
           }),
         ]),
       })
     );
     expect(
-      await getMigratedOptions({ options: { groups: [{ ...group1, highlightCurrentLink: true }] } } as any)
+      await getMigratedOptions({
+        options: { groups: [{ ...group1, highlightCurrentLink: true, highlightCurrentTimepicker: true }] },
+      } as any)
     ).toEqual(
       expect.objectContaining({
         groups: expect.arrayContaining([
           expect.objectContaining({
             name: 'Group1',
             highlightCurrentLink: true,
+            highlightCurrentTimepicker: true,
           }),
         ]),
       })

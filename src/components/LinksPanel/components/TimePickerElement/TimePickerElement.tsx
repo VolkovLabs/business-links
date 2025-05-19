@@ -47,7 +47,7 @@ export const TimePickerElement: React.FC<Props> = ({ link, gridMode = false }) =
   return (
     <Button
       variant="secondary"
-      className={cx(styles.link, gridMode && styles.linkGridMode)}
+      className={cx(styles.link, gridMode && styles.linkGridMode, link.isCurrentTimepicker && styles.currentTimePicker)}
       key={link.name}
       fill="outline"
       onClick={() => {

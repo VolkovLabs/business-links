@@ -685,7 +685,7 @@ describe('ColumnsEditor', () => {
       );
     });
 
-    it('Should allow change Highlight option', () => {
+    it('Should allow change Highlight link option', () => {
       const onChange = jest.fn();
 
       render(
@@ -698,12 +698,35 @@ describe('ColumnsEditor', () => {
         })
       );
 
-      expect(selectors.fieldHighlight()).toBeInTheDocument();
-      fireEvent.click(selectors.fieldHighlight());
+      expect(selectors.fieldHighlightLink()).toBeInTheDocument();
+      fireEvent.click(selectors.fieldHighlightLink());
 
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({
           highlightCurrentLink: true,
+        })
+      );
+    });
+
+    it('Should allow change Highlight timepicker option', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            highlightCurrentTimepicker: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldHighlightTimepicker()).toBeInTheDocument();
+      fireEvent.click(selectors.fieldHighlightTimepicker());
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          highlightCurrentTimepicker: true,
         })
       );
     });

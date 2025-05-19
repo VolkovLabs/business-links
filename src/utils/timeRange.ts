@@ -1,4 +1,4 @@
-import { RelativeTimeRange, TimeOption } from '@grafana/data';
+import { dateTime, rangeUtil, RelativeTimeRange, TimeOption } from '@grafana/data';
 
 /**
  * Formats the given duration in seconds into a human-readable string representation.
@@ -56,3 +56,17 @@ export function formatDuration(seconds: number): string {
   const leastSignificant = units[units.length - 1];
   return `${seconds}${leastSignificant.unit}`;
 }
+
+/**
+ * Convert a raw time input (ms number, ISO string, or 'now±...' expression)
+ * into an absolute timestamp in milliseconds.
+ *
+ * @param time – a number (ms), ISO date string, or relative 'now±...' string
+ * @returns timestamp in ms
+ */
+export const timeToSeconds = (time: string | number): number => {
+  const raw = typeof time === 'number' ? dateTime(time) : time;
+
+  const { from } = rangeUtil.convertRawToRange({ from: raw, to: raw });
+  return from.valueOf();
+};

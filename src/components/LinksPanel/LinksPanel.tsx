@@ -98,6 +98,7 @@ export const LinksPanel: React.FC<Props> = ({
       params: location.search,
       dashboardId: currentDashboardId,
       highlightCurrentLink: activeGroup?.highlightCurrentLink,
+      highlightCurrentTimepicker: activeGroup?.highlightCurrentTimepicker,
       series: data.series,
     });
   }, [

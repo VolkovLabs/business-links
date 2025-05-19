@@ -88,6 +88,7 @@ export interface VisualLink {
      */
     to: string | number;
   };
+  isCurrentTimepicker?: boolean;
 }
 
 /**

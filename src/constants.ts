@@ -77,7 +77,8 @@ export const TEST_IDS = {
   },
   groupEditor: {
     root: createSelector('data-testid group-editor'),
-    fieldHighlight: createSelector('data-testid group-editor field-highlight'),
+    fieldHighlightLink: createSelector('data-testid group-editor field-highlight-link'),
+    fieldHighlightTimepicker: createSelector('data-testid group-editor field-highlight-timepicker'),
     fieldGridLayout: createSelector('data-testid group-editor field-manual-layout'),
     fieldColumnsInManualLayout: createSelector('data-testid group-editor field-columns-in-manual-layout'),
     buttonAddNew: createSelector('data-testid group-editor button-add-new'),
