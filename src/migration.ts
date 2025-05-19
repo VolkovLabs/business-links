@@ -65,6 +65,13 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
       }
 
       /**
+       * Normalize highlight timepicker
+       */
+      if (normalizedGroup.highlightCurrentTimepicker === undefined) {
+        normalizedGroup.highlightCurrentTimepicker = false;
+      }
+
+      /**
        * Normalize gridLayout
        */
       if (normalizedGroup.gridLayout === undefined) {

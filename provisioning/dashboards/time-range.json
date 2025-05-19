@@ -133,29 +133,10 @@
         "dropdowns": [],
         "groups": [
           {
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": true,
             "items": [
-              {
-                "dashboardUrl": "",
-                "enable": true,
-                "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "timepicker",
-                "name": "7d",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 604800,
-                    "to": 0
-                  },
-                  "type": "relative"
-                },
-                "type": "link",
-                "url": ""
-              },
               {
                 "dashboardUrl": "",
                 "enable": true,
@@ -170,6 +151,90 @@
                 "timePickerConfig": {
                   "relativeTimeRange": {
                     "from": 3600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "fc494382-d22d-4d7d-889f-ea3067acf7a6",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "6h",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 21600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "f98ee678-e311-420d-81ce-9782b4ef52b8",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "12h",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 43200,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "f069e3e5-e603-4b05-bb25-714284d8fd98",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "24h",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 86400,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "7d",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 604800,
                     "to": 0
                   },
                   "type": "relative"
@@ -357,6 +422,7 @@
           {
             "gridLayout": true,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": true,
             "items": [
               {
                 "dashboardUrl": "",

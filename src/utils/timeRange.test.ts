@@ -1,6 +1,6 @@
 import { RelativeTimeRange, TimeOption } from '@grafana/data';
 
-import { formatDuration, mapRelativeTimeRangeToOption, secondsToRelativeFormat } from './timeRange';
+import { formatDuration, mapRelativeTimeRangeToOption, secondsToRelativeFormat, timeToSeconds } from './timeRange';
 
 describe('formatDuration', () => {
   it('Should format seconds correctly', () => {
@@ -97,5 +97,34 @@ describe('mapRelativeTimeRangeToOption', () => {
       display: 'now-1w to now+1d',
     };
     expect(mapRelativeTimeRangeToOption(range)).toEqual(expected);
+  });
+});
+
+describe('timeToSeconds', () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
+  test('Should return the same timestamp for a numeric input (ms)', () => {
+    const timestamp = 1747353600000;
+    expect(timeToSeconds(timestamp)).toBe(timestamp);
+  });
+
+  test('Should convert the ISO date string to a valid timestamp (ms)', () => {
+    const isoString = '2021-12-31T23:59:59.000Z';
+    const expectedTs = new Date(isoString).getTime();
+    expect(timeToSeconds(isoString)).toBe(expectedTs);
+  });
+
+  test('Should handle "now" and relative expressions "now-1h"/"now+1h" correctly', () => {
+    const baseDate = new Date('2025-05-16T00:00:00Z');
+    jest.setSystemTime(baseDate);
+    expect(timeToSeconds('now')).toBe(baseDate.getTime());
+    expect(timeToSeconds('now-1h')).toBe(baseDate.getTime() - 60 * 60 * 1000);
+    expect(timeToSeconds('now+1h')).toBe(baseDate.getTime() + 60 * 60 * 1000);
   });
 });

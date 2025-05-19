@@ -72,7 +72,6 @@ export interface VisualLink {
 
   /**
    * Time picker range
-   *
    */
   timeRange?: {
     /**
@@ -91,8 +90,12 @@ export interface VisualLink {
   };
 
   /**
+   * Current Time Picker
+   */
+  isCurrentTimepicker?: boolean;
+
+  /**
    * HTML content
-   *
    */
   content?: string;
 }
