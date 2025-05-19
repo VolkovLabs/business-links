@@ -58,10 +58,10 @@ export function formatDuration(seconds: number): string {
 }
 
 /**
- * Convert a raw time input (ms number, ISO string, or 'now±...' expression)
+ * Convert a raw time input (ms number, ISO string, or relative expression)
  * into an absolute timestamp in milliseconds.
  *
- * @param time – a number (ms), ISO date string, or relative 'now±...' string
+ * @param time – a number (ms), ISO date string, or relative expression
  * @returns timestamp in ms
  */
 export const timeToSeconds = (time: string | number): number => {

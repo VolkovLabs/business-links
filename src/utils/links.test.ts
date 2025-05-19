@@ -431,6 +431,59 @@ describe('prepareLinksToRender', () => {
       to: 1672617600000,
     });
   });
+
+  it('Should generate TIMEPICKER link with isCurrentTimepicker = true when highlightCurrentTimepicker is enabled and ranges match', () => {
+    const currentTimeRange = {
+      from: new Date('2023-01-01T00:00:00Z'),
+      to: new Date('2023-01-02T00:00:00Z'),
+      raw: {
+        from: new Date('2025-01-01T00:00:00Z'),
+        to: new Date('2025-02-01T00:00:00Z'),
+      },
+    } as any;
+
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          type: LinkConfigType.LINK,
+          name: "Manual range",
+          enable: true,
+          linkType: LinkType.TIMEPICKER,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          timePickerConfig: {
+            manualTimeRange: {
+              from: 1672531200000,
+              to: 1672617600000,
+            },
+            type: TimeConfigType.MANUAL
+          }
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange: currentTimeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      highlightCurrentTimepicker: true,
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0].isCurrentTimepicker).toBe(true);
+  });
 });
 
 describe('preparePickerTimeRange', () => {
