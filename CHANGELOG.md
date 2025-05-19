@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Icons to editor component (#19)
 - Horizontal and vertial layouts (#21)
 - Time-Picker type (#23)
+- HTML(delimiter) type (#28)
+- Option and functionality for highlighting the current timepicker (#29)
 
 ### Changed
 

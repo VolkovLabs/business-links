@@ -481,7 +481,7 @@ describe('prepareLinksToRender', () => {
       name: 'Test',
       items: [
         {
-          type: LinkConfigType.LINK,
+          type: VisualLinkType.LINK,
           name: 'Manual range',
           enable: true,
           linkType: LinkType.TIMEPICKER,
