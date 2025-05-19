@@ -99,7 +99,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false }) => {
                   tooltip="Empty URL"
                   {...testIds.defaultButton.apply(nestedLink.name)}
                 >
-                  {link.name}
+                  {nestedLink.name}
                 </Button>
               );
             }
