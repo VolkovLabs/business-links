@@ -6,7 +6,7 @@ import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, HoverMenuPositionType, LinkConfig, LinkTarget, LinkType } from '@/types';
 
-import { TimePickerEditor } from './components';
+import { ContentEditor, TimePickerEditor } from './components';
 
 /**
  * Properties
@@ -56,9 +56,9 @@ export const linkTypeOptions = [
     description: 'Select the dashboard.',
   },
   {
-    value: LinkType.TIMEPICKER,
-    label: 'Timepicker',
-    description: 'Set time range',
+    value: LinkType.DROPDOWN,
+    label: 'Dropdown',
+    description: 'A configured list of links.',
   },
   {
     value: LinkType.TAGS,
@@ -66,9 +66,14 @@ export const linkTypeOptions = [
     description: 'Return available dashboards. Includes filtering by tags.',
   },
   {
-    value: LinkType.DROPDOWN,
-    label: 'Dropdown',
-    description: 'A configured list of links.',
+    value: LinkType.TIMEPICKER,
+    label: 'Timepicker',
+    description: 'Set time range',
+  },
+  {
+    value: LinkType.HTML,
+    label: 'HTML/Handlebars',
+    description: 'HTML element with handlebars support',
   },
 ];
 
@@ -251,6 +256,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
 
         {value.linkType === LinkType.TIMEPICKER && <TimePickerEditor value={value} data={data} onChange={onChange} />}
 
+        {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
+
         {optionId === 'groups' && (value.linkType === LinkType.TAGS || value.linkType === LinkType.DROPDOWN) && (
           <InlineField label="Show menu on hover" grow={true} labelWidth={20}>
             <InlineSwitch
@@ -281,38 +288,41 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, data, dashboards,
             </InlineField>
           )}
       </FieldsGroup>
-      <FieldsGroup label="Configuration">
-        <InlineField label="Icon" grow labelWidth={12}>
-          <Select
-            options={iconOptions}
-            isClearable
-            onChange={(event) => {
-              onChange({
-                ...value,
-                icon: event?.value as IconName | undefined,
-              });
-            }}
-            {...TEST_IDS.linkEditor.fieldIcon.apply()}
-            value={value.icon}
-          />
-        </InlineField>
-        {value.linkType !== LinkType.TIMEPICKER && (
-          <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
-            <RadioButtonGroup
-              value={value.target}
-              onChange={(eventValue) => {
+      {value.linkType !== LinkType.HTML && (
+        <FieldsGroup label="Configuration">
+          <InlineField label="Icon" grow labelWidth={12}>
+            <Select
+              options={iconOptions}
+              isClearable
+              onChange={(event) => {
                 onChange({
                   ...value,
-                  target: eventValue,
+                  icon: event?.value as IconName | undefined,
                 });
               }}
-              options={linkTargetOptions}
+              {...TEST_IDS.linkEditor.fieldIcon.apply()}
+              value={value.icon}
             />
           </InlineField>
-        )}
-      </FieldsGroup>
 
-      {value.linkType !== LinkType.TIMEPICKER && (
+          {value.linkType !== LinkType.TIMEPICKER && (
+            <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+              <RadioButtonGroup
+                value={value.target}
+                onChange={(eventValue) => {
+                  onChange({
+                    ...value,
+                    target: eventValue,
+                  });
+                }}
+                options={linkTargetOptions}
+              />
+            </InlineField>
+          )}
+        </FieldsGroup>
+      )}
+
+      {value.linkType !== LinkType.TIMEPICKER && value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Include">
           <InlineField label="Current time range" grow={true} labelWidth={32}>
             <InlineSwitch

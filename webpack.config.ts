@@ -16,6 +16,13 @@ const config = async (env): Promise<Configuration> => {
       asyncChunks: true,
     },
     resolve: {
+      alias: {
+        handlebars: 'handlebars/dist/handlebars.js',
+      },
+      fallback: {
+        fs: false,
+        util: false,
+      },
       plugins: [new TsconfigPathsPlugin()],
     },
   });

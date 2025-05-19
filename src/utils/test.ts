@@ -1,22 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import {
-  GroupConfig,
-  LinkConfig,
-  LinkConfigType,
-  LinkTarget,
-  LinkType,
-  PanelOptions,
-  TimeConfig,
-  TimeConfigType,
-} from '@/types';
+import { GroupConfig, LinkConfig, LinkTarget, LinkType, PanelOptions, TimeConfig, TimeConfigType } from '@/types';
 import { NestedLinkConfig, VisualLink, VisualLinkType } from '@/types/links';
 
 /**
  * Create Link
  */
 export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => ({
-  type: LinkConfigType.LINK,
   linkType: LinkType.SINGLE,
   name: 'Link',
   enable: true,
@@ -70,7 +60,6 @@ export const createVisualLinkConfig = (item: Partial<VisualLink> = {}): VisualLi
  * Create Link
  */
 export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): NestedLinkConfig => ({
-  type: LinkConfigType.LINK,
   linkType: LinkType.SINGLE,
   name: 'Link',
   enable: true,

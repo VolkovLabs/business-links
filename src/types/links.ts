@@ -17,6 +17,7 @@ export interface NestedLinkConfig extends LinkConfig {
 export enum VisualLinkType {
   LINK = 'link',
   TIMEPICKER = 'timepicker',
+  HTML = 'html',
 }
 
 export interface VisualLink {
@@ -71,7 +72,6 @@ export interface VisualLink {
 
   /**
    * Time picker range
-   *
    */
   timeRange?: {
     /**
@@ -88,7 +88,16 @@ export interface VisualLink {
      */
     to: string | number;
   };
+
+  /**
+   * Current Time Picker
+   */
   isCurrentTimepicker?: boolean;
+
+  /**
+   * HTML content
+   */
+  content?: string;
 }
 
 /**

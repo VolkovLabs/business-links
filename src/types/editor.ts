@@ -20,3 +20,10 @@ export enum LinkTarget {
   NEW_TAB = '_blank',
   SELF_TAB = '_self',
 }
+
+/**
+ * Supported Languages
+ */
+export const enum CodeLanguage {
+  HANDLEBARS = 'handlebars',
+}

@@ -8,6 +8,7 @@ import { TEST_IDS } from '@/constants';
 import { VisualLinkType } from '@/types';
 import { createGroupConfig, createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
+import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { LinksGridLayout } from './LinksGridLayout';
@@ -35,6 +36,7 @@ jest.mock('@grafana/runtime', () => ({
 const inTestIds = {
   linkElement: createSelector('data-testid link-element'),
   timePickerElement: createSelector('data-testid time-picker-element'),
+  contentElement: createSelector('data-testid content-element'),
   buttonLevelsUpdate: createSelector('data-testid button-levels-update'),
 };
 
@@ -54,6 +56,15 @@ const TimePickerMock = () => <div {...inTestIds.timePickerElement.apply()} />;
 
 jest.mock('../TimePickerElement', () => ({
   TimePickerElement: jest.fn(),
+}));
+
+/**
+ * Mock Content Element
+ */
+const ContentElementMock = () => <div {...inTestIds.contentElement.apply()} />;
+
+jest.mock('../ContentElement', () => ({
+  ContentElement: jest.fn(),
 }));
 
 describe('Grid layout', () => {
@@ -108,6 +119,7 @@ describe('Grid layout', () => {
   beforeEach(() => {
     jest.mocked(LinkElement).mockImplementation(LinkElementMock);
     jest.mocked(TimePickerElement).mockImplementation(TimePickerMock);
+    jest.mocked(ContentElement).mockImplementation(ContentElementMock);
     jest.mocked(locationService.getLocation).mockReturnValue({
       search: '?panel=16',
     } as Location);
@@ -135,12 +147,18 @@ describe('Grid layout', () => {
       type: VisualLinkType.TIMEPICKER,
     });
 
+    const defaultContentElement = createVisualLinkConfig({
+      name: 'Link3',
+      type: VisualLinkType.HTML,
+      content: 'line',
+    });
+
     await act(async () =>
       render(
         getComponent({
           width: 400,
           height: 400,
-          links: [defaultLink, defaultTimePickerLink],
+          links: [defaultLink, defaultTimePickerLink, defaultContentElement],
           options: options,
           onOptionsChange: onOptionsChange,
           activeGroup: activeGroup,
