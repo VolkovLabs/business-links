@@ -330,9 +330,6 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         )}
 
         {value.linkType === LinkType.TIMEPICKER && <TimePickerEditor value={value} data={data} onChange={onChange} />}
-
-        {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
-
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
         {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (

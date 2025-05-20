@@ -32,6 +32,11 @@ interface Props {
    */
   gridMode?: boolean;
 
+  /**
+   * IButton Size
+   *
+   * @type {ButtonSize}
+   */
   buttonSize?: ButtonSize;
 }
 
