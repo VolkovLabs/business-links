@@ -73,7 +73,6 @@ export interface VisualLink {
 
   /**
    * Time picker range
-   *
    */
   timeRange?: {
     /**
@@ -103,6 +102,11 @@ export interface VisualLink {
    * @type {DropdownConfig}
    */
   dropdownConfig?: DropdownConfig;
+
+  /**
+   * Current Time Picker
+   */
+  isCurrentTimepicker?: boolean;
 }
 
 /**

@@ -120,6 +120,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
           name: newItemName,
           items: [],
           highlightCurrentLink: false,
+          highlightCurrentTimepicker: false,
         },
       ])
     );

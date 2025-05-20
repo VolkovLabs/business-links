@@ -34,5 +34,12 @@ export const getStyles = (theme: GrafanaTheme2) => {
         background: ${theme.colors.background.secondary};
       }
     `,
+    currentTimePicker: css`
+      background-color: ${theme.colors.warning.borderTransparent};
+      &:hover {
+        z-index: ${theme.zIndex.dropdown};
+        background: ${theme.colors.background.secondary};
+      }
+    `,
   };
 };

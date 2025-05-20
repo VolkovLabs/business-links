@@ -5,7 +5,7 @@ import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { filterDashboardsByTags } from './dashboards';
 import { getFieldFromFrame, getFrameBySource } from './fields';
-import { mapRelativeTimeRangeToOption } from './timeRange';
+import { mapRelativeTimeRangeToOption, timeToSeconds } from './timeRange';
 
 /**
  * extractParamsByPrefix
@@ -170,6 +170,10 @@ export const preparePickerTimeRange = ({
  * @param timeRange
  * @param dashboards
  * @param params
+ * @param dashboardId
+ * @param highlightCurrentLink
+ * @param highlightCurrentTimepicker
+ * @param series
  */
 export const prepareLinksToRender = ({
   currentGroup,
@@ -180,6 +184,7 @@ export const prepareLinksToRender = ({
   params,
   dashboardId,
   highlightCurrentLink,
+  highlightCurrentTimepicker,
   series,
 }: {
   currentGroup?: GroupConfig;
@@ -190,6 +195,7 @@ export const prepareLinksToRender = ({
   params: string;
   dashboardId: string;
   highlightCurrentLink?: boolean;
+  highlightCurrentTimepicker?: boolean;
   series: DataFrame[];
 }): VisualLink[] => {
   /**
@@ -220,15 +226,43 @@ export const prepareLinksToRender = ({
           to: typeof timeRange.raw.to === 'string' ? timeRange.raw.to : timeRange.to.valueOf(),
         };
 
+        /**
+         * Picker Time Range
+         */
+        const pickerTimeRange = preparePickerTimeRange({
+          dashboardTimeRange: dashboardTimeRange,
+          item,
+          series,
+        });
+
+        /**
+         * Is current timepicker
+         */
+        const isCurrentTimepicker =
+          highlightCurrentTimepicker &&
+          timeToSeconds(pickerTimeRange.from) === timeToSeconds(dashboardTimeRange.from) &&
+          timeToSeconds(pickerTimeRange.to) === timeToSeconds(dashboardTimeRange.to);
+
         result.push({
           type: VisualLinkType.TIMEPICKER,
           id: item.id,
           name: item.name,
-          timeRange: preparePickerTimeRange({
-            dashboardTimeRange: dashboardTimeRange,
-            item: item,
-            series: series,
-          }),
+          timeRange: pickerTimeRange,
+          links: [],
+          isCurrentTimepicker,
+        });
+        break;
+      }
+
+      /**
+       * HTML
+       */
+      case LinkType.HTML: {
+        result.push({
+          type: VisualLinkType.HTML,
+          id: item.id,
+          name: item.name,
+          content: item.htmlConfig?.content,
           links: [],
         });
         break;
@@ -373,6 +407,7 @@ export const prepareLinksToRender = ({
             params,
             dashboardId,
             highlightCurrentLink,
+            highlightCurrentTimepicker,
             series,
           });
         }

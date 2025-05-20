@@ -53,6 +53,7 @@ export const createGroupConfig = (options: Partial<GroupConfig> = {}): GroupConf
   name: 'Group',
   items: [],
   highlightCurrentLink: false,
+  highlightCurrentTimepicker: false,
   ...options,
 });
 

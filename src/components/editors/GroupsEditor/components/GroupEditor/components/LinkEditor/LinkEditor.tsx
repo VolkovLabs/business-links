@@ -333,6 +333,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
+        {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
+
         {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (
           <InlineField grow={true} label="Menu Type" labelWidth={12} {...TEST_IDS.linkEditor.fieldDropdownType.apply()}>
             <RadioButtonGroup
@@ -431,6 +433,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             </InlineField>
           )}
       </FieldsGroup>
+
       {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
           <InlineField label="Icon" grow labelWidth={12}>
@@ -447,6 +450,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               value={value.icon}
             />
           </InlineField>
+
           {value.linkType !== LinkType.TIMEPICKER && (
             <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
               <RadioButtonGroup

@@ -171,6 +171,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: 'test123',
       highlightCurrentLink: true,
+      highlightCurrentTimepicker: true,
       series: [],
     });
 
