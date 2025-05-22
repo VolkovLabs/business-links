@@ -29,7 +29,7 @@ interface Props {
   /**
    * Is link use for grid mode
    *
-   * @type {VisualLink}
+   * @type {boolean}
    */
   gridMode?: boolean;
 }
