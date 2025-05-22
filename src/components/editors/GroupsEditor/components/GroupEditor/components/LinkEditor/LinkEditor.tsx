@@ -169,7 +169,7 @@ export const dropdownTypeOptions = [
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownTypeOption.selector(DropdownType.DROPDOWN),
   },
   {
-    label: 'Row',
+    label: 'Button Row',
     value: DropdownType.ROW,
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownTypeOption.selector(DropdownType.ROW),
   },
@@ -196,17 +196,17 @@ export const dropdownAlignOptions = [
  */
 export const dropdownButtonsSizeOptions = [
   {
-    label: 'sm',
+    label: 'Small',
     value: ButtonSize.SM,
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.SM),
   },
   {
-    label: 'md',
+    label: 'Medium',
     value: ButtonSize.MD,
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.MD),
   },
   {
-    label: 'lg',
+    label: 'Large',
     value: ButtonSize.LG,
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.LG),
   },
@@ -333,7 +333,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
         {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (
-          <InlineField grow={true} label="Menu Type" labelWidth={12} {...TEST_IDS.linkEditor.fieldDropdownType.apply()}>
+          <InlineField grow={true} label="Menu Type" labelWidth={20} {...TEST_IDS.linkEditor.fieldDropdownType.apply()}>
             <RadioButtonGroup
               value={value.dropdownConfig?.type}
               onChange={(eventValue) => {
@@ -358,7 +358,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               <InlineField
                 grow={true}
                 label="Align"
-                labelWidth={12}
+                labelWidth={20}
                 {...TEST_IDS.linkEditor.fieldDropdownAlign.apply()}
               >
                 <RadioButtonGroup
@@ -378,7 +378,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               <InlineField
                 grow={true}
                 label="Buttons size"
-                labelWidth={12}
+                labelWidth={20}
                 {...TEST_IDS.linkEditor.fieldDropdownButtonSize.apply()}
               >
                 <RadioButtonGroup
@@ -433,7 +433,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
       {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
-          <InlineField label="Icon" grow labelWidth={12}>
+          <InlineField label="Icon" grow labelWidth={20}>
             <Select
               options={iconOptions}
               isClearable
@@ -449,7 +449,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
           </InlineField>
 
           {value.linkType !== LinkType.TIMEPICKER && (
-            <InlineField grow={true} label="Open in" labelWidth={12} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+            <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
               <RadioButtonGroup
                 value={value.target}
                 onChange={(eventValue) => {

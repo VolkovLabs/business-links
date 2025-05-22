@@ -195,11 +195,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
    */
   const renderAlertMessage = useMemo(() => {
     if (value.length < 1) {
-      return (
-        <Alert severity="info" title="No Items" {...testIds.noItemsMessage.apply()}>
-          Please add at least one new item to proceed.
-        </Alert>
-      );
+      return <Alert severity="info" title="No Items" {...testIds.noItemsMessage.apply()}></Alert>;
     }
     return null;
   }, [value.length]);
