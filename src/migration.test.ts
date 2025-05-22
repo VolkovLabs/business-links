@@ -1,5 +1,5 @@
 import { getMigratedOptions } from './migration';
-import { TimeConfigType } from './types';
+import { ButtonSize, DropdownAlign, DropdownType, TimeConfigType } from './types';
 import { createGroupConfig, createLinkConfig } from './utils';
 
 /**
@@ -293,6 +293,44 @@ describe('migration', () => {
       expect(items[0].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
       expect(items[1].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
       expect(items[2].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+    });
+
+    it('Should normalize dropdown config if null or undefined ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        dropdownConfig: {
+          type: DropdownType.ROW,
+          align: DropdownAlign.RIGHT,
+          buttonSize: ButtonSize.LG,
+        },
+      });
+      const item2 = createLinkConfig({
+        id: 'item-2-test-id',
+        dropdownConfig: undefined,
+      });
+
+      const item3 = createLinkConfig({
+        id: 'item-3-test-id',
+        dropdownConfig: null,
+      } as any);
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].dropdownConfig?.type).toEqual(DropdownType.ROW);
+      expect(items[1].dropdownConfig?.type).toEqual(DropdownType.DROPDOWN);
+      expect(items[2].dropdownConfig?.type).toEqual(DropdownType.DROPDOWN);
+
+      expect(items[0].dropdownConfig?.align).toEqual(DropdownAlign.RIGHT);
+      expect(items[1].dropdownConfig?.align).toEqual(DropdownAlign.LEFT);
+      expect(items[2].dropdownConfig?.align).toEqual(DropdownAlign.LEFT);
+
+      expect(items[0].dropdownConfig?.buttonSize).toEqual(ButtonSize.LG);
+      expect(items[1].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
+      expect(items[2].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
     });
   });
 });

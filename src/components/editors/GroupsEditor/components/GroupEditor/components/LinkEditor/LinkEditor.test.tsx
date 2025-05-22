@@ -3,8 +3,8 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
-import { createLinkConfig } from '@/utils';
+import { ButtonSize, DropdownAlign, DropdownType, HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
+import { createDropdownConfig, createLinkConfig } from '@/utils';
 
 import { ContentEditor, TimePickerEditor } from './components';
 import { LinkEditor } from './LinkEditor';
@@ -471,5 +471,89 @@ describe('LinkEditor', () => {
     expect(selectors.fieldLinkType()).toHaveValue(LinkType.HTML);
 
     expect(selectors.contentEditor()).toBeInTheDocument();
+  });
+
+  it('Should allow change DROPDOWN Type', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.DROPDOWN }),
+      })
+    );
+
+    expect(selectors.fieldDropdownType()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldDropdownTypeOption(false, DropdownType.ROW));
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dropdownConfig: expect.objectContaining({
+          type: DropdownType.ROW,
+        }),
+      })
+    );
+  });
+
+  it('Should allow change DROPDOWN Align', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownConfig: createDropdownConfig({ type: DropdownType.ROW }),
+        }),
+      })
+    );
+
+    expect(selectors.fieldDropdownAlign()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldDropdownAlignOption(false, DropdownAlign.RIGHT));
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dropdownConfig: expect.objectContaining({
+          align: DropdownAlign.RIGHT,
+        }),
+      })
+    );
+  });
+
+  it('Should allow change DROPDOWN Button size', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownConfig: createDropdownConfig({ type: DropdownType.ROW }),
+        }),
+      })
+    );
+
+    expect(selectors.fieldDropdownButtonSize()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldDropdownButtonSizeOption(false, ButtonSize.SM));
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dropdownConfig: expect.objectContaining({
+          buttonSize: ButtonSize.SM,
+        }),
+      })
+    );
+  });
+
+  it('Should not display DROPDOWN Button size and Align editors if it is not grid', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: false,
+        value: createLinkConfig({
+          linkType: LinkType.DROPDOWN,
+          dropdownConfig: createDropdownConfig({ type: DropdownType.ROW }),
+        }),
+      })
+    );
+
+    expect(selectors.fieldDropdownButtonSize(true)).not.toBeInTheDocument();
+    expect(selectors.fieldDropdownAlign(true)).not.toBeInTheDocument();
   });
 });

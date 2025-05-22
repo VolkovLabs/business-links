@@ -64,7 +64,7 @@ export const LinksPanel: React.FC<Props> = ({
    * Current group
    */
   const [currentGroup, setCurrentGroup] = useSavedState<string>({
-    key: `volkovlabs.links.panel.${id}`,
+    key: `volkovlabs.links.panel.${id}.${currentDashboardId}`,
     initialValue: options.groups?.[0]?.name || '',
   });
 

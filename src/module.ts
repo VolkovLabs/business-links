@@ -49,8 +49,9 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
         id: 'dropdowns',
         path: 'dropdowns',
         name: '',
+        description: 'Set nested list of items',
         editor: GroupsEditor,
-        category: ['Dropdowns'],
+        category: ['Menu'],
         defaultValue: [],
       });
 

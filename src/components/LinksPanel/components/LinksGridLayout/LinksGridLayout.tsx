@@ -13,6 +13,7 @@ import { GroupConfig, PanelOptions, VisualLink, VisualLinkType } from '@/types';
 
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
+import { MenuElement } from '../MenuElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { getStyles } from './LinksGridLayout.styles';
 
@@ -229,19 +230,12 @@ export const LinksGridLayout: React.FC<Props> = ({
               {...testIds.columnItem.apply(link.name)}
             >
               <div className={styles.linkWrapper} {...testIds.linkWrapper.apply(link.name)}>
-                {link.type === VisualLinkType.TIMEPICKER && (
-                  <TimePickerElement key={link.id} link={link} gridMode={true} />
-                )}
                 {link.type === VisualLinkType.HTML && (
-                  <ContentElement
-                    key={link.id}
-                    link={link}
-                    panelData={data}
-                    gridMode={true}
-                    replaceVariables={replaceVariables}
-                  />
+                  <ContentElement link={link} panelData={data} gridMode={true} replaceVariables={replaceVariables} />
                 )}
-                {link.type === VisualLinkType.LINK && <LinkElement key={link.id} link={link} gridMode={true} />}
+                {link.type === VisualLinkType.LINK && <LinkElement link={link} gridMode={true} />}
+                {link.type === VisualLinkType.TIMEPICKER && <TimePickerElement link={link} gridMode={true} />}
+                {link.type === VisualLinkType.MENU && <MenuElement link={link} gridMode={true} />}
               </div>
               {isEditMode && (
                 <span

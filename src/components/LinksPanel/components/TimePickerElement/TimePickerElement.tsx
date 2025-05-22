@@ -4,6 +4,7 @@ import { Button, useStyles2 } from '@grafana/ui';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { ButtonSize } from '@/types';
 import { VisualLink } from '@/types/links';
 
 import { getStyles } from './TimePickerElement.styles';
@@ -27,15 +28,22 @@ interface Props {
   /**
    * Is link use for grid mode
    *
-   * @type {VisualLink}
+   * @type {boolean}
    */
   gridMode?: boolean;
+
+  /**
+   * IButton Size
+   *
+   * @type {ButtonSize}
+   */
+  buttonSize?: ButtonSize;
 }
 
 /**
  * Time Picker Element
  */
-export const TimePickerElement: React.FC<Props> = ({ link, gridMode = false }) => {
+export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode = false }) => {
   /**
    * Styles
    */
@@ -49,6 +57,7 @@ export const TimePickerElement: React.FC<Props> = ({ link, gridMode = false }) =
       variant="secondary"
       className={cx(styles.link, gridMode && styles.linkGridMode, link.isCurrentTimepicker && styles.currentTimePicker)}
       key={link.name}
+      size={buttonSize}
       fill="outline"
       onClick={() => {
         if (link.timeRange) {

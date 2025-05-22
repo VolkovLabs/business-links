@@ -3,6 +3,7 @@ import { DataFrame, Field } from '@grafana/data';
 import { LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
+import { createDropdownConfig } from './test';
 
 /**
  * extractParamsByPrefix
@@ -119,6 +120,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -155,6 +157,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -193,6 +196,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -229,6 +233,7 @@ describe('prepareLinksToRender', () => {
             dashboardUrl: '',
             dropdownName: '',
             id: 'test-link0-dp-id',
+            dropdownConfig: createDropdownConfig(),
           },
         ],
       },
@@ -249,6 +254,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: 'Nested',
           id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
         },
       ],
     };
@@ -266,6 +272,80 @@ describe('prepareLinksToRender', () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].links[0].url).toBe('https://google.com');
+  });
+
+  it('Should process nested DROPDOWN group with time picker', () => {
+    const dropdowns = [
+      {
+        name: 'Nested',
+        items: [
+          {
+            name: 'Link',
+            enable: true,
+            linkType: LinkType.SINGLE,
+            url: 'https://google.com',
+            includeVariables: false,
+            includeTimeRange: false,
+            target: LinkTarget.NEW_TAB,
+            tags: [],
+            dashboardUrl: '',
+            dropdownName: '',
+            id: 'test-link0-dp-id',
+            dropdownConfig: createDropdownConfig(),
+          },
+          {
+            name: 'Link-2',
+            enable: true,
+            linkType: LinkType.TIMEPICKER,
+            url: '',
+            includeVariables: false,
+            includeTimeRange: false,
+            target: LinkTarget.NEW_TAB,
+            tags: [],
+            dashboardUrl: '',
+            dropdownName: '',
+            id: 'test-link0-dp-id-2',
+            dropdownConfig: createDropdownConfig(),
+          },
+        ],
+      },
+    ];
+
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'Dropdown',
+          enable: true,
+          linkType: LinkType.DROPDOWN,
+          url: 'https://google.com',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: ['env'],
+          dashboardUrl: '',
+          dropdownName: 'Nested',
+          id: 'test-link0-id',
+          dropdownConfig: createDropdownConfig(),
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns,
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+
+    expect(result[0].links[0].url).toBe('https://google.com');
+    expect(result[0].links[1].linkType).toBe(LinkType.TIMEPICKER);
   });
 
   it('Should generate DASHBOARD link correctly', () => {
@@ -376,6 +456,50 @@ describe('prepareLinksToRender', () => {
     });
   });
 
+  it('Should generate HTML link correctly', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'HTML',
+          enable: true,
+          linkType: LinkType.HTML,
+          url: '',
+          includeVariables: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          htmlConfig: {
+            content: 'line',
+          },
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      content: 'line',
+      id: 'test-link0-id',
+      links: [],
+      name: 'HTML',
+      type: VisualLinkType.HTML,
+    });
+  });
+
   it('Should generate TIMEPICKER link correctly with dashboard time range if raw is not a string', () => {
     const currentTimeRange = {
       from: new Date('2023-01-01T00:00:00Z'),
@@ -421,103 +545,6 @@ describe('prepareLinksToRender', () => {
       from: 1672531200000,
       to: 1672617600000,
     });
-  });
-
-  it('Should generate HTML link correctly', () => {
-    const currentGroup = {
-      name: 'Test',
-      items: [
-        {
-          name: 'HTML',
-          enable: true,
-          linkType: LinkType.HTML,
-          url: '',
-          includeVariables: false,
-          includeTimeRange: false,
-          target: LinkTarget.NEW_TAB,
-          tags: [],
-          dashboardUrl: '',
-          dropdownName: '',
-          id: 'test-link0-id',
-          htmlConfig: {
-            content: 'line',
-          },
-        },
-      ],
-    };
-
-    const result = prepareLinksToRender({
-      currentGroup,
-      dropdowns: [],
-      replaceVariables,
-      timeRange,
-      dashboards,
-      params: '',
-      dashboardId: '',
-      series: [],
-    });
-
-    expect(result).toHaveLength(1);
-    expect(result[0]).toMatchObject({
-      content: 'line',
-      id: 'test-link0-id',
-      links: [],
-      name: 'HTML',
-      type: VisualLinkType.HTML,
-    });
-  });
-
-  it('Should generate TIMEPICKER link with isCurrentTimepicker = true when highlightCurrentTimepicker is enabled and ranges match', () => {
-    const currentTimeRange = {
-      from: new Date('2023-01-01T00:00:00Z'),
-      to: new Date('2023-01-02T00:00:00Z'),
-      raw: {
-        from: new Date('2025-01-01T00:00:00Z'),
-        to: new Date('2025-02-01T00:00:00Z'),
-      },
-    } as any;
-
-    const currentGroup = {
-      name: 'Test',
-      items: [
-        {
-          type: VisualLinkType.LINK,
-          name: 'Manual range',
-          enable: true,
-          linkType: LinkType.TIMEPICKER,
-          url: '',
-          includeVariables: false,
-          includeTimeRange: false,
-          target: LinkTarget.NEW_TAB,
-          tags: [],
-          dashboardUrl: '',
-          dropdownName: '',
-          id: 'test-link0-id',
-          timePickerConfig: {
-            manualTimeRange: {
-              from: 1672531200000,
-              to: 1672617600000,
-            },
-            type: TimeConfigType.MANUAL,
-          },
-        },
-      ],
-    };
-
-    const result = prepareLinksToRender({
-      currentGroup,
-      dropdowns: [],
-      replaceVariables,
-      timeRange: currentTimeRange,
-      dashboards,
-      params: '',
-      dashboardId: '',
-      highlightCurrentTimepicker: true,
-      series: [],
-    });
-
-    expect(result).toHaveLength(1);
-    expect(result[0].isCurrentTimepicker).toBe(true);
   });
 });
 

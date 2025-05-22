@@ -47,6 +47,11 @@ export const TEST_IDS = {
   timePickerElement: {
     buttonPicker: createSelector((name: unknown) => `data-testid time-picker-element button-picker-${name}`),
   },
+  menuElement: {
+    root: createSelector('data-testid menu-element'),
+    link: createSelector((name: unknown) => `data-testid menu-element link-${name}`),
+    defaultButton: createSelector((name: unknown) => `data-testid menu-element default-element-${name}`),
+  },
   gridLayout: {
     root: createSelector('data-testid grid-layout'),
     columnItem: createSelector((name: unknown) => `data-testid grid-layout column-item-${name}`),
@@ -71,6 +76,12 @@ export const TEST_IDS = {
     fieldTargetOption: createSelector((name: unknown) => `link-editor field-target-option-${name}`),
     fieldTags: createSelector('data-testid link-editor field-tags'),
     fieldShowMenu: createSelector('data-testid link-editor field-show-menu'),
+    fieldDropdownType: createSelector('data-testid link-editor field-dropdown-type'),
+    fieldDropdownTypeOption: createSelector((name: unknown) => `link-editor field-dropdown-type-${name}`),
+    fieldDropdownAlign: createSelector('data-testid link-editor field-dropdown-align'),
+    fieldDropdownAlignOption: createSelector((name: unknown) => `link-editor field-dropdown-align-${name}`),
+    fieldDropdownButtonSize: createSelector('data-testid link-editor field-dropdown-button-size'),
+    fieldDropdownButtonSizeOption: createSelector((name: unknown) => `link-editor field-dropdown-button-size-${name}`),
   },
   groupsEditor: {
     buttonAddNew: createSelector('data-testid groups-editor button-add-new'),

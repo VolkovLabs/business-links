@@ -2,6 +2,7 @@ import { PanelModel } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GroupConfig, PanelOptions, TimeConfigType } from './types';
+import { createDropdownConfig } from './utils';
 
 /**
  * Outdated Panel Options
@@ -39,9 +40,13 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             ? TimeConfigType.FIELD
             : item.timePickerConfig.type;
 
+        const normalizedDropdownConfig =
+          !item.dropdownConfig || item.dropdownConfig === undefined ? createDropdownConfig() : item.dropdownConfig;
+
         return {
           ...item,
           id: normalizedId,
+          dropdownConfig: normalizedDropdownConfig,
           timePickerConfig: {
             ...item.timePickerConfig,
             type: normalizedTimeConfigType,

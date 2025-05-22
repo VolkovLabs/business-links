@@ -7,6 +7,7 @@ import { GroupConfig, VisualLink, VisualLinkType } from '@/types';
 
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
+import { MenuElement } from '../MenuElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { getStyles } from './LinksLayout.styles';
 
@@ -60,6 +61,9 @@ export const LinksLayout: React.FC<Props> = ({ activeGroup, panelData, replaceVa
         currentLinks.map((link) => {
           if (link.type === VisualLinkType.TIMEPICKER) {
             return <TimePickerElement key={link.name} link={link} />;
+          }
+          if (link.type === VisualLinkType.MENU) {
+            return <MenuElement key={link.name} link={link} />;
           }
           if (link.type === VisualLinkType.HTML) {
             return (

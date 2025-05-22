@@ -1,7 +1,29 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { GroupConfig, LinkConfig, LinkTarget, LinkType, PanelOptions, TimeConfig, TimeConfigType } from '@/types';
+import {
+  ButtonSize,
+  DropdownAlign,
+  DropdownConfig,
+  DropdownType,
+  GroupConfig,
+  LinkConfig,
+  LinkTarget,
+  LinkType,
+  PanelOptions,
+  TimeConfig,
+  TimeConfigType,
+} from '@/types';
 import { NestedLinkConfig, VisualLink, VisualLinkType } from '@/types/links';
+
+/**
+ * Create Dropdown Config
+ */
+export const createDropdownConfig = (item: Partial<DropdownConfig> = {}): DropdownConfig => ({
+  type: DropdownType.DROPDOWN,
+  align: DropdownAlign.LEFT,
+  buttonSize: ButtonSize.MD,
+  ...item,
+});
 
 /**
  * Create Link
@@ -20,6 +42,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   timePickerConfig: {
     type: TimeConfigType.FIELD,
   },
+  dropdownConfig: createDropdownConfig(),
   ...item,
 });
 
@@ -70,6 +93,7 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   target: LinkTarget.SELF_TAB,
   showMenuOnHover: false,
   id: uuidv4(),
+  dropdownConfig: createDropdownConfig(),
   ...item,
 });
 

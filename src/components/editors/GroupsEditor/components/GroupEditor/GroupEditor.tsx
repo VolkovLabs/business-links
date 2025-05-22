@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '@/constants';
 import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkTarget, LinkType, TimeConfigType } from '@/types';
-import { reorder } from '@/utils';
+import { createDropdownConfig, reorder } from '@/utils';
 
 import { LinkEditor } from './components';
 import { getStyles } from './GroupEditor.styles';
@@ -160,6 +160,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         timePickerConfig: {
           type: TimeConfigType.FIELD,
         },
+        dropdownConfig: createDropdownConfig(),
       },
     ]);
     setNewLinkName('');
@@ -391,6 +392,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
                           optionId={optionId}
                           dropdowns={dropdowns}
                           dashboards={dashboards}
+                          isGrid={value.gridLayout}
                         />
                       </Collapse>
                     </div>
