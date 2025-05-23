@@ -132,21 +132,6 @@ describe('useContentPosition', () => {
     expect(w.style.zIndex).toBe('999');
   });
 
-  // it('onScroll early-returns when already ticking', () => {
-  //   /**
-  //    * Ensure multiple scroll events within the same animation frame do not enqueue extra callbacks.
-  //    */
-  //   render(<TestComponent panelId="th" sticky={true} />);
-
-  //   const rafSpy = jest.spyOn(window, 'requestAnimationFrame');
-
-  //   fireEvent.scroll(window);
-  //   expect(rafSpy).toHaveBeenCalledTimes(1);
-
-  //   fireEvent.scroll(window);
-  //   expect(rafSpy).toHaveBeenCalledTimes(1);
-  // });
-
   it('cleans up listeners and resets styles on unmount', () => {
     /**
      * On unmount, scroll/resize listeners should be removed and styles reset.
