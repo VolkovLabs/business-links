@@ -143,6 +143,7 @@ describe('Grid layout', () => {
       groups: [],
       groupsSorting: true,
       dropdowns: [],
+      sticky: false,
     };
 
     const activeGroup = createGroupConfig({
@@ -196,6 +197,7 @@ describe('Grid layout', () => {
       groups: [],
       groupsSorting: true,
       dropdowns: [],
+      sticky: false,
     };
 
     const activeGroup = createGroupConfig({
@@ -230,6 +232,7 @@ describe('Grid layout', () => {
       groups: [],
       groupsSorting: true,
       dropdowns: [],
+      sticky: false,
     };
 
     const activeGroup = createGroupConfig({
@@ -276,6 +279,7 @@ describe('Grid layout', () => {
       groups: [defaultGroup, activeGroup],
       groupsSorting: true,
       dropdowns: [],
+      sticky: false,
     };
 
     await act(async () =>
