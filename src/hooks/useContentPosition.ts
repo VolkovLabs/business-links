@@ -20,7 +20,7 @@ export const getScrollParent = (el: HTMLElement): HTMLElement | Window => {
     }
   }
   return window;
-}
+};
 
 /**
  * Calculates the top offset to account for header, submenu, and controls heights.
@@ -74,6 +74,7 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
     if (!wrapper || !sticky) {
       return;
     }
+
     containerRef.current = wrapper;
 
     /**
@@ -92,7 +93,6 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
     const offsetTop = calcOffsetTop();
     const rect = wrapper.getBoundingClientRect();
     thresholdRef.current = rect.top + window.scrollY - offsetTop;
-
 
     /**
      * Applies transform to the wrapper, maintaining initial X offset and adding delta to Y.

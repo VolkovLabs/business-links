@@ -31,6 +31,7 @@ class DOMMatrix {
   m41 = 0;
   m42 = 0;
 }
+
 Object.defineProperty(window, 'DOMMatrix', {
   configurable: true,
   value: DOMMatrix,
@@ -103,7 +104,7 @@ describe('useContentPosition', () => {
     );
   };
 
-  it('selects by data-panelid when sticky=false', () => {
+  it('Should Selects by data-panelId when sticky=false', () => {
     /**
      * When sticky is disabled, the wrapper should render without any transform styles.
      */
@@ -113,7 +114,7 @@ describe('useContentPosition', () => {
     expect(w.style.transform).toBe('');
   });
 
-  it('applies initial styles when sticky=true', () => {
+  it('Should applies initial styles when sticky=true', () => {
     /**
      * When sticky is enabled, the wrapper should have willChange and zIndex set.
      */
@@ -132,7 +133,7 @@ describe('useContentPosition', () => {
     expect(w.style.zIndex).toBe('999');
   });
 
-  it('cleans up listeners and resets styles on unmount', () => {
+  it('Should cleans up listeners and resets styles on unmount', () => {
     /**
      * On unmount, scroll/resize listeners should be removed and styles reset.
      */
@@ -163,7 +164,7 @@ describe('getScrollParent utility', () => {
     window.getComputedStyle = realGetComputedStyle;
   });
 
-  it('returns nearest scrollable ancestor', () => {
+  it('Should returns nearest scrollable ancestor', () => {
     /**
      * Should return closest parent with overflow auto|scroll and scrollHeight > clientHeight.
      */
@@ -172,6 +173,7 @@ describe('getScrollParent utility', () => {
         <div><div id="child"></div></div>
       </div>
     `;
+
     const ancestor = document.getElementById('ancestor') as HTMLElement;
     Object.defineProperty(ancestor, 'scrollHeight', { value: 200 });
     Object.defineProperty(ancestor, 'clientHeight', { value: 100 });
@@ -185,7 +187,7 @@ describe('getScrollParent utility', () => {
     expect(getScrollParent(child)).toBe(ancestor);
   });
 
-  it('returns window when no scrollable ancestor', () => {
+  it('Should returns window when no scrollable ancestor', () => {
     /**
      * Should default to window if no scrollable parent is found.
      */
@@ -214,16 +216,19 @@ describe('calcOffsetTop utility', () => {
     document.body.innerHTML = '';
   });
 
-  it('calculates header + sticky submenu height', () => {
+  it('Should calculates header + sticky submenu height', () => {
     /**
      * When a sticky submenu is visible, return header height + submenu height.
      */
     const header = document.createElement('header');
     header.getBoundingClientRect = () => ({ height: 20 }) as DOMRect;
+
     document.body.appendChild(header);
     const submenu = document.createElement('section');
+
     submenu.setAttribute('aria-label', 'Dashboard submenu');
     submenu.getBoundingClientRect = () => ({ height: 30 }) as DOMRect;
+
     document.body.appendChild(submenu);
     window.getComputedStyle = (el: Element) => {
       if (el === submenu) {
@@ -246,7 +251,7 @@ describe('calcOffsetTop utility', () => {
     expect(calcOffsetTop()).toBe(50);
   });
 
-  it('prefers controlsBottom over header+submenu', () => {
+  it('Should prefers controlsBottom over header+submenu', () => {
     /**
      * If control container is present, return its bottom offset directly.
      */
