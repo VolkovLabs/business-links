@@ -111,7 +111,7 @@ describe('useContentPosition', () => {
     render(<TestComponent panelId="p1" sticky={false} />);
     const w = screen.getByTestId('wrapper');
     expect(w).toHaveAttribute('data-panelid', 'p1');
-    expect(w.style.transform).toBe('');
+    expect(w.style.transform).toEqual('');
   });
 
   it('Should applies initial styles when sticky=true', () => {
@@ -129,8 +129,8 @@ describe('useContentPosition', () => {
     document.body.innerHTML = '<header style="height:50px"></header>';
     render(<TestComponent panelId="p2" sticky={true} />);
     const w = screen.getByTestId('wrapper');
-    expect(w.style.willChange).toBe('transform');
-    expect(w.style.zIndex).toBe('999');
+    expect(w.style.willChange).toEqual('transform');
+    expect(w.style.zIndex).toEqual('999');
   });
 
   it('Should cleans up listeners and resets styles on unmount', () => {
@@ -145,9 +145,9 @@ describe('useContentPosition', () => {
     unmount();
     expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
     expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
-    expect(w.style.transform).toBe('');
-    expect(w.style.willChange).toBe('');
-    expect(w.style.zIndex).toBe('');
+    expect(w.style.transform).toEqual('');
+    expect(w.style.willChange).toEqual('');
+    expect(w.style.zIndex).toEqual('');
   });
 });
 
@@ -184,7 +184,7 @@ describe('getScrollParent utility', () => {
       return { overflow: 'visible', overflowY: 'visible', overflowX: 'visible' } as unknown as CSSStyleDeclaration;
     };
     const child = document.getElementById('child') as HTMLElement;
-    expect(getScrollParent(child)).toBe(ancestor);
+    expect(getScrollParent(child)).toEqual(ancestor);
   });
 
   it('Should returns window when no scrollable ancestor', () => {
@@ -195,7 +195,7 @@ describe('getScrollParent utility', () => {
     window.getComputedStyle = () =>
       ({ overflow: 'visible', overflowY: 'visible', overflowX: 'visible' }) as unknown as CSSStyleDeclaration;
     const child = document.getElementById('child2') as HTMLElement;
-    expect(getScrollParent(child)).toBe(window);
+    expect(getScrollParent(child)).toEqual(window);
   });
 });
 
@@ -248,7 +248,7 @@ describe('calcOffsetTop utility', () => {
         overflowY: '',
       } as unknown as CSSStyleDeclaration;
     };
-    expect(calcOffsetTop()).toBe(50);
+    expect(calcOffsetTop()).toEqual(50);
   });
 
   it('Should prefers controlsBottom over header+submenu', () => {
@@ -261,6 +261,6 @@ describe('calcOffsetTop utility', () => {
     controlsEl.setAttribute('data-testid', 'data-testid dashboard controls');
     controlsContainer.appendChild(controlsEl);
     document.body.appendChild(controlsContainer);
-    expect(calcOffsetTop()).toBe(40);
+    expect(calcOffsetTop()).toEqual(40);
   });
 });
