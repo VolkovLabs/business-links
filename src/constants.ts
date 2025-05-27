@@ -119,3 +119,11 @@ export const TEST_IDS = {
     tooltipPosition: createSelector(selectors.components.Tooltip.container),
   },
 };
+
+/**
+ * Sticky Position
+ */
+export const STICKY_OPTIONS = [
+  { value: true, label: 'Enabled', description: 'Follow when scrolling.' },
+  { value: false, label: 'Disabled', description: 'Scroll with dashboard.' },
+];
