@@ -43,6 +43,8 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
     type: TimeConfigType.FIELD,
   },
   dropdownConfig: createDropdownConfig(),
+  showCustomIcons: false,
+  customIconUrl: '',
   ...item,
 });
 

@@ -300,6 +300,20 @@ export interface LinkConfig {
    * @type {DropdownConfig}
    */
   dropdownConfig?: DropdownConfig;
+
+  /**
+   * Use custom images
+   *
+   * @type {boolean}
+   */
+  showCustomIcons?: boolean;
+
+  /**
+   * Custom image url
+   *
+   * @type {string}
+   */
+  customIconUrl?: string;
 }
 
 /**

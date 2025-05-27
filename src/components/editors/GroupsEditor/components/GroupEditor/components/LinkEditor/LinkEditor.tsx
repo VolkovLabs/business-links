@@ -431,24 +431,51 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
           )}
       </FieldsGroup>
 
-      {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.HTML && (
+      {value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
-          <InlineField label="Icon" grow labelWidth={20}>
-            <Select
-              options={iconOptions}
-              isClearable
+          <InlineField label="Use custom images" grow={true} labelWidth={30}>
+            <InlineSwitch
+              value={value.showCustomIcons}
               onChange={(event) => {
                 onChange({
                   ...value,
-                  icon: event?.value as IconName | undefined,
+                  showCustomIcons: event.currentTarget.checked,
                 });
               }}
-              {...TEST_IDS.linkEditor.fieldIcon.apply()}
-              value={value.icon}
+              {...TEST_IDS.linkEditor.fieldShowCustomIcon.apply()}
             />
           </InlineField>
+          {value.showCustomIcons ? (
+            <InlineField label="Custom icon url" grow={true} labelWidth={20}>
+              <Input
+                value={value.customIconUrl}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    customIconUrl: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldCustomIconUrl.apply()}
+              />
+            </InlineField>
+          ) : (
+            <InlineField label="Native icon" grow labelWidth={20}>
+              <Select
+                options={iconOptions}
+                isClearable
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    icon: event?.value as IconName | undefined,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldIcon.apply()}
+                value={value.icon}
+              />
+            </InlineField>
+          )}
 
-          {value.linkType !== LinkType.TIMEPICKER && (
+          {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.TIMEPICKER && (
             <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
               <RadioButtonGroup
                 value={value.target}

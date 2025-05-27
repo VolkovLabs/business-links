@@ -161,6 +161,8 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
           type: TimeConfigType.FIELD,
         },
         dropdownConfig: createDropdownConfig(),
+        showCustomIcons: false,
+        customIconUrl: ''
       },
     ]);
     setNewLinkName('');

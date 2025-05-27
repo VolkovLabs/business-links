@@ -57,6 +57,7 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
       variant="secondary"
       className={cx(styles.link, gridMode && styles.linkGridMode, link.isCurrentTimepicker && styles.currentTimePicker)}
       key={link.name}
+      icon={!link.showCustomIcons ? link.icon : undefined}
       size={buttonSize}
       fill="outline"
       onClick={() => {
@@ -74,6 +75,9 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
       tooltip={link.name}
       {...testIds.buttonPicker.apply(link.name)}
     >
+      {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
+        <img src={link.customIconUrl} alt="" className={styles.customIcon} />
+      )}
       {link.name}
     </Button>
   );

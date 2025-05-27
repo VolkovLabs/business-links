@@ -250,6 +250,9 @@ export const prepareLinksToRender = ({
           timeRange: pickerTimeRange,
           links: [],
           isCurrentTimepicker,
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          icon: item.icon,
         });
         break;
       }
@@ -361,6 +364,8 @@ export const prepareLinksToRender = ({
               availableDashboard.url
             ),
           })),
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
         });
         break;
       }
@@ -422,6 +427,8 @@ export const prepareLinksToRender = ({
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
           links: dropdownLinks,
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
         });
         break;
       }

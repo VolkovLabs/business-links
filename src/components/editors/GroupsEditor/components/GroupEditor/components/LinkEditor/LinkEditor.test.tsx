@@ -556,4 +556,51 @@ describe('LinkEditor', () => {
     expect(selectors.fieldDropdownButtonSize(true)).not.toBeInTheDocument();
     expect(selectors.fieldDropdownAlign(true)).not.toBeInTheDocument();
   });
+
+  it('Should allow to use custom image', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          showCustomIcons: false,
+        }),
+      })
+    );
+
+    expect(selectors.fieldShowCustomIcon()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldShowCustomIcon());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showCustomIcons: true,
+      })
+    );
+  });
+
+  it('Should allow change url for the custom image', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          showCustomIcons: true,
+          customIconUrl: '',
+        }),
+      })
+    );
+
+    expect(selectors.fieldCustomIconUrl()).toBeInTheDocument();
+    expect(selectors.fieldCustomIconUrl()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldCustomIconUrl(), { target: { value: 'url.test' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customIconUrl: 'url.test',
+      })
+    );
+  });
 });
