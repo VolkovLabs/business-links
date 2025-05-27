@@ -7,7 +7,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkTarget, LinkType, TimeConfigType } from '@/types';
+import { AlignContentPositionType, DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkTarget, LinkType, TimeConfigType } from '@/types';
 import { createDropdownConfig, reorder } from '@/utils';
 
 import { LinkEditor } from './components';
@@ -161,6 +161,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
           type: TimeConfigType.FIELD,
         },
         dropdownConfig: createDropdownConfig(),
+        alignContentPosition: AlignContentPositionType.LEFT,
       },
     ]);
     setNewLinkName('');

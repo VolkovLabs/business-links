@@ -77,15 +77,6 @@ export const LinksPanel: React.FC<Props> = ({
   }, [currentGroup, options.groups]);
 
   /**
-   * All dashboards exclude current
-   */
-  const availableDashboards = useMemo(() => {
-    return dashboards?.filter(
-      (dashboard) => !dashboard.url.includes(currentDashboardId) || dashboard.url !== location.pathname
-    );
-  }, [currentDashboardId, dashboards, location.pathname]);
-
-  /**
    * Links for render
    */
   const currentLinks = useMemo(() => {
@@ -94,7 +85,7 @@ export const LinksPanel: React.FC<Props> = ({
       dropdowns: options.dropdowns,
       replaceVariables,
       timeRange,
-      dashboards: availableDashboards,
+      dashboards,
       params: location.search,
       dashboardId: currentDashboardId,
       highlightCurrentLink: activeGroup?.highlightCurrentLink,
@@ -103,7 +94,7 @@ export const LinksPanel: React.FC<Props> = ({
     });
   }, [
     activeGroup,
-    availableDashboards,
+    dashboards,
     currentDashboardId,
     data.series,
     location.search,

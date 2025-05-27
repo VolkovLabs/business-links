@@ -138,6 +138,7 @@
             "highlightCurrentTimepicker": true,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
@@ -159,6 +160,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "fc494382-d22d-4d7d-889f-ea3067acf7a6",
@@ -180,6 +182,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "f98ee678-e311-420d-81ce-9782b4ef52b8",
@@ -201,6 +204,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "f069e3e5-e603-4b05-bb25-714284d8fd98",
@@ -222,6 +226,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
@@ -243,6 +248,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
@@ -268,6 +274,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
@@ -289,6 +296,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "491ef2ac-27af-407b-aed5-212e218b955d",
@@ -310,6 +318,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
@@ -331,6 +340,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
@@ -351,6 +361,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "45db9278-a559-4816-8f78-86a896b9f347",
@@ -425,6 +436,7 @@
             "highlightCurrentTimepicker": true,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
@@ -446,6 +458,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
@@ -467,6 +480,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
@@ -492,6 +506,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
@@ -513,6 +528,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "491ef2ac-27af-407b-aed5-212e218b955d",
@@ -534,6 +550,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
@@ -555,6 +572,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
@@ -575,6 +593,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "45db9278-a559-4816-8f78-86a896b9f347",
