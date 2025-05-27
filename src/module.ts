@@ -1,6 +1,7 @@
 import { FieldConfigProperty, PanelPlugin } from '@grafana/data';
 
 import { GroupsEditor, LinksPanel } from './components';
+import { STICKY_OPTIONS } from './constants';
 import { getMigratedOptions } from './migration';
 import { PanelOptions } from './types';
 
@@ -10,6 +11,7 @@ import { PanelOptions } from './types';
 export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
   .useFieldConfig({})
   .setMigrationHandler(getMigratedOptions)
+  .setNoPadding()
   .useFieldConfig({
     disableStandardOptions: [
       FieldConfigProperty.Color,
@@ -54,6 +56,20 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
         category: ['Menu'],
         defaultValue: [],
       });
+
+    /**
+     * Positioning
+     */
+    builder
+      .addRadio({
+        path: 'sticky',
+        name: 'Sticky position',
+        description: 'Links will follow when scrolling.',
+        settings: {
+          options: STICKY_OPTIONS,
+        },
+        defaultValue: false,
+      })
 
     return builder;
   });
