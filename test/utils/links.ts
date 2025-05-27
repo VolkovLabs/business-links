@@ -151,6 +151,17 @@ class LinksLayoutHelper {
   public getTimePicker(name: string) {
     return new TimePickerElementHelper(this.locator, name);
   }
+
+  public async isVisibleInViewPort() {
+    const rectInViewport = await this.get().evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const isInViewport = rect.top >= 0 && rect.bottom <= viewportHeight;
+      return isInViewport;
+    });
+
+    return expect(rectInViewport).toBeTruthy();
+  }
 }
 
 /**
@@ -221,10 +232,6 @@ export class PanelHelper {
     return new GridLayoutHelper(this.locator, this.panel);
   }
 
-  // public getPanelEditor(locator: Locator, editPage: PanelEditPage) {
-  //   return new PanelEditorHelper(locator, editPage);
-  // }
-
   public async checkPresence() {
     return expect(this.selectors.root(), this.getMsg('Check Presence')).toBeVisible();
   }
@@ -244,12 +251,4 @@ export class PanelHelper {
   public async selectTab(name: string) {
     return this.selectors.tab(name).click();
   }
-
-  // public async checkDownloadPresence() {
-  //   return expect(this.selectors.buttonDownload(), this.getMsg('Check Download Presence')).toBeVisible();
-  // }
-
-  // public async checkIfDownloadNotPresence() {
-  //   return expect(this.selectors.buttonDownload(), this.getMsg('Check If Download Not Presence')).not.toBeVisible();
-  // }
 }

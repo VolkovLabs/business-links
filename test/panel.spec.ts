@@ -254,6 +254,34 @@ test.describe('Business Links Panel', () => {
     });
   });
 
+  test.describe('Sticky', () => {
+    test('Should sticky panel on scroll', async ({ gotoDashboardPage, readProvisionedDashboard, page }) => {
+      /**
+       * Go To Panels dashboard sticky-panel.json
+       * return dashboardPage
+       */
+      const dashboard = await readProvisionedDashboard({ fileName: 'sticky-panel.json' });
+      const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
+
+      /**
+       * Scroll Page
+       */
+      await page.mouse.wheel(0, 500);
+      await page.mouse.wheel(0, 500);
+
+      const panel = new PanelHelper(dashboardPage, 'Sticky panel');
+      /**
+       * Check Panel Presence
+       */
+      await panel.checkPresence();
+      await panel.checkIfNoErrors();
+
+      const linksLayout = panel.getLinksLayout();
+      await linksLayout.checkPresence();
+      await linksLayout.isVisibleInViewPort();
+    });
+  });
+
   test('Should toggle tables via tabs', async ({ gotoDashboardPage, readProvisionedDashboard }) => {
     /**
      * Go To Panels dashboard links.json
