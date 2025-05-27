@@ -12,8 +12,8 @@ export const TEST_IDS = {
     tabRow: createSelector('data-testid panel tab-row'),
   },
   contentElement: {
-    root: createSelector('data-testid content-element'),
-    alert: createSelector('data-testid content-element alert'),
+    root: createSelector((name: unknown) => `data-testid content-element ${name}`),
+    alert: createSelector((name: unknown) => ` data-testid content-element alert ${name}`),
     alertText: createSelector('data-testid content-element alert-text'),
   },
   customCodeEditor: {
