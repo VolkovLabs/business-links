@@ -13,7 +13,7 @@ export const TEST_IDS = {
   },
   contentElement: {
     root: createSelector((name: unknown) => `data-testid content-element ${name}`),
-    alert: createSelector((name: unknown) => ` data-testid content-element alert ${name}`),
+    alert: createSelector((name: unknown) => `content-element alert ${name}`),
     alertText: createSelector('data-testid content-element alert-text'),
   },
   customCodeEditor: {
