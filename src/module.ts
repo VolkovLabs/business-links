@@ -39,6 +39,15 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
         description: 'Show selected Group first',
         showIf: (config) => config.groups?.length > 1,
       })
+      .addRadio({
+        path: 'sticky',
+        name: 'Sticky position',
+        description: 'Links will follow when scrolling.',
+        settings: {
+          options: STICKY_OPTIONS,
+        },
+        defaultValue: false,
+      })
       .addCustomEditor({
         id: 'groups',
         path: 'groups',
@@ -56,20 +65,6 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
         category: ['Menu'],
         defaultValue: [],
       });
-
-    /**
-     * Positioning
-     */
-    builder
-      .addRadio({
-        path: 'sticky',
-        name: 'Sticky position',
-        description: 'Links will follow when scrolling.',
-        settings: {
-          options: STICKY_OPTIONS,
-        },
-        defaultValue: false,
-      })
 
     return builder;
   });
