@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 5,
   "links": [],
   "panels": [
     {
@@ -27,24 +27,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -58,39 +41,84 @@
         "dropdowns": [],
         "groups": [
           {
-            "highlightCurrentLink": false,
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": true,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
-                "enable": true,
-                "icon": "external-link-alt",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "New tab",
-                "tags": [],
-                "target": "_blank",
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "948ff728-33d5-4a15-8676-78dd9507e794",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "https://volkovlabs.io/"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "external-link-alt",
+                "id": "495c9112-52fa-48ef-83f8-fc0ebdf5e954",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New tab",
+                "tags": [],
+                "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "ai-sparkle",
+                "id": "53be4d69-1b46-4874-bc18-ed957e55dba4",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Current",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": "d/ee576vdnqy7eoc"
               }
             ],
+            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -106,24 +134,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -136,7 +147,8 @@
       "options": {
         "dropdowns": [],
         "groups": [],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -152,24 +164,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -243,11 +238,20 @@
         ],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "5a75c4ba-0fa1-4ab6-ae77-bb550e03321e",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -255,13 +259,22 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
+                "id": "5d89f55c-4eb8-459b-b645-ae2eed244e26",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -269,42 +282,68 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group1"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
+                "id": "5de86945-ba19-4c54-ac91-e717c393917d",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group2"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group3"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -320,24 +359,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -351,52 +373,84 @@
         "dropdowns": [],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "external-link-alt",
+                "id": "023c89d5-9b25-4c05-98cb-df9dff074f99",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link 1",
                 "tags": [],
                 "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f/new-dashboard"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "0a817927-bf23-4fe4-9ab5-75752271baa7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link 2",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f/new-dashboard"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "efec6dfb-4c97-4a38-b83f-1b43f638e24a",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link 3",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f"
               }
             ],
+            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -412,24 +466,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -443,26 +480,40 @@
         "dropdowns": [],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link-broken",
+                "id": "fceabc29-d0dd-41d3-b8fa-ea6aff6e479e",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Empty",
                 "tags": [],
                 "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": ""
               }
             ],
+            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -478,24 +529,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -569,182 +603,317 @@
         ],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": true,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "e8320d2b-a4c7-4ef0-bd20-2cb938f40f34",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Single link",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "3c7edcdd-7516-4cda-9a31-718e7668fc15",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with time range",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "2fb41afb-fa55-4c4d-8287-e49ccc0eccaa",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
                 "name": "Link with time range and variables",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "67203d70-182e-483c-bc08-5dfc413e10c5",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
                 "name": "Link with variables",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "c29998aa-2c25-45af-8a2b-1bd4c873104c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with variable in url",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second?${device}"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "08811c19-c6da-4b98-bc72-e581544cb8dd",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with query",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second?${countrytest:queryparam}"
               },
               {
                 "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "1f03c54e-3298-4084-ab08-59eefc030c56",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "465b0e21-213b-4e99-a5aa-fb86139a5ec3",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard time range",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "044c38d0-a1d0-4af1-a9fe-5fcdc8b1e0d9",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Empty dashboard",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "f7fbe753-46aa-4ae0-9a93-62175cf2f6d7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags Real",
                 "tags": ["Real"],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "d65e063c-071f-4fcc-b206-e09fc8471c03",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags all dashboards",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "9e62e391-b60a-48a2-b3cc-f12472559de2",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags new",
                 "tags": ["new"],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
+                "id": "98cd8931-8a7d-4d10-afb2-b7a4408db5d0",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
+                "id": "46f5d139-b6b7-4fdc-ba96-9ea69811d2a3",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Empty dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "b0d0174b-abf8-43d5-acd7-2aa460612e35",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -752,43 +921,69 @@
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "/d/ee576vdnqy7eoc/"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group1"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
+                "id": "8c563b5d-3ad8-4033-9ce9-1483f3d022b5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group2"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group3"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -804,24 +999,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -895,12 +1073,21 @@
         ],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "hoverMenuPosition": "left",
+                "id": "b5283995-656c-4c45-a8cc-34b4469dce18",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -908,13 +1095,22 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
+                "id": "39b7d4bd-c508-463e-b65f-60cd3f4aa047",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -922,12 +1118,21 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "hoverMenuPosition": "right",
+                "id": "3078248a-4e47-4a87-9a02-43567e808b57",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -935,13 +1140,22 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": ""
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "hoverMenuPosition": "top",
+                "id": "c31599b0-5c64-4c49-9d68-804eb239ac6c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -949,43 +1163,69 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": ""
               }
             ],
+            "manualGridLayout": [],
             "name": "Group1"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
+                "id": "954afa79-57e9-402a-823a-b6f11c92c039",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group2"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group3"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -1001,24 +1241,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -1092,212 +1315,364 @@
         ],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "7b4f4405-ec18-4833-a941-4f055f280d7c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Single link",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "908226b5-173e-4b67-99ef-ef44d8ad08a9",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with time range",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "81736a24-e99c-4c91-8f5a-605d90f0f66c",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
                 "name": "Link with time range and variables",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "ee889acf-9c0a-46af-b271-2fbcda1c13c7",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
                 "name": "Link with variables",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "link",
+                "id": "82771b81-1630-4f75-9222-14eb3362d1e3",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with variable in url",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second?${device}"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "642c698e-5a8c-436a-9612-a7b4ca3c0abd",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with query",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second?${countrytest:queryparam}"
               },
               {
                 "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "b41ac7c6-2edc-4dd7-9ad5-e274e7c9464b",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "9ba36486-7974-4706-a7b6-0a7d9bb28a80",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard time range",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "5f878b4b-30e6-4ad4-8b3b-7ae950b245e7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Empty dashboard",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "4733a105-ee73-49e7-b4cb-fdfd0f3edb3b",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags Real",
                 "tags": ["Real"],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
+                "id": "6d6b8520-8dfb-4499-82a9-55cdfe11d0e5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags all dashboards",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "dashboard",
+                "id": "8c138cb0-fa63-48c5-ac28-9a956f578fb5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
                 "name": "Tags new",
                 "tags": ["new"],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
+                "id": "5359f4c9-244d-4a27-a693-e0e4d050e4a9",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
+                "id": "93ad5b7e-3a77-42bc-86a6-7a25e2e8ed8c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Empty dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group1"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
+                "id": "3dfd9ab4-1dd5-4234-8d0c-261ab8bbe459",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
                 "name": "Dropdown",
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link"
               }
             ],
+            "manualGridLayout": [],
             "name": "Group2"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group3"
           },
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
             "items": [],
+            "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": true
+        "groupsSorting": true,
+        "sticky": false
       },
       "targets": [
         {
@@ -1313,24 +1688,7 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
+        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -1391,38 +1749,65 @@
         ],
         "groups": [
           {
+            "gridColumns": 10,
+            "gridLayout": false,
             "highlightCurrentLink": true,
+            "highlightCurrentTimepicker": false,
             "items": [
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "external-link-alt",
+                "id": "3501cdf7-bc60-49ef-8e69-096585646d78",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Current",
                 "tags": [],
                 "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "d/ee576vdnqy7eoc"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "enable": true,
                 "icon": "external-link-alt",
+                "id": "b722ed9c-1443-4fd1-a530-b3801e54b38c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link",
                 "tags": [],
                 "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": "https://volkovlabs.io/"
               },
               {
                 "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
                 "dropdownName": "Dropdown",
                 "enable": true,
+                "id": "66f87e89-dcbd-4470-874a-63731c87cfca",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1430,14 +1815,19 @@
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
                 "type": "link",
                 "url": ""
               }
             ],
+            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
