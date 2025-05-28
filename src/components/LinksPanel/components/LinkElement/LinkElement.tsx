@@ -70,7 +70,10 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
       return (
         <Button
           variant="secondary"
-          className={cx(styles.link, gridMode && styles.linkGridMode)}
+          className={cx(
+            gridMode ? styles.linkGridItem : styles.link,
+            gridMode && styles.linkGridMode
+          )}
           size={buttonSize}
           icon={link.icon}
           fill="outline"
@@ -117,7 +120,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           key={currentLink.url}
           className={cx(
             currentLink.isCurrentLink ? styles.currentDashboard : styles.link,
-            gridMode && styles.linkGridMode
+            gridMode && styles.linkGridMode,
+            gridMode ? styles.linkGridItem : styles.link,
           )}
           icon={currentLink.icon}
           href={currentLink.url}
@@ -140,7 +144,10 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
   return (
     <Button
       variant="secondary"
-      className={cx(styles.link, gridMode && styles.linkGridMode)}
+      className={cx(
+        gridMode ? styles.linkGridItem : styles.link,
+        gridMode && styles.linkGridMode
+      )}
       key={link.name}
       fill="outline"
       size={buttonSize}

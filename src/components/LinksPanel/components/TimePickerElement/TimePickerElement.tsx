@@ -55,7 +55,11 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
   return (
     <Button
       variant="secondary"
-      className={cx(styles.link, gridMode && styles.linkGridMode, link.isCurrentTimepicker && styles.currentTimePicker)}
+      className={cx(
+        gridMode ? styles.linkGridItem : styles.link,
+        gridMode && styles.linkGridMode,
+        link.isCurrentTimepicker && styles.currentTimePicker
+      )}
       key={link.name}
       size={buttonSize}
       fill="outline"

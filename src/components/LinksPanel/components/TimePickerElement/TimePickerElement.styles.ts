@@ -9,6 +9,27 @@ export const getStyles = (theme: GrafanaTheme2) => {
     link: css`
       margin: ${theme.spacing(0.5)};
     `,
+    linkGridItem: css`
+      container-type: inline-size;
+      container-name: linkSize;
+
+      margin: ${theme.spacing(0.5)};
+      transition: font-size 0.15s ease-in-out;
+
+      span {
+        @container linkSize (max-width: 90px) {
+          font-size: 8px;
+        }
+
+        @container linkSize (min-width: 90px) and (max-width: 130px) {
+          font-size: 10px;
+        }
+
+        @container linkSize (min-width: 130px) {
+          font-size: 14px;
+        }
+      }
+    `,
     linkGridMode: css`
       width: 100%;
     `,
