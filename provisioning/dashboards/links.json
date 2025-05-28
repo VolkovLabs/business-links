@@ -54,14 +54,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "external-link-alt",
-                "id": "495c9112-52fa-48ef-83f8-fc0ebdf5e954",
+                "icon": "link",
+                "id": "948ff728-33d5-4a15-8676-78dd9507e794",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
-                "name": "New tab",
+                "name": "Link",
                 "tags": [],
-                "target": "_blank",
+                "target": "_self",
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -76,14 +76,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "link",
-                "id": "948ff728-33d5-4a15-8676-78dd9507e794",
+                "icon": "external-link-alt",
+                "id": "495c9112-52fa-48ef-83f8-fc0ebdf5e954",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
-                "name": "Link",
+                "name": "New tab",
                 "tags": [],
-                "target": "_self",
+                "target": "_blank",
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -117,7 +117,8 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -146,7 +147,8 @@
       "options": {
         "dropdowns": [],
         "groups": [],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -340,7 +342,8 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -446,7 +449,8 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -508,7 +512,8 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -977,7 +982,8 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -1218,7 +1224,8 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -1664,7 +1671,8 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": true
+        "groupsSorting": true,
+        "sticky": false
       },
       "targets": [
         {
@@ -1818,7 +1826,8 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {

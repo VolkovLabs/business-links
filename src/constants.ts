@@ -64,6 +64,7 @@ export const TEST_IDS = {
     root: createSelector('data-testid links-layout'),
   },
   linkEditor: {
+    root: createSelector((name: unknown) => `data-testid link editor ${name}`),
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),
     fieldIncludeTimeRange: createSelector('data-testid link-editor field-include-time-range'),
     fieldIncludeVariables: createSelector('data-testid link-editor field-include-variables'),
@@ -84,6 +85,7 @@ export const TEST_IDS = {
     fieldDropdownButtonSizeOption: createSelector((name: unknown) => `link-editor field-dropdown-button-size-${name}`),
   },
   groupsEditor: {
+    root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
     buttonAddNew: createSelector('data-testid groups-editor button-add-new'),
     buttonRemove: createSelector('data-testid groups-editor button-remove'),
     buttonStartRename: createSelector('data-testid groups-editor button-start-rename'),
@@ -98,7 +100,7 @@ export const TEST_IDS = {
     newItemName: createSelector('data-testid groups-editor new-item-name'),
   },
   groupEditor: {
-    root: createSelector('data-testid group-editor'),
+    root: createSelector((name: unknown) => `data-testid group-editor ${name}`),
     fieldHighlightLink: createSelector('data-testid group-editor field-highlight-link'),
     fieldHighlightTimepicker: createSelector('data-testid group-editor field-highlight-timepicker'),
     fieldGridLayout: createSelector('data-testid group-editor field-manual-layout'),

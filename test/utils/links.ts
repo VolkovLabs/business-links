@@ -10,6 +10,10 @@ const getLinkElementSelectors = getLocatorSelectors(TEST_IDS.linkElement);
 const getHTMLElementSelectors = getLocatorSelectors(TEST_IDS.contentElement);
 const getTimePickerElementSelectors = getLocatorSelectors(TEST_IDS.timePickerElement);
 
+const getGroupEditorSelectors = getLocatorSelectors(TEST_IDS.groupEditor);
+const getLinkEditorSelectors = getLocatorSelectors(TEST_IDS.linkEditor);
+const getTimePickerSelectors = getLocatorSelectors(TEST_IDS.timePickerEditor);
+
 /**
  * Links Element Helper
  */
@@ -207,6 +211,142 @@ class GridLayoutHelper {
 }
 
 /**
+ * TimePicker Editor Helper
+ */
+class TimePickerEditorHelper {
+  public selectors: LocatorSelectors<typeof TEST_IDS.timePickerEditor>;
+  constructor(public readonly locator: Locator) {
+    this.selectors = this.getSelectors(locator);
+  }
+
+  private getMsg(msg: string): string {
+    return `TimePicker Editor: ${msg}`;
+  }
+
+  private getSelectors(locator: Locator) {
+    return getTimePickerSelectors(locator);
+  }
+
+  public async checkFieldFromPresence() {
+    return expect(this.selectors.fieldFromPicker(), this.getMsg('Check from range field editor')).toBeVisible();
+  }
+
+  public async checkFieldToPresence() {
+    return expect(this.selectors.fieldToPicker(), this.getMsg('Check to range field editor')).toBeVisible();
+  }
+}
+
+/**
+ * Link Editor Helper
+ */
+class LinkEditorHelper {
+  public selectors: LocatorSelectors<typeof TEST_IDS.linkEditor>;
+  public linkName: string;
+  constructor(
+    public readonly locator: Locator,
+    name: string
+  ) {
+    this.selectors = this.getSelectors(locator);
+    this.linkName = name;
+  }
+
+  private getMsg(msg: string): string {
+    return `Link Editor: ${msg}`;
+  }
+
+  private getSelectors(locator: Locator) {
+    return getLinkEditorSelectors(locator);
+  }
+
+  public get() {
+    return this.selectors.root(this.linkName);
+  }
+
+  public async checkIconEditorPresence() {
+    return expect(this.selectors.fieldIcon(), this.getMsg('Check Icon Editor')).toBeVisible();
+  }
+
+  public getTimePickerEditor() {
+    return new TimePickerEditorHelper(this.get());
+  }
+}
+
+/**
+ * GroupEditorHelper
+ */
+class GroupEditorHelper {
+  public selectors: LocatorSelectors<typeof TEST_IDS.groupEditor>;
+  public editorName: string;
+  constructor(
+    public readonly locator: Locator,
+    name: string
+  ) {
+    this.selectors = this.getSelectors(locator);
+    this.editorName = name;
+  }
+
+  private getMsg(msg: string): string {
+    return `Group Editor: ${msg}`;
+  }
+
+  private getSelectors(locator: Locator) {
+    return getGroupEditorSelectors(locator);
+  }
+
+  public get() {
+    return this.selectors.root(this.editorName);
+  }
+
+  public async checkPresence() {
+    return expect(this.selectors.root(this.editorName), this.getMsg('Check Group Editor Presence')).toBeVisible();
+  }
+
+  public async openLinkEditor(name: string) {
+    return await this.selectors.itemHeader(name).locator('button[aria-label="Expand"]').click();
+  }
+
+  public getLinkEditor(linkName: string) {
+    return new LinkEditorHelper(this.get(), linkName);
+  }
+}
+
+/**
+ * Panel Editor Helper
+ */
+class PanelEditorHelper {
+  private readonly tablesEditorSelectors: LocatorSelectors<typeof TEST_IDS.groupsEditor>;
+
+  constructor(
+    private readonly locator: Locator,
+    private readonly editPage: PanelEditPage
+  ) {
+    this.tablesEditorSelectors = getLocatorSelectors(TEST_IDS.groupsEditor)(this.locator);
+  }
+
+  private getMsg(msg: string): string {
+    return `Panel Editor: ${msg}`;
+  }
+
+  public async openGroupsEditor(name: string) {
+    await this.tablesEditorSelectors.itemHeader(name).click();
+  }
+
+  public getGroupsEditor(name: string) {
+    return this.tablesEditorSelectors.root(name);
+  }
+
+  public async collapsedOptions() {
+    const options = this.editPage.getPanelOptions();
+    return await options.collapse();
+  }
+
+  public geGroupEditor(groupsName: string, groupName: string) {
+    const groupsEditor = this.tablesEditorSelectors.root(groupsName);
+    return new GroupEditorHelper(groupsEditor, groupName);
+  }
+}
+
+/**
  * Panel Helper
  */
 export class PanelHelper {
@@ -250,5 +390,9 @@ export class PanelHelper {
 
   public async selectTab(name: string) {
     return this.selectors.tab(name).click();
+  }
+
+  public getPanelEditor(locator: Locator, editPage: PanelEditPage) {
+    return new PanelEditorHelper(locator, editPage);
   }
 }

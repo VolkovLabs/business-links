@@ -8,6 +8,116 @@ test.describe('Business Links Panel', () => {
     expect(grafanaVersion).toEqual(grafanaVersion);
   });
 
+  test.describe('Configuration', () => {
+    test('Should add an empty Link Panel', async ({ gotoDashboardPage, readProvisionedDashboard }) => {
+      /**
+       * Go To Panels dashboard panels-second.json
+       * return dashboardPage
+       */
+      const dashboard = await readProvisionedDashboard({ fileName: 'panels-second.json' });
+      const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
+
+      /**
+       * Add new visualization
+       */
+      const editPage = await dashboardPage.addPanel();
+      await editPage.setVisualization('Business Links');
+      await editPage.setPanelTitle('Business Links Test');
+      await editPage.backToDashboard();
+
+      /**
+       * Should add empty visualization without errors
+       */
+      const panel = new PanelHelper(dashboardPage, 'Business Links Test');
+      /**
+       * Check Panel Presence
+       */
+      await panel.checkPresence();
+      await panel.checkIfNoErrors();
+
+      /**
+       * Check Panel Presence
+       */
+      await panel.checkAlertPresence();
+    });
+
+    test('Should display icons editor without error', async ({ gotoDashboardPage, readProvisionedDashboard, page }) => {
+      /**
+       * Go To Panels dashboard links.json
+       * return dashboardPage
+       */
+      const dashboard = await readProvisionedDashboard({ fileName: 'links.json' });
+      const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
+
+      /**
+       * Check Panel Presence
+       */
+      const panel = new PanelHelper(dashboardPage, 'External links');
+
+      /**
+       * Check Panel Presence
+       */
+      await panel.checkPresence();
+      await panel.checkIfNoErrors();
+
+      const editPage = await dashboardPage.gotoPanelEditPage('7');
+
+      const editor = panel.getPanelEditor(page.locator('body'), editPage);
+
+      await editor.collapsedOptions();
+      await editor.openGroupsEditor('Links');
+
+      const linksGroup = editor.geGroupEditor('groups', 'Links');
+      await linksGroup.checkPresence();
+
+      const singleLinkEditor = linksGroup.getLinkEditor('Link');
+      await linksGroup.openLinkEditor('Link');
+      await singleLinkEditor.checkIconEditorPresence();
+    });
+
+    test('Should display timepicker fields editor without error', async ({
+      gotoDashboardPage,
+      readProvisionedDashboard,
+      page,
+    }) => {
+      /**
+       * Go To Panels dashboard time-range.json
+       * return dashboardPage
+       */
+      const dashboard = await readProvisionedDashboard({ fileName: 'time-range.json' });
+      const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
+
+      /**
+       * Check Panel Presence
+       */
+      const panel = new PanelHelper(dashboardPage, 'Field Range');
+
+      /**
+       * Check Panel Presence
+       */
+      await panel.checkPresence();
+      await panel.checkIfNoErrors();
+
+      const editPage = await dashboardPage.gotoPanelEditPage('4');
+
+      const editor = panel.getPanelEditor(page.locator('body'), editPage);
+
+      await editor.collapsedOptions();
+      await editor.openGroupsEditor('Group1');
+
+      const linksGroup = editor.geGroupEditor('groups', 'Group1');
+      await linksGroup.checkPresence();
+
+      const linkEditor = linksGroup.getLinkEditor('Range');
+      await linksGroup.openLinkEditor('Range');
+      const timePickerEditor = linkEditor.getTimePickerEditor();
+
+      await timePickerEditor.checkFieldFromPresence();
+      await timePickerEditor.checkFieldToPresence();
+      // await singleLinkEditor.checkIconEditorPresence();
+    });
+  });
+
   test.describe('Render', () => {
     test('Should display a Link Panel', async ({ gotoDashboardPage, readProvisionedDashboard }) => {
       /**
@@ -120,40 +230,6 @@ test.describe('Business Links Panel', () => {
 
       const htmlElement = gridLayout.getHtml('I am HTML');
       await htmlElement.checkAlertPresence();
-    });
-  });
-
-  test.describe('Configuration', () => {
-    test('Should add an empty Link Panel', async ({ gotoDashboardPage, readProvisionedDashboard }) => {
-      /**
-       * Go To Panels dashboard panels-second.json
-       * return dashboardPage
-       */
-      const dashboard = await readProvisionedDashboard({ fileName: 'panels-second.json' });
-      const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
-
-      /**
-       * Add new visualization
-       */
-      const editPage = await dashboardPage.addPanel();
-      await editPage.setVisualization('Business Links');
-      await editPage.setPanelTitle('Business Links Test');
-      await editPage.backToDashboard();
-
-      /**
-       * Should add empty visualization without errors
-       */
-      const panel = new PanelHelper(dashboardPage, 'Business Links Test');
-      /**
-       * Check Panel Presence
-       */
-      await panel.checkPresence();
-      await panel.checkIfNoErrors();
-
-      /**
-       * Check Panel Presence
-       */
-      await panel.checkAlertPresence();
     });
   });
 

@@ -252,7 +252,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
   }, [dropdowns]);
 
   return (
-    <>
+    <div {...TEST_IDS.linkEditor.root.apply(value.name)}>
       <FieldsGroup label="Link">
         <InlineField label="Type" grow={true} labelWidth={20}>
           <Select
@@ -495,6 +495,6 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             </InlineField>
           </FieldsGroup>
         )}
-    </>
+    </div>
   );
 };

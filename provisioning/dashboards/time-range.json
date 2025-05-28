@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 6,
   "links": [],
   "panels": [
     {
@@ -138,6 +138,36 @@
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": true,
             "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range from fields",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
               {
                 "dashboardUrl": "",
                 "dropdownConfig": {
@@ -276,36 +306,6 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "timepicker",
-                "name": "Range from fields",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "timePickerConfig": {
-                  "fieldFrom": {
-                    "name": "timeFrom",
-                    "source": "A"
-                  },
-                  "fieldTo": {
-                    "name": "timeTo",
-                    "source": "A"
-                  },
-                  "type": "field"
-                },
-                "type": "link",
-                "url": ""
-              },
-              {
-                "dashboardUrl": "",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "enable": true,
                 "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
                 "includeTimeRange": false,
                 "includeVariables": false,
@@ -431,7 +431,8 @@
             "name": "Group1"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -456,6 +457,94 @@
         }
       ],
       "title": "Date picker",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 10,
+        "y": 5
+      },
+      "id": 4,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": true,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Range",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "timeFrom",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "timeTo",
+                    "source": "A"
+                  },
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Group1"
+          }
+        ],
+        "groupsSorting": false,
+        "sticky": false
+      },
+      "targets": [
+        {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "timeFrom",
+                "type": "string",
+                "values": ["2025-05-01"]
+              },
+              {
+                "config": {},
+                "name": "timeTo",
+                "type": "string",
+                "values": ["2025-05-11"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Field Range",
       "type": "volkovlabs-links-panel"
     },
     {
@@ -771,7 +860,8 @@
             "name": "Group1"
           }
         ],
-        "groupsSorting": false
+        "groupsSorting": false,
+        "sticky": false
       },
       "targets": [
         {
@@ -813,5 +903,5 @@
   "timezone": "browser",
   "title": "Date picker",
   "uid": "belrzzddl9lvke",
-  "version": 1
+  "version": 5
 }
