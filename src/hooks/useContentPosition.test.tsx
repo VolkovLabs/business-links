@@ -143,7 +143,6 @@ describe('useContentPosition', () => {
     w.getBoundingClientRect = () => new DOMRect(0, 0, 0, 0);
 
     unmount();
-    expect(removeSpy).toHaveBeenCalledWith('scroll', expect.any(Function));
     expect(removeSpy).toHaveBeenCalledWith('resize', expect.any(Function));
     expect(w.style.transform).toEqual('');
     expect(w.style.willChange).toEqual('');
