@@ -4,7 +4,7 @@ import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui'
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { useSavedState } from '@/hooks';
+import { useContentPosition, useSavedState } from '@/hooks';
 import { DashboardMeta, PanelOptions } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
@@ -149,6 +149,14 @@ export const LinksPanel: React.FC<Props> = ({
 
     getDashboards();
   }, []);
+
+  /**
+   * Sticky position
+   */
+  useContentPosition({
+    panelId: id,
+    sticky: options.sticky,
+  });
 
   /**
    * Return

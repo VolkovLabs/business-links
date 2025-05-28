@@ -194,7 +194,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
   }, [onChangeItems, items, onCancelEdit, editItem, editName]);
 
   return (
-    <div {...testIds.root.apply()}>
+    <div {...testIds.root.apply(value.name)}>
       {optionId === 'groups' && (
         <InlineField label="Highlight current link" labelWidth={25}>
           <InlineSwitch

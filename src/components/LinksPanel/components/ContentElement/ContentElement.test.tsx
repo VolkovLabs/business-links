@@ -84,7 +84,7 @@ describe('ContentElement', () => {
     it('Should render element', async () => {
       const replaceVariables = jest.fn();
       await act(async () => render(getComponent({ replaceVariables: replaceVariables, panelData: defaultData })));
-      expect(selectors.root()).toBeInTheDocument();
+      expect(selectors.root(false, defaultVisualLink.name)).toBeInTheDocument();
     });
 
     it('Should render element with grid styles', async () => {
@@ -92,8 +92,8 @@ describe('ContentElement', () => {
       await act(async () =>
         render(getComponent({ replaceVariables: replaceVariables, panelData: defaultData, gridMode: true }))
       );
-      expect(selectors.root()).toBeInTheDocument();
-      expect(selectors.root()).toHaveStyle(`width: 100%`);
+      expect(selectors.root(false, defaultVisualLink.name)).toBeInTheDocument();
+      expect(selectors.root(false, defaultVisualLink.name)).toHaveStyle(`width: 100%`);
     });
 
     it('Should render error', async () => {
@@ -109,7 +109,7 @@ describe('ContentElement', () => {
           getComponent({ replaceVariables: replaceVariables, panelData: defaultData, gridMode: true, link: linkMock })
         )
       );
-      expect(selectors.alert()).toBeInTheDocument();
+      expect(selectors.alert(false, defaultVisualLink.name)).toBeInTheDocument();
       expect(selectors.alertText()).toBeInTheDocument();
       expect(selectors.alertText()).toHaveTextContent('Missing helper: "variableHelperUndefined"');
     });
