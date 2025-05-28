@@ -111,7 +111,7 @@ export const ContentElement: React.FC<Props> = ({ link, panelData, gridMode = fa
   if (error) {
     return (
       <div className={cx(styles.contentWrapper, gridMode && styles.linkGridMode)}>
-        <Alert severity="info" title="Links" {...testIds.alert.apply()}>
+        <Alert severity="info" title="Links" {...testIds.alert.apply(link.name)}>
           Please make sure the Content is a valid template
           {<pre {...testIds.alertText.apply()}>{error instanceof Error ? error.message : `${error}`}</pre>}
         </Alert>
@@ -128,7 +128,7 @@ export const ContentElement: React.FC<Props> = ({ link, panelData, gridMode = fa
         <div
           className={cx(styles.contentWrapper, gridMode && styles.linkGridMode)}
           dangerouslySetInnerHTML={{ __html: htmlContent }}
-          {...testIds.root.apply()}
+          {...testIds.root.apply(link.name)}
         />
       )}
     </>

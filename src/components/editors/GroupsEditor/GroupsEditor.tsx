@@ -188,7 +188,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   }, [value.length]);
 
   return (
-    <div>
+    <div {...testIds.root.apply(id)}>
       {value.length > 0 && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="tables-editor">

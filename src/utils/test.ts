@@ -66,6 +66,7 @@ export const createPanelOptions = (options: Partial<PanelOptions> = {}): PanelOp
   groups: [],
   dropdowns: [],
   groupsSorting: false,
+  sticky: false,
   ...options,
 });
 

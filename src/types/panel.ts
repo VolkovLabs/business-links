@@ -396,4 +396,11 @@ export interface PanelOptions {
    * @type {GroupConfig[]}
    */
   dropdowns: GroupConfig[];
+
+  /**
+   * Use Sticky position
+   *
+   * @type {boolean}
+   */
+  sticky: boolean;
 }
