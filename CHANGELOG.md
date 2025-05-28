@@ -14,6 +14,7 @@ All notable changes to the **Business Links** panel are documented in this file.
 - Introduced a button row type for dropdown menus to enhance user interaction and accessibility ([#30](https://github.com/VolkovLabs/business-links/issues/30)).
 - Added a feature to freeze the panel on scroll for better usability in long dashboards ([#31](https://github.com/VolkovLabs/business-links/issues/31)).
 - Implemented end-to-end (E2E) testing to ensure reliability and stability ([#35](https://github.com/VolkovLabs/business-links/issues/35)).
+- Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
 
 ### Changed
 

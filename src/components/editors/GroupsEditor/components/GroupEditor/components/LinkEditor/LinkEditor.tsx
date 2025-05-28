@@ -218,16 +218,19 @@ export const dropdownButtonsSizeOptions = [
  */
 export const alignContentPositionOptions = [
   {
-    value: AlignContentPositionType.CENTER,
-    label: 'Center',
-  },
-  {
     value: AlignContentPositionType.LEFT,
     label: 'Left',
+    icon: 'horizontal-align-left',
+  },
+  {
+    value: AlignContentPositionType.CENTER,
+    label: 'Center',
+    icon: 'horizontal-align-center',
   },
   {
     value: AlignContentPositionType.RIGHT,
     label: 'Right',
+    icon: 'horizontal-align-center',
   },
 ];
 
@@ -488,11 +491,11 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
           {optionId === 'groups' && (
             <InlineField label="Align content" grow={true} labelWidth={20} tooltip={'Default to left alignment'}>
-              <Select
+              <RadioButtonGroup
                 options={alignContentPositionOptions}
                 value={value.alignContentPosition ?? AlignContentPositionType.LEFT}
-                onChange={(event) => {
-                  onChange({ ...value, alignContentPosition: event.value! });
+                onChange={(eventValue) => {
+                  onChange({ ...value, alignContentPosition: eventValue });
                 }}
                 {...TEST_IDS.linkEditor.fieldAlignContent.apply()}
               />
