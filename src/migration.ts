@@ -51,6 +51,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             ...item.timePickerConfig,
             type: normalizedTimeConfigType,
           },
+          showCustomIcons: false,
+          customIconUrl: '',
         };
       });
 

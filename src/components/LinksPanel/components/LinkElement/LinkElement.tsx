@@ -64,8 +64,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
           >
             <div className={styles.menuItemWrapper}>
-            <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} />
-            <span className={styles.menuItemText}>{dropdownLink.name}</span>
+              <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} />
+              <span className={styles.menuItemText}>{dropdownLink.name}</span>
             </div>
           </a>
         );
