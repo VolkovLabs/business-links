@@ -2,7 +2,7 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - 2025-05-21
+## [1.3.0] - 2025-05-28
 
 ### Added
 
@@ -12,6 +12,8 @@ All notable changes to the **Business Links** panel are documented in this file.
 - Implemented HTML delimiter type for improved formatting ([#28](https://github.com/VolkovLabs/business-links/issues/28)).
 - Added an option to highlight the current time picker for better visibility ([#29](https://github.com/VolkovLabs/business-links/issues/29)).
 - Introduced a button row type for dropdown menus to enhance user interaction ([#30](https://github.com/VolkovLabs/business-links/issues/30)).
+- Freeze panel on scroll ([#31](https://github.com/VolkovLabs/business-links/issues/31))
+- E2E test ([#35](https://github.com/VolkovLabs/business-links/issues/35))
 
 ### Changed
 
