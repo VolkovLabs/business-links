@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { calcOffsetTop, getScrollParent, useContentPosition } from './useContentPosition';
+import { useContentPosition } from './useContentPosition';
 
 jest.useFakeTimers();
 
@@ -147,119 +147,5 @@ describe('useContentPosition', () => {
     expect(w.style.transform).toEqual('');
     expect(w.style.willChange).toEqual('');
     expect(w.style.zIndex).toEqual('');
-  });
-});
-
-/**
- * Unit tests for getScrollParent utility function.
- */
-describe('getScrollParent utility', () => {
-  let realGetComputedStyle: typeof window.getComputedStyle;
-
-  beforeAll(() => {
-    realGetComputedStyle = window.getComputedStyle;
-  });
-  afterAll(() => {
-    window.getComputedStyle = realGetComputedStyle;
-  });
-
-  it('Should returns nearest scrollable ancestor', () => {
-    /**
-     * Should return closest parent with overflow auto|scroll and scrollHeight > clientHeight.
-     */
-    document.body.innerHTML = `
-      <div id="ancestor" style="overflow: auto; height: 100px;">
-        <div><div id="child"></div></div>
-      </div>
-    `;
-
-    const ancestor = document.getElementById('ancestor') as HTMLElement;
-    Object.defineProperty(ancestor, 'scrollHeight', { value: 200 });
-    Object.defineProperty(ancestor, 'clientHeight', { value: 100 });
-    window.getComputedStyle = (el: Element) => {
-      if (el === ancestor) {
-        return { overflow: 'auto', overflowY: 'scroll', overflowX: 'visible' } as unknown as CSSStyleDeclaration;
-      }
-      return { overflow: 'visible', overflowY: 'visible', overflowX: 'visible' } as unknown as CSSStyleDeclaration;
-    };
-    const child = document.getElementById('child') as HTMLElement;
-    expect(getScrollParent(child)).toEqual(ancestor);
-  });
-
-  it('Should returns window when no scrollable ancestor', () => {
-    /**
-     * Should default to window if no scrollable parent is found.
-     */
-    document.body.innerHTML = `<div><div id="child2"></div></div>`;
-    window.getComputedStyle = () =>
-      ({ overflow: 'visible', overflowY: 'visible', overflowX: 'visible' }) as unknown as CSSStyleDeclaration;
-    const child = document.getElementById('child2') as HTMLElement;
-    expect(getScrollParent(child)).toEqual(window);
-  });
-});
-
-/**
- * Unit tests for calcOffsetTop utility function.
- */
-describe('calcOffsetTop utility', () => {
-  let realGetComputedStyle: typeof window.getComputedStyle;
-
-  beforeAll(() => {
-    realGetComputedStyle = window.getComputedStyle;
-  });
-  afterAll(() => {
-    window.getComputedStyle = realGetComputedStyle;
-  });
-
-  beforeEach(() => {
-    document.body.innerHTML = '';
-  });
-
-  it('Should calculates header + sticky submenu height', () => {
-    /**
-     * When a sticky submenu is visible, return header height + submenu height.
-     */
-    const header = document.createElement('header');
-    header.getBoundingClientRect = () => ({ height: 20 }) as DOMRect;
-
-    document.body.appendChild(header);
-    const submenu = document.createElement('section');
-
-    submenu.setAttribute('aria-label', 'Dashboard submenu');
-    submenu.getBoundingClientRect = () => ({ height: 30 }) as DOMRect;
-
-    document.body.appendChild(submenu);
-    window.getComputedStyle = (el: Element) => {
-      if (el === submenu) {
-        return {
-          position: 'sticky',
-          visibility: 'visible',
-          overflow: '',
-          overflowX: '',
-          overflowY: '',
-        } as unknown as CSSStyleDeclaration;
-      }
-      return {
-        position: 'static',
-        visibility: 'visible',
-        overflow: '',
-        overflowX: '',
-        overflowY: '',
-      } as unknown as CSSStyleDeclaration;
-    };
-    expect(calcOffsetTop()).toEqual(50);
-  });
-
-  it('Should prefers controlsBottom over header+submenu', () => {
-    /**
-     * If control container is present, return its bottom offset directly.
-     */
-    const controlsContainer = document.createElement('div');
-    controlsContainer.getBoundingClientRect = () => ({ bottom: 40 }) as DOMRect;
-    const controlsEl = document.createElement('div');
-    controlsEl.setAttribute('data-testid', 'data-testid dashboard controls');
-    controlsContainer.appendChild(controlsEl);
-    document.body.appendChild(controlsContainer);
-    expect(calcOffsetTop()).toEqual(40);
   });
 });

@@ -1,53 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 
-/**
- * Finds the nearest ancestor element (or window) that is actually scrollable.
- * If the document itself scrolls, returns the Window.
- * @param el - The starting element to search upwards from
- * @returns The scrollable parent element or window
- */
-export const getScrollParent = (el: HTMLElement): HTMLElement | Window => {
-  const overflowRegex = /(auto|scroll)/;
-  let parent: HTMLElement | null = el;
-
-  while ((parent = parent.parentElement)) {
-    const style = getComputedStyle(parent);
-    const hasOverflow = overflowRegex.test(style.overflow + style.overflowY + style.overflowX);
-    const canScroll = parent.scrollHeight > parent.clientHeight;
-
-    if (hasOverflow && canScroll && parent !== document.body && parent !== document.documentElement) {
-      return parent;
-    }
-  }
-  return window;
-};
-
-/**
- * Calculates the top offset to account for header, submenu, and controls heights.
- * @returns Total vertical offset in pixels
- */
-export const calcOffsetTop = (): number => {
-  const headerEl = document.querySelector<HTMLElement>('header');
-  const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-
-  let submenuH = 0;
-  const submenuEl = document.querySelector<HTMLElement>('[aria-label="Dashboard submenu"]');
-  if (
-    submenuEl &&
-    getComputedStyle(submenuEl).position === 'sticky' &&
-    getComputedStyle(submenuEl).visibility !== 'hidden'
-  ) {
-    submenuH = submenuEl.getBoundingClientRect().height;
-  }
-
-  let controlsBottom = 0;
-  const controlsEl = document.querySelector<HTMLElement>('[data-testid="data-testid dashboard controls"]');
-  if (controlsEl?.parentElement) {
-    controlsBottom = controlsEl.parentElement.getBoundingClientRect().bottom;
-  }
-
-  return controlsBottom || headerH + submenuH;
-};
+import { calcOffsetTop } from '@/utils';
 
 /**
  * Hook to position and optionally stick content based on scroll position.
