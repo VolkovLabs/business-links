@@ -93,7 +93,7 @@
                 "url": "https://volkovlabs.io/"
               },
               {
-                "dashboardUrl": "",
+                "dashboardUrl": "/d/bemcg9ufankzka/button-rows",
                 "dropdownConfig": {
                   "align": "left",
                   "buttonSize": "md",
@@ -104,7 +104,7 @@
                 "includeKioskMode": true,
                 "includeTimeRange": false,
                 "includeVariables": false,
-                "linkType": "single",
+                "linkType": "dashboard",
                 "name": "Kiosk mode support",
                 "showMenuOnHover": false,
                 "tags": [],
@@ -1978,5 +1978,5 @@
   "timezone": "browser",
   "title": "Links",
   "uid": "ee576vdnqy7eoc",
-  "version": 11
+  "version": 12
 }
