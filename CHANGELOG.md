@@ -2,6 +2,12 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
+
 ## [1.3.0] - 2025-05-28
 
 ### Added
@@ -14,7 +20,6 @@ All notable changes to the **Business Links** panel are documented in this file.
 - Introduced a button row type for dropdown menus to enhance user interaction and accessibility ([#30](https://github.com/VolkovLabs/business-links/issues/30)).
 - Added a feature to freeze the panel on scroll for better usability in long dashboards ([#31](https://github.com/VolkovLabs/business-links/issues/31)).
 - Implemented end-to-end (E2E) testing to ensure reliability and stability ([#35](https://github.com/VolkovLabs/business-links/issues/35)).
-- Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
 
 ### Changed
 
