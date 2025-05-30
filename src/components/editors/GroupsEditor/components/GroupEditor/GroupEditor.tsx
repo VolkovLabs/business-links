@@ -7,7 +7,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { TEST_IDS } from '@/constants';
-import { DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkTarget, LinkType, TimeConfigType } from '@/types';
+import { AlignContentPositionType, DashboardMeta, EditorProps, GroupConfig, LinkConfig, LinkTarget, LinkType, TimeConfigType } from '@/types';
 import { createDropdownConfig, reorder } from '@/utils';
 
 import { LinkEditor } from './components';
@@ -162,6 +162,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         },
         includeKioskMode: false,
         dropdownConfig: createDropdownConfig(),
+        alignContentPosition: AlignContentPositionType.LEFT,
       },
     ]);
     setNewLinkName('');
@@ -193,7 +194,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
   }, [onChangeItems, items, onCancelEdit, editItem, editName]);
 
   return (
-    <div {...testIds.root.apply()}>
+    <div {...testIds.root.apply(value.name)}>
       {optionId === 'groups' && (
         <InlineField label="Highlight current link" labelWidth={25}>
           <InlineSwitch

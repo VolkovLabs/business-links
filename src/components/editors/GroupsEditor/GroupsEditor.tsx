@@ -1,6 +1,5 @@
 import { cx } from '@emotion/css';
 import { StandardEditorProps } from '@grafana/data';
-import { locationService } from '@grafana/runtime';
 import { Alert, Button, Icon, InlineField, InlineFieldRow, Input, useTheme2 } from '@grafana/ui';
 import { DragDropContext, Draggable, DraggingStyle, Droppable, DropResult, NotDraggingStyle } from '@hello-pangea/dnd';
 import { Collapse } from '@volkovlabs/components';
@@ -51,18 +50,6 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   const [editItem, setEditItem] = useState('');
   const [editName, setEditName] = useState('');
   const [dashboards, setDashboards] = useState<DashboardMeta[]>([]);
-
-  /**
-   * Location service
-   */
-  const location = locationService.getLocation();
-
-  /**
-   * All dashboards exclude current
-   */
-  const availableDashboards = useMemo(() => {
-    return dashboards?.filter((dashboard) => dashboard.url !== location.pathname);
-  }, [dashboards, location.pathname]);
 
   /**
    * List of available dropdowns
@@ -201,7 +188,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   }, [value.length]);
 
   return (
-    <div>
+    <div {...testIds.root.apply(id)}>
       {value.length > 0 && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="tables-editor">
@@ -318,7 +305,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
                             data={data}
                             name={item.name}
                             value={item}
-                            dashboards={availableDashboards}
+                            dashboards={dashboards}
                             optionId={id}
                             dropdowns={availableDropdowns}
                             onChange={(newGroup: GroupConfig) => {

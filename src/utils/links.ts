@@ -257,6 +257,7 @@ export const prepareLinksToRender = ({
           timeRange: pickerTimeRange,
           links: [],
           isCurrentTimepicker,
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -297,6 +298,7 @@ export const prepareLinksToRender = ({
               url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url),
             },
           ],
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -315,6 +317,7 @@ export const prepareLinksToRender = ({
               url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.dashboardUrl),
             },
           ],
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -340,6 +343,7 @@ export const prepareLinksToRender = ({
             name: availableDashboard.title,
             url: prepareUrlWithParams(item, timeRange, replaceVariables, params, availableDashboard.url),
           })),
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -401,6 +405,7 @@ export const prepareLinksToRender = ({
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
           links: dropdownLinks,
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import {
+  AlignContentPositionType,
   ButtonSize,
   DropdownAlign,
   DropdownConfig,
@@ -44,6 +45,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   },
   dropdownConfig: createDropdownConfig(),
   includeKioskMode: false,
+  alignContentPosition: AlignContentPositionType.LEFT,
   ...item,
 });
 

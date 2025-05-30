@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import {
+  AlignContentPositionType,
   ButtonSize,
   DashboardMeta,
   DropdownAlign,
@@ -213,6 +214,30 @@ export const dropdownButtonsSizeOptions = [
 ];
 
 /**
+ * Align content options
+ */
+export const alignContentPositionOptions = [
+  {
+    value: AlignContentPositionType.LEFT,
+    label: 'Left',
+    icon: 'horizontal-align-left',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.LEFT),
+  },
+  {
+    value: AlignContentPositionType.CENTER,
+    label: 'Center',
+    icon: 'horizontal-align-center',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.CENTER),
+  },
+  {
+    value: AlignContentPositionType.RIGHT,
+    label: 'Right',
+    icon: 'horizontal-align-center',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.RIGHT),
+  },
+];
+
+/**
  * Link Editor
  */
 export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, dashboards, optionId, dropdowns }) => {
@@ -252,7 +277,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
   }, [dropdowns]);
 
   return (
-    <>
+    <div {...TEST_IDS.linkEditor.root.apply(value.name)}>
       <FieldsGroup label="Link">
         <InlineField label="Type" grow={true} labelWidth={20}>
           <Select
@@ -431,34 +456,56 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
           )}
       </FieldsGroup>
 
-      {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.HTML && (
+      {value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
-          <InlineField label="Icon" grow labelWidth={20}>
-            <Select
-              options={iconOptions}
-              isClearable
-              onChange={(event) => {
-                onChange({
-                  ...value,
-                  icon: event?.value as IconName | undefined,
-                });
-              }}
-              {...TEST_IDS.linkEditor.fieldIcon.apply()}
-              value={value.icon}
-            />
-          </InlineField>
+          {value.linkType !== LinkType.DROPDOWN && (
+            <>
+              <InlineField label="Icon" grow labelWidth={20}>
+                <Select
+                  options={iconOptions}
+                  isClearable
+                  onChange={(event) => {
+                    onChange({
+                      ...value,
+                      icon: event?.value as IconName | undefined,
+                    });
+                  }}
+                  {...TEST_IDS.linkEditor.fieldIcon.apply()}
+                  value={value.icon}
+                />
+              </InlineField>
 
-          {value.linkType !== LinkType.TIMEPICKER && (
-            <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+              {value.linkType !== LinkType.TIMEPICKER && (
+                <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+                  <RadioButtonGroup
+                    value={value.target}
+                    onChange={(eventValue) => {
+                      onChange({
+                        ...value,
+                        target: eventValue,
+                      });
+                    }}
+                    options={linkTargetOptions}
+                  />
+                </InlineField>
+              )}
+            </>
+          )}
+
+          {optionId === 'groups' && (
+            <InlineField
+              label="Align content"
+              grow={true}
+              labelWidth={20}
+              tooltip={'Default to left alignment'}
+              {...TEST_IDS.linkEditor.fieldAlignContent.apply()}
+            >
               <RadioButtonGroup
-                value={value.target}
+                options={alignContentPositionOptions}
+                value={value.alignContentPosition ?? AlignContentPositionType.LEFT}
                 onChange={(eventValue) => {
-                  onChange({
-                    ...value,
-                    target: eventValue,
-                  });
+                  onChange({ ...value, alignContentPosition: eventValue });
                 }}
-                options={linkTargetOptions}
               />
             </InlineField>
           )}
@@ -512,6 +559,6 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             </InlineField>
           </FieldsGroup>
         )}
-    </>
+    </div>
   );
 };

@@ -81,8 +81,18 @@ interface Props {
    */
   panelTitle: string;
 
+  /**
+   * Data
+   *
+   * @type {DataFrame[]}
+   */
   data: DataFrame[];
 
+  /**
+   * Replace Variables
+   *
+   * @type {InterpolateFunction}
+   */
   replaceVariables: InterpolateFunction;
 }
 

@@ -80,6 +80,7 @@
             "highlightCurrentLink": false,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
@@ -122,6 +123,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
@@ -138,6 +140,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
@@ -152,6 +155,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
@@ -300,6 +304,7 @@
             "highlightCurrentLink": false,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
@@ -342,6 +347,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
@@ -358,6 +364,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
@@ -372,6 +379,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
@@ -519,6 +527,7 @@
             "highlightCurrentLink": false,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "415ed805-ae6e-40b9-ad84-d2c574f2b464",
@@ -561,6 +570,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
@@ -577,6 +587,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "enable": true,
                 "id": "956740d1-e7ca-46b6-9e6b-963986da881f",
@@ -591,6 +602,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownName": "Drop1",
                 "enable": true,
