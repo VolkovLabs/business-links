@@ -48,6 +48,15 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
    */
   const styles = useStyles2(getStyles);
 
+  /**
+   * Mapping of content alignment positions to their corresponding styles.
+   */
+  const alignClassMap = {
+    center: styles.alignLinkContentCenter,
+    left: styles.alignLinkContentLeft,
+    right: styles.alignLinkContentRight,
+  } as const;
+
   if (link.links.length > 1) {
     /**
      * Menu links
@@ -70,7 +79,11 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
       return (
         <Button
           variant="secondary"
-          className={cx(styles.link, gridMode && styles.linkGridMode)}
+          className={cx(
+            styles.link,
+            gridMode && styles.linkGridMode,
+            link.alignContentPosition && alignClassMap[link.alignContentPosition]
+          )}
           size={buttonSize}
           icon={link.icon}
           fill="outline"
@@ -117,7 +130,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           key={currentLink.url}
           className={cx(
             currentLink.isCurrentLink ? styles.currentDashboard : styles.link,
-            gridMode && styles.linkGridMode
+            gridMode && styles.linkGridMode,
+            currentLink.alignContentPosition && alignClassMap[currentLink.alignContentPosition]
           )}
           icon={currentLink.icon}
           href={currentLink.url}
@@ -140,7 +154,11 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
   return (
     <Button
       variant="secondary"
-      className={cx(styles.link, gridMode && styles.linkGridMode)}
+      className={cx(
+        styles.link,
+        gridMode && styles.linkGridMode,
+        link.alignContentPosition && alignClassMap[link.alignContentPosition]
+      )}
       key={link.name}
       fill="outline"
       size={buttonSize}
