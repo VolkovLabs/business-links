@@ -85,6 +85,8 @@ export const TEST_IDS = {
     fieldDropdownButtonSizeOption: createSelector((name: unknown) => `link-editor field-dropdown-button-size-${name}`),
     fieldShowCustomIcon: createSelector('data-testid link-editor field-show-custom-icon'),
     fieldCustomIconUrl: createSelector('data-testid link-editor field-custom-icon-url'),
+    fieldAlignContent: createSelector('data-testid link-editor field-align-content'),
+    fieldAlignContentOption: createSelector((name: unknown) => `link-editor field-align-content-${name}`),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),

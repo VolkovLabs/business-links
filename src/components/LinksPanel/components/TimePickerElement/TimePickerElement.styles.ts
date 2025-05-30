@@ -47,5 +47,17 @@ export const getStyles = (theme: GrafanaTheme2) => {
       margin-right: ${theme.spacing(0.5)};
       vertical-align: middle;
     `,
+    alignLinkContentLeft: css`
+      display: flex;
+      justify-content: flex-start;
+    `,
+    alignLinkContentCenter: css`
+      display: flex;
+      justify-content: center;
+    `,
+    alignLinkContentRight: css`
+      display: flex;
+      justify-content: flex-end;
+    `,
   };
 };

@@ -50,12 +50,26 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
   const styles = useStyles2(getStyles);
 
   /**
+   * Mapping of content alignment positions to their corresponding styles.
+   */
+  const alignClassMap = {
+    center: styles.alignLinkContentCenter,
+    left: styles.alignLinkContentLeft,
+    right: styles.alignLinkContentRight,
+  } as const;
+
+  /**
    * Return
    */
   return (
     <Button
       variant="secondary"
-      className={cx(styles.link, gridMode && styles.linkGridMode, link.isCurrentTimepicker && styles.currentTimePicker)}
+      className={cx(
+        styles.link,
+        gridMode && styles.linkGridMode,
+        link.isCurrentTimepicker && styles.currentTimePicker,
+        link.alignContentPosition && alignClassMap[link.alignContentPosition]
+      )}
       key={link.name}
       icon={!link.showCustomIcons ? link.icon : undefined}
       size={buttonSize}

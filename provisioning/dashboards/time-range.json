@@ -139,6 +139,7 @@
             "highlightCurrentTimepicker": true,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -169,6 +170,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -325,6 +327,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -351,6 +354,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -377,6 +381,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -402,6 +407,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -573,6 +579,7 @@
             "highlightCurrentTimepicker": true,
             "items": [
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -599,6 +606,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -625,6 +633,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -655,6 +664,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -681,6 +691,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -707,6 +718,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -733,6 +745,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -758,6 +771,7 @@
                 "url": ""
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",

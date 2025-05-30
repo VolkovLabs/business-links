@@ -1,6 +1,6 @@
 import { IconName } from '@grafana/ui';
 
-import { DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
+import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
   /**
@@ -121,6 +121,13 @@ export interface VisualLink {
    * @type {string}
    */
   customIconUrl?: string;
+
+  /**
+   * Align content position
+   *
+   * @type {AlignContentPositionType}
+   */
+  alignContentPosition?: AlignContentPositionType;
 }
 
 /**

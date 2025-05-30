@@ -1,53 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 
-/**
- * Finds the nearest ancestor element (or window) that is actually scrollable.
- * If the document itself scrolls, returns the Window.
- * @param el - The starting element to search upwards from
- * @returns The scrollable parent element or window
- */
-export const getScrollParent = (el: HTMLElement): HTMLElement | Window => {
-  const overflowRegex = /(auto|scroll)/;
-  let parent: HTMLElement | null = el;
-
-  while ((parent = parent.parentElement)) {
-    const style = getComputedStyle(parent);
-    const hasOverflow = overflowRegex.test(style.overflow + style.overflowY + style.overflowX);
-    const canScroll = parent.scrollHeight > parent.clientHeight;
-
-    if (hasOverflow && canScroll && parent !== document.body && parent !== document.documentElement) {
-      return parent;
-    }
-  }
-  return window;
-};
-
-/**
- * Calculates the top offset to account for header, submenu, and controls heights.
- * @returns Total vertical offset in pixels
- */
-export const calcOffsetTop = (): number => {
-  const headerEl = document.querySelector<HTMLElement>('header');
-  const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-
-  let submenuH = 0;
-  const submenuEl = document.querySelector<HTMLElement>('[aria-label="Dashboard submenu"]');
-  if (
-    submenuEl &&
-    getComputedStyle(submenuEl).position === 'sticky' &&
-    getComputedStyle(submenuEl).visibility !== 'hidden'
-  ) {
-    submenuH = submenuEl.getBoundingClientRect().height;
-  }
-
-  let controlsBottom = 0;
-  const controlsEl = document.querySelector<HTMLElement>('[data-testid="data-testid dashboard controls"]');
-  if (controlsEl?.parentElement) {
-    controlsBottom = controlsEl.parentElement.getBoundingClientRect().bottom;
-  }
-
-  return controlsBottom || headerH + submenuH;
-};
+import { calcOffsetTop } from '@/utils';
 
 /**
  * Hook to position and optionally stick content based on scroll position.
@@ -60,8 +13,6 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
    * Refs
    */
   const containerRef = useRef<HTMLElement | null>(null);
-  const initialTranslateRefY = useRef<number>(0);
-  const thresholdRef = useRef<number>(0);
 
   useLayoutEffect(() => {
     /**
@@ -77,66 +28,43 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
 
     containerRef.current = wrapper;
 
-    /**
-     * Extract initial translateY value via DOMMatrix
-     */
-    const computedStyle = window.getComputedStyle(wrapper);
-    const matrix =
-      computedStyle.transform && computedStyle.transform !== 'none'
-        ? new DOMMatrix(computedStyle.transform)
-        : new DOMMatrix();
-    initialTranslateRefY.current = matrix.m42;
-
-    /**
-     * Determine scroll threshold
-     */
     const offsetTop = calcOffsetTop();
-    const rect = wrapper.getBoundingClientRect();
-    thresholdRef.current = rect.top + window.scrollY - offsetTop;
 
     /**
-     * Applies transform to the wrapper, maintaining initial X offset and adding delta to Y.
+     * Set initial styles
      */
-    const applyTransform = () => {
-      const scrollParent = getScrollParent(wrapper);
-      const scrollY =
-        scrollParent === window ? window.scrollY || window.pageYOffset : (scrollParent as HTMLElement).scrollTop;
+    wrapper.style.position = 'fixed';
+    wrapper.style.top = `${offsetTop}px`;
+    wrapper.style.zIndex = '999';
+    wrapper.style.willChange = 'transform';
 
-      const delta = scrollY > thresholdRef.current ? scrollY - thresholdRef.current : 0;
-
-      /**
-       * Re-extract current translateX to preserve horizontal offset
-       */
-      const currentMatrix =
-        window.getComputedStyle(wrapper).transform && window.getComputedStyle(wrapper).transform !== 'none'
-          ? new DOMMatrix(window.getComputedStyle(wrapper).transform)
-          : new DOMMatrix();
-      const initialX = currentMatrix.m41;
-
-      const translateY = initialTranslateRefY.current + delta;
-      wrapper.style.transform = `translate(${initialX}px, ${translateY}px)`;
-      wrapper.style.willChange = 'transform';
-      wrapper.style.zIndex = '999';
+    /**
+     * Extract initial translateX value via DOMMatrix
+     */
+    const preserveTranslateX = () => {
+      const style = window.getComputedStyle(wrapper);
+      const matrix = style.transform && style.transform !== 'none' ? new DOMMatrix(style.transform) : new DOMMatrix();
+      wrapper.style.transform = `translateX(${matrix.m41}px)`;
     };
 
     /**
-     * Subscribe to scroll on correct container and window resize
+     * Initial transform settings
      */
-    const scrollParent = getScrollParent(wrapper);
-    scrollParent.addEventListener('scroll', () => window.requestAnimationFrame(applyTransform), { passive: true });
-    window.addEventListener('resize', applyTransform);
+    preserveTranslateX();
 
     /**
-     * Initial transform application
+     * Subscribe to window resize
      */
-    applyTransform();
+    window.addEventListener('resize', preserveTranslateX);
 
     return () => {
-      scrollParent.removeEventListener('scroll', () => window.requestAnimationFrame(applyTransform));
-      window.removeEventListener('resize', applyTransform);
+      window.removeEventListener('resize', preserveTranslateX);
+
       /**
        * Reset styles
        */
+      wrapper.style.position = '';
+      wrapper.style.top = '';
       wrapper.style.transform = '';
       wrapper.style.willChange = '';
       wrapper.style.zIndex = '';

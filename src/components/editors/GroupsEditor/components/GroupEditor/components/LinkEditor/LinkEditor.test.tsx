@@ -3,7 +3,15 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { ButtonSize, DropdownAlign, DropdownType, HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
+import {
+  AlignContentPositionType,
+  ButtonSize,
+  DropdownAlign,
+  DropdownType,
+  HoverMenuPositionType,
+  LinkTarget,
+  LinkType,
+} from '@/types';
 import { createDropdownConfig, createLinkConfig } from '@/utils';
 
 import { ContentEditor, TimePickerEditor } from './components';
@@ -600,6 +608,29 @@ describe('LinkEditor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         customIconUrl: 'url.test',
+      })
+    );
+  });
+
+  it('Should allow to change content alignment in link', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          alignContentPosition: AlignContentPositionType.LEFT,
+        }),
+      })
+    );
+
+    expect(selectors.fieldAlignContent()).toBeInTheDocument();
+
+    fireEvent.click(selectors.fieldAlignContentOption(false, AlignContentPositionType.RIGHT));
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        alignContentPosition: AlignContentPositionType.RIGHT,
       })
     );
   });

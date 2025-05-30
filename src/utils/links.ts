@@ -253,6 +253,7 @@ export const prepareLinksToRender = ({
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
           icon: item.icon,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -307,6 +308,7 @@ export const prepareLinksToRender = ({
               ),
             },
           ],
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -332,6 +334,7 @@ export const prepareLinksToRender = ({
               ),
             },
           ],
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -366,6 +369,7 @@ export const prepareLinksToRender = ({
           })),
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -429,6 +433,7 @@ export const prepareLinksToRender = ({
           links: dropdownLinks,
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }

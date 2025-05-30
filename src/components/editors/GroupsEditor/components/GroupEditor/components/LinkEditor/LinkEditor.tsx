@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import {
+  AlignContentPositionType,
   ButtonSize,
   DashboardMeta,
   DropdownAlign,
@@ -209,6 +210,30 @@ export const dropdownButtonsSizeOptions = [
     label: 'Large',
     value: ButtonSize.LG,
     ariaLabel: TEST_IDS.linkEditor.fieldDropdownButtonSizeOption.selector(ButtonSize.LG),
+  },
+];
+
+/**
+ * Align content options
+ */
+export const alignContentPositionOptions = [
+  {
+    value: AlignContentPositionType.LEFT,
+    label: 'Left',
+    icon: 'horizontal-align-left',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.LEFT),
+  },
+  {
+    value: AlignContentPositionType.CENTER,
+    label: 'Center',
+    icon: 'horizontal-align-center',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.CENTER),
+  },
+  {
+    value: AlignContentPositionType.RIGHT,
+    label: 'Right',
+    icon: 'horizontal-align-center',
+    ariaLabel: TEST_IDS.linkEditor.fieldAlignContentOption.selector(AlignContentPositionType.RIGHT),
   },
 ];
 
@@ -486,6 +511,24 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
                   });
                 }}
                 options={linkTargetOptions}
+              />
+            </InlineField>
+          )}
+
+          {optionId === 'groups' && (
+            <InlineField
+              label="Align content"
+              grow={true}
+              labelWidth={20}
+              tooltip={'Default to left alignment'}
+              {...TEST_IDS.linkEditor.fieldAlignContent.apply()}
+            >
+              <RadioButtonGroup
+                options={alignContentPositionOptions}
+                value={value.alignContentPosition ?? AlignContentPositionType.LEFT}
+                onChange={(eventValue) => {
+                  onChange({ ...value, alignContentPosition: eventValue });
+                }}
               />
             </InlineField>
           )}

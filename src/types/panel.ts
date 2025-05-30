@@ -39,6 +39,15 @@ export enum HoverMenuPositionType {
 }
 
 /**
+ * Align Content Position Type
+ */
+export enum AlignContentPositionType {
+  CENTER = 'center',
+  LEFT = 'left',
+  RIGHT = 'right',
+}
+
+/**
  * Time config type
  */
 export enum TimeConfigType {
@@ -314,6 +323,13 @@ export interface LinkConfig {
    * @type {string}
    */
   customIconUrl?: string;
+
+  /**
+   * Align content position
+   *
+   * @type {AlignContentPositionType}
+   */
+  alignContentPosition?: AlignContentPositionType;
 }
 
 /**
