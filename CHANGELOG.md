@@ -7,6 +7,7 @@ All notable changes to the **Business Links** panel are documented in this file.
 ### Added
 
 - Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
+- Add kiosk mode for link configuration ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
 
 ## [1.3.0] - 2025-05-28
 
