@@ -570,9 +570,8 @@ describe('LinkEditor', () => {
     );
 
     expect(selectors.fieldAlignContent()).toBeInTheDocument();
-    expect(selectors.fieldAlignContent()).toHaveValue(AlignContentPositionType.LEFT);
 
-    fireEvent.change(selectors.fieldAlignContent(), { target: { values: AlignContentPositionType.RIGHT } });
+    fireEvent.click(selectors.fieldAlignContentOption(false, AlignContentPositionType.RIGHT));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
