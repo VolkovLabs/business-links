@@ -39,7 +39,6 @@ class MockResizeObserver {
    */
   disconnect() {}
 
-  //
   /**
    * Helper method to trigger resize callback
    */
