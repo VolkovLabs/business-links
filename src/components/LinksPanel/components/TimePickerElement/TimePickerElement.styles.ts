@@ -45,5 +45,17 @@ export const getStyles = (
         background: ${theme.colors.background.secondary};
       }
     `,
+    alignLinkContentLeft: css`
+      display: flex;
+      justify-content: flex-start;
+    `,
+    alignLinkContentCenter: css`
+      display: flex;
+      justify-content: center;
+    `,
+    alignLinkContentRight: css`
+      display: flex;
+      justify-content: flex-end;
+    `,
   };
 };

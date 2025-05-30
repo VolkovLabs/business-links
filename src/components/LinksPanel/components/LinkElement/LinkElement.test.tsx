@@ -382,7 +382,7 @@ describe('LinkElement', () => {
       });
 
       const linkButton = selectors.buttonSingleLink(false, 'Link1');
-      expect(linkButton).toHaveStyle('--btn-width: 150px');
+      expect(linkButton.parentElement).toHaveStyle('--btn-width: 150px');
     });
 
     it('Should not set CSS custom property when dynamicFontSize is false', async () => {
@@ -430,7 +430,7 @@ describe('LinkElement', () => {
       });
 
       const linkButton1 = selectors.buttonSingleLink(false, 'Link1');
-      expect(linkButton1).toHaveStyle('--btn-width: 150px');
+      expect(linkButton1.parentElement).toHaveStyle('--btn-width: 150px');
 
       // Second resize
       await act(async () => {
@@ -442,7 +442,7 @@ describe('LinkElement', () => {
       });
 
       const linkButton2 = selectors.buttonSingleLink(false, 'Link1');
-      expect(linkButton2).toHaveStyle('--btn-width: 200px');
+      expect(linkButton2.parentElement).toHaveStyle('--btn-width: 200px');
     });
 
     it('Should disconnect ResizeObserver on unmount', async () => {

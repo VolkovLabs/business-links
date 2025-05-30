@@ -233,7 +233,7 @@ describe('TimePickerElement', () => {
         );
   
         const button = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button).not.toHaveAttribute('style');
+        expect(button.parentElement).not.toHaveAttribute('style');
       });
   
       it('Should not set --btn-width when dynamicFontSize is undefined', async () => {
@@ -242,7 +242,7 @@ describe('TimePickerElement', () => {
         );
   
         const button = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button).not.toHaveAttribute('style');
+        expect(button.parentElement).not.toHaveAttribute('style');
       });
   
       it('Should set --btn-width when dynamicFontSize is true and ResizeObserver triggers', async () => {
@@ -261,7 +261,7 @@ describe('TimePickerElement', () => {
         rerender(getComponent({ dynamicFontSize: true }));
   
         const button = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button).toHaveStyle('--btn-width: 150px');
+        expect(button.parentElement).toHaveStyle('--btn-width: 150px');
       });
   
       it('Should update --btn-width when ResizeObserver triggers multiple times', async () => {
@@ -279,7 +279,7 @@ describe('TimePickerElement', () => {
         rerender(getComponent({ dynamicFontSize: true }));
         
         const button1 = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button1).toHaveStyle('--btn-width: 100px');
+        expect(button1.parentElement).toHaveStyle('--btn-width: 100px');
   
         // Second resize
         await act(async () => {
@@ -293,7 +293,7 @@ describe('TimePickerElement', () => {
         rerender(getComponent({ dynamicFontSize: true }));
   
         const button2 = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button2).toHaveStyle('--btn-width: 250px');
+        expect(button2.parentElement).toHaveStyle('--btn-width: 250px');
       });
   
       it('Should floor width values correctly', async () => {
@@ -319,7 +319,7 @@ describe('TimePickerElement', () => {
           rerender(getComponent({ dynamicFontSize: true }));
   
           const button = selectors.buttonPicker(false, defaultVisualLink.name);
-          expect(button).toHaveStyle(`--btn-width: ${testCase.expected}`);
+          expect(button.parentElement).toHaveStyle(`--btn-width: ${testCase.expected}`);
         }
       });
   
@@ -337,7 +337,7 @@ describe('TimePickerElement', () => {
         rerender(getComponent({ dynamicFontSize: true }));
   
         const button = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button).toHaveStyle('--btn-width: 0px');
+        expect(button.parentElement).toHaveStyle('--btn-width: 0px');
       });
   
       it('Should handle very large width values', async () => {
@@ -354,7 +354,7 @@ describe('TimePickerElement', () => {
         rerender(getComponent({ dynamicFontSize: true }));
   
         const button = selectors.buttonPicker(false, defaultVisualLink.name);
-        expect(button).toHaveStyle('--btn-width: 9999px');
+        expect(button.parentElement).toHaveStyle('--btn-width: 9999px');
       });
     });
   });

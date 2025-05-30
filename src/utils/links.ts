@@ -250,6 +250,7 @@ export const prepareLinksToRender = ({
           timeRange: pickerTimeRange,
           links: [],
           isCurrentTimepicker,
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -304,6 +305,7 @@ export const prepareLinksToRender = ({
               ),
             },
           ],
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -329,6 +331,7 @@ export const prepareLinksToRender = ({
               ),
             },
           ],
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -361,6 +364,7 @@ export const prepareLinksToRender = ({
               availableDashboard.url
             ),
           })),
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }
@@ -422,6 +426,7 @@ export const prepareLinksToRender = ({
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
           links: dropdownLinks,
+          alignContentPosition: item.alignContentPosition
         });
         break;
       }

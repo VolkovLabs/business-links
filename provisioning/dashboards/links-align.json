@@ -18,9 +18,287 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 17,
   "links": [],
   "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 14,
+      "options": {
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "alignContentPosition": "left",
+                "dashboardUrl": "",
+                "enable": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single 2",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "alignContentPosition": "left",
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": true,
+                "includeVariables": true,
+                "linkType": "single",
+                "name": "Current link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/ee576vdnqy7eoc"
+              }
+            ],
+            "name": "Dropdown"
+          },
+          {
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "43b26703-6bef-47f2-8f07-9ad7ec0bcb47",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Row test",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "Row"
+          }
+        ],
+        "groups": [
+          {
+            "gridColumns": 3,
+            "gridLayout": true,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "center",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "link",
+                "id": "e70608e5-59aa-435c-b99c-8fa33466c129",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": "/dashboard"
+              },
+              {
+                "alignContentPosition": "center",
+                "dashboardUrl": "/d/03fa76eb-e156-4de8-9474-c84c91d63d53/links-copy",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "406d894e-c834-4864-818c-d6debb6c9688",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "dropdownName": "Dropdown",
+                "enable": true,
+                "icon": "ai",
+                "id": "78fd4ea3-bd53-460c-b8de-bbfa6ea04e60",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Menu",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": "http://localhoast:3000/dashboards"
+              },
+              {
+                "alignContentPosition": "right",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "516301e7-8c3a-4428-8936-543098ef6c71",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tag",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "center",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "id": "f4e116b6-7227-4fca-abf4-d2ee1f804905",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Timepicker",
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [
+              {
+                "h": 2,
+                "i": "e70608e5-59aa-435c-b99c-8fa33466c129",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 0,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "406d894e-c834-4864-818c-d6debb6c9688",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 0
+              },
+              {
+                "h": 2,
+                "i": "78fd4ea3-bd53-460c-b8de-bbfa6ea04e60",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 2,
+                "y": 0
+              },
+              {
+                "h": 1,
+                "i": "516301e7-8c3a-4428-8936-543098ef6c71",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 0,
+                "y": 2
+              },
+              {
+                "h": 1,
+                "i": "f4e116b6-7227-4fca-abf4-d2ee1f804905",
+                "moved": false,
+                "static": false,
+                "w": 1,
+                "x": 1,
+                "y": 2
+              }
+            ],
+            "name": "Row"
+          }
+        ],
+        "groupsSorting": false
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Highlight links",
+      "type": "volkovlabs-links-panel"
+    },
     {
       "datasource": {
         "type": "marcusolsson-static-datasource",
@@ -34,7 +312,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 7,
       "options": {
@@ -43,7 +321,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "highlightCurrentLink": true,
+            "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -55,30 +333,8 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "link",
-                "id": "948ff728-33d5-4a15-8676-78dd9507e794",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Link",
-                "tags": [],
-                "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "dashboardUrl": "",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "enable": true,
                 "icon": "external-link-alt",
-                "id": "495c9112-52fa-48ef-83f8-fc0ebdf5e954",
+                "id": "8a578219-9e36-41d9-9ff9-c40fb5564216",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -92,6 +348,7 @@
                 "url": "https://volkovlabs.io/"
               },
               {
+                "alignContentPosition": "left",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -99,27 +356,26 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "ai-sparkle",
-                "id": "53be4d69-1b46-4874-bc18-ed957e55dba4",
+                "icon": "link",
+                "id": "8c7397a2-8b25-450a-af85-aa6af5d2a1af",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
-                "name": "Current",
-                "showMenuOnHover": false,
+                "name": "Link",
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": "d/ee576vdnqy7eoc"
+                "type": "link",
+                "url": "https://volkovlabs.io/"
               }
             ],
             "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -142,14 +398,13 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 0
+        "y": 8
       },
       "id": 9,
       "options": {
         "dropdowns": [],
         "groups": [],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -172,7 +427,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 8
       },
       "id": 13,
       "options": {
@@ -256,7 +511,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "5a75c4ba-0fa1-4ab6-ae77-bb550e03321e",
+                "id": "aae716a9-056e-492c-a372-f85acbe9a314",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -280,7 +535,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "5d89f55c-4eb8-459b-b645-ae2eed244e26",
+                "id": "f580ab96-0af9-4816-9380-207adfa7afe0",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -314,7 +569,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "5de86945-ba19-4c54-ac91-e717c393917d",
+                "id": "2128d26e-372e-405e-8b7a-a0e4c66ab581",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -349,8 +604,7 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -373,7 +627,7 @@
         "h": 4,
         "w": 6,
         "x": 0,
-        "y": 4
+        "y": 12
       },
       "id": 8,
       "options": {
@@ -395,7 +649,7 @@
                 },
                 "enable": true,
                 "icon": "external-link-alt",
-                "id": "023c89d5-9b25-4c05-98cb-df9dff074f99",
+                "id": "768016c0-e289-48e9-b948-7786dbc8c348",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -418,7 +672,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "0a817927-bf23-4fe4-9ab5-75752271baa7",
+                "id": "0fd9dff6-aa41-4afc-be67-3368e8772ca4",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -441,7 +695,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "efec6dfb-4c97-4a38-b83f-1b43f638e24a",
+                "id": "033e5c52-9251-4df3-bf53-9253c503d5ad",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -459,8 +713,7 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -483,7 +736,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 4
+        "y": 12
       },
       "id": 10,
       "options": {
@@ -505,7 +758,7 @@
                 },
                 "enable": true,
                 "icon": "link-broken",
-                "id": "fceabc29-d0dd-41d3-b8fa-ea6aff6e479e",
+                "id": "4dfd44b1-a2bc-4303-bcd0-efbbec0a6493",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -523,8 +776,7 @@
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -547,7 +799,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "id": 11,
       "options": {
@@ -632,7 +884,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "e8320d2b-a4c7-4ef0-bd20-2cb938f40f34",
+                "id": "7ac0973c-9400-456a-9c03-ba4c247ef003",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -654,7 +906,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "3c7edcdd-7516-4cda-9a31-718e7668fc15",
+                "id": "b778e777-2548-4fac-80e0-18bc953e80c5",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
@@ -676,7 +928,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "2fb41afb-fa55-4c4d-8287-e49ccc0eccaa",
+                "id": "6390cd02-633c-4e4d-ac6a-f7d2a86557da",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
@@ -698,7 +950,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "67203d70-182e-483c-bc08-5dfc413e10c5",
+                "id": "e9c35746-5f26-4d4d-98f2-1ae810602f02",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
@@ -721,7 +973,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "c29998aa-2c25-45af-8a2b-1bd4c873104c",
+                "id": "220790c1-382b-4887-9d21-bffbc90481f2",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -743,7 +995,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "08811c19-c6da-4b98-bc72-e581544cb8dd",
+                "id": "958f7206-148f-4c69-b615-f717d0eafeb2",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -765,7 +1017,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "1f03c54e-3298-4084-ab08-59eefc030c56",
+                "id": "27d51854-6165-4a8f-ad92-1f55f45689b9",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -786,7 +1038,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "465b0e21-213b-4e99-a5aa-fb86139a5ec3",
+                "id": "161b9051-ef57-4990-95ff-e3d1ae897c40",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -808,7 +1060,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "044c38d0-a1d0-4af1-a9fe-5fcdc8b1e0d9",
+                "id": "1946a63d-45bc-4758-baf6-11def74a8dc1",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -830,7 +1082,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "f7fbe753-46aa-4ae0-9a93-62175cf2f6d7",
+                "id": "678a65cc-3a87-4a1d-8078-9d33c5b27e15",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -851,7 +1103,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "d65e063c-071f-4fcc-b206-e09fc8471c03",
+                "id": "e2884bd9-1aeb-4d99-bbc4-676c944dd0e8",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -873,7 +1125,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "9e62e391-b60a-48a2-b3cc-f12472559de2",
+                "id": "74064966-67d7-48bb-be47-6b36ea42f510",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -896,7 +1148,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "98cd8931-8a7d-4d10-afb2-b7a4408db5d0",
+                "id": "947f1af7-c783-414e-9309-8e30658ca805",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -918,7 +1170,7 @@
                 },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
-                "id": "46f5d139-b6b7-4fdc-ba96-9ea69811d2a3",
+                "id": "dff447e6-9537-4ada-9674-be47fa73060c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -940,7 +1192,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "b0d0174b-abf8-43d5-acd7-2aa460612e35",
+                "id": "9b6c41a5-accc-4708-8260-2e0cd419fb9d",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -975,7 +1227,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "8c563b5d-3ad8-4033-9ce9-1483f3d022b5",
+                "id": "63f71f73-2cfe-4df9-98ab-573013ef6319",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1010,8 +1262,7 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -1034,7 +1285,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 16
       },
       "id": 15,
       "options": {
@@ -1119,7 +1370,7 @@
                 },
                 "enable": true,
                 "hoverMenuPosition": "left",
-                "id": "b5283995-656c-4c45-a8cc-34b4469dce18",
+                "id": "8685fa42-077b-4b46-8377-ed21196f46af",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1143,7 +1394,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "39b7d4bd-c508-463e-b65f-60cd3f4aa047",
+                "id": "6c8dd4aa-9f75-4672-acd8-1da76f9a4d42",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1166,7 +1417,7 @@
                 },
                 "enable": true,
                 "hoverMenuPosition": "right",
-                "id": "3078248a-4e47-4a87-9a02-43567e808b57",
+                "id": "e42b8da8-d8f1-45fd-8f25-5e22e046c84b",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1190,7 +1441,7 @@
                 },
                 "enable": true,
                 "hoverMenuPosition": "top",
-                "id": "c31599b0-5c64-4c49-9d68-804eb239ac6c",
+                "id": "5c2e4ff9-6ae6-4676-b741-f65e1a5e0726",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1225,7 +1476,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "954afa79-57e9-402a-823a-b6f11c92c039",
+                "id": "1619496e-1128-4e3f-a492-926203ec93ad",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1260,8 +1511,7 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
+        "groupsSorting": false
       },
       "targets": [
         {
@@ -1284,7 +1534,7 @@
         "h": 11,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 12,
       "options": {
@@ -1369,7 +1619,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "7b4f4405-ec18-4833-a941-4f055f280d7c",
+                "id": "37d00be6-1599-44c8-ac1f-2cd6d01699a5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1391,7 +1641,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "908226b5-173e-4b67-99ef-ef44d8ad08a9",
+                "id": "5d6bbb69-3351-42ac-a753-556b16bd5751",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1413,7 +1663,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "81736a24-e99c-4c91-8f5a-605d90f0f66c",
+                "id": "4cb9d2f1-ad0a-4d23-8949-0daeac607e57",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
@@ -1435,7 +1685,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "ee889acf-9c0a-46af-b271-2fbcda1c13c7",
+                "id": "36098f0d-9e69-4e30-93b7-46303b94b627",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
@@ -1458,7 +1708,7 @@
                 },
                 "enable": true,
                 "icon": "link",
-                "id": "82771b81-1630-4f75-9222-14eb3362d1e3",
+                "id": "258da6ce-71ee-499e-b5f7-e1f488cbed0f",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1480,7 +1730,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "642c698e-5a8c-436a-9612-a7b4ca3c0abd",
+                "id": "42c934f5-a3e6-43b9-b1be-e091159845ca",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1502,7 +1752,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "b41ac7c6-2edc-4dd7-9ad5-e274e7c9464b",
+                "id": "b423e400-c555-47de-849e-424a551b4712",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1523,7 +1773,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "9ba36486-7974-4706-a7b6-0a7d9bb28a80",
+                "id": "46aed879-bcf9-4517-83a2-221cb416983e",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1545,7 +1795,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "5f878b4b-30e6-4ad4-8b3b-7ae950b245e7",
+                "id": "120458d5-36b5-4a5f-abb7-8847f547bca7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1567,7 +1817,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "4733a105-ee73-49e7-b4cb-fdfd0f3edb3b",
+                "id": "2521650c-1039-41d4-81d3-5d62387af8ec",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1588,7 +1838,7 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "id": "6d6b8520-8dfb-4499-82a9-55cdfe11d0e5",
+                "id": "5a7c3f1b-492f-4e97-9b14-99739f587a01",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1610,7 +1860,7 @@
                 },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "8c138cb0-fa63-48c5-ac28-9a956f578fb5",
+                "id": "2f3a65b2-1080-4b30-985f-2a5e37534834",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1633,7 +1883,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "5359f4c9-244d-4a27-a693-e0e4d050e4a9",
+                "id": "776ce69b-38af-4a25-8331-f1f961766af5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1655,7 +1905,7 @@
                 },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
-                "id": "93ad5b7e-3a77-42bc-86a6-7a25e2e8ed8c",
+                "id": "8bc1e538-f2f0-482c-90e5-8e22e2667124",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1688,7 +1938,7 @@
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "3dfd9ab4-1dd5-4234-8d0c-261ab8bbe459",
+                "id": "e0fec11a-850a-4a73-8afa-2038018df00c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1723,8 +1973,7 @@
             "name": "Group4"
           }
         ],
-        "groupsSorting": true,
-        "sticky": false
+        "groupsSorting": true
       },
       "targets": [
         {
@@ -1732,167 +1981,6 @@
         }
       ],
       "title": "Selected group first",
-      "type": "volkovlabs-links-panel"
-    },
-    {
-      "datasource": {
-        "type": "marcusolsson-static-datasource",
-        "uid": "P1D2C73DC01F2359B"
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 16
-      },
-      "id": 14,
-      "options": {
-        "dropdowns": [
-          {
-            "highlightCurrentLink": false,
-            "items": [
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Single",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "enable": true,
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Single 2",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "enable": true,
-                "icon": "link",
-                "includeTimeRange": true,
-                "includeVariables": true,
-                "linkType": "single",
-                "name": "Current link",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "type": "link",
-                "url": "d/ee576vdnqy7eoc"
-              }
-            ],
-            "name": "Dropdown"
-          }
-        ],
-        "groups": [
-          {
-            "gridColumns": 10,
-            "gridLayout": false,
-            "highlightCurrentLink": true,
-            "highlightCurrentTimepicker": false,
-            "items": [
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "enable": true,
-                "icon": "external-link-alt",
-                "id": "3501cdf7-bc60-49ef-8e69-096585646d78",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Current",
-                "tags": [],
-                "target": "_blank",
-                "timePickerConfig": {
-                  "type": "field"
-                },
-                "type": "link",
-                "url": "d/ee576vdnqy7eoc"
-              },
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "enable": true,
-                "icon": "external-link-alt",
-                "id": "b722ed9c-1443-4fd1-a530-b3801e54b38c",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "single",
-                "name": "Link",
-                "tags": [],
-                "target": "_blank",
-                "timePickerConfig": {
-                  "type": "field"
-                },
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "alignContentPosition": "left",
-                "dashboardUrl": "",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "dropdownName": "Dropdown",
-                "enable": true,
-                "id": "66f87e89-dcbd-4470-874a-63731c87cfca",
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "dropdown",
-                "name": "Dropdown with current link",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
-                "type": "link",
-                "url": ""
-              }
-            ],
-            "manualGridLayout": [],
-            "name": "Links"
-          }
-        ],
-        "groupsSorting": false,
-        "sticky": false
-      },
-      "targets": [
-        {
-          "refId": "A"
-        }
-      ],
-      "title": "Highlight links",
       "type": "volkovlabs-links-panel"
     }
   ],
@@ -1986,7 +2074,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Links",
-  "uid": "ee576vdnqy7eoc",
+  "title": "Align links",
+  "uid": "c120e312-e755-438a-8560-89e8fe1b74cd",
   "version": 1
 }

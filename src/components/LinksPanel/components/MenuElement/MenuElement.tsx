@@ -68,6 +68,15 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
   }, [link]);
 
   /**
+   * Mapping of content alignment positions to their corresponding styles.
+   */
+  const alignClassMap = {
+    center: styles.alignLinkContentCenter,
+    left: styles.alignLinkContentLeft,
+    right: styles.alignLinkContentRight,
+  } as const;
+
+  /**
    * Return
    */
   return (
@@ -98,7 +107,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
               return (
                 <Button
                   variant="secondary"
-                  className={cx(styles.menuLink)}
+                  className={cx(styles.menuLink, link.alignContentPosition && alignClassMap[link.alignContentPosition])}
                   key={link.name}
                   fill="outline"
                   size={gridMode ? link.dropdownConfig?.buttonSize : ButtonSize.MD}
@@ -114,7 +123,10 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
             return (
               <LinkButton
                 key={nestedLink.name}
-                className={cx(nestedLink.isCurrentLink ? styles.highlight : styles.menuLink)}
+                className={cx(
+                  nestedLink.isCurrentLink ? styles.highlight : styles.menuLink,
+                  nestedLink.alignContentPosition && alignClassMap[nestedLink.alignContentPosition]
+                )}
                 icon={nestedLink.icon}
                 href={nestedLink.url}
                 title={nestedLink.name}

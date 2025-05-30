@@ -86,18 +86,30 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
   }, [dynamicFontSize, linkEl]);
 
   /**
+   * Mapping of content alignment positions to their corresponding styles.
+   */
+  const alignClassMap = {
+    center: styles.alignLinkContentCenter,
+    left: styles.alignLinkContentLeft,
+    right: styles.alignLinkContentRight,
+  } as const;
+
+  /**
    * Return
    */
   return (
-    <div ref={btnRef}>
+    <div
+      ref={btnRef}
+      style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
+    >
       <Button
         variant="secondary"
         className={cx(
           styles.link,
           gridMode && styles.linkGridMode,
-          link.isCurrentTimepicker && styles.currentTimePicker
+          link.isCurrentTimepicker && styles.currentTimePicker,
+          link.alignContentPosition && alignClassMap[link.alignContentPosition]
         )}
-        style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
         key={link.name}
         size={buttonSize}
         fill="outline"
