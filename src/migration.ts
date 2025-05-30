@@ -43,6 +43,12 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedDropdownConfig =
           !item.dropdownConfig || item.dropdownConfig === undefined ? createDropdownConfig() : item.dropdownConfig;
 
+        const normalizedShowCustomIcons =
+          !item.showCustomIcons || item.showCustomIcons === undefined ? false : item.showCustomIcons;
+
+        const normalizedCustomIconUrl =
+          !item.customIconUrl || item.customIconUrl === undefined ? '' : item.customIconUrl;
+
         return {
           ...item,
           id: normalizedId,
@@ -51,8 +57,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             ...item.timePickerConfig,
             type: normalizedTimeConfigType,
           },
-          showCustomIcons: false,
-          customIconUrl: '',
+          showCustomIcons: normalizedShowCustomIcons,
+          customIconUrl: normalizedCustomIconUrl,
         };
       });
 
