@@ -73,7 +73,9 @@ Object.defineProperty(window, 'DOMRect', {
  */
 describe('useContentPosition', () => {
   beforeEach(() => {
-    // Reset DOM and mocks before each test
+    /**
+     * Reset DOM and mocks before each test
+     */
     document.body.innerHTML = '';
     jest.clearAllMocks();
     Object.defineProperty(window, 'scrollY', { writable: true, configurable: true, value: 0 });

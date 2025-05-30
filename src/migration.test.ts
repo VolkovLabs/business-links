@@ -198,6 +198,43 @@ describe('migration', () => {
     );
   });
 
+  it('Should migrate dynamicFontSize option', async () => {
+    const group1 = createGroupConfig({ name: 'Group1', dynamicFontSize: undefined });
+
+    expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            dynamicFontSize: false,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, dynamicFontSize: false }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            dynamicFontSize: false,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, dynamicFontSize: true }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            dynamicFontSize: true,
+          }),
+        ]),
+      })
+    );
+  });
+
   describe('Items in group normalization', () => {
     it('Should normalize item if "id" in item is undefined ', async () => {
       const item1 = createLinkConfig({

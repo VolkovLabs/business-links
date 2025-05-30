@@ -120,6 +120,7 @@ export const TEST_IDS = {
     buttonSaveRename: createSelector('data-testid group-editor button-save-rename'),
     fieldName: createSelector('data-testid group-editor field-name'),
     newItemName: createSelector('data-testid group-editor new-item-name'),
+    fieldDynamicFontSize: createSelector('data-testid group-editor field-dynamic-font-size'),
   },
   general: {
     tooltipPosition: createSelector(selectors.components.Tooltip.container),

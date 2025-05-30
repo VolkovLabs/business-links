@@ -32,12 +32,19 @@ interface Props {
    * @type {boolean}
    */
   gridMode?: boolean;
+
+  /**
+   * Dynamic font size
+   *
+   * @type {boolean}
+   */
+  dynamicFontSize?: boolean;
 }
 
 /**
  * Menu Element
  */
-export const MenuElement: React.FC<Props> = ({ link, gridMode = false }) => {
+export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFontSize = false }) => {
   /**
    * Styles
    */
@@ -75,7 +82,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false }) => {
   return (
     <>
       {link.dropdownConfig?.type === DropdownType.DROPDOWN && (
-        <LinkElement link={currentDropdownLink} gridMode={gridMode} />
+        <LinkElement link={currentDropdownLink} gridMode={gridMode} dynamicFontSize={dynamicFontSize} />
       )}
       {link.dropdownConfig?.type === DropdownType.ROW && (
         <div

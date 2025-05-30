@@ -384,6 +384,13 @@ export interface GroupConfig {
    * @type {LinkConfig[]}
    */
   items: LinkConfig[];
+
+  /**
+   * Dynamic font size
+   *
+   * @type {boolean}
+   */
+  dynamicFontSize?: boolean;
 }
 
 /**

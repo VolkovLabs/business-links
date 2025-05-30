@@ -4,13 +4,17 @@ import { GrafanaTheme2 } from '@grafana/data';
 /**
  * Styles
  */
-export const getStyles = (theme: GrafanaTheme2) => {
+export const getStyles = (
+  theme: GrafanaTheme2,
+  { dynamicFontSize }: { dynamicFontSize: boolean }
+) => {
   return {
     link: css`
       margin: ${theme.spacing(0.5)};
     `,
     linkGridMode: css`
       width: 100%;
+      ${dynamicFontSize && `font-size: clamp(8px, calc(var(--btn-width) / 10), 14px);`}
     `,
     currentDashboard: css`
       margin: ${theme.spacing(0.5)};

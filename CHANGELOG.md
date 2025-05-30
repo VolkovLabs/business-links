@@ -7,7 +7,8 @@ All notable changes to the **Business Links** panel are documented in this file.
 ### Added
 
 - Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
-- Add an option to use custom icons ([#36](https://github.com/VolkovLabs/business-links/issues/36)).
+- Added dynamic font size ([#39](https://github.com/VolkovLabs/business-links/pull/39)).
+- Added custom icons ([#36](https://github.com/VolkovLabs/business-links/issues/36)).
 
 ## [1.3.0] - 2025-05-28
 

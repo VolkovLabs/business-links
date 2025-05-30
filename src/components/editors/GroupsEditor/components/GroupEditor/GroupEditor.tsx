@@ -267,6 +267,20 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
           />
         </InlineField>
       )}
+      {optionId === 'groups' && value.gridLayout && (
+        <InlineField label="Dynamic font size" labelWidth={25}>
+          <InlineSwitch
+            value={value.dynamicFontSize}
+            onChange={(event) =>
+              onChange({
+                ...value,
+                dynamicFontSize: event.currentTarget.checked,
+              })
+            }
+            {...testIds.fieldDynamicFontSize.apply()}
+          />
+        </InlineField>
+      )}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={name}>
           {(provided) => (

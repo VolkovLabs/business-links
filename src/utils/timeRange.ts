@@ -52,7 +52,9 @@ export function formatDuration(seconds: number): string {
     }
   }
 
-  // If no perfect division, use the least significant unit
+  /**
+   * If no perfect division, use the least significant unit
+   */
   const leastSignificant = units[units.length - 1];
   return `${seconds}${leastSignificant.unit}`;
 }
