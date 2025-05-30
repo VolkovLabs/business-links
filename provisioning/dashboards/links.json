@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 8,
+  "id": 5,
   "links": [],
   "panels": [
     {
@@ -27,7 +27,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -44,7 +43,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "highlightCurrentLink": false,
+            "highlightCurrentLink": true,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -56,18 +55,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "external-link-alt",
-                "id": "7fe57ee5-32ce-4467-bbac-53273d60f00a",
-                "includeKioskMode": false,
+                "icon": "link",
+                "id": "948ff728-33d5-4a15-8676-78dd9507e794",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
-                "name": "New tab",
+                "name": "Link",
                 "tags": [],
-                "target": "_blank",
-                "timePickerConfig": {
-                  "type": "field"
-                },
+                "target": "_self",
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -81,15 +76,31 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
+                "enable": true,
+                "icon": "external-link-alt",
+                "id": "495c9112-52fa-48ef-83f8-fc0ebdf5e954",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New tab",
+                "tags": [],
+                "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
                 "enable": true,
-                "icon": "link",
-                "id": "799ba50e-ba53-4bf8-bc7a-d3b4e8093f5e",
-                "includeKioskMode": false,
+                "icon": "ai-sparkle",
+                "id": "53be4d69-1b46-4874-bc18-ed957e55dba4",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -100,38 +111,13 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "type": "link",
-                "url": "https://volkovlabs.io/"
-              },
-              {
-                "dashboardUrl": "/d/bemcg9ufankzka/button-rows",
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
-                "enable": true,
-                "id": "f2cbb422-c0cb-4546-9a3a-e7d4e4b87949",
-                "includeKioskMode": true,
-                "includeTimeRange": false,
-                "includeVariables": false,
-                "linkType": "dashboard",
-                "name": "Kiosk mode support",
-                "showMenuOnHover": false,
-                "tags": [],
-                "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
-                "url": ""
+                "url": "d/ee576vdnqy7eoc"
               }
             ],
             "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -150,7 +136,6 @@
       },
       "fieldConfig": {
         "defaults": {},
-        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -163,8 +148,6 @@
       "options": {
         "dropdowns": [],
         "groups": [],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -182,7 +165,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -262,10 +244,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -276,14 +255,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "967b11f7-baa5-4b51-8116-9df67e2624cd",
-                "includeKioskMode": false,
+                "id": "5a75c4ba-0fa1-4ab6-ae77-bb550e03321e",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -291,9 +264,6 @@
                 "showMenuOnHover": true,
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -307,16 +277,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "7108974d-de78-4fa7-a992-077884ab52e3",
-                "includeKioskMode": false,
+                "id": "5d89f55c-4eb8-459b-b645-ae2eed244e26",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -327,23 +291,16 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group1"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -354,16 +311,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "5648be51-3bd7-492e-8e44-86b45ec8b6d6",
-                "includeKioskMode": false,
+                "id": "5de86945-ba19-4c54-ac91-e717c393917d",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -373,45 +324,31 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group2"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group3"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -430,7 +367,6 @@
       },
       "fieldConfig": {
         "defaults": {},
-        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -446,10 +382,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -460,15 +393,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "external-link-alt",
-                "id": "8acdfa41-ebb5-49a9-9136-50b816d0e897",
-                "includeKioskMode": false,
+                "id": "023c89d5-9b25-4c05-98cb-df9dff074f99",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -478,9 +405,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f/new-dashboard"
               },
@@ -492,15 +416,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "c7677724-4467-46b6-8423-7c63e8476cd4",
-                "includeKioskMode": false,
+                "id": "0a817927-bf23-4fe4-9ab5-75752271baa7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -510,9 +428,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f/new-dashboard"
               },
@@ -524,15 +439,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "3e9dda12-5590-496c-a2b5-d421dea57bcc",
-                "includeKioskMode": false,
+                "id": "efec6dfb-4c97-4a38-b83f-1b43f638e24a",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -542,20 +451,14 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/deiwbkyv0jif4f"
               }
             ],
             "manualGridLayout": [],
-            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -574,7 +477,6 @@
       },
       "fieldConfig": {
         "defaults": {},
-        "defaults": {},
         "overrides": []
       },
       "gridPos": {
@@ -590,10 +492,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -604,15 +503,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link-broken",
-                "id": "f2b4054c-e104-4198-8486-706220f23c2d",
-                "includeKioskMode": false,
+                "id": "fceabc29-d0dd-41d3-b8fa-ea6aff6e479e",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -622,20 +515,14 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": ""
               }
             ],
             "manualGridLayout": [],
-            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -653,7 +540,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -733,10 +619,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": true,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -747,15 +630,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "fcefc518-970b-4b5e-88ff-8f27bb5f012b",
-                "includeKioskMode": false,
+                "id": "e8320d2b-a4c7-4ef0-bd20-2cb938f40f34",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -765,9 +642,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -779,14 +653,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "6706f511-13f6-4c8e-a428-a92573b98632",
-                "includeKioskMode": false,
+                "id": "3c7edcdd-7516-4cda-9a31-718e7668fc15",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
@@ -796,9 +664,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -810,14 +675,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "d95dcbaf-6633-42e6-85a3-a941c8b09267",
-                "includeKioskMode": false,
+                "id": "2fb41afb-fa55-4c4d-8287-e49ccc0eccaa",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
@@ -827,9 +686,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -841,14 +697,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "e7b0c373-5a76-492b-8525-3954d3555ec5",
-                "includeKioskMode": false,
+                "id": "67203d70-182e-483c-bc08-5dfc413e10c5",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
@@ -858,9 +708,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -872,24 +719,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "ad355d19-7bfd-4c19-8921-d706118ece5e",
-                "includeKioskMode": false,
+                "id": "c29998aa-2c25-45af-8a2b-1bd4c873104c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with variable in url",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -904,23 +742,14 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "5326a552-eaa2-4292-a620-6fd1d6241099",
-                "includeKioskMode": false,
+                "id": "08811c19-c6da-4b98-bc72-e581544cb8dd",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with query",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -934,24 +763,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "34cd10d4-9620-4ea4-be2f-2e1a8725e8c0",
-                "includeKioskMode": false,
+                "id": "1f03c54e-3298-4084-ab08-59eefc030c56",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -964,15 +784,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "dba3e7af-6f7d-48ae-ae62-875d126e937a",
-                "includeKioskMode": false,
+                "id": "465b0e21-213b-4e99-a5aa-fb86139a5ec3",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -982,9 +796,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -995,15 +806,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "a903630e-d085-441d-8f03-d456e6cac0ed",
-                "includeKioskMode": false,
+                "id": "044c38d0-a1d0-4af1-a9fe-5fcdc8b1e0d9",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1013,9 +818,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1026,15 +828,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "26d4b22d-32e5-4e65-b9b8-b26273d2963b",
-                "includeKioskMode": false,
+                "id": "f7fbe753-46aa-4ae0-9a93-62175cf2f6d7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1044,9 +840,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1057,14 +850,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "c414aae7-e44a-4626-adef-e9e5927e4565",
-                "includeKioskMode": false,
+                "id": "d65e063c-071f-4fcc-b206-e09fc8471c03",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1074,9 +861,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1087,15 +871,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "f412e4e2-abce-433f-9d0a-beac0e534301",
-                "includeKioskMode": false,
+                "id": "9e62e391-b60a-48a2-b3cc-f12472559de2",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1105,9 +883,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1118,16 +893,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "0410b343-8bf8-4385-a464-0d9d762794be",
-                "includeKioskMode": false,
+                "id": "98cd8931-8a7d-4d10-afb2-b7a4408db5d0",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1137,9 +906,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1150,15 +916,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
-                "id": "130b48be-1af2-46e3-9d0f-0472cf669fc9",
-                "includeKioskMode": false,
+                "id": "46f5d139-b6b7-4fdc-ba96-9ea69811d2a3",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1168,9 +928,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1181,15 +938,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "23b7d854-6030-47a3-ace5-a70efb3cba4e",
-                "includeKioskMode": false,
+                "id": "b0d0174b-abf8-43d5-acd7-2aa460612e35",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1200,24 +951,17 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "/d/ee576vdnqy7eoc/"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group1"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -1228,16 +972,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "26e7248a-e95e-428b-bdfc-3089dce783b1",
-                "includeKioskMode": false,
+                "id": "8c563b5d-3ad8-4033-9ce9-1483f3d022b5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1247,45 +985,31 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group2"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group3"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -1303,7 +1027,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -1383,10 +1106,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -1397,15 +1117,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "hoverMenuPosition": "left",
-                "id": "f147bc25-7014-42ab-af45-ea6a1bcd29e1",
-                "includeKioskMode": false,
+                "id": "b5283995-656c-4c45-a8cc-34b4469dce18",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1416,9 +1130,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1429,16 +1140,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "3f7b8f8b-5741-4974-a158-c5c4153bfcee",
-                "includeKioskMode": false,
+                "id": "39b7d4bd-c508-463e-b65f-60cd3f4aa047",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1449,9 +1154,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1462,15 +1164,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "hoverMenuPosition": "right",
-                "id": "893455e8-dc8f-4b05-ac9d-1b9776b9db1f",
-                "includeKioskMode": false,
+                "id": "3078248a-4e47-4a87-9a02-43567e808b57",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1481,9 +1177,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": ""
               },
@@ -1495,15 +1188,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "hoverMenuPosition": "top",
-                "id": "f5f6fd76-7dc8-4c0c-8155-ce462b1cd3af",
-                "includeKioskMode": false,
+                "id": "c31599b0-5c64-4c49-9d68-804eb239ac6c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -1514,24 +1201,17 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": ""
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group1"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -1542,16 +1222,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "77ea0018-80d2-4347-81a1-140e657a1f72",
-                "includeKioskMode": false,
+                "id": "954afa79-57e9-402a-823a-b6f11c92c039",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -1561,45 +1235,31 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group2"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group3"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -1617,7 +1277,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -1697,10 +1356,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -1711,15 +1367,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "8aa8d8c2-720b-46d0-b3e4-3a01ce853f84",
-                "includeKioskMode": false,
+                "id": "7b4f4405-ec18-4833-a941-4f055f280d7c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1729,9 +1379,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -1743,14 +1390,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "42f77d52-de83-4e07-a369-50615e9410ee",
-                "includeKioskMode": false,
+                "id": "908226b5-173e-4b67-99ef-ef44d8ad08a9",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "single",
@@ -1760,9 +1401,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -1774,14 +1412,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "4017a078-470c-40f9-9d31-5417376d91bc",
-                "includeKioskMode": false,
+                "id": "81736a24-e99c-4c91-8f5a-605d90f0f66c",
                 "includeTimeRange": true,
                 "includeVariables": true,
                 "linkType": "single",
@@ -1791,9 +1423,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -1805,14 +1434,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "ad588f44-8ca7-4766-b1dd-b79fc5040605",
-                "includeKioskMode": false,
+                "id": "ee889acf-9c0a-46af-b271-2fbcda1c13c7",
                 "includeTimeRange": false,
                 "includeVariables": true,
                 "linkType": "single",
@@ -1822,9 +1445,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": "d/aeivkiz2o5csga/panels-second"
               },
@@ -1836,24 +1456,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "link",
-                "id": "1b34d29b-d0b9-4457-a783-2594361b5008",
-                "includeKioskMode": false,
+                "id": "82771b81-1630-4f75-9222-14eb3362d1e3",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with variable in url",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -1868,23 +1479,14 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "a96ebc24-03a6-425a-bd47-b6c867b72eb1",
-                "includeKioskMode": false,
+                "id": "642c698e-5a8c-436a-9612-a7b4ca3c0abd",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link with query",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -1898,24 +1500,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "d24ac1a9-638e-4812-9cb8-d63f3aa869f0",
-                "includeKioskMode": false,
+                "id": "b41ac7c6-2edc-4dd7-9ad5-e274e7c9464b",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
                 "name": "Dashboard",
                 "tags": [],
                 "target": "_self",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -1928,15 +1521,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "0482fd4b-a2bf-486c-9f40-890fe0490c22",
-                "includeKioskMode": false,
+                "id": "9ba36486-7974-4706-a7b6-0a7d9bb28a80",
                 "includeTimeRange": true,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1946,9 +1533,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1959,15 +1543,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "b678c1ed-0715-4467-8406-0d2c895d69cd",
-                "includeKioskMode": false,
+                "id": "5f878b4b-30e6-4ad4-8b3b-7ae950b245e7",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dashboard",
@@ -1977,9 +1555,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -1990,15 +1565,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "b363b77d-9b9a-44c2-a915-65b345788b99",
-                "includeKioskMode": false,
+                "id": "4733a105-ee73-49e7-b4cb-fdfd0f3edb3b",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -2008,9 +1577,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -2021,14 +1587,8 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
-                "id": "1d30cf85-7d12-453a-a52f-27fb131911b6",
-                "includeKioskMode": false,
+                "id": "6d6b8520-8dfb-4499-82a9-55cdfe11d0e5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -2038,9 +1598,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -2051,15 +1608,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "dashboard",
-                "id": "0610413b-c2ca-445b-aadf-c91b4fe3bd69",
-                "includeKioskMode": false,
+                "id": "8c138cb0-fa63-48c5-ac28-9a956f578fb5",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "tags",
@@ -2069,9 +1620,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -2082,16 +1630,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "anchor",
-                "id": "fbe5ae75-139a-48c4-a162-e03b37b458b6",
-                "includeKioskMode": false,
+                "id": "5359f4c9-244d-4a27-a693-e0e4d050e4a9",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -2101,9 +1643,6 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               },
               {
@@ -2114,15 +1653,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 2",
                 "enable": true,
-                "id": "0572ba5b-f9b8-49c6-91cf-37c9e5d96f41",
-                "includeKioskMode": false,
+                "id": "93ad5b7e-3a77-42bc-86a6-7a25e2e8ed8c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -2132,23 +1665,16 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group1"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -2159,16 +1685,10 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown 1",
                 "enable": true,
                 "icon": "bars",
-                "id": "03cbbbcb-a59a-4d9d-96e1-55afd424a6f3",
-                "includeKioskMode": false,
+                "id": "3dfd9ab4-1dd5-4234-8d0c-261ab8bbe459",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -2178,45 +1698,31 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link"
               }
             ],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group2"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group3"
           },
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": false,
-            "highlightCurrentTimepicker": false,
             "items": [],
-            "manualGridLayout": [],
             "manualGridLayout": [],
             "name": "Group4"
           }
         ],
-        "groupsSorting": true,
-        "sticky": false
         "groupsSorting": true,
         "sticky": false
       },
@@ -2234,7 +1740,6 @@
         "uid": "P1D2C73DC01F2359B"
       },
       "fieldConfig": {
-        "defaults": {},
         "defaults": {},
         "overrides": []
       },
@@ -2301,10 +1806,7 @@
           {
             "gridColumns": 10,
             "gridLayout": false,
-            "gridColumns": 10,
-            "gridLayout": false,
             "highlightCurrentLink": true,
-            "highlightCurrentTimepicker": false,
             "highlightCurrentTimepicker": false,
             "items": [
               {
@@ -2315,24 +1817,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "external-link-alt",
-                "id": "9d5ca601-92a9-4754-9603-b3fd618ee534",
-                "includeKioskMode": false,
+                "id": "3501cdf7-bc60-49ef-8e69-096585646d78",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Current",
                 "tags": [],
                 "target": "_blank",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -2347,24 +1840,15 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "enable": true,
                 "icon": "external-link-alt",
-                "id": "e4d98f0f-0868-4b3a-b36b-e83ea55b90cf",
-                "includeKioskMode": false,
+                "id": "b722ed9c-1443-4fd1-a530-b3801e54b38c",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "single",
                 "name": "Link",
                 "tags": [],
                 "target": "_blank",
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "timePickerConfig": {
                   "type": "field"
                 },
@@ -2379,15 +1863,9 @@
                   "buttonSize": "md",
                   "type": "dropdown"
                 },
-                "dropdownConfig": {
-                  "align": "left",
-                  "buttonSize": "md",
-                  "type": "dropdown"
-                },
                 "dropdownName": "Dropdown",
                 "enable": true,
-                "id": "94389183-8c65-48d4-8b69-2d6ff9aa4914",
-                "includeKioskMode": false,
+                "id": "66f87e89-dcbd-4470-874a-63731c87cfca",
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "dropdown",
@@ -2398,20 +1876,14 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "timePickerConfig": {
-                  "type": "field"
-                },
                 "type": "link",
                 "url": ""
               }
             ],
             "manualGridLayout": [],
-            "manualGridLayout": [],
             "name": "Links"
           }
         ],
-        "groupsSorting": false,
-        "sticky": false
         "groupsSorting": false,
         "sticky": false
       },
@@ -2516,5 +1988,5 @@
   "timezone": "browser",
   "title": "Links",
   "uid": "ee576vdnqy7eoc",
-  "version": 12
+  "version": 1
 }
