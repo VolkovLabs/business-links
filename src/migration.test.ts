@@ -332,5 +332,16 @@ describe('migration', () => {
       expect(items[1].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
       expect(items[2].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
     });
+
+    it('Should normalize showCustomIcons to false and customIconUrl to empty string', async () => {
+      const item = createLinkConfig({ id: 'item-without-icons' });
+      const group = createGroupConfig({ items: [item] });
+  
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const normalizedItem = result.groups[0].items[0];
+  
+      expect(normalizedItem.showCustomIcons).toBe(false);
+      expect(normalizedItem.customIconUrl).toBe('');
+    });
   });
 });

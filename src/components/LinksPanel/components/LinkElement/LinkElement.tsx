@@ -62,6 +62,24 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
      * Menu links
      */
     const menuLinks = link.links.map((dropdownLink) => {
+      if (dropdownLink.showCustomIcons && dropdownLink.customIconUrl) {
+        return (
+          <a
+            key={`${dropdownLink.url}-${dropdownLink.name}`}
+            href={dropdownLink.url}
+            target={dropdownLink.target}
+            rel="noopener noreferrer"
+            className={cx(dropdownLink.isCurrentLink ? styles.currentMenuItem : styles.menuItem)}
+            {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
+          >
+            <div className={styles.menuItemWrapper}>
+              <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} />
+              <span className={styles.menuItemText}>{dropdownLink.name}</span>
+            </div>
+          </a>
+        );
+      }
+
       return (
         <MenuItem
           key={`${dropdownLink.url}-${dropdownLink.name}`}
@@ -85,10 +103,13 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             link.alignContentPosition && alignClassMap[link.alignContentPosition]
           )}
           size={buttonSize}
-          icon={link.icon}
+          icon={!link.showCustomIcons ? link.icon : undefined}
           fill="outline"
           {...testIds.buttonDropdown.apply(link.name)}
         >
+          {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
+            <img src={link.customIconUrl} alt="" className={styles.customIcon} />
+          )}
           {link.name}
         </Button>
       );
@@ -133,7 +154,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             gridMode && styles.linkGridMode,
             currentLink.alignContentPosition && alignClassMap[currentLink.alignContentPosition]
           )}
-          icon={currentLink.icon}
+          icon={!currentLink.showCustomIcons ? currentLink.icon : undefined}
           href={currentLink.url}
           title={currentLink.name}
           target={currentLink.target}
@@ -142,6 +163,9 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           size={buttonSize}
           {...testIds.buttonSingleLink.apply(link.name)}
         >
+          {currentLink.showCustomIcons && currentLink.customIconUrl && !!currentLink.customIconUrl.length && (
+            <img src={currentLink.customIconUrl} alt="" className={styles.customIcon} />
+          )}
           {currentLink.name}
         </LinkButton>
       );

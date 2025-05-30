@@ -268,6 +268,107 @@ describe('LinkElement', () => {
         expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
         expect(selectors.buttonDropdown(false, 'Dropdown')).toHaveStyle(`width: 100%`);
       });
+
+      it('Should render dropdown links with custom images', async () => {
+        const nestedLink1 = createNestedLinkConfig({
+          name: 'Link1',
+          url: 'test1.com',
+          isCurrentLink: true,
+          showCustomIcons: true,
+          customIconUrl: '/public/icon1.png',
+        });
+        const nestedLink2 = createNestedLinkConfig({
+          name: 'Link2',
+          url: 'test2.com',
+          isCurrentLink: true,
+          showCustomIcons: true,
+          customIconUrl: '/public/icon2.png',
+        });
+        await act(async () =>
+          render(
+            getComponent({
+              link: createVisualLinkConfig({
+                name: 'Dropdown',
+                links: [nestedLink1, nestedLink2],
+              }),
+            })
+          )
+        );
+
+        expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
+        expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
+        expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
+
+        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+
+        const menuItem1 = selectors.dropdownMenuItem(false, 'Link1');
+        const menuItem2 = selectors.dropdownMenuItem(false, 'Link2');
+        expect(menuItem1).toBeInTheDocument();
+        expect(menuItem2).toBeInTheDocument();
+
+        const img1 = menuItem1.querySelector('img')!;
+        expect(img1).toHaveAttribute('src', '/public/icon1.png');
+
+        const img2 = menuItem2.querySelector('img')!;
+        expect(img2).toHaveAttribute('src', '/public/icon2.png');
+      });
+    });
+
+    it('Should render custom icon inside dropdown button when showCustomIcons is true and customIconUrl non empty', async () => {
+      const customUrl = '/public/dropdown-icon.png';
+      const nestedLink1 = createNestedLinkConfig({ name: 'Link1', url: 'test1.com' });
+      const nestedLink2 = createNestedLinkConfig({ name: 'Link2', url: 'test2.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+              showCustomIcons: true,
+              customIconUrl: customUrl,
+            }),
+          })
+        )
+      );
+
+      const btn = selectors.buttonDropdown(false, 'Dropdown');
+      expect(btn).toBeInTheDocument();
+
+      const img = btn.querySelector('img')!;
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute('src', customUrl);
+
+      expect(btn.querySelector('svg')).toBeNull();
+    });
+
+    it('Should render custom icon inside single LinkButton when showCustomIcons is true and customIconUrl non empty', async () => {
+      const nestedLink = createNestedLinkConfig({
+        name: 'Link1',
+        url: 'test1.com',
+        showCustomIcons: true,
+        customIconUrl: '/public/icon.png',
+      });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Link',
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+
+      const btn = selectors.buttonSingleLink(false, 'Link');
+      expect(btn).toBeInTheDocument();
+
+      const img = btn.querySelector('img')!;
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute('src', '/public/icon.png');
+
+      expect(btn.querySelector('svg')).toBeNull();
     });
   });
 });

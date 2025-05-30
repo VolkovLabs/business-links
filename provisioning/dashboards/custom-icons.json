@@ -1,0 +1,521 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 20,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "dropdowns": [],
+        "groups": [
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "customIconUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "external-link-alt",
+                "id": "b09e6e4b-5dc9-4e46-811c-8ca80729d7f0",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New tab",
+                "showCustomIcons": true,
+                "tags": [],
+                "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "link",
+                "id": "6aa6ac73-46df-4926-85e4-deeba4d53386",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link",
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Links"
+          }
+        ],
+        "groupsSorting": false
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "External links",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 6,
+        "y": 0
+      },
+      "id": 15,
+      "options": {
+        "dropdowns": [
+          {
+            "items": [
+              {
+                "customIconUrl": "/public/img/alert_howto_new.png",
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "link",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown Single link",
+                "showCustomIcons": true,
+                "tags": [],
+                "target": "_self",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "external-link-alt",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Dropdown External link",
+                "tags": [],
+                "target": "_blank",
+                "type": "link",
+                "url": "d/aeivkiz2o5csga/panels-second"
+              },
+              {
+                "dashboardUrl": "",
+                "enable": true,
+                "icon": "dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Dropdown Tags All",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "/d/aeivkiz2o5csga/panels-second",
+                "enable": true,
+                "icon": "create-dashboard",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dropdown Dashboard",
+                "tags": [],
+                "target": "_self",
+                "type": "link"
+              }
+            ],
+            "name": "Dropdown 1"
+          },
+          {
+            "items": [],
+            "name": "Dropdown 2"
+          }
+        ],
+        "groups": [
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hoverMenuPosition": "left",
+                "id": "1d66b7a5-c1e5-4521-9c2a-c022e72f1564",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Left",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link"
+              },
+              {
+                "customIconUrl": "/public/img/alert_howto_new.png",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "anchor",
+                "id": "56ef4be1-6a8d-49b2-81d4-3ac9c09d3a96",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Bottom",
+                "showCustomIcons": true,
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link"
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hoverMenuPosition": "right",
+                "id": "ebd70ba2-dabb-4f29-bedd-35a9acb0c14f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Right",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hoverMenuPosition": "top",
+                "id": "bfcfc4ed-3a01-4d87-85f5-bc957e23711f",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Top",
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "customIconUrl": "/public/img/alert_howto_new.png",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "adjust-circle",
+                "id": "088f4ab0-9741-4c67-93dd-b967c73291ff",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "tags",
+                "name": "Tag",
+                "showCustomIcons": true,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "customIconUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                "dashboardUrl": "/d/877114ee-47ac-4342-9ce1-bd88a4377294/date-picker-copy",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "add-user",
+                "id": "9fd34532-4bba-4c51-8473-f482802592df",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "Dashboard",
+                "showCustomIcons": true,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "icon": "add-user",
+                "id": "e37e6327-6438-411b-b9e5-fe04d8a32f87",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "Timepicker",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Group1"
+          },
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "dropdownName": "Dropdown 1",
+                "enable": true,
+                "icon": "bars",
+                "id": "a9c262ec-4921-4cfa-8a9c-5db9a621d132",
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Dropdown",
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link"
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Group2"
+          },
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [],
+            "manualGridLayout": [],
+            "name": "Group3"
+          },
+          {
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [],
+            "manualGridLayout": [],
+            "name": "Group4"
+          }
+        ],
+        "groupsSorting": false
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Hover menu position",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "device1",
+          "value": "device1"
+        },
+        "label": "device",
+        "name": "device",
+        "options": [
+          {
+            "selected": true,
+            "text": "device1",
+            "value": "device1"
+          },
+          {
+            "selected": false,
+            "text": "device2",
+            "value": "device2"
+          },
+          {
+            "selected": false,
+            "text": "device3",
+            "value": "device3"
+          }
+        ],
+        "query": "device1,device2,device3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "USA",
+          "value": "USA"
+        },
+        "label": "country",
+        "name": "country",
+        "options": [
+          {
+            "selected": true,
+            "text": "USA",
+            "value": "USA"
+          },
+          {
+            "selected": false,
+            "text": "Sweden",
+            "value": "Sweden"
+          },
+          {
+            "selected": false,
+            "text": "Spain",
+            "value": "Spain"
+          },
+          {
+            "selected": false,
+            "text": "Italy",
+            "value": "Italy"
+          }
+        ],
+        "query": "USA,Sweden,Spain,Italy",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Sweden",
+          "value": "Sweden"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "timescale"
+        },
+        "definition": "select distinct country from devices;",
+        "label": "countrytest",
+        "name": "countrytest",
+        "options": [],
+        "query": "select distinct country from devices;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Custom icons",
+  "uid": "cb015565-9db5-4961-ad30-13559e9e54c1",
+  "version": 1
+}
