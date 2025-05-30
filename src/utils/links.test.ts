@@ -1,6 +1,6 @@
 import { DataFrame, Field } from '@grafana/data';
 
-import { LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
+import { LinkConfig, LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 import { createDropdownConfig } from './test';
@@ -38,14 +38,19 @@ describe('prepareUrlWithParams', () => {
   });
 
   it('Should return empty string if url is not provided', () => {
-    const result = prepareUrlWithParams(true, true, timeRange, replaceVariables, 'var-test=123', undefined);
+    const result = prepareUrlWithParams(
+      { includeKioskMode: false, includeTimeRange: true, includeVariables: true } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      'var-test=123',
+      undefined
+    );
     expect(result).toEqual('');
   });
 
   it('Should include only variables if includeTimeRange is false', () => {
     const result = prepareUrlWithParams(
-      false,
-      true,
+      { includeKioskMode: false, includeTimeRange: false, includeVariables: true } as LinkConfig,
       timeRange,
       replaceVariables,
       'var-x=1&var-y=2',
@@ -55,13 +60,60 @@ describe('prepareUrlWithParams', () => {
   });
 
   it('Should include only time range if includeVariables is false', () => {
-    const result = prepareUrlWithParams(true, false, timeRange, replaceVariables, '', 'http://localhost');
-    expect(result).toEqual('http://localhost?from=2023-01-01T00:00:00.000Z&to=2023-01-02T00:00:00.000Z');
+    const result = prepareUrlWithParams(
+      { includeKioskMode: false, includeTimeRange: true, includeVariables: true } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      '',
+      'http://localhost'
+    );
+    expect(result).toEqual('http://localhost?&from=2023-01-01T00:00:00.000Z&to=2023-01-02T00:00:00.000Z');
   });
 
   it('Should include both time range and variables', () => {
-    const result = prepareUrlWithParams(true, true, timeRange, replaceVariables, 'var-a=abc', 'http://localhost');
+    const result = prepareUrlWithParams(
+      { includeKioskMode: false, includeTimeRange: true, includeVariables: true } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      'var-a=abc',
+      'http://localhost'
+    );
     expect(result).toEqual('http://localhost?var-a=abc&from=2023-01-01T00:00:00.000Z&to=2023-01-02T00:00:00.000Z');
+  });
+
+  it('Should include kiosk mode & time range and variables', () => {
+    const result = prepareUrlWithParams(
+      { includeKioskMode: true, includeTimeRange: true, includeVariables: true } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      'var-a=abc&kiosk',
+      'http://localhost'
+    );
+    expect(result).toEqual(
+      'http://localhost?var-a=abc&from=2023-01-01T00:00:00.000Z&to=2023-01-02T00:00:00.000Z&kiosk'
+    );
+  });
+
+  it('Should include kiosk mode', () => {
+    const result = prepareUrlWithParams(
+      { includeKioskMode: true, includeTimeRange: false, includeVariables: false } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      'var-a=abc&kiosk',
+      'http://localhost'
+    );
+    expect(result).toEqual('http://localhost?kiosk');
+  });
+
+  it('Should not include kiosk mode if not kiosk in params', () => {
+    const result = prepareUrlWithParams(
+      { includeKioskMode: true, includeTimeRange: false, includeVariables: false } as LinkConfig,
+      timeRange,
+      replaceVariables,
+      'var-a=abc',
+      'http://localhost'
+    );
+    expect(result).toEqual('http://localhost');
   });
 });
 
@@ -114,6 +166,7 @@ describe('prepareLinksToRender', () => {
           linkType: LinkType.SINGLE,
           url: 'https://google.com',
           includeVariables: false,
+          includeKioskMode: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
           tags: [],
@@ -152,6 +205,7 @@ describe('prepareLinksToRender', () => {
           url: 'd/test123/?params=test',
           includeVariables: false,
           includeTimeRange: false,
+          includeKioskMode: false,
           target: LinkTarget.NEW_TAB,
           tags: [],
           dashboardUrl: '',
@@ -190,6 +244,7 @@ describe('prepareLinksToRender', () => {
           linkType: LinkType.TAGS,
           url: 'https://google.com',
           includeVariables: false,
+          includeKioskMode: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
           tags: ['env'],
@@ -227,6 +282,7 @@ describe('prepareLinksToRender', () => {
             linkType: LinkType.SINGLE,
             url: 'https://google.com',
             includeVariables: false,
+            includeKioskMode: false,
             includeTimeRange: false,
             target: LinkTarget.NEW_TAB,
             tags: [],
@@ -248,6 +304,7 @@ describe('prepareLinksToRender', () => {
           linkType: LinkType.DROPDOWN,
           url: 'https://google.com',
           includeVariables: false,
+          includeKioskMode: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
           tags: ['env'],
@@ -285,6 +342,7 @@ describe('prepareLinksToRender', () => {
             linkType: LinkType.SINGLE,
             url: 'https://google.com',
             includeVariables: false,
+            includeKioskMode: false,
             includeTimeRange: false,
             target: LinkTarget.NEW_TAB,
             tags: [],
@@ -300,6 +358,7 @@ describe('prepareLinksToRender', () => {
             url: '',
             includeVariables: false,
             includeTimeRange: false,
+            includeKioskMode: false,
             target: LinkTarget.NEW_TAB,
             tags: [],
             dashboardUrl: '',
@@ -319,6 +378,7 @@ describe('prepareLinksToRender', () => {
           enable: true,
           linkType: LinkType.DROPDOWN,
           url: 'https://google.com',
+          includeKioskMode: false,
           includeVariables: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
@@ -358,6 +418,7 @@ describe('prepareLinksToRender', () => {
           linkType: LinkType.DASHBOARD,
           url: '',
           includeVariables: false,
+          includeKioskMode: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
           tags: [],
@@ -393,6 +454,7 @@ describe('prepareLinksToRender', () => {
           linkType: 'unknown' as any,
           url: '',
           includeVariables: false,
+          includeKioskMode: false,
           includeTimeRange: false,
           target: LinkTarget.NEW_TAB,
           tags: [],
@@ -429,6 +491,7 @@ describe('prepareLinksToRender', () => {
           url: '',
           includeVariables: false,
           includeTimeRange: false,
+          includeKioskMode: false,
           target: LinkTarget.NEW_TAB,
           tags: [],
           dashboardUrl: '',
@@ -472,6 +535,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          includeKioskMode: false,
           htmlConfig: {
             content: 'line',
           },
@@ -525,6 +589,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          includeKioskMode: false,
         },
       ],
     };

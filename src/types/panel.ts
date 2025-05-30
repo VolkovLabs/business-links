@@ -311,6 +311,13 @@ export interface LinkConfig {
   dropdownConfig?: DropdownConfig;
 
   /**
+   * Include kiosk mode
+   *
+   * @type {boolean}
+   */
+  includeKioskMode: boolean;
+
+  /**
    * Use custom images
    *
    * @type {boolean}
