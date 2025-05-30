@@ -455,6 +455,24 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change kiosk mode', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.SINGLE }),
+      })
+    );
+
+    expect(selectors.fieldIncludeKioskMode()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldIncludeKioskMode());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        includeKioskMode: true,
+      })
+    );
+  });
+
   it('Should render TimePickerEditor', () => {
     render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TIMEPICKER }) }));
 

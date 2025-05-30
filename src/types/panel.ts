@@ -300,6 +300,13 @@ export interface LinkConfig {
    * @type {DropdownConfig}
    */
   dropdownConfig?: DropdownConfig;
+
+  /**
+   * Include kiosk mode
+   *
+   * @type {boolean}
+   */
+  includeKioskMode: boolean;
 }
 
 /**

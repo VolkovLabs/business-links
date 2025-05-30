@@ -1,10 +1,9 @@
 import { PanelProps } from '@grafana/data';
-import { locationService } from '@grafana/runtime';
 import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { useContentPosition, useSavedState } from '@/hooks';
+import { useContentPosition, useGrafanaLocationService, useSavedState } from '@/hooks';
 import { DashboardMeta, PanelOptions } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
@@ -46,9 +45,9 @@ export const LinksPanel: React.FC<Props> = ({
   const toolbarRowRef = useRef<HTMLDivElement>(null);
 
   /**
-   * location service
+   * Location service via hook with subscription
    */
-  const location = locationService.getLocation();
+  const location = useGrafanaLocationService();
 
   /**
    * currentDashboardId
@@ -106,10 +105,10 @@ export const LinksPanel: React.FC<Props> = ({
     availableDashboards,
     currentDashboardId,
     data.series,
-    location.search,
     options.dropdowns,
     replaceVariables,
     timeRange,
+    location,
   ]);
 
   /**

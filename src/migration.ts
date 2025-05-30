@@ -43,6 +43,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedDropdownConfig =
           !item.dropdownConfig || item.dropdownConfig === undefined ? createDropdownConfig() : item.dropdownConfig;
 
+        const normalizedIncludeKioskMode =
+          !item.includeKioskMode || item.includeKioskMode === undefined ? false : item.includeKioskMode;
+
         return {
           ...item,
           id: normalizedId,
@@ -51,6 +54,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             ...item.timePickerConfig,
             type: normalizedTimeConfigType,
           },
+          includeKioskMode: normalizedIncludeKioskMode,
         };
       });
 

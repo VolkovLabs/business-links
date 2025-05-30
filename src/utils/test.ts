@@ -43,6 +43,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
     type: TimeConfigType.FIELD,
   },
   dropdownConfig: createDropdownConfig(),
+  includeKioskMode: false,
   ...item,
 });
 
@@ -95,6 +96,7 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   showMenuOnHover: false,
   id: uuidv4(),
   dropdownConfig: createDropdownConfig(),
+  includeKioskMode: false,
   ...item,
 });
 

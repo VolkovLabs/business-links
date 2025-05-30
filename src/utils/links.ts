@@ -35,8 +35,7 @@ export const extractParamsByPrefix = (search: string, prefix: string): string =>
  * @param url
  */
 export const prepareUrlWithParams = (
-  includeTimeRange: boolean,
-  includeVariables: boolean,
+  item: LinkConfig,
   timeRange: TimeRange,
   replaceVariables: InterpolateFunction,
   params: string,
@@ -54,10 +53,12 @@ export const prepareUrlWithParams = (
    */
   let currentUrl = replaceVariables(url);
 
+  const kioskParam = extractParamsByPrefix(params, 'kiosk');
+
   /**
    * Apply all variables states
    */
-  if (includeVariables) {
+  if (item.includeVariables) {
     const newParams = extractParamsByPrefix(params, 'var-');
 
     currentUrl = `${currentUrl}?${newParams}`;
@@ -66,11 +67,17 @@ export const prepareUrlWithParams = (
   /**
    * Apply Time Range
    */
-  if (includeTimeRange) {
+  if (item.includeTimeRange) {
     const timeRangeParams = `from=${timeRange.from.toISOString()}&to=${timeRange.to.toISOString()}`;
-    currentUrl = `${currentUrl}${includeVariables ? `&${timeRangeParams}` : `?${timeRangeParams}`}`;
+    currentUrl = `${currentUrl}${item.includeVariables ? `&${timeRangeParams}` : `?${timeRangeParams}`}`;
   }
 
+  /**
+   * Apply kiosk param as flag
+   */
+  if (kioskParam && item.includeKioskMode) {
+    currentUrl = `${currentUrl}${currentUrl.includes('?') ? '&' : '?'}kiosk`;
+  }
   return currentUrl;
 };
 
@@ -272,14 +279,7 @@ export const prepareLinksToRender = ({
        * Single link
        */
       case LinkType.SINGLE: {
-        const preparedUrl = prepareUrlWithParams(
-          item.includeTimeRange,
-          item.includeVariables,
-          timeRange,
-          replaceVariables,
-          params,
-          item.url
-        );
+        const preparedUrl = prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url);
 
         /**
          * Is current dashboard/link
@@ -294,14 +294,7 @@ export const prepareLinksToRender = ({
             {
               ...item,
               isCurrentLink: isCurrentDashboard,
-              url: prepareUrlWithParams(
-                item.includeTimeRange,
-                item.includeVariables,
-                timeRange,
-                replaceVariables,
-                params,
-                item.url
-              ),
+              url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url),
             },
           ],
         });
@@ -319,14 +312,7 @@ export const prepareLinksToRender = ({
           links: [
             {
               ...item,
-              url: prepareUrlWithParams(
-                item.includeTimeRange,
-                item.includeVariables,
-                timeRange,
-                replaceVariables,
-                params,
-                item.dashboardUrl
-              ),
+              url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.dashboardUrl),
             },
           ],
         });
@@ -352,14 +338,7 @@ export const prepareLinksToRender = ({
           links: availableDashboards.map((availableDashboard) => ({
             ...item,
             name: availableDashboard.title,
-            url: prepareUrlWithParams(
-              item.includeTimeRange,
-              item.includeVariables,
-              timeRange,
-              replaceVariables,
-              params,
-              availableDashboard.url
-            ),
+            url: prepareUrlWithParams(item, timeRange, replaceVariables, params, availableDashboard.url),
           })),
         });
         break;

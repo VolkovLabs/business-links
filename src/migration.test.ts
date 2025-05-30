@@ -332,5 +332,27 @@ describe('migration', () => {
       expect(items[1].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
       expect(items[2].dropdownConfig?.buttonSize).toEqual(ButtonSize.MD);
     });
+
+    it('Should normalize kiosk mode', async () => {
+      const item1 = createLinkConfig({
+        includeKioskMode: undefined,
+      });
+      const item2 = createLinkConfig({
+        includeKioskMode: false,
+      });
+      const item3 = createLinkConfig({
+        includeKioskMode: true,
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].includeKioskMode).toEqual(false);
+      expect(items[1].includeKioskMode).toEqual(false);
+      expect(items[2].includeKioskMode).toEqual(true);
+    });
   });
 });
