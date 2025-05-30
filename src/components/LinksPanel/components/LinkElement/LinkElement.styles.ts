@@ -4,34 +4,17 @@ import { GrafanaTheme2 } from '@grafana/data';
 /**
  * Styles
  */
-export const getStyles = (theme: GrafanaTheme2) => {
+export const getStyles = (theme: GrafanaTheme2, { dynamicFontSize }: { dynamicFontSize: boolean }) => {
   return {
     link: css`
       margin: ${theme.spacing(0.5)};
     `,
-    linkGridItem: css`
-      container-type: inline-size;
-      container-name: linkSize;
-
-      margin: ${theme.spacing(0.5)};
-      transition: font-size 0.15s ease-in-out;
-
-      span {
-        @container linkSize (max-width: 90px) {
-          font-size: 8px;
-        }
-
-        @container linkSize (min-width: 90px) and (max-width: 130px) {
-          font-size: 10px;
-        }
-
-        @container linkSize (min-width: 130px) {
-          font-size: 14px;
-        }
-      }
-    `,
     linkGridMode: css`
       width: 100%;
+      ${dynamicFontSize && `font-size: clamp(8px, calc(var(--btn-width) / 10), 14px);`}
+    `,
+    wrapper: css`
+      display: inline-block;
     `,
     currentDashboard: css`
       margin: ${theme.spacing(0.5)};

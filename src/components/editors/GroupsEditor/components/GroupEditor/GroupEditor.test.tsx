@@ -754,6 +754,30 @@ describe('ColumnsEditor', () => {
       );
     });
 
+    it('Should allow change dynamicFontSize', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: true,
+            dynamicFontSize: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldDynamicFontSize()).toBeInTheDocument();
+      fireEvent.click(selectors.fieldDynamicFontSize());
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          dynamicFontSize: true,
+        })
+      );
+    });
+
     it('Should don`t display grid columns if manual layout is disabled', () => {
       const onChange = jest.fn();
 

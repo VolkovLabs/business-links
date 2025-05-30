@@ -97,6 +97,13 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         normalizedGroup.gridColumns = 10;
       }
 
+      /**
+       * Normalize dynamicFontSize
+       */
+      if (normalizedGroup.dynamicFontSize === undefined) {
+        normalizedGroup.dynamicFontSize = false;
+      }
+
       return normalizedGroup;
     });
   }

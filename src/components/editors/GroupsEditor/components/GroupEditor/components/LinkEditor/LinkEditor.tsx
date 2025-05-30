@@ -51,7 +51,7 @@ interface Props extends EditorProps<LinkConfig> {
   data: DataFrame[];
 
   /**
-   * is Grid Mode
+   * Is grid mode
    *
    * @type {boolean}
    */

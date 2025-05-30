@@ -158,6 +158,13 @@ export const LinksGridLayout: React.FC<Props> = ({
   }, [activeGroup?.gridColumns]);
 
   /**
+   * Dynamic Font Size
+   */
+  const currentDynamicFontSize = useMemo(() => {
+    return activeGroup?.dynamicFontSize ?? false;
+  }, [activeGroup?.dynamicFontSize]);
+
+  /**
    * Configured layout
    */
   const linksLayout = useMemo(() => {
@@ -243,9 +250,27 @@ export const LinksGridLayout: React.FC<Props> = ({
                 {link.type === VisualLinkType.HTML && (
                   <ContentElement link={link} panelData={data} gridMode={true} replaceVariables={replaceVariables} />
                 )}
-                {link.type === VisualLinkType.LINK && <LinkElement link={link} gridMode={true} />}
-                {link.type === VisualLinkType.TIMEPICKER && <TimePickerElement link={link} gridMode={true} />}
-                {link.type === VisualLinkType.MENU && <MenuElement link={link} gridMode={true} />}
+                {link.type === VisualLinkType.LINK && (
+                  <LinkElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                  />
+                )}
+                {link.type === VisualLinkType.TIMEPICKER && (
+                  <TimePickerElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                  />
+                )}
+                {link.type === VisualLinkType.MENU && (
+                  <MenuElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                  />
+                )}
               </div>
               {isEditMode && (
                 <span

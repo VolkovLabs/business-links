@@ -1,6 +1,6 @@
 import { cx } from '@emotion/css';
 import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { ButtonSize } from '@/types';
@@ -37,16 +37,52 @@ interface Props {
    * @type {ButtonSize}
    */
   buttonSize?: ButtonSize;
+
+  /**
+   * Dynamic font size
+   *
+   * @type {boolean}
+   */
+  dynamicFontSize?: boolean;
 }
 
 /**
  * Links Element
  */
-export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = false }) => {
+export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = false, dynamicFontSize = false }) => {
   /**
    * Styles
    */
-  const styles = useStyles2(getStyles);
+  const styles = useStyles2(getStyles, { dynamicFontSize });
+
+  /**
+   * States
+   */
+  const [linkWidth, setLinkWidth] = useState(0);
+  const [linkEl, setLinkEl] = useState<HTMLElement | null>(null);
+
+  /**
+   * Get link ref
+   */
+  const btnRef = useCallback((node: HTMLElement | null) => {
+    setLinkEl(node);
+  }, []);
+
+  useEffect(() => {
+    if (!dynamicFontSize || !linkEl) {
+      return;
+    }
+
+    /**
+     * Track link element width changes
+     */
+    const resize = new ResizeObserver(([entry]) => {
+      setLinkWidth(Math.floor(entry.contentRect.width));
+    });
+    resize.observe(linkEl);
+
+    return () => resize.disconnect();
+  }, [dynamicFontSize, linkEl]);
 
   if (link.links.length > 1) {
     /**
@@ -70,10 +106,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
       return (
         <Button
           variant="secondary"
-          className={cx(
-            gridMode ? styles.linkGridItem : styles.link,
-            gridMode && styles.linkGridMode
-          )}
+          className={cx(styles.link, gridMode && styles.linkGridMode)}
           size={buttonSize}
           icon={link.icon}
           fill="outline"
@@ -98,13 +131,18 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
     }
 
     return (
-      <Dropdown
-        key={link.name}
-        overlay={<div className={styles.menu}>{menuLinks}</div>}
-        {...testIds.dropdown.apply(link.name)}
+      <div
+        ref={btnRef}
+        style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
       >
-        {dropdownButton()}
-      </Dropdown>
+        <Dropdown
+          key={link.name}
+          overlay={<div className={styles.menu}>{menuLinks}</div>}
+          {...testIds.dropdown.apply(link.name)}
+        >
+          {dropdownButton()}
+        </Dropdown>
+      </div>
     );
   }
 
@@ -116,24 +154,26 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
 
     if (currentLink.url) {
       return (
-        <LinkButton
-          key={currentLink.url}
-          className={cx(
-            currentLink.isCurrentLink ? styles.currentDashboard : styles.link,
-            gridMode && styles.linkGridMode,
-            gridMode ? styles.linkGridItem : styles.link,
-          )}
-          icon={currentLink.icon}
-          href={currentLink.url}
-          title={currentLink.name}
-          target={currentLink.target}
-          variant="secondary"
-          fill="outline"
-          size={buttonSize}
-          {...testIds.buttonSingleLink.apply(link.name)}
-        >
-          {currentLink.name}
-        </LinkButton>
+        <div ref={btnRef}>
+          <LinkButton
+            key={currentLink.url}
+            className={cx(
+              currentLink.isCurrentLink ? styles.currentDashboard : styles.link,
+              gridMode && styles.linkGridMode
+            )}
+            style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
+            icon={currentLink.icon}
+            href={currentLink.url}
+            title={currentLink.name}
+            target={currentLink.target}
+            variant="secondary"
+            fill="outline"
+            size={buttonSize}
+            {...testIds.buttonSingleLink.apply(link.name)}
+          >
+            {currentLink.name}
+          </LinkButton>
+        </div>
       );
     }
   }
@@ -142,20 +182,22 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
    * Return
    */
   return (
-    <Button
-      variant="secondary"
-      className={cx(
-        gridMode ? styles.linkGridItem : styles.link,
-        gridMode && styles.linkGridMode
-      )}
-      key={link.name}
-      fill="outline"
-      size={buttonSize}
-      title={link.name}
-      tooltip="Empty URL"
-      {...testIds.buttonEmptyLink.apply(link.name)}
+    <div
+      ref={btnRef}
+      style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
     >
-      {link.name}
-    </Button>
+      <Button
+        variant="secondary"
+        className={cx(styles.link, gridMode && styles.linkGridMode)}
+        key={link.name}
+        fill="outline"
+        size={buttonSize}
+        title={link.name}
+        tooltip="Empty URL"
+        {...testIds.buttonEmptyLink.apply(link.name)}
+      >
+        {link.name}
+      </Button>
+    </div>
   );
 };
