@@ -257,7 +257,10 @@ export const prepareLinksToRender = ({
           timeRange: pickerTimeRange,
           links: [],
           isCurrentTimepicker,
-          alignContentPosition: item.alignContentPosition
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          icon: item.icon,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -298,7 +301,7 @@ export const prepareLinksToRender = ({
               url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url),
             },
           ],
-          alignContentPosition: item.alignContentPosition
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -317,7 +320,7 @@ export const prepareLinksToRender = ({
               url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.dashboardUrl),
             },
           ],
-          alignContentPosition: item.alignContentPosition
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -343,7 +346,9 @@ export const prepareLinksToRender = ({
             name: availableDashboard.title,
             url: prepareUrlWithParams(item, timeRange, replaceVariables, params, availableDashboard.url),
           })),
-          alignContentPosition: item.alignContentPosition
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }
@@ -405,7 +410,9 @@ export const prepareLinksToRender = ({
           showMenuOnHover: item.showMenuOnHover,
           hoverMenuPosition: item.hoverMenuPosition,
           links: dropdownLinks,
-          alignContentPosition: item.alignContentPosition
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          alignContentPosition: item.alignContentPosition,
         });
         break;
       }

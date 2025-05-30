@@ -109,6 +109,20 @@ export interface VisualLink {
   isCurrentTimepicker?: boolean;
 
   /**
+   * Use custom images
+   *
+   * @type {boolean}
+   */
+  showCustomIcons?: boolean;
+
+  /**
+   * Custom image url
+   *
+   * @type {string}
+   */
+  customIconUrl?: string;
+
+  /**
    * Align content position
    *
    * @type {AlignContentPositionType}

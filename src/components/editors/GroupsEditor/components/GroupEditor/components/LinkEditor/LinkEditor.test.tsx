@@ -3,7 +3,15 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { AlignContentPositionType, ButtonSize, DropdownAlign, DropdownType, HoverMenuPositionType, LinkTarget, LinkType } from '@/types';
+import {
+  AlignContentPositionType,
+  ButtonSize,
+  DropdownAlign,
+  DropdownType,
+  HoverMenuPositionType,
+  LinkTarget,
+  LinkType,
+} from '@/types';
 import { createDropdownConfig, createLinkConfig } from '@/utils';
 
 import { ContentEditor, TimePickerEditor } from './components';
@@ -573,6 +581,53 @@ describe('LinkEditor', () => {
 
     expect(selectors.fieldDropdownButtonSize(true)).not.toBeInTheDocument();
     expect(selectors.fieldDropdownAlign(true)).not.toBeInTheDocument();
+  });
+
+  it('Should allow to use custom image', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          showCustomIcons: false,
+        }),
+      })
+    );
+
+    expect(selectors.fieldShowCustomIcon()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldShowCustomIcon());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showCustomIcons: true,
+      })
+    );
+  });
+
+  it('Should allow change url for the custom image', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          showCustomIcons: true,
+          customIconUrl: '',
+        }),
+      })
+    );
+
+    expect(selectors.fieldCustomIconUrl()).toBeInTheDocument();
+    expect(selectors.fieldCustomIconUrl()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldCustomIconUrl(), { target: { value: 'url.test' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        customIconUrl: 'url.test',
+      })
+    );
   });
 
   it('Should allow to change content alignment in link', () => {

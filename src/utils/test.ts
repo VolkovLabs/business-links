@@ -45,6 +45,8 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   },
   dropdownConfig: createDropdownConfig(),
   includeKioskMode: false,
+  showCustomIcons: false,
+  customIconUrl: '',
   alignContentPosition: AlignContentPositionType.LEFT,
   ...item,
 });

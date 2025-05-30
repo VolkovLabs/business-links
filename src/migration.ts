@@ -46,6 +46,12 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedIncludeKioskMode =
           !item.includeKioskMode || item.includeKioskMode === undefined ? false : item.includeKioskMode;
 
+        const normalizedShowCustomIcons =
+          !item.showCustomIcons || item.showCustomIcons === undefined ? false : item.showCustomIcons;
+
+        const normalizedCustomIconUrl =
+          !item.customIconUrl || item.customIconUrl === undefined ? '' : item.customIconUrl;
+
         return {
           ...item,
           id: normalizedId,
@@ -55,6 +61,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             type: normalizedTimeConfigType,
           },
           includeKioskMode: normalizedIncludeKioskMode,
+          showCustomIcons: normalizedShowCustomIcons,
+          customIconUrl: normalizedCustomIconUrl,
         };
       });
 

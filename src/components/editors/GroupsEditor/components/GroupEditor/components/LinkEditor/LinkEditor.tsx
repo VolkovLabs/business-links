@@ -458,38 +458,61 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
       {value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
-          {value.linkType !== LinkType.DROPDOWN && (
-            <>
-              <InlineField label="Icon" grow labelWidth={20}>
-                <Select
-                  options={iconOptions}
-                  isClearable
-                  onChange={(event) => {
-                    onChange({
-                      ...value,
-                      icon: event?.value as IconName | undefined,
-                    });
-                  }}
-                  {...TEST_IDS.linkEditor.fieldIcon.apply()}
-                  value={value.icon}
-                />
-              </InlineField>
+          <InlineField label="Use custom icon" grow={true} labelWidth={20}>
+            <InlineSwitch
+              value={value.showCustomIcons}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  showCustomIcons: event.currentTarget.checked,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldShowCustomIcon.apply()}
+            />
+          </InlineField>
+          {value.showCustomIcons ? (
+            <InlineField label="Custom icon URL" grow={true} labelWidth={20}>
+              <Input
+                value={value.customIconUrl}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    customIconUrl: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldCustomIconUrl.apply()}
+              />
+            </InlineField>
+          ) : (
+            <InlineField label="Native icon" grow labelWidth={20}>
+              <Select
+                options={iconOptions}
+                isClearable
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    icon: event?.value as IconName | undefined,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldIcon.apply()}
+                value={value.icon}
+              />
+            </InlineField>
+          )}
 
-              {value.linkType !== LinkType.TIMEPICKER && (
-                <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
-                  <RadioButtonGroup
-                    value={value.target}
-                    onChange={(eventValue) => {
-                      onChange({
-                        ...value,
-                        target: eventValue,
-                      });
-                    }}
-                    options={linkTargetOptions}
-                  />
-                </InlineField>
-              )}
-            </>
+          {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.TIMEPICKER && (
+            <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+              <RadioButtonGroup
+                value={value.target}
+                onChange={(eventValue) => {
+                  onChange({
+                    ...value,
+                    target: eventValue,
+                  });
+                }}
+                options={linkTargetOptions}
+              />
+            </InlineField>
           )}
 
           {optionId === 'groups' && (
