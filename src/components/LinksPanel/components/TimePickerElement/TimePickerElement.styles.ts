@@ -45,6 +45,12 @@ export const getStyles = (
         background: ${theme.colors.background.secondary};
       }
     `,
+    customIcon: css`
+      width: 1em;
+      height: 1em;
+      margin-right: ${theme.spacing(0.5)};
+      vertical-align: middle;
+    `,
     alignLinkContentLeft: css`
       display: flex;
       justify-content: flex-start;

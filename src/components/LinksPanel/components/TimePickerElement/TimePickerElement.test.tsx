@@ -117,6 +117,24 @@ describe('TimePickerElement', () => {
       );
     });
 
+    it('Should render custom icon when showCustomIcons is true and customIconUrl is non empty', async () => {
+      const customUrl = 'https://example.com/icon.png';
+      const customLink = {
+        ...defaultVisualLink,
+        showCustomIcons: true,
+        customIconUrl: customUrl,
+      };
+
+      await act(async () => render(getComponent({ link: customLink })));
+
+      const btn = selectors.buttonPicker(false, customLink.name);
+      expect(btn).toBeInTheDocument();
+
+      const img = btn.querySelector('img')!;
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute('src', customUrl);
+    });
+
     describe('Grid mode', () => {
       it('Should render default button', async () => {
         await act(async () => render(getComponent({ gridMode: true })));
