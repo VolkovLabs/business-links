@@ -458,7 +458,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
       {value.linkType !== LinkType.HTML && (
         <FieldsGroup label="Configuration">
-          <InlineField label="Use custom images" grow={true} labelWidth={30}>
+          <InlineField label="Use custom icon" grow={true} labelWidth={20}>
             <InlineSwitch
               value={value.showCustomIcons}
               onChange={(event) => {
@@ -471,7 +471,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             />
           </InlineField>
           {value.showCustomIcons ? (
-            <InlineField label="Custom icon url" grow={true} labelWidth={20}>
+            <InlineField label="Custom icon URL" grow={true} labelWidth={20}>
               <Input
                 value={value.customIconUrl}
                 onChange={(event) => {
