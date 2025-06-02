@@ -6,10 +6,15 @@ All notable changes to the **Business Links** panel are documented in this file.
 
 ### Added
 
-- Added links align customization and current dashboard selection ([#34](https://github.com/VolkovLabs/business-links/issues/34)).
-- Added dynamic font size ([#39](https://github.com/VolkovLabs/business-links/pull/39)).
-- Added custom icons ([#36](https://github.com/VolkovLabs/business-links/issues/36)).
-- Added kiosk mode for link configuration ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
+- Added kiosk mode support ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
+
+## [1.4.0] - 2025-06-02
+
+### Added
+
+- Introduced the ability to customize the alignment of links, along with highlighting the currently selected dashboard for improved user experience. ([#34](https://github.com/VolkovLabs/business-links/issues/34))
+- Added support for dynamic font sizing to enhance readability and adaptability across different devices and screen sizes. ([#39](https://github.com/VolkovLabs/business-links/pull/39))
+- Implemented support for custom icons to allow users to personalize the visual representation of links and dashboards. ([#36](https://github.com/VolkovLabs/business-links/issues/36))
 
 ## [1.3.0] - 2025-05-28
 
