@@ -298,7 +298,7 @@ export const prepareLinksToRender = ({
             {
               ...item,
               isCurrentLink: isCurrentDashboard,
-              url: prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url),
+              url: preparedUrl,
             },
           ],
           alignContentPosition: item.alignContentPosition,

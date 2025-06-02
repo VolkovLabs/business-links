@@ -541,7 +541,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
           <FieldsGroup label="Include">
             <InlineField
               label="Support kiosk mode"
-              tooltip="Allow link support kiosk mode if kiosk mode is enable"
+              tooltip="Allow link to support kiosk mode when kiosk mode is enabled"
               grow={true}
               labelWidth={32}
             >
