@@ -4,6 +4,10 @@ All notable changes to the **Business Links** panel are documented in this file.
 
 ## Unreleased
 
+### Breaking Changes
+
+- Minimum Grafana version 11.5.
+
 ### Added
 
 - Added kiosk mode support ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
