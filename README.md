@@ -50,7 +50,6 @@ Ideal for teams needing centralized access to diverse resources, the Business Li
 
 The Business Links Panel is part of the **Business Suite**, a collection of open-source plugins by [Volkov Labs](https://volkovlabs.io/). These plugins solve common business needs with intuitive interfaces, detailed documentation, and video tutorials.
 
-Explore the suite:
 [![Business Suite for Grafana](https://raw.githubusercontent.com/VolkovLabs/.github/main/business.png)](https://volkovlabs.io/plugins/)
 
 ### Enterprise Support
