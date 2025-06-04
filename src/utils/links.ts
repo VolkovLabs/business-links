@@ -254,6 +254,7 @@ export const prepareLinksToRender = ({
           customIconUrl: item.customIconUrl,
           icon: item.icon,
           alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
         });
         break;
       }
@@ -309,6 +310,7 @@ export const prepareLinksToRender = ({
             },
           ],
           alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
         });
         break;
       }
@@ -335,6 +337,7 @@ export const prepareLinksToRender = ({
             },
           ],
           alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
         });
         break;
       }
@@ -370,6 +373,7 @@ export const prepareLinksToRender = ({
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
           alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
         });
         break;
       }
@@ -434,6 +438,7 @@ export const prepareLinksToRender = ({
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
           alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
         });
         break;
       }

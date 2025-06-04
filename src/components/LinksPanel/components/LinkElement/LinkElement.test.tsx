@@ -409,6 +409,51 @@ describe('LinkElement', () => {
 
       expect(btn.querySelector('svg')).toBeNull();
     });
+
+    it('Should not render title attribute when hideTooltipOnHover is true', async () => {
+      const linkName = 'SingleLink';
+      const nestedLink = createNestedLinkConfig({
+        name: linkName,
+        url: 'test.com',
+        hideTooltipOnHover: true,
+      });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: linkName,
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+
+      const linkButton = selectors.buttonSingleLink(false, linkName);
+      expect(linkButton).toBeInTheDocument();
+      expect(linkButton).not.toHaveAttribute('title');
+    });
+
+    it('Should not render title or tooltip attributes on empty Button when hideTooltipOnHover is true', async () => {
+      const linkName = 'EmptyLink';
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: linkName,
+              hideTooltipOnHover: true,
+              links: [],
+            }),
+          })
+        )
+      );
+
+      const emptyButton = selectors.buttonEmptyLink(false, linkName);
+      expect(emptyButton).toBeInTheDocument();
+      expect(emptyButton).not.toHaveAttribute('title');
+      expect(emptyButton).not.toHaveAttribute('tooltip');
+    });
   });
 
   describe('Dynamic Font Size', () => {

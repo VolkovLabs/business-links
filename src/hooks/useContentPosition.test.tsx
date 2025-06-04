@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 
 import { useContentPosition } from './useContentPosition';
@@ -149,5 +149,20 @@ describe('useContentPosition', () => {
     expect(w.style.transform).toEqual('');
     expect(w.style.willChange).toEqual('');
     expect(w.style.zIndex).toEqual('');
+  });
+
+  it('Should update windowWidth state on window resize', async () => {
+    render(<TestComponent panelId="p1" sticky={false} />);
+
+    await act(async () => {
+      Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
+      const resizeEvent = new Event('resize');
+      window.dispatchEvent(resizeEvent);
+      jest.runAllTimers();
+    });
+
+    await waitFor(() => {
+      expect(window.innerWidth).toBe(500);
+    });
   });
 });

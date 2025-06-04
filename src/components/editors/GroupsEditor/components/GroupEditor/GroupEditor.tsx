@@ -173,6 +173,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         showCustomIcons: false,
         customIconUrl: '',
         alignContentPosition: AlignContentPositionType.LEFT,
+        hideTooltipOnHover: false,
       },
     ]);
     setNewLinkName('');

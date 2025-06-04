@@ -135,6 +135,21 @@ describe('TimePickerElement', () => {
       expect(img).toHaveAttribute('src', customUrl);
     });
 
+    it('Should not render title or tooltip attributes when hideTooltipOnHover is true', async () => {
+      const customLink = {
+        ...defaultVisualLink,
+        hideTooltipOnHover: true,
+      };
+
+      await act(async () => render(getComponent({ link: customLink })));
+
+      const linkButton = selectors.buttonPicker(false, customLink.name);
+
+      expect(linkButton).toBeInTheDocument();
+      expect(linkButton).not.toHaveAttribute('title');
+      expect(linkButton).not.toHaveAttribute('tooltip');
+    });
+
     describe('Grid mode', () => {
       it('Should render default button', async () => {
         await act(async () => render(getComponent({ gridMode: true })));

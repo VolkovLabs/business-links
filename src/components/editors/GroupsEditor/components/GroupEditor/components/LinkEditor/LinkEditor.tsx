@@ -532,6 +532,19 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               />
             </InlineField>
           )}
+
+          <InlineField label="Hide tooltip on hover" grow={true} labelWidth={20}>
+            <InlineSwitch
+              value={value.hideTooltipOnHover}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  hideTooltipOnHover: event.currentTarget.checked,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldHideTooltipOnHover.apply()}
+            />
+          </InlineField>
         </FieldsGroup>
       )}
 

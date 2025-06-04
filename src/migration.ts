@@ -49,6 +49,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedCustomIconUrl =
           !item.customIconUrl || item.customIconUrl === undefined ? '' : item.customIconUrl;
 
+        const normalizedHideTitleOnHover =
+          !item.hideTooltipOnHover || item.hideTooltipOnHover === undefined ? false : item.hideTooltipOnHover;
+
         return {
           ...item,
           id: normalizedId,
@@ -59,6 +62,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           },
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,
+          hideTooltipOnHover: normalizedHideTitleOnHover
         };
       });
 

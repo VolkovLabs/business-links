@@ -330,6 +330,13 @@ export interface LinkConfig {
    * @type {AlignContentPositionType}
    */
   alignContentPosition?: AlignContentPositionType;
+
+  /**
+   * Hide tooltip on hover
+   *
+   * @type {boolean}
+   */
+  hideTooltipOnHover?: boolean;
 }
 
 /**
