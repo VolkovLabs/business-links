@@ -43,6 +43,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedDropdownConfig =
           !item.dropdownConfig || item.dropdownConfig === undefined ? createDropdownConfig() : item.dropdownConfig;
 
+        const normalizedIncludeKioskMode =
+          !item.includeKioskMode || item.includeKioskMode === undefined ? false : item.includeKioskMode;
+
         const normalizedShowCustomIcons =
           !item.showCustomIcons || item.showCustomIcons === undefined ? false : item.showCustomIcons;
 
@@ -60,6 +63,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
             ...item.timePickerConfig,
             type: normalizedTimeConfigType,
           },
+          includeKioskMode: normalizedIncludeKioskMode,
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,
           hideTooltipOnHover: normalizedHideTitleOnHover

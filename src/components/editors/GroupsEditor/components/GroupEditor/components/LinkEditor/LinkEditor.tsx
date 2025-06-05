@@ -552,6 +552,23 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         value.linkType !== LinkType.HTML &&
         value.linkType !== LinkType.DROPDOWN && (
           <FieldsGroup label="Include">
+            <InlineField
+              label="Support kiosk mode"
+              tooltip="Allow link to support kiosk mode when kiosk mode is enabled"
+              grow={true}
+              labelWidth={32}
+            >
+              <InlineSwitch
+                value={value.includeKioskMode}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    includeKioskMode: event.currentTarget.checked,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldIncludeKioskMode.apply()}
+              />
+            </InlineField>
             <InlineField label="Current time range" grow={true} labelWidth={32}>
               <InlineSwitch
                 value={value.includeTimeRange}

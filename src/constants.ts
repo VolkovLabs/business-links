@@ -68,6 +68,7 @@ export const TEST_IDS = {
     fieldLinkType: createSelector('data-testid link-editor field-link-type'),
     fieldIncludeTimeRange: createSelector('data-testid link-editor field-include-time-range'),
     fieldIncludeVariables: createSelector('data-testid link-editor field-include-variables'),
+    fieldIncludeKioskMode: createSelector('data-testid link-editor field-include-kiosk-mode'),
     fieldDashboard: createSelector('data-testid link-editor field-dashboard'),
     fieldDropdown: createSelector('data-testid link-editor field-dropdown'),
     fieldHoverPosition: createSelector('data-testid link-editor field-hover-position'),

@@ -2,6 +2,16 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Breaking Changes
+
+- Minimum Grafana version 11.5.
+
+### Added
+
+- Added kiosk mode support ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
+
 ## [1.4.0] - 2025-06-02
 
 ### Added
