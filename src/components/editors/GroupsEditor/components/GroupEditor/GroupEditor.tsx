@@ -169,6 +169,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         timePickerConfig: {
           type: TimeConfigType.FIELD,
         },
+        includeKioskMode: false,
         dropdownConfig: createDropdownConfig(),
         showCustomIcons: false,
         customIconUrl: '',
