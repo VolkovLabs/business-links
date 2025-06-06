@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { calcOffsetTop } from '@/utils';
 
@@ -13,6 +13,29 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
    * Refs
    */
   const containerRef = useRef<HTMLElement | null>(null);
+
+  /**
+   * State
+   */
+  const [windowWidth, setWindowWidth] = useState<number>(() => (typeof window !== 'undefined' ? window.innerWidth : 0));
+
+  useEffect(() => {
+    /**
+     * Update windowWidth state
+     */
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    /**
+     * Subscribe to window resize event
+     */
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     /**
@@ -69,7 +92,7 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
       wrapper.style.willChange = '';
       wrapper.style.zIndex = '';
     };
-  }, [panelId, sticky]);
+  }, [panelId, sticky, windowWidth]);
 
   return { containerRef };
 };

@@ -152,15 +152,20 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
     };
     if (link.showMenuOnHover) {
       return (
-        <Tooltip
-          content={<div className={styles.menu}>{menuLinks}</div>}
-          theme="info"
-          placement={link.hoverMenuPosition ? link.hoverMenuPosition : 'bottom'}
-          interactive
-          {...testIds.tooltipMenu.apply(link.name)}
+        <div
+          ref={btnRef}
+          style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
         >
-          {dropdownButton()}
-        </Tooltip>
+          <Tooltip
+            content={<div className={styles.menu}>{menuLinks}</div>}
+            theme="info"
+            placement={link.hoverMenuPosition ? link.hoverMenuPosition : 'bottom'}
+            interactive
+            {...testIds.tooltipMenu.apply(link.name)}
+          >
+            {dropdownButton()}
+          </Tooltip>
+        </div>
       );
     }
 
@@ -201,7 +206,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             )}
             icon={!currentLink.showCustomIcons ? currentLink.icon : undefined}
             href={currentLink.url}
-            title={currentLink.name}
+            title={!currentLink.hideTooltipOnHover ? currentLink.name : undefined}
             target={currentLink.target}
             variant="secondary"
             fill="outline"
@@ -236,8 +241,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
         key={link.name}
         fill="outline"
         size={buttonSize}
-        title={link.name}
-        tooltip="Empty URL"
+        title={!link.hideTooltipOnHover ? link.name : undefined}
+        tooltip={!link.hideTooltipOnHover ? 'Empty URL' : undefined}
         {...testIds.buttonEmptyLink.apply(link.name)}
       >
         {link.name}

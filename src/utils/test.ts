@@ -48,6 +48,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   showCustomIcons: false,
   customIconUrl: '',
   alignContentPosition: AlignContentPositionType.LEFT,
+  hideTooltipOnHover: false,
   ...item,
 });
 

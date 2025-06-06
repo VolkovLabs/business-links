@@ -111,8 +111,8 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                   key={link.name}
                   fill="outline"
                   size={gridMode ? link.dropdownConfig?.buttonSize : ButtonSize.MD}
-                  title={link.name}
-                  tooltip="Empty URL"
+                  title={!nestedLink.hideTooltipOnHover ? link.name : undefined}
+                  tooltip={!nestedLink.hideTooltipOnHover ? "Empty URL" : undefined}
                   {...testIds.defaultButton.apply(nestedLink.name)}
                 >
                   {nestedLink.name}
@@ -129,7 +129,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                 )}
                 icon={nestedLink.icon}
                 href={nestedLink.url}
-                title={nestedLink.name}
+                title={!nestedLink.hideTooltipOnHover ? nestedLink.name : undefined}
                 target={nestedLink.target}
                 size={gridMode ? link.dropdownConfig?.buttonSize : ButtonSize.MD}
                 variant="secondary"

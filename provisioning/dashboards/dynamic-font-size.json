@@ -63,7 +63,8 @@
                   "timePickerConfig": {
                     "type": "field"
                   },
-                  "url": "/public"
+                  "url": "/public",
+                  "hideTooltipOnHover": false
                 },
                 {
                   "dashboardUrl": "/d/belrzzddl9lvke/date-picker",
@@ -84,7 +85,8 @@
                   "timePickerConfig": {
                     "type": "field"
                   },
-                  "url": ""
+                  "url": "",
+                  "hideTooltipOnHover": false
                 },
                 {
                   "dashboardUrl": "",
@@ -105,7 +107,8 @@
                   "timePickerConfig": {
                     "type": "field"
                   },
-                  "url": ""
+                  "url": "",
+                  "hideTooltipOnHover": false
                 },
                 {
                   "dashboardUrl": "",
@@ -126,7 +129,8 @@
                   "timePickerConfig": {
                     "type": "field"
                   },
-                  "url": ""
+                  "url": "",
+                  "hideTooltipOnHover": false
                 }
               ],
               "name": "menuitems"

@@ -125,8 +125,8 @@ export const TimePickerElement: React.FC<Props> = ({ link, buttonSize, gridMode 
             );
           }
         }}
-        title={link.name}
-        tooltip={link.name}
+        title={!link.hideTooltipOnHover ? link.name : undefined}
+        tooltip={!link.hideTooltipOnHover ? link.name : undefined}
         {...testIds.buttonPicker.apply(link.name)}
       >
         {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (

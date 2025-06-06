@@ -652,4 +652,26 @@ describe('LinkEditor', () => {
       })
     );
   });
+
+  it('Should allow to hide tooltip on hover', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        isGrid: true,
+        value: createLinkConfig({
+          linkType: LinkType.SINGLE,
+          hideTooltipOnHover: false,
+        }),
+      })
+    );
+
+    expect(selectors.fieldHideTooltipOnHover()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldHideTooltipOnHover());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        hideTooltipOnHover: true,
+      })
+    );
+  });
 });
