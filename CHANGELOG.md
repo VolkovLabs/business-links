@@ -11,6 +11,12 @@ All notable changes to the **Business Links** panel are documented in this file.
 ### Added
 
 - Added kiosk mode support ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
+- Added hide tooltip option ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
+
+### Changed
+
+- Updated recalculation sticky positioning on resize ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
+- Updated dynamic menu font size ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
 
 ## [1.4.0] - 2025-06-02
 
