@@ -7,7 +7,8 @@ import { GrafanaTheme2 } from '@grafana/data';
 export const getStyles = (theme: GrafanaTheme2) => {
   return {
     gridLayoutWrapper: css`
-      overflow: auto;
+      overflow-x: unset;
+      overflow-y: auto;
     `,
     linkWrapper: css`
       width: 98%;

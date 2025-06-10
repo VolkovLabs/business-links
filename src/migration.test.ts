@@ -28,6 +28,19 @@ describe('migration', () => {
     );
   });
 
+  it('Should normalize customPadding', async () => {
+    expect(await getMigratedOptions({ options: {} } as any)).toEqual(
+      expect.objectContaining({
+        customPadding: 0,
+      })
+    );
+    expect(await getMigratedOptions({ options: { customPadding: 5 } } as any)).toEqual(
+      expect.objectContaining({
+        customPadding: 5,
+      })
+    );
+  });
+
   it('Should keep empty groups', async () => {
     expect(await getMigratedOptions({ options: { groups: [] } } as any)).toEqual(
       expect.objectContaining({

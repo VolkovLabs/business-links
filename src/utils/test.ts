@@ -71,6 +71,7 @@ export const createPanelOptions = (options: Partial<PanelOptions> = {}): PanelOp
   dropdowns: [],
   groupsSorting: false,
   sticky: false,
+  customPadding: 0,
   ...options,
 });
 
