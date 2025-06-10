@@ -66,7 +66,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           includeKioskMode: normalizedIncludeKioskMode,
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,
-          hideTooltipOnHover: normalizedHideTitleOnHover
+          hideTooltipOnHover: normalizedHideTitleOnHover,
         };
       });
 
@@ -129,6 +129,13 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
    */
   if (options.groupsSorting === undefined) {
     options.groupsSorting = false;
+  }
+
+  /**
+   * Normalize padding value if undefined
+   */
+  if (options.customPadding === undefined) {
+    options.customPadding = 0;
   }
 
   return options as PanelOptions;

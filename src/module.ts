@@ -48,6 +48,16 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
         },
         defaultValue: false,
       })
+      .addSliderInput({
+        path: 'customPadding',
+        name: 'Padding',
+        category: ['Layout'],
+        defaultValue: 0,
+        settings: {
+          min: 0,
+          max: 20,
+        },
+      })
       .addCustomEditor({
         id: 'groups',
         path: 'groups',

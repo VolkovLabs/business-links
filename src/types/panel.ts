@@ -438,4 +438,11 @@ export interface PanelOptions {
    * @type {boolean}
    */
   sticky: boolean;
+
+  /**
+   * Padding in pixels
+   *
+   * @type {number}
+   */
+  customPadding: number;
 }

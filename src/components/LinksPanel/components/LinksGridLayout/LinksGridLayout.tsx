@@ -215,8 +215,7 @@ export const LinksGridLayout: React.FC<Props> = ({
         cols={currentColumnsSize}
         rowHeight={16}
         margin={[5, 5]}
-        // 24px for paddings and scroll width
-        width={width - 24}
+        width={width - 5}
         autoSize={true}
         compactType="vertical"
         isDraggable={isEditMode}
@@ -251,25 +250,13 @@ export const LinksGridLayout: React.FC<Props> = ({
                   <ContentElement link={link} panelData={data} gridMode={true} replaceVariables={replaceVariables} />
                 )}
                 {link.type === VisualLinkType.LINK && (
-                  <LinkElement
-                    link={link}
-                    gridMode={true}
-                    dynamicFontSize={currentDynamicFontSize}
-                  />
+                  <LinkElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
                 )}
                 {link.type === VisualLinkType.TIMEPICKER && (
-                  <TimePickerElement
-                    link={link}
-                    gridMode={true}
-                    dynamicFontSize={currentDynamicFontSize}
-                  />
+                  <TimePickerElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
                 )}
                 {link.type === VisualLinkType.MENU && (
-                  <MenuElement
-                    link={link}
-                    gridMode={true}
-                    dynamicFontSize={currentDynamicFontSize}
-                  />
+                  <MenuElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
                 )}
               </div>
               {isEditMode && (

@@ -1,3 +1,4 @@
+import { css, cx } from '@emotion/css';
 import { PanelProps } from '@grafana/data';
 import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -152,7 +153,12 @@ export const LinksPanel: React.FC<Props> = ({
    * Return
    */
   return (
-    <div {...testIds.root.apply()}>
+    <div
+      {...testIds.root.apply()}
+      className={cx(css`
+        padding: ${options.customPadding}px;
+      `)}
+    >
       {isToolbarVisible && (
         <div className={styles.header} ref={toolbarRowRef}>
           <ToolbarButtonRow
