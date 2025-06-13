@@ -134,6 +134,21 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change contextPrompt for Business AI link type', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP }) }));
+
+    expect(selectors.fieldContextPrompt()).toBeInTheDocument();
+    expect(selectors.fieldContextPrompt()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldContextPrompt(), { target: { value: 'some promt' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        contextPrompt: 'some promt',
+      })
+    );
+  });
+
   it('Should allow change tags for TAGS type', () => {
     render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TAGS }) }));
 

@@ -1,0 +1,190 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 15,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 7,
+      "options": {
+        "customPadding": 0,
+        "dropdowns": [],
+        "groups": [
+          {
+            "dynamicFontSize": false,
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "contextPrompt": "You are a Grafana monitoring expert who know our current dashboard\n\n{\n  \"annotations\": {\n    \"list\": [\n      {\n        \"builtIn\": 1,\n        \"datasource\": {\n          \"type\": \"grafana\",\n          \"uid\": \"-- Grafana --\"\n        },\n        \"enable\": true,\n        \"hide\": true,\n        \"iconColor\": \"rgba(0, 211, 255, 1)\",\n        \"name\": \"Annotations & Alerts\",\n        \"type\": \"dashboard\"\n      }\n    ]\n  },\n  \"editable\": true,\n  \"fiscalYearStartMonth\": 0,\n  \"graphTooltip\": 0,\n  \"id\": 12,\n  \"links\": [],\n  \"panels\": [\n    {\n      \"datasource\": {\n        \"type\": \"marcusolsson-static-datasource\",\n        \"uid\": \"P1D2C73DC01F2359B\"\n      },\n      \"fieldConfig\": {\n        \"defaults\": {},\n        \"overrides\": []\n      },\n      \"gridPos\": {\n        \"h\": 5,\n        \"w\": 8,\n        \"x\": 0,\n        \"y\": 0\n      },\n      \"id\": 7,\n      \"options\": {\n        \"customPadding\": 0,\n        \"dropdowns\": [],\n        \"groups\": [\n          {\n            \"dynamicFontSize\": false,\n            \"gridColumns\": 10,\n            \"gridLayout\": false,\n            \"highlightCurrentLink\": false,\n            \"highlightCurrentTimepicker\": false,\n            \"items\": [\n              {\n                \"alignContentPosition\": \"left\",\n                \"contextPrompt\": \"You are a Grafana monitoring expert who…\",\n                \"customIconUrl\": \"https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png\",\n                \"dashboardUrl\": \"\",\n                \"dropdownConfig\": {\n                  \"align\": \"left\",\n                  \"buttonSize\": \"md\",\n                  \"type\": \"dropdown\"\n                },\n                \"enable\": true,\n                \"hideTooltipOnHover\": false,\n                \"icon\": \"ai\",\n                \"id\": \"b09e6e4b-5dc9-4e46-811c-8ca80729d7f0\",\n                \"includeKioskMode\": false,\n                \"includeTimeRange\": false,\n                \"includeVariables\": false,\n                \"linkType\": \"llmapp\",\n                \"name\": \"Open LLM App\",\n                \"showCustomIcons\": false,\n                \"tags\": [],\n                \"target\": \"_blank\",\n                \"timePickerConfig\": {\n                  \"type\": \"field\"\n                },\n                \"type\": \"link\",\n                \"url\": \"https://volkovlabs.io/\"\n              }\n            ],\n            \"manualGridLayout\": [],\n            \"name\": \"Links\"\n          }\n        ],\n        \"groupsSorting\": false,\n        \"sticky\": false\n      },\n      \"targets\": [\n        {\n          \"refId\": \"A\"\n        }\n      ],\n      \"title\": \"LLM Links\",\n      \"type\": \"volkovlabs-links-panel\"\n    }\n  ],\n  \"preload\": false,\n  \"schemaVersion\": 41,\n  \"tags\": [],\n  \"templating\": {\n    \"list\": [\n      {\n        \"current\": {\n          \"text\": \"device1\",\n          \"value\": \"device1\"\n        },\n        \"label\": \"device\",\n        \"name\": \"device\",\n        \"options\": [\n          {\n            \"selected\": true,\n            \"text\": \"device1\",\n            \"value\": \"device1\"\n          },\n          {\n            \"selected\": false,\n            \"text\": \"device2\",\n            \"value\": \"device2\"\n          },\n          {\n            \"selected\": false,\n            \"text\": \"device3\",\n            \"value\": \"device3\"\n          }\n        ],\n        \"query\": \"device1,device2,device3\",\n        \"type\": \"custom\"\n      },\n      {\n        \"current\": {\n          \"text\": \"USA\",\n          \"value\": \"USA\"\n        },\n        \"label\": \"country\",\n        \"name\": \"country\",\n        \"options\": [\n          {\n            \"selected\": true,\n            \"text\": \"USA\",\n            \"value\": \"USA\"\n          },\n          {\n            \"selected\": false,\n            \"text\": \"Sweden\",\n            \"value\": \"Sweden\"\n          },\n          {\n            \"selected\": false,\n            \"text\": \"Spain\",\n            \"value\": \"Spain\"\n          },\n          {\n            \"selected\": false,\n            \"text\": \"Italy\",\n            \"value\": \"Italy\"\n          }\n        ],\n        \"query\": \"USA,Sweden,Spain,Italy\",\n        \"type\": \"custom\"\n      },\n      {\n        \"current\": {\n          \"text\": \"Sweden\",\n          \"value\": \"Sweden\"\n        },\n        \"datasource\": {\n          \"type\": \"grafana-postgresql-datasource\",\n          \"uid\": \"timescale\"\n        },\n        \"definition\": \"select distinct country from devices;\",\n        \"label\": \"countrytest\",\n        \"name\": \"countrytest\",\n        \"options\": [],\n        \"query\": \"select distinct country from devices;\",\n        \"refresh\": 1,\n        \"regex\": \"\",\n        \"type\": \"query\"\n      }\n    ]\n  },\n  \"time\": {\n    \"from\": \"now-6h\",\n    \"to\": \"now\"\n  },\n  \"timepicker\": {},\n  \"timezone\": \"browser\",\n  \"title\": \"LLM App\",\n  \"uid\": \"8e818c8d-4f8a-4d48-a820-d89bdcd8c28b\",\n  \"version\": 2\n}",
+                "customIconUrl": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "icon": "ai",
+                "id": "b09e6e4b-5dc9-4e46-811c-8ca80729d7f0",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "llmapp",
+                "name": "Open LLM App",
+                "showCustomIcons": false,
+                "tags": [],
+                "target": "_blank",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/"
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Links"
+          }
+        ],
+        "groupsSorting": false,
+        "sticky": false
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "LLM Links",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "device1",
+          "value": "device1"
+        },
+        "label": "device",
+        "name": "device",
+        "options": [
+          {
+            "selected": true,
+            "text": "device1",
+            "value": "device1"
+          },
+          {
+            "selected": false,
+            "text": "device2",
+            "value": "device2"
+          },
+          {
+            "selected": false,
+            "text": "device3",
+            "value": "device3"
+          }
+        ],
+        "query": "device1,device2,device3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "USA",
+          "value": "USA"
+        },
+        "label": "country",
+        "name": "country",
+        "options": [
+          {
+            "selected": true,
+            "text": "USA",
+            "value": "USA"
+          },
+          {
+            "selected": false,
+            "text": "Sweden",
+            "value": "Sweden"
+          },
+          {
+            "selected": false,
+            "text": "Spain",
+            "value": "Spain"
+          },
+          {
+            "selected": false,
+            "text": "Italy",
+            "value": "Italy"
+          }
+        ],
+        "query": "USA,Sweden,Spain,Italy",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Sweden",
+          "value": "Sweden"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "timescale"
+        },
+        "definition": "select distinct country from devices;",
+        "label": "countrytest",
+        "name": "countrytest",
+        "options": [],
+        "query": "select distinct country from devices;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "LLM App Copy Test",
+  "uid": "80715b2d-c0d6-44d5-b48c-262a74a6b491",
+  "version": 2
+}

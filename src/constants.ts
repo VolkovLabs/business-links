@@ -43,6 +43,8 @@ export const TEST_IDS = {
     dropdown: createSelector((name: unknown) => `data-testid link-element dropdown-${name}`),
     dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
     tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
+    drawer: createSelector((name: unknown) => `data-testid link-element drawer-${name}`),
+    drawerCloseButton: createSelector((name: unknown) => `data-testid link-element drawer-close-button-${name}`),
   },
   timePickerElement: {
     buttonPicker: createSelector((name: unknown) => `data-testid time-picker-element button-picker-${name}`),
@@ -89,6 +91,7 @@ export const TEST_IDS = {
     fieldAlignContent: createSelector('data-testid link-editor field-align-content'),
     fieldAlignContentOption: createSelector((name: unknown) => `link-editor field-align-content-${name}`),
     fieldHideTooltipOnHover: createSelector('data-testid link-editor field-hide-tooltip'),
+    fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
@@ -127,6 +130,9 @@ export const TEST_IDS = {
   general: {
     tooltipPosition: createSelector(selectors.components.Tooltip.container),
   },
+  drawerElement: {
+    chatDrawer: createSelector('data-testid drawer-element chat-drawer'),
+  }
 };
 
 /**

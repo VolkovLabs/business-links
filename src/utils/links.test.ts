@@ -1,6 +1,6 @@
 import { DataFrame, Field } from '@grafana/data';
 
-import { LinkConfig, LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
+import { AlignContentPositionType, LinkConfig, LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
 import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 import { createDropdownConfig } from './test';
@@ -609,6 +609,59 @@ describe('prepareLinksToRender', () => {
     expect(result[0].timeRange).toEqual({
       from: 1672531200000,
       to: 1672617600000,
+    });
+  });
+
+  it('Should generate Business AI link correctly', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'Business AI',
+          enable: true,
+          linkType: LinkType.LLMAPP,
+          showCustomIcons: true,
+          customIconUrl: '/custom-icon.png',
+          icon: undefined,
+          contextPrompt: 'Initial prompt for AI',
+          alignContentPosition: 'left' as AlignContentPositionType,
+          hideTooltipOnHover: true,
+          url: '',
+          includeVariables: false,
+          includeKioskMode: false,
+          includeTimeRange: false,
+          target: LinkTarget.NEW_TAB,
+          tags: [],
+          dashboardUrl: '/d/urldashboard1',
+          dropdownName: '',
+          id: 'llm-1',
+        },
+      ],
+    };
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '1',
+      series: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual({
+      type: VisualLinkType.LLMAPP,
+      id: 'llm-1',
+      name: 'Business AI',
+      contextPrompt: 'Initial prompt for AI',
+      links: [],
+      showCustomIcons: true,
+      customIconUrl: '/custom-icon.png',
+      icon: undefined,
+      alignContentPosition: 'left',
+      hideTooltipOnHover: true,
     });
   });
 });

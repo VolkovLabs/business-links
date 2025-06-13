@@ -422,6 +422,25 @@ export const prepareLinksToRender = ({
         break;
       }
 
+      /**
+       * Business AI link
+       */
+      case LinkType.LLMAPP: {
+        result.push({
+          type: VisualLinkType.LLMAPP,
+          contextPrompt: item.contextPrompt,
+          id: item.id,
+          name: item.name,
+          links: [],
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          icon: item.icon,
+          alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
+        });
+        break;
+      }
+
       default:
         break;
     }

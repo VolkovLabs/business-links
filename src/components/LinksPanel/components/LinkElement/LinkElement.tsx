@@ -1,11 +1,12 @@
 import { cx } from '@emotion/css';
 import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { ButtonSize } from '@/types';
-import { VisualLink } from '@/types/links';
+import { VisualLink, VisualLinkType } from '@/types/links';
 
+import { ChatDrawer } from '../ChatDrawer/ChatDrawer';
 import { getStyles } from './LinkElement.styles';
 
 /**
@@ -60,12 +61,37 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
    */
   const [linkWidth, setLinkWidth] = useState(0);
   const [linkEl, setLinkEl] = useState<HTMLElement | null>(null);
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const subscriptionRef = useRef<any>(null);
 
   /**
    * Get link ref
    */
   const btnRef = useCallback((node: HTMLElement | null) => {
     setLinkEl(node);
+  }, []);
+
+  /**
+   * Handle drawer close
+   */
+  const handleDrawerClose = useCallback(() => {
+    setDrawerOpen(false);
+
+    if (subscriptionRef.current) {
+      subscriptionRef.current.unsubscribe();
+      subscriptionRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    /**
+     * Cleanup subscription on unmount
+     */
+    return () => {
+      if (subscriptionRef.current) {
+        subscriptionRef.current.unsubscribe();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -150,6 +176,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
         </Button>
       );
     };
+
     if (link.showMenuOnHover) {
       return (
         <div
@@ -224,7 +251,43 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
   }
 
   /**
-   * Return
+   * LLM App type
+   */
+  if (link.links.length === 0 && link.type === VisualLinkType.LLMAPP) {
+    return (
+      <>
+        <div
+          ref={btnRef}
+          style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
+        >
+          <Button
+            variant="secondary"
+            className={cx(
+              styles.link,
+              gridMode && styles.linkGridMode,
+              link.alignContentPosition && alignClassMap[link.alignContentPosition]
+            )}
+            fill="outline"
+            size={buttonSize}
+            icon={!link.showCustomIcons ? link.icon : undefined}
+            title={!link.hideTooltipOnHover ? link.name : undefined}
+            onClick={() => setDrawerOpen(true)}
+            {...testIds.buttonEmptyLink.apply(link.name)}
+          >
+            {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
+              <img src={link.customIconUrl} alt="" className={styles.customIcon} />
+            )}
+            {link.name}
+          </Button>
+        </div>
+
+        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+      </>
+    );
+  }
+
+  /**
+   * Default empty link
    */
   return (
     <div

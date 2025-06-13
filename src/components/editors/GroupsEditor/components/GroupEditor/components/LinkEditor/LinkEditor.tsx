@@ -1,5 +1,14 @@
 import { DataFrame, IconName, SelectableValue } from '@grafana/data';
-import { getAvailableIcons, InlineField, InlineSwitch, Input, RadioButtonGroup, Select, TagsInput } from '@grafana/ui';
+import {
+  getAvailableIcons,
+  InlineField,
+  InlineSwitch,
+  Input,
+  RadioButtonGroup,
+  Select,
+  TagsInput,
+  TextArea,
+} from '@grafana/ui';
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
@@ -91,7 +100,12 @@ export const linkTypeOptions = [
   {
     value: LinkType.HTML,
     label: 'HTML/Handlebars',
-    description: 'HTML element with handlebars support',
+    description: 'HTML element with handlebars support.',
+  },
+  {
+    value: LinkType.LLMAPP,
+    label: 'Business AI',
+    description: 'Open Business AI in a side bar.',
   },
 ];
 
@@ -118,6 +132,11 @@ export const linkTypeOptionsInDropdown = [
     value: LinkType.TIMEPICKER,
     label: 'Timepicker',
     description: 'Set time range',
+  },
+  {
+    value: LinkType.LLMAPP,
+    label: 'Business AI',
+    description: 'Open Business AI in a side bar.',
   },
 ];
 
@@ -292,6 +311,23 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             {...TEST_IDS.linkEditor.fieldLinkType.apply()}
           />
         </InlineField>
+
+        {value.linkType === LinkType.LLMAPP && (
+          <InlineField label="Initial Context" grow={true} labelWidth={20}>
+            <TextArea
+              cols={30}
+              placeholder="Provide your context prompt for Business AI"
+              value={value.contextPrompt}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  contextPrompt: event.currentTarget.value,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
+            />
+          </InlineField>
+        )}
 
         {value.linkType === LinkType.SINGLE && (
           <InlineField label="URL" grow={true} labelWidth={20}>
@@ -500,20 +536,22 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             </InlineField>
           )}
 
-          {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.TIMEPICKER && (
-            <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
-              <RadioButtonGroup
-                value={value.target}
-                onChange={(eventValue) => {
-                  onChange({
-                    ...value,
-                    target: eventValue,
-                  });
-                }}
-                options={linkTargetOptions}
-              />
-            </InlineField>
-          )}
+          {value.linkType !== LinkType.DROPDOWN &&
+            value.linkType !== LinkType.TIMEPICKER &&
+            value.linkType !== LinkType.LLMAPP && (
+              <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+                <RadioButtonGroup
+                  value={value.target}
+                  onChange={(eventValue) => {
+                    onChange({
+                      ...value,
+                      target: eventValue,
+                    });
+                  }}
+                  options={linkTargetOptions}
+                />
+              </InlineField>
+            )}
 
           {optionId === 'groups' && (
             <InlineField
