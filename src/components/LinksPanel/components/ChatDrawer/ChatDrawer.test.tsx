@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import * as hooks from '@/hooks';
 
 import { ChatDrawer } from './ChatDrawer';
+import { getStyles } from './ChatDrawer.styles';
 
 /**
  * Mock IntersectionObserver
@@ -379,6 +380,31 @@ describe('ChatDrawer', () => {
       fireEvent.keyDown(textarea, { key: 'Escape' });
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
+    });
+
+    it('Should return style object for a theme', () => {
+      const theme = {
+        spacing: () => '8px',
+        colors: {
+          text: { secondary: '#888', primary: '#000' },
+          primary: { main: '#00f', contrastText: '#fff', border: '#00f', shade: '#009' },
+          background: { secondary: '#eee', canvas: '#fff', primary: '#fff' },
+          border: { weak: '#ccc', medium: '#bbb' },
+        },
+        shape: { radius: { default: '4px' } },
+        shadows: { z1: '0 1px 3px #0002' },
+        typography: {
+          bodySmall: { fontSize: '12px' },
+          body: { fontSize: '14px' },
+          fontWeightMedium: 500,
+        },
+        isDark: false,
+      } as any;
+
+      const styles = getStyles(theme);
+      expect(styles).toBeDefined();
+      expect(typeof styles).toBe('object');
+      expect(styles.container).toBeDefined();
     });
   });
 
