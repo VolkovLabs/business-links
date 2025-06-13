@@ -132,6 +132,7 @@ export const TEST_IDS = {
   },
   drawerElement: {
     chatDrawer: createSelector('data-testid drawer-element chat-drawer'),
+    root: createSelector('data-testid drawer-element chat-drawer'),
   }
 };
 

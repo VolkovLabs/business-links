@@ -1,6 +1,6 @@
 import { cx } from '@emotion/css';
 import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { ButtonSize } from '@/types';
@@ -62,7 +62,6 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
   const [linkWidth, setLinkWidth] = useState(0);
   const [linkEl, setLinkEl] = useState<HTMLElement | null>(null);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const subscriptionRef = useRef<any>(null);
 
   /**
    * Get link ref
@@ -77,21 +76,6 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
   const handleDrawerClose = useCallback(() => {
     setDrawerOpen(false);
 
-    if (subscriptionRef.current) {
-      subscriptionRef.current.unsubscribe();
-      subscriptionRef.current = null;
-    }
-  }, []);
-
-  useEffect(() => {
-    /**
-     * Cleanup subscription on unmount
-     */
-    return () => {
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe();
-      }
-    };
   }, []);
 
   useEffect(() => {

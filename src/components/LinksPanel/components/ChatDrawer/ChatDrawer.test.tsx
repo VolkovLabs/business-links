@@ -629,4 +629,106 @@ describe('ChatDrawer', () => {
     expect(unsubscribeMock).toHaveBeenCalled();
     expect(onClose).toHaveBeenCalled();
   });
+
+  describe('Error handling', () => {
+    it('Should handle stream errors properly', async () => {
+      const mockStream = {
+        pipe: jest.fn().mockReturnValue({
+          subscribe: jest.fn().mockImplementation(({ error }) => {
+            error(new Error('Stream error'));
+            return { unsubscribe: jest.fn() };
+          }),
+        }),
+      };
+      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+
+      mockHandleLlmError.mockReturnValue('Formatted error message');
+
+      await act(async () => render(getComponent({})));
+
+      const textarea = screen.getByPlaceholderText('Type your message...');
+      const sendButton = screen.getByRole('button', { name: /send message/i });
+
+      fireEvent.change(textarea, { target: { value: 'Test message' } });
+
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+
+      expect(mockHandleLlmError).toHaveBeenCalled();
+      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('Should handle connection errors in try/catch', async () => {
+      (openai.streamChatCompletions as jest.Mock).mockImplementation(() => {
+        throw new Error('Connection failed');
+      });
+
+      await act(async () => render(getComponent({})));
+
+      const textarea = screen.getByPlaceholderText('Type your message...');
+      const sendButton = screen.getByRole('button', { name: /send message/i });
+
+      fireEvent.change(textarea, { target: { value: 'Test message' } });
+
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+
+      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
+
+      const updateCallback = mockUpdateLastMessage.mock.calls[0][0];
+      const result = updateCallback({ id: 'msg-123', text: '', isStreaming: true });
+
+      expect(result.text).toContain('Connection Error: Connection failed');
+      expect(result.isStreaming).toBe(false);
+    });
+
+    it('Should handle non-Error objects in catch block', async () => {
+      (openai.streamChatCompletions as jest.Mock).mockImplementation(() => {
+        throw 'String error';
+      });
+
+      await act(async () => render(getComponent({})));
+
+      const textarea = screen.getByPlaceholderText('Type your message...');
+      const sendButton = screen.getByRole('button', { name: /send message/i });
+
+      fireEvent.change(textarea, { target: { value: 'Test message' } });
+
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+
+      const updateCallback = mockUpdateLastMessage.mock.calls[0][0];
+      const result = updateCallback({ id: 'msg-123', text: '', isStreaming: true });
+
+      expect(result.text).toContain('Failed to connect to LLM service');
+    });
+  });
+
+  describe('Subscription handling', () => {
+    it('Should unsubscribe when component unmounts', async () => {
+      const unsubscribeMock = jest.fn();
+      const mockStream = {
+        pipe: jest.fn().mockReturnValue({
+          subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
+        }),
+      };
+      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
+
+      const { unmount } = render(getComponent({ isOpen: true }));
+      const textarea = screen.getByPlaceholderText('Type your message...');
+      const sendButton = screen.getByRole('button', { name: /send message/i });
+      fireEvent.change(textarea, { target: { value: 'Test' } });
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+      await act(async () => {
+        unmount();
+      });
+      expect(unsubscribeMock).toHaveBeenCalled();
+    });
+  });
 });

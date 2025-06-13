@@ -2,7 +2,7 @@ import { cx } from '@emotion/css';
 import { openai } from '@grafana/llm';
 import { Drawer, IconButton, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { scan } from 'rxjs/operators';
+import { scan, Subscription } from 'rxjs';
 
 import { chatConfig, useChatMessages, useFileAttachments, useLlmService, useTextareaResize } from '@/hooks';
 import { ChatMessage } from '@/types';
@@ -57,7 +57,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
   /**
    * Refs
    */
-  const subscriptionRef = useRef<any>(null);
+  const subscriptionRef = useRef<Subscription | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
