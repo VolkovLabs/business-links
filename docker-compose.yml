@@ -6,7 +6,9 @@ services:
     environment:
       - GF_DEFAULT_APP_MODE=development
       - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/provisioning/dashboards/links.json
-      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel
+      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel,grafana-llm-app
+      - OPENAI_ORG_ID=
+      - OPENAI_API_KEY=
     volumes:
       - ./dist:/var/lib/grafana/plugins/volkovlabs-links-panel
       - ./provisioning:/etc/grafana/provisioning
@@ -51,7 +53,9 @@ services:
     environment:
       - GF_DEFAULT_APP_MODE=development
       - GF_USERS_DEFAULT_THEME=light
-      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel
+      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel,grafana-llm-app
+      - OPENAI_ORG_ID=
+      - OPENAI_API_KEY=
     volumes:
       - ./dist:/var/lib/grafana/plugins/volkovlabs-links-panel
       - ./provisioning:/etc/grafana/provisioning
@@ -65,7 +69,9 @@ services:
     environment:
       - GF_DEFAULT_APP_MODE=development
       - GF_USERS_DEFAULT_THEME=light
-      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel
+      - GF_INSTALL_PLUGINS=marcusolsson-static-datasource,volkovlabs-variable-panel,volkovlabs-form-panel,volkovlabs-image-panel,grafana-llm-app
+      - OPENAI_ORG_ID=
+      - OPENAI_API_KEY=
     volumes:
       - ./dist:/var/lib/grafana/plugins/volkovlabs-links-panel
       - ./provisioning:/etc/grafana/provisioning

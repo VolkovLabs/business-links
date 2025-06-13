@@ -26,6 +26,7 @@ export enum LinkType {
   DASHBOARD = 'dashboard',
   TIMEPICKER = 'timepicker',
   HTML = 'html',
+  LLMAPP = 'llmapp',
 }
 
 /**
@@ -344,6 +345,13 @@ export interface LinkConfig {
    * @type {boolean}
    */
   hideTooltipOnHover?: boolean;
+
+  /**
+   * Context prompt for Business AI
+   *
+   * @type {string}
+   */
+  contextPrompt?: string;
 }
 
 /**
