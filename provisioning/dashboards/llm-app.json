@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 15,
+  "id": 16,
   "links": [],
   "panels": [
     {
@@ -32,15 +32,102 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 8,
+        "h": 6,
+        "w": 11,
         "x": 0,
         "y": 0
       },
       "id": 7,
       "options": {
         "customPadding": 0,
-        "dropdowns": [],
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "icon": "ai-sparkle",
+                "id": "7731a445-4c19-4df1-8804-f8633ef10e06",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "llmapp",
+                "name": "LLM App in menu",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "3f7c0db6-4cd3-42c4-a3ad-e7938297ef50",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single Link",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": "/url"
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "d7da2a78-6ff8-4d8e-88b4-8ba1d65fd17a",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Single Link 1",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": "/url"
+              }
+            ],
+            "name": "menuitems"
+          }
+        ],
         "groups": [
           {
             "dynamicFontSize": false,
@@ -76,6 +163,87 @@
                 },
                 "type": "link",
                 "url": "https://volkovlabs.io/"
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "dropdownName": "menuitems",
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "3d540dab-000d-4942-b560-b931824362f3",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Menu with LLM Dropdown",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "row"
+                },
+                "dropdownName": "menuitems",
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "f333a267-56d7-48ba-a1f4-5e4d4630cb2c",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Menu with LLM Row",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "dropdownName": "menuitems",
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "f07c948b-b834-4b02-a88b-b91f596acec1",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "name": "Menu with LLM on hover",
+                "showCustomIcons": false,
+                "showMenuOnHover": true,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
               }
             ],
             "manualGridLayout": [],
@@ -184,7 +352,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "LLM App Copy Test",
-  "uid": "80715b2d-c0d6-44d5-b48c-262a74a6b491",
+  "title": "LLM App",
+  "uid": "bfdd85fb-6830-4735-ac6c-7ceac5c5c843",
   "version": 2
 }

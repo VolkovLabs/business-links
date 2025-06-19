@@ -4,72 +4,15 @@ import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { AlignContentPositionType, VisualLinkType } from '@/types';
+import { AlignContentPositionType, LinkType, VisualLinkType } from '@/types';
 import { createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from './LinkElement';
 
-jest.mock('../ChatDrawer/ChatDrawer', () => {
-  let mockSubscriptions: any[] = [];
-  let currentSubscription: any = null;
-
-  return {
-    ChatDrawer: ({ isOpen, onClose, initialPrompt }: any) => {
-      React.useEffect(() => {
-        if (isOpen && !currentSubscription) {
-          const unsubscribeSpy = jest.fn();
-          currentSubscription = { 
-            unsubscribe: unsubscribeSpy,
-            id: Date.now()
-          };
-          mockSubscriptions.push(currentSubscription);
-        }
-        return () => {
-          if (currentSubscription && !isOpen) {
-            currentSubscription = null;
-          }
-        };
-      }, [isOpen]);
-
-      if (!isOpen) {
-        return null;
-      }
-
-      return (
-        <div data-testid="drawer-element chat-drawer">
-          <button
-            onClick={() => {
-              if (currentSubscription) {
-                currentSubscription.unsubscribe();
-                currentSubscription = null;
-              }
-              onClose();
-            }}
-            data-testid={`data-testid link-element drawer-close-button-Chat`}
-          >
-            Close
-          </button>
-          <div>{initialPrompt}</div>
-        </div>
-      );
-    },
-    getSubscription: () => currentSubscription,
-    getAllSubscriptions: () => mockSubscriptions,
-    resetMocks: () => {
-      if (currentSubscription) {
-        currentSubscription.unsubscribe();
-      }
-      currentSubscription = null;
-      mockSubscriptions = [];
-    },
-  };
-});
-
 /**
- * Import the mock utilities
+ * Mock @grafana/ui
  */
-const { getSubscription, resetMocks } = jest.requireMock('../ChatDrawer/ChatDrawer');
-
+jest.mock('@grafana/ui');
 
 /**
  * Props
@@ -122,7 +65,7 @@ describe('LinkElement', () => {
   /**
    * Selectors
    */
-  const getSelectors = getJestSelectors({ ...TEST_IDS.linkElement, ...TEST_IDS.general });
+  const getSelectors = getJestSelectors({ ...TEST_IDS.linkElement, ...TEST_IDS.general, ...TEST_IDS.drawerElement });
   const selectors = getSelectors(screen);
 
   /**
@@ -531,7 +474,7 @@ describe('LinkElement', () => {
   describe('Content Alignment Tests', () => {
     it('Should apply correct alignment class for single link with left alignment', async () => {
       const nestedLink = createLinkConfig({ name: 'Link1', url: 'test.com' });
-      
+
       await act(async () =>
         render(
           getComponent({
@@ -543,14 +486,18 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const linkButton = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton).toHaveStyle('justify-content: flex-start');
     });
 
     it('Should apply correct alignment class for single link with center alignment', async () => {
-      const nestedLink = createLinkConfig({ name: 'Link1', url: 'test.com', alignContentPosition: AlignContentPositionType.CENTER });
-      
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.CENTER,
+      });
+
       await act(async () =>
         render(
           getComponent({
@@ -561,14 +508,18 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const linkButton = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton).toHaveStyle('justify-content: center');
     });
 
     it('Should apply correct alignment class for single link with right alignment', async () => {
-      const nestedLink = createLinkConfig({ name: 'Link1', url: 'test.com', alignContentPosition: AlignContentPositionType.RIGHT });
-      
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.RIGHT,
+      });
+
       await act(async () =>
         render(
           getComponent({
@@ -579,15 +530,19 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const linkButton = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton).toBeInTheDocument();
       expect(linkButton).toHaveStyle('justify-content: flex-end');
     });
 
     it('Should apply both grid mode and alignment classes together', async () => {
-      const nestedLink = createLinkConfig({ name: 'Link1', url: 'test.com', alignContentPosition: AlignContentPositionType.CENTER });
-      
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.CENTER,
+      });
+
       await act(async () =>
         render(
           getComponent({
@@ -599,7 +554,7 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const linkButton = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton).toHaveStyle('justify-content: center');
     });
@@ -607,7 +562,7 @@ describe('LinkElement', () => {
     it('Should apply alignment class for dropdown button', async () => {
       const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
       const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
-      
+
       await act(async () =>
         render(
           getComponent({
@@ -619,16 +574,26 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const dropdownButton = selectors.buttonDropdown(false, 'Dropdown');
       expect(dropdownButton).toHaveStyle('justify-content: flex-end');
     });
   });
 
   it('Should display dropdownLink with custom image if showCustomIcons is true and customIconUrl is not empty', async () => {
-    const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com', showCustomIcons: true, customIconUrl: '/public/link-icon1.png' });
-    const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com', showCustomIcons: true, customIconUrl: '/public/link-icon2.png' });
-    
+    const nestedLink1 = createLinkConfig({
+      name: 'Link1',
+      url: 'test.com',
+      showCustomIcons: true,
+      customIconUrl: '/public/link-icon1.png',
+    });
+    const nestedLink2 = createLinkConfig({
+      name: 'Link2',
+      url: 'test.com',
+      showCustomIcons: true,
+      customIconUrl: '/public/link-icon2.png',
+    });
+
     await act(async () =>
       render(
         getComponent({
@@ -641,7 +606,7 @@ describe('LinkElement', () => {
     );
 
     fireEvent.click(selectors.dropdown(false, 'Dropdown'));
-    
+
     expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
     expect(selectors.dropdownMenuItem(false, 'Link2')).toBeInTheDocument();
   });
@@ -649,7 +614,7 @@ describe('LinkElement', () => {
   describe('Custom Icon Display', () => {
     it('Should render custom icon in empty link button when showCustomIcons and customIconUrl are provided', async () => {
       const customUrl = '/public/empty-link-icon.png';
-      
+
       await act(async () =>
         render(
           getComponent({
@@ -663,18 +628,16 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
       expect(emptyButton).toBeInTheDocument();
-      
-      const img = emptyButton.querySelector('img');
-      expect(img).not.toBeNull();
+
+      const img = selectors.customIconImg(false, 'EmptyLink');
+      expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute('src', customUrl);
-      
-      // No SVG icon when custom icon is used
-      expect(emptyButton.querySelector('svg')).toBeNull();
+      expect(() => selectors.customIconSvg(false, 'EmptyLink')).toThrow();
     });
-    
+
     it('Should not render custom icon when customIconUrl is empty string', async () => {
       await act(async () =>
         render(
@@ -689,14 +652,13 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
       expect(emptyButton).toBeInTheDocument();
-      
-      // No image when customIconUrl is empty
-      expect(emptyButton.querySelector('img')).toBeNull();
+
+      expect(() => selectors.customIconImg(false, 'EmptyLink')).toThrow();
     });
-    
+
     it('Should not render custom icon when showCustomIcons is false', async () => {
       await act(async () =>
         render(
@@ -711,17 +673,16 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
       expect(emptyButton).toBeInTheDocument();
-      
-      // No image when showCustomIcons is false
-      expect(emptyButton.querySelector('img')).toBeNull();
+
+      expect(() => selectors.customIconImg(false, 'EmptyLink')).toThrow();
     });
-    
+
     it('Should render custom icon in LLM App type button', async () => {
       const customUrl = '/public/llm-icon.png';
-      
+
       await act(async () =>
         render(
           getComponent({
@@ -735,53 +696,65 @@ describe('LinkElement', () => {
           })
         )
       );
-      
+
       const chatButton = selectors.buttonEmptyLink(false, 'Chat');
       expect(chatButton).toBeInTheDocument();
-      
-      const img = chatButton.querySelector('img');
-      expect(img).not.toBeNull();
+
+      const img = selectors.customIconImg(false, 'Chat');
+      expect(img).toBeInTheDocument();
       expect(img).toHaveAttribute('src', customUrl);
     });
   });
 
   describe('Drawer Functionality', () => {
     beforeEach(() => {
-      resetMocks();
+      jest.clearAllMocks();
     });
-  
+
     it('Should handle drawer open/close cycle with subscription cleanup', async () => {
-      render(
-        getComponent({
-          link: createVisualLinkConfig({
-            name: 'Chat',
-            type: VisualLinkType.LLMAPP,
-            links: [],
-          }),
-        })
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Chat',
+              type: VisualLinkType.LLMAPP,
+              links: [],
+            }),
+          })
+        )
       );
-  
-      const button = screen.getByTestId('data-testid link-element button empty-link-Chat');
-      
-      // Open drawer
+
       await act(async () => {
-        fireEvent.click(button);
+        fireEvent.click(selectors.buttonEmptyLink(false, 'Chat'));
       });
-  
-      // Get subscription
-      const subscription = getSubscription();
-      expect(subscription).not.toBeNull();
-      const unsubscribeSpy = subscription.unsubscribe;
-  
-      // Close drawer
-      const closeButton = screen.getByTestId('data-testid link-element drawer-close-button-Chat');
+      expect(selectors.chatDrawer()).toBeInTheDocument();
+
       await act(async () => {
-        fireEvent.click(closeButton);
+        fireEvent.click(selectors.drawerCloseButton());
       });
-  
-      // Verify subscription was properly cleaned up
-      expect(unsubscribeSpy).toHaveBeenCalledTimes(1);
-      expect(getSubscription()).toBeNull();
+      expect(() => selectors.chatDrawer(false)).toThrow();
+    });
+
+    it('Should open ChatDrawer when LLMAPP dropdown menu item is clicked', async () => {
+      const nestedLink1 = createNestedLinkConfig({ name: 'Regular', url: 'test1.com' });
+      const nestedLink2 = createNestedLinkConfig({ name: 'Chat', linkType: LinkType.LLMAPP });
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      expect(selectors.dropdownMenuItem(false, 'Regular')).toBeInTheDocument();
+      expect(selectors.dropdownMenuItem(false, 'Chat')).toBeInTheDocument();
+
+      fireEvent.click(selectors.dropdownMenuItem(false, 'Chat'));
+      expect(selectors.chatDrawer()).toBeInTheDocument();
     });
   });
 });

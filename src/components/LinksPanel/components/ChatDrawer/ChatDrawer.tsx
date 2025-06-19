@@ -1,13 +1,19 @@
 import { cx } from '@emotion/css';
 import { openai } from '@grafana/llm';
-import { Drawer, IconButton, useStyles2 } from '@grafana/ui';
+import { Drawer, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { scan, Subscription } from 'rxjs';
 
+import { TEST_IDS } from '@/constants';
 import { chatConfig, useChatMessages, useFileAttachments, useLlmService, useTextareaResize } from '@/hooks';
 import { ChatMessage } from '@/types';
 
 import { getStyles } from './ChatDrawer.styles';
+
+/**
+ * Test Ids
+ */
+const testIds = TEST_IDS.drawerElement;
 
 /**
  * Properties for the ChatDrawer component
@@ -179,7 +185,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
             role: 'system' as const,
             content:
               initialPrompt ||
-              'You are a helpful assistant integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.',
+              'You are a helpful Business AI integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.',
           },
           ...chatHistory,
           { role: 'user' as const, content: messageContent },
@@ -330,77 +336,126 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
           <div className={styles.container}>
             <div className={styles.messagesContainer}>
               {messages.length === 0 && (
-                <div className={styles.emptyState}>Start a conversation by typing a message or attaching files</div>
+                <div className={styles.emptyState} {...testIds.chatDrawerEmptyState.apply()}>
+                  Start a conversation by typing a message or attaching files
+                </div>
               )}
 
-              {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={cx(
-                    styles.messageRow,
-                    message.sender === 'user' ? styles.messageRowUser : styles.messageRowAssistant
-                  )}
-                >
+              {messages.map((message) =>
+                message.text ? (
                   <div
+                    key={message.id}
                     className={cx(
-                      styles.messageContent,
-                      message.sender === 'user' ? styles.messageContentUser : styles.messageContentAssistant
+                      styles.messageRow,
+                      message.sender === 'user' ? styles.messageRowUser : styles.messageRowAssistant
                     )}
+                    {...testIds.message.apply(message.text)}
                   >
-                    <div className={styles.messageSender}>{message.sender}</div>
-                    <div className={styles.messageText}>
-                      {message.text}
-                      {message.isStreaming && <span className={styles.pulsingDot} />}
-                    </div>
-
-                    {message.attachments && message.attachments.length > 0 && (
-                      <div className={styles.attachmentsContainer}>
-                        {message.attachments.map((file) => (
-                          <div key={file.id} className={styles.attachmentItem}>
-                            <span>📎</span>
-                            <span>{file.name}</span>
-                            <span>({formatFileSize(file.size)})</span>
-                            {file.url && <img src={file.url} alt={file.name} className={styles.attachmentImage} />}
-                          </div>
-                        ))}
+                    <div
+                      className={cx(
+                        styles.messageContent,
+                        message.sender === 'user' ? styles.messageContentUser : styles.messageContentAssistant
+                      )}
+                    >
+                      <div className={styles.messageSender} {...testIds.messageSender.apply()}>
+                        {message.sender === 'assistant' ? 'Business AI' : message.sender}
                       </div>
-                    )}
+                      <div className={styles.messageText}>
+                        {message.text}
+                        {message.isStreaming && <span className={styles.pulsingDot} />}
+                      </div>
+
+                      {message.attachments && message.attachments.length > 0 && (
+                        <div className={styles.attachmentsContainer}>
+                          {message.attachments.map((file) =>
+                            file.name ? (
+                              <div key={file.id} {...testIds.attachment.apply()}>
+                                <div className={styles.fileDetails}>
+                                  <span className={styles.fileTypeIcon}>
+                                    {file.type.startsWith('image/') ? (
+                                      <Icon name="gf-landscape" {...testIds.attachmentImageIcon.apply()} />
+                                    ) : (
+                                      <Icon name="file-alt" />
+                                    )}
+                                  </span>
+                                  <span className={styles.fileName}>{file.name}</span>
+                                  <span className={styles.fileSize}>({formatFileSize(file.size)})</span>
+                                  {file.url && (
+                                    <img
+                                      src={file.url}
+                                      alt={file.name}
+                                      {...testIds.attachmentImage.apply(file.name)}
+                                      className={styles.fileThumbnail}
+                                    />
+                                  )}
+                                </div>
+                                <IconButton
+                                  name="times"
+                                  aria-label={`Remove ${file.name}`}
+                                  onClick={() => removeAttachedFile(file.id)}
+                                  size="sm"
+                                  variant="secondary"
+                                  className={styles.removeButton}
+                                  {...testIds.removeButton.apply()}
+                                />
+                              </div>
+                            ) : null
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ) : null
+              )}
               <div ref={messagesEndRef} />
             </div>
 
             <div className={styles.inputPanel}>
               {attachedFiles.length > 0 && (
-                <div className={styles.attachedFilesPreview}>
+                <div className={styles.attachedFilesPreview} {...testIds.attachedFilesPreview.apply()}>
                   <div className={styles.attachedFilesTitle}>Attached files ({attachedFiles.length}):</div>
                   <div className={styles.attachedFilesList}>
-                    {attachedFiles.map((file) => (
-                      <div key={file.id} className={styles.fileItem}>
-                        <div className={styles.fileDetails}>
-                          <span className={styles.fileTypeIcon}>{file.type.startsWith('image/') ? '🖼️' : '📄'}</span>
-                          <span className={styles.fileName}>{file.name}</span>
-                          <span className={styles.fileSize}>({formatFileSize(file.size)})</span>
-                          {file.url && <img src={file.url} alt={file.name} className={styles.fileThumbnail} />}
+                    {attachedFiles.map((file) =>
+                      file.name ? (
+                        <div key={file.id} className={styles.fileItem}>
+                          <div className={styles.fileDetails}>
+                            <span className={styles.fileTypeIcon}>
+                              {file.type.startsWith('image/') ? (
+                                <Icon name="gf-landscape" {...testIds.attachmentImageIcon.apply()} />
+                              ) : (
+                                <Icon name="file-alt" {...testIds.attachedFilesPreviewIcon.apply()} />
+                              )}
+                            </span>
+                            <span className={styles.fileName}>{file.name}</span>
+                            <span className={styles.fileSize}>({formatFileSize(file.size)})</span>
+                            {file.url && (
+                              <img
+                                src={file.url}
+                                alt={file.name}
+                                className={styles.fileThumbnail}
+                                {...testIds.attachmentImage.apply(file.name)}
+                              />
+                            )}
+                          </div>
+                          <IconButton
+                            name="times"
+                            aria-label={`Remove ${file.name}`}
+                            onClick={() => removeAttachedFile(file.id)}
+                            size="sm"
+                            variant="secondary"
+                            className={styles.removeButton}
+                            {...testIds.removeButton.apply()}
+                          />
                         </div>
-                        <IconButton
-                          name="times"
-                          aria-label={`Remove ${file.name}`}
-                          onClick={() => removeAttachedFile(file.id)}
-                          size="sm"
-                          variant="secondary"
-                          className={styles.removeButton}
-                        />
-                      </div>
-                    ))}
+                      ) : null
+                    )}
                   </div>
                 </div>
               )}
 
               <div className={styles.inputArea}>
                 <div className={styles.textareaContainer}>
-                  <textarea
+                  <TextArea
                     ref={textareaRef}
                     value={inputValue}
                     onChange={handleInputChange}
@@ -408,30 +463,19 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                     placeholder="Type your message..."
                     disabled={isLoading}
                     className={styles.textarea}
+                    {...testIds.input.apply()}
                   />
 
                   <div className={styles.buttonsContainer}>
-                    <button
+                    <IconButton
+                      name="upload"
+                      aria-label="Attach files (images, documents, text files)"
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isLoading}
                       className={styles.attachButton}
                       title="Attach files (images, documents, text files)"
-                      type="button"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
-                      </svg>
-                    </button>
+                      {...testIds.attachButton.apply()}
+                    />
 
                     <input
                       ref={fileInputRef}
@@ -440,48 +484,30 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                       accept="image/*,.txt,.pdf,.doc,.docx,.json,.csv"
                       onChange={onFileInputChange}
                       style={{ display: 'none' }}
+                      {...testIds.fileInput.apply()}
                     />
 
-                    <button
-                      onClick={handleSend}
-                      disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
-                      className={styles.sendButton}
-                      title="Send message (Ctrl+Enter)"
-                      type="button"
-                    >
-                      {isLoading ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className={styles.loadingSpinner}
-                        >
-                          <circle cx="12" cy="12" r="10" opacity="0.25"></circle>
-                          <path d="M12 2a10 10 0 0 1 10 10"></path>
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <line x1="22" y1="2" x2="11" y2="13"></line>
-                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                        </svg>
-                      )}
-                    </button>
+                    {isLoading ? (
+                      <IconButton
+                        name="fa fa-spinner"
+                        aria-label="Send message (Ctrl+Enter)"
+                        onClick={handleSend}
+                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
+                        className={styles.sendButton}
+                        title="Send message (Ctrl+Enter)"
+                        {...testIds.sendButton.apply()}
+                      />
+                    ) : (
+                      <IconButton
+                        name="message"
+                        aria-label="Send message (Ctrl+Enter)"
+                        onClick={handleSend}
+                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
+                        className={styles.sendButton}
+                        title="Send message (Ctrl+Enter)"
+                        {...testIds.sendButton.apply()}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

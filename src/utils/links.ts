@@ -391,14 +391,15 @@ export const prepareLinksToRender = ({
         }
 
         const dropdownLinks = nestedLinks.flatMap((nestedLink) => {
-          if (nestedLink.type === VisualLinkType.TIMEPICKER) {
+          if (nestedLink.type === VisualLinkType.TIMEPICKER || nestedLink.type === VisualLinkType.LLMAPP) {
             return [
               {
-                linkType: LinkType.TIMEPICKER,
+                linkType: nestedLink.type === VisualLinkType.TIMEPICKER ? LinkType.TIMEPICKER : LinkType.LLMAPP,
                 ...nestedLink,
               },
             ] as unknown as LinkConfig[];
           }
+
           return nestedLink.links;
         });
 

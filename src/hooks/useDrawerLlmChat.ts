@@ -1,5 +1,6 @@
 import { openai } from '@grafana/llm';
 import { useCallback, useRef, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
   AttachedFile,
@@ -26,7 +27,7 @@ export const chatConfig = {
 /**
  * Allowed file types for attachment
  */
-const allowedFileTypes = [
+const allowedFileTypes: string[] = [
   'image/jpeg',
   'image/png',
   'image/gif',
@@ -49,15 +50,13 @@ const allowedFileTypes = [
  */
 export const useChatMessages = (): UseChatMessagesReturn => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const messageIdCounter = useRef(0);
 
   /**
    * Generates a unique message ID
    * @returns Unique message identifier
    */
   const generateMessageId = useCallback((): string => {
-    messageIdCounter.current += 1;
-    return `msg-${Date.now()}-${messageIdCounter.current}`;
+    return `msg-${uuidv4()}`;
   }, []);
 
   /**
@@ -114,18 +113,18 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
 
   /**
    * Formats file size in human-readable format
-   * @param bytes - File size in bytes
+   * @param fileSizeInBytes - File size in bytes
    * @returns Formatted file size string
    */
-  const formatFileSize = useCallback((bytes: number): string => {
-    if (bytes === 0) {
+  const formatFileSize = useCallback((fileSizeInBytes: number): string => {
+    if (fileSizeInBytes === 0) {
       return '0 Bytes';
     }
 
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    const bytesInKilobyte = 1024;
+    const sizeUnits = ['Bytes', 'KB', 'MB'];
+    const unitIndex = Math.floor(Math.log(fileSizeInBytes) / Math.log(bytesInKilobyte));
+    return parseFloat((fileSizeInBytes / Math.pow(bytesInKilobyte, unitIndex)).toFixed(2)) + ' ' + sizeUnits[unitIndex];
   }, []);
 
   /**
@@ -134,7 +133,8 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
    * @returns Whether the file type is allowed
    */
   const isFileTypeAllowed = useCallback((fileType: string): boolean => {
-    return allowedFileTypes.includes(fileType as any);
+
+    return allowedFileTypes.includes(fileType);
   }, []);
 
   /**
@@ -177,7 +177,7 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
         reader.onload = (e) => {
           const content = e.target?.result as string;
           const newFile: AttachedFile = {
-            id: `file-${Date.now()}-${Math.random()}`,
+            id: `file-${uuidv4()}`,
             name: file.name,
             size: file.size,
             type: file.type,
@@ -206,7 +206,7 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
    * @param fileId - ID of the file to remove
    */
   const removeAttachedFile = useCallback((fileId: string) => {
-    setAttachedFiles((prev) => prev.filter((f) => f.id !== fileId));
+    setAttachedFiles((prev) => prev.filter((fileItem) => fileItem.id !== fileId));
   }, []);
 
   /**
@@ -269,26 +269,28 @@ export const useLlmService = (): UseLlmServiceReturn => {
    */
   const checkLlmStatus = useCallback(async (): Promise<LlmHealthCheck> => {
     try {
-      if (!openai.enabled) {
+      if (!(await openai.enabled())) {
         return { canProceed: false, error: 'LLM is not enabled in Grafana settings' };
       }
 
-      if (openai.health) {
-        const health = await openai.health();
+      if (typeof openai.health !== 'function') {
+        return { canProceed: true };
+      }
 
-        if (!health.ok) {
-          return {
-            canProceed: false,
-            error: health.error || 'LLM service is not properly configured',
-          };
-        }
+      const health = await openai.health();
 
-        if (!health.models || Object.keys(health.models).length === 0) {
-          return {
-            canProceed: false,
-            error: 'No LLM models are configured. Please configure at least one model in Grafana LLM settings.',
-          };
-        }
+      if (!health.ok) {
+        return {
+          canProceed: false,
+          error: health.error || 'LLM service is not properly configured',
+        };
+      }
+
+      if (!health.models || Object.keys(health.models).length === 0) {
+        return {
+          canProceed: false,
+          error: 'No LLM models are configured. Please configure at least one model in Grafana LLM settings.',
+        };
       }
 
       return { canProceed: true };
@@ -360,7 +362,7 @@ export const useLlmService = (): UseLlmServiceReturn => {
    * @param error - Error object from LLM service
    * @returns User-friendly error message
    */
-  const handleLlmError = useCallback((error: {message: string}): string => {
+  const handleLlmError = useCallback((error: { message: string }): string => {
     if (!error.message) {
       return 'Sorry, an error occurred while processing your request.';
     }

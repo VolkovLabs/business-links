@@ -163,7 +163,6 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
     
     fileTypeIcon: css`
-      background-color: ${theme.colors.primary.main};
       border-radius: ${theme.shape.radius.default};;
       padding: ${theme.spacing(0.5)};
       display: flex;
@@ -210,7 +209,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     
     textareaContainer: css`
       position: relative;
-      padding: ${theme.spacing(1.75, 10.5, 1.75, 1.75)};
+      padding: ${theme.spacing(1.75, 11.5, 1.75, 1.75)};
     `,
     
     textarea: css`
@@ -246,6 +245,11 @@ export const getStyles = (theme: GrafanaTheme2) => {
       
       &::-webkit-scrollbar-thumb:hover {
         background: ${theme.isDark ? 'rgba(204, 204, 220, 0.3)' : 'rgba(111, 112, 125, 0.8)'};
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: none;
       }
     `,
     

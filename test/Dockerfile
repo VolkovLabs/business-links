@@ -8,7 +8,7 @@ WORKDIR app
 COPY .. .
 
 # Install the dependencies in Node environment
-RUN npm install --force --only=dev
+RUN npm install --only=dev
 
 # Install browsers
 RUN npx playwright install --with-deps chromium

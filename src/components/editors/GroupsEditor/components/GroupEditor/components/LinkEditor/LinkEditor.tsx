@@ -588,7 +588,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
       {value.linkType !== LinkType.TIMEPICKER &&
         value.linkType !== LinkType.HTML &&
-        value.linkType !== LinkType.DROPDOWN && (
+        value.linkType !== LinkType.DROPDOWN &&
+        value.linkType !== LinkType.LLMAPP && (
           <FieldsGroup label="Include">
             <InlineField
               label="Support kiosk mode"

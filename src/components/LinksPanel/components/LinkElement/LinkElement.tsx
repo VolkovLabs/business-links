@@ -1,9 +1,9 @@
 import { cx } from '@emotion/css';
-import { Button, Dropdown, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
+import { Button, Dropdown, Icon, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useEffect, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { ButtonSize } from '@/types';
+import { ButtonSize, LinkType } from '@/types';
 import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { ChatDrawer } from '../ChatDrawer/ChatDrawer';
@@ -75,7 +75,6 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
    */
   const handleDrawerClose = useCallback(() => {
     setDrawerOpen(false);
-
   }, []);
 
   useEffect(() => {
@@ -119,10 +118,31 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
           >
             <div className={styles.menuItemWrapper}>
-              <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} />
+              <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(dropdownLink.name)} />
               <span className={styles.menuItemText}>{dropdownLink.name}</span>
             </div>
           </a>
+        );
+      }
+
+      if (dropdownLink.linkType === LinkType.LLMAPP) {
+        return (
+          <div
+            key={`${dropdownLink.url}-${dropdownLink.name}`}
+            className={cx(dropdownLink.isCurrentLink ? styles.currentMenuItem : styles.menuItem)}
+            onClick={() => setDrawerOpen(true)}
+            {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
+          >
+            <div className={styles.menuItemWrapper}>
+              {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
+                <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
+              )}
+              {dropdownLink.icon && !dropdownLink.showCustomIcons && (
+                <Icon title={dropdownLink.icon} size="sm" name={dropdownLink.icon} {...testIds.customIconSvg.apply(dropdownLink.name)} />
+              )}
+              <span className={styles.menuItemText}>{dropdownLink.name}</span>
+            </div>
+          </div>
         );
       }
 
@@ -154,7 +174,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           {...testIds.buttonDropdown.apply(link.name)}
         >
           {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
-            <img src={link.customIconUrl} alt="" className={styles.customIcon} />
+            <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
           )}
           {link.name}
         </Button>
@@ -163,36 +183,44 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
 
     if (link.showMenuOnHover) {
       return (
-        <div
-          ref={btnRef}
-          style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
-        >
-          <Tooltip
-            content={<div className={styles.menu}>{menuLinks}</div>}
-            theme="info"
-            placement={link.hoverMenuPosition ? link.hoverMenuPosition : 'bottom'}
-            interactive
-            {...testIds.tooltipMenu.apply(link.name)}
+        <>
+          <div
+            ref={btnRef}
+            style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
           >
-            {dropdownButton()}
-          </Tooltip>
-        </div>
+            <Tooltip
+              content={<div className={styles.menu}>{menuLinks}</div>}
+              theme="info"
+              placement={link.hoverMenuPosition ? link.hoverMenuPosition : 'bottom'}
+              interactive
+              {...testIds.tooltipMenu.apply(link.name)}
+            >
+              {dropdownButton()}
+            </Tooltip>
+          </div>
+
+          <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+        </>
       );
     }
 
     return (
-      <div
-        ref={btnRef}
-        style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
-      >
-        <Dropdown
-          key={link.name}
-          overlay={<div className={styles.menu}>{menuLinks}</div>}
-          {...testIds.dropdown.apply(link.name)}
+      <>
+        <div
+          ref={btnRef}
+          style={dynamicFontSize ? ({ '--btn-width': `${linkWidth}px` } as React.CSSProperties) : undefined}
         >
-          {dropdownButton()}
-        </Dropdown>
-      </div>
+          <Dropdown
+            key={link.name}
+            overlay={<div className={styles.menu}>{menuLinks}</div>}
+            {...testIds.dropdown.apply(link.name)}
+          >
+            {dropdownButton()}
+          </Dropdown>
+        </div>
+
+        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+      </>
     );
   }
 
@@ -225,7 +253,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.buttonSingleLink.apply(link.name)}
           >
             {currentLink.showCustomIcons && currentLink.customIconUrl && !!currentLink.customIconUrl.length && (
-              <img src={currentLink.customIconUrl} alt="" className={styles.customIcon} />
+              <img src={currentLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
             )}
             {currentLink.name}
           </LinkButton>
@@ -259,7 +287,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.buttonEmptyLink.apply(link.name)}
           >
             {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
-              <img src={link.customIconUrl} alt="" className={styles.customIcon} />
+              <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
             )}
             {link.name}
           </Button>

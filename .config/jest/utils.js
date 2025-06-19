@@ -14,6 +14,11 @@ const nodeModulesToTransform = (moduleNames) => `node_modules\/(?!.*(${moduleNam
 const grafanaESModules = [
   '.pnpm', // Support using pnpm symlinked packages
   '@grafana/schema',
+  '@grafana/llm',
+  '@modelcontextprotocol/sdk',
+  'pkce-challenge',
+  'eventsource',
+  'eventsource-parser',
   'd3',
   'd3-color',
   'd3-force',
