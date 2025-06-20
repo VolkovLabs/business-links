@@ -396,9 +396,13 @@ describe('LinkElement', () => {
         )
       );
 
-      /** Wait for useEffect to run and create ResizeObserver */
+      /**
+       * Wait for useEffect to run and create ResizeObserver
+       */
       await act(async () => {
-        /** Simulate ResizeObserver callback */
+        /**
+         * Simulate ResizeObserver callback
+         */
         const mockEntry = {
           contentRect: { width: 150 },
         } as ResizeObserverEntry;
@@ -445,7 +449,9 @@ describe('LinkElement', () => {
         )
       );
 
-      /** First resize */
+      /**
+       * First resize
+       */
       await act(async () => {
         const mockEntry1 = {
           contentRect: { width: 150.7 },
@@ -457,7 +463,9 @@ describe('LinkElement', () => {
       const linkButton1 = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton1.parentElement).toHaveStyle('--btn-width: 150px');
 
-      /** Second resize */
+      /**
+       * Second resize
+       */
       await act(async () => {
         const mockEntry2 = {
           contentRect: { width: 200.9 },
