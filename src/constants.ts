@@ -43,6 +43,8 @@ export const TEST_IDS = {
     dropdown: createSelector((name: unknown) => `data-testid link-element dropdown-${name}`),
     dropdownMenuItem: createSelector((name: unknown) => `data-testid link-element dropdown menu-item-${name}`),
     tooltipMenu: createSelector((name: unknown) => `data-testid link-element tooltip-${name}`),
+    customIconImg: createSelector((name: unknown) => `data-testid link-element custom-icon-img-${name}`),
+    customIconSvg: createSelector((name: unknown) => `data-testid link-element custom-icon-svg-${name}`),
   },
   timePickerElement: {
     buttonPicker: createSelector((name: unknown) => `data-testid time-picker-element button-picker-${name}`),
@@ -89,6 +91,7 @@ export const TEST_IDS = {
     fieldAlignContent: createSelector('data-testid link-editor field-align-content'),
     fieldAlignContentOption: createSelector((name: unknown) => `link-editor field-align-content-${name}`),
     fieldHideTooltipOnHover: createSelector('data-testid link-editor field-hide-tooltip'),
+    fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
@@ -126,6 +129,23 @@ export const TEST_IDS = {
   },
   general: {
     tooltipPosition: createSelector(selectors.components.Tooltip.container),
+  },
+  drawerElement: {
+    chatDrawer: createSelector('data-testid drawer-element chat-drawer'),
+    chatDrawerEmptyState: createSelector('data-testid chat-drawer empty-state'),
+    drawerCloseButton: createSelector('data-testid chat-drawer close'),
+    input: createSelector('data-testid chat-drawer input'),
+    message: createSelector((name: unknown) => `data-testid chat-drawer message-${name}`),
+    attachment: createSelector('data-testid chat-drawer attachment'),
+    attachmentImage: createSelector((name: unknown) => `data-testid chat-drawer attachment-image-${name}`),
+    attachmentImageIcon: createSelector('data-testid chat-drawer attachment-image-icon'),
+    attachedFilesPreview: createSelector('data-testid chat-drawer attached-files-preview'),
+    attachedFilesPreviewIcon: createSelector('data-testid chat-drawer attached-files-preview-icon'),
+    attachButton: createSelector('data-testid chat-drawer attach-button'),
+    fileInput: createSelector('data-testid chat-drawer file-input'),
+    removeButton: createSelector('data-testid chat-drawer remove-button'),
+    sendButton: createSelector('data-testid chat-drawer send-button'),
+    messageSender: createSelector('data-testid chat-drawer message-sender'),
   },
 };
 

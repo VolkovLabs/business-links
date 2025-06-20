@@ -391,14 +391,15 @@ export const prepareLinksToRender = ({
         }
 
         const dropdownLinks = nestedLinks.flatMap((nestedLink) => {
-          if (nestedLink.type === VisualLinkType.TIMEPICKER) {
+          if (nestedLink.type === VisualLinkType.TIMEPICKER || nestedLink.type === VisualLinkType.LLMAPP) {
             return [
               {
-                linkType: LinkType.TIMEPICKER,
+                linkType: nestedLink.type === VisualLinkType.TIMEPICKER ? LinkType.TIMEPICKER : LinkType.LLMAPP,
                 ...nestedLink,
               },
             ] as unknown as LinkConfig[];
           }
+
           return nestedLink.links;
         });
 
@@ -416,6 +417,25 @@ export const prepareLinksToRender = ({
           links: dropdownLinks,
           showCustomIcons: item.showCustomIcons,
           customIconUrl: item.customIconUrl,
+          alignContentPosition: item.alignContentPosition,
+          hideTooltipOnHover: item.hideTooltipOnHover,
+        });
+        break;
+      }
+
+      /**
+       * Business AI link
+       */
+      case LinkType.LLMAPP: {
+        result.push({
+          type: VisualLinkType.LLMAPP,
+          contextPrompt: item.contextPrompt,
+          id: item.id,
+          name: item.name,
+          links: [],
+          showCustomIcons: item.showCustomIcons,
+          customIconUrl: item.customIconUrl,
+          icon: item.icon,
           alignContentPosition: item.alignContentPosition,
           hideTooltipOnHover: item.hideTooltipOnHover,
         });

@@ -214,6 +214,44 @@ const RelativeTimeRangePickerMock = ({ onChange, ...restProps }: any) => {
 
 const RelativeTimeRangePicker = jest.fn(RelativeTimeRangePickerMock);
 
+/**
+ * Drawer Mock
+ * since grafana.ui version 11.5.1
+ * ReferenceError: IntersectionObserver is not defined
+ */
+const DrawerMock = ({ title, children, onClose }: any) => {
+  return (
+    <div {...TEST_IDS.drawerElement.chatDrawer.apply()}>
+      <button {...TEST_IDS.drawerElement.drawerCloseButton.apply()} onClick={() => onClose()}>
+        Close
+      </button>
+      {title}
+      {children}
+    </div>
+  );
+};
+
+const Drawer = jest.fn(DrawerMock);
+
+/**
+ * Icon Mock
+ *
+ */
+const IconMock = ({ name, onClick, ...restProps }: any) => {
+  return (
+    <div
+      onClick={() => onClick?.()}
+      data-testid={restProps['data-testid']}
+      className={restProps['className']}
+      aria-label={restProps['aria-label']}
+    >
+      {name}
+    </div>
+  );
+};
+
+const Icon = jest.fn(IconMock);
+
 beforeEach(() => {
   ToolbarButtonRow.mockImplementation(ToolbarButtonRowMock);
   MenuItem.mockImplementation(MenuItemMock);
@@ -224,6 +262,8 @@ beforeEach(() => {
   Tooltip.mockImplementation(TooltipMock);
   DateTimePicker.mockImplementation(DateTimePickerMock);
   RelativeTimeRangePicker.mockImplementation(RelativeTimeRangePickerMock);
+  Drawer.mockImplementation(DrawerMock);
+  Icon.mockImplementation(IconMock);
 });
 
 module.exports = {
@@ -237,4 +277,6 @@ module.exports = {
   DateTimePicker,
   RelativeTimeRangePicker,
   Tooltip,
+  Drawer,
+  Icon
 };
