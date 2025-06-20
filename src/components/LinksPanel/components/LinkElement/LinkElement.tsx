@@ -107,7 +107,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
      * Menu links
      */
     const menuLinks = link.links.map((dropdownLink) => {
-      if (dropdownLink.showCustomIcons && dropdownLink.customIconUrl) {
+      if (dropdownLink.showCustomIcons && dropdownLink.customIconUrl && dropdownLink.linkType !== LinkType.LLMAPP) {
         return (
           <a
             key={`${dropdownLink.url}-${dropdownLink.name}`}
@@ -134,8 +134,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
           >
             <div className={styles.menuItemWrapper}>
-              {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
-                <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
+              {dropdownLink.showCustomIcons && dropdownLink.customIconUrl && !!dropdownLink.customIconUrl.length && (
+                <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(dropdownLink.name)} />
               )}
               {dropdownLink.icon && !dropdownLink.showCustomIcons && (
                 <Icon title={dropdownLink.icon} size="sm" name={dropdownLink.icon} {...testIds.customIconSvg.apply(dropdownLink.name)} />

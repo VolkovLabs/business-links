@@ -764,5 +764,57 @@ describe('LinkElement', () => {
       fireEvent.click(selectors.dropdownMenuItem(false, 'Chat'));
       expect(selectors.chatDrawer()).toBeInTheDocument();
     });
+
+    it('Should render custom icon in LLMAPP dropdown menu item', async () => {
+      const nestedLink1 = createNestedLinkConfig({
+        name: 'Chat',
+        linkType: LinkType.LLMAPP,
+        showCustomIcons: true,
+        customIconUrl: '/public/llm-icon.png',
+      });
+      const nestedLink2 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      const menuItem = selectors.dropdownMenuItem(false, 'Chat');
+      expect(menuItem).toBeInTheDocument();
+      expect(selectors.customIconImg(false, 'Chat')).toBeInTheDocument();
+    });
+
+    it('Should render svg icon in LLMAPP dropdown menu item if showCustomIcons is false', async () => {
+      const nestedLink1 = createNestedLinkConfig({
+        name: 'Chat',
+        linkType: LinkType.LLMAPP,
+        showCustomIcons: false,
+        icon: 'play',
+      });
+      const nestedLink2 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      const menuItem = selectors.dropdownMenuItem(false, 'Chat');
+      expect(menuItem).toBeInTheDocument();
+      expect(selectors.customIconSvg(false, 'Chat')).toBeInTheDocument();
+    });
   });
 });
