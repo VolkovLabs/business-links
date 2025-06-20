@@ -133,7 +133,6 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
    * @returns Whether the file type is allowed
    */
   const isFileTypeAllowed = useCallback((fileType: string): boolean => {
-
     return allowedFileTypes.includes(fileType);
   }, []);
 
@@ -345,13 +344,13 @@ export const useLlmService = (): UseLlmServiceReturn => {
       formatFileSize: (bytes: number) => string
     ): LlmMessage[] => {
       return messages
-        .filter((m) => !m.isStreaming)
-        .map((m) => ({
-          role: m.sender === 'user' ? ('user' as const) : ('assistant' as const),
+        .filter((message) => !message.isStreaming)
+        .map((messageItem) => ({
+          role: messageItem.sender === 'user' ? ('user' as const) : ('assistant' as const),
           content:
-            m.sender === 'user' && m.attachments && m.attachments.length > 0
-              ? prepareContent(m.text, m.attachments, formatFileSize)
-              : m.text,
+            messageItem.sender === 'user' && messageItem.attachments && messageItem.attachments.length > 0
+              ? prepareContent(messageItem.text, messageItem.attachments, formatFileSize)
+              : messageItem.text,
         }));
     },
     []
