@@ -73,14 +73,24 @@ interface Props extends EditorProps<LinkConfig> {
  */
 export const linkTypeOptions = [
   {
-    value: LinkType.SINGLE,
-    label: 'Link',
-    description: 'A single link with a configured URL.',
+    value: LinkType.LLMAPP,
+    label: 'Business AI',
+    description: 'Open Business AI in a side bar.',
   },
   {
     value: LinkType.DASHBOARD,
     label: 'Dashboard',
     description: 'Select the dashboard.',
+  },
+  {
+    value: LinkType.HTML,
+    label: 'HTML/Handlebars',
+    description: 'HTML element with handlebars support.',
+  },
+  {
+    value: LinkType.SINGLE,
+    label: 'Link',
+    description: 'A single link with a configured URL.',
   },
   {
     value: LinkType.DROPDOWN,
@@ -96,16 +106,6 @@ export const linkTypeOptions = [
     value: LinkType.TIMEPICKER,
     label: 'Timepicker',
     description: 'Set time range',
-  },
-  {
-    value: LinkType.HTML,
-    label: 'HTML/Handlebars',
-    description: 'HTML element with handlebars support.',
-  },
-  {
-    value: LinkType.LLMAPP,
-    label: 'Business AI',
-    description: 'Open Business AI in a side bar.',
   },
 ];
 
