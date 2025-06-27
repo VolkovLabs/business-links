@@ -113,10 +113,15 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
   }, [onClose, clearAttachedFiles]);
 
   /**
+   * Checks if the send button should be disabled
+   */
+  const isSendDisabled = (!inputValue.trim() && attachedFiles.length === 0) || isLoading;
+
+  /**
    * Handles the main send message functionality
    */
   const handleSend = useCallback(async () => {
-    if ((!inputValue.trim() && attachedFiles.length === 0) || isLoading) {
+    if (isSendDisabled) {
       return;
     }
 
@@ -278,22 +283,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
         isStreaming: false,
       }));
     }
-  }, [
-    inputValue,
-    attachedFiles,
-    isLoading,
-    messages,
-    initialPrompt,
-    checkLlmStatus,
-    generateMessageId,
-    addMessages,
-    updateLastMessage,
-    prepareMessageContent,
-    formatFileSize,
-    clearAttachedFiles,
-    prepareChatHistory,
-    handleLlmError,
-  ]);
+  }, [isSendDisabled, checkLlmStatus, prepareMessageContent, inputValue, attachedFiles, formatFileSize, generateMessageId, addMessages, clearAttachedFiles, prepareChatHistory, messages, initialPrompt, updateLastMessage, handleLlmError]);
 
   /**
    * Handles keyboard shortcuts in textarea
@@ -301,9 +291,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
    */
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        handleSend();
+      if (e.key === 'Enter') {
+        if (e.ctrlKey || e.shiftKey) {
+          return;
+        } else {
+          e.preventDefault();
+          handleSend();
+        }
       }
       if (e.key === 'Escape' && !isLoading) {
         setInputValue('');
@@ -342,7 +336,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
               )}
 
               {messages.map((message) =>
-                message.text ? (
+                message.text || (message.attachments && !!message.attachments.length) ? (
                   <div
                     key={message.id}
                     className={cx(
@@ -389,15 +383,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                                     />
                                   )}
                                 </div>
-                                <IconButton
-                                  name="times"
-                                  aria-label={`Remove ${file.name}`}
-                                  onClick={() => removeAttachedFile(file.id)}
-                                  size="sm"
-                                  variant="secondary"
-                                  className={styles.removeButton}
-                                  {...testIds.removeButton.apply()}
-                                />
                               </div>
                             ) : null
                           )}
@@ -487,27 +472,15 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                       {...testIds.fileInput.apply()}
                     />
 
-                    {isLoading ? (
-                      <IconButton
-                        name="fa fa-spinner"
-                        aria-label="Send message (Ctrl+Enter)"
-                        onClick={handleSend}
-                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
-                        className={styles.sendButton}
-                        title="Send message (Ctrl+Enter)"
-                        {...testIds.sendButton.apply()}
-                      />
-                    ) : (
-                      <IconButton
-                        name="message"
-                        aria-label="Send message (Ctrl+Enter)"
-                        onClick={handleSend}
-                        disabled={(!inputValue.trim() && attachedFiles.length === 0) || isLoading}
-                        className={styles.sendButton}
-                        title="Send message (Ctrl+Enter)"
-                        {...testIds.sendButton.apply()}
-                      />
-                    )}
+                    <IconButton
+                      name={isLoading ? 'fa fa-spinner' : 'message'}
+                      aria-label="Send message"
+                      onClick={handleSend}
+                      disabled={isSendDisabled}
+                      className={styles.sendButton}
+                      title="Send message"
+                      {...testIds.sendButton.apply()}
+                    />
                   </div>
                 </div>
               </div>

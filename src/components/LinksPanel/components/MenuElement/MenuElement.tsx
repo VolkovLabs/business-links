@@ -103,7 +103,13 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
               );
             }
 
-            if (!nestedLink.url && nestedLink.linkType !== LinkType.LLMAPP) {
+            if (nestedLink.linkType === LinkType.LLMAPP) {
+              return (
+                <LinkElement key={nestedLink.name} link={nestedLink as unknown as VisualLink} dynamicFontSize={dynamicFontSize} />
+              );
+            }
+
+            if (!nestedLink.url) {
               return (
                 <Button
                   variant="secondary"
@@ -117,12 +123,6 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                 >
                   {nestedLink.name}
                 </Button>
-              );
-            }
-
-            if (nestedLink.linkType === LinkType.LLMAPP) {
-              return (
-                <LinkElement key={nestedLink.name} link={nestedLink as unknown as VisualLink} dynamicFontSize={dynamicFontSize} />
               );
             }
 

@@ -258,6 +258,9 @@ export const LinksGridLayout: React.FC<Props> = ({
                 {link.type === VisualLinkType.MENU && (
                   <MenuElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
                 )}
+                {link.type === VisualLinkType.LLMAPP && (
+                  <LinkElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
+                )}
               </div>
               {isEditMode && (
                 <span

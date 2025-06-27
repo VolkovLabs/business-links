@@ -69,75 +69,68 @@ interface Props extends EditorProps<LinkConfig> {
 }
 
 /**
- * Link Type Options
+ * Link Type Option Map
  */
-export const linkTypeOptions = [
-  {
-    value: LinkType.LLMAPP,
-    label: 'Business AI',
-    description: 'Open Business AI in a side bar.',
-  },
-  {
-    value: LinkType.DASHBOARD,
-    label: 'Dashboard',
-    description: 'Select the dashboard.',
-  },
-  {
-    value: LinkType.HTML,
-    label: 'HTML/Handlebars',
-    description: 'HTML element with handlebars support.',
-  },
-  {
+const linkTypeOptionMap = {
+  [LinkType.SINGLE]: {
     value: LinkType.SINGLE,
     label: 'Link',
     description: 'A single link with a configured URL.',
   },
-  {
+  [LinkType.DASHBOARD]: {
+    value: LinkType.DASHBOARD,
+    label: 'Dashboard',
+    description: 'Select the dashboard.',
+  },
+  [LinkType.DROPDOWN]: {
     value: LinkType.DROPDOWN,
     label: 'Menu',
     description: 'A configured list of nested elements.',
   },
-  {
+  [LinkType.TAGS]: {
     value: LinkType.TAGS,
     label: 'Tags',
     description: 'Return available dashboards. Includes filtering by tags.',
   },
-  {
+  [LinkType.TIMEPICKER]: {
     value: LinkType.TIMEPICKER,
     label: 'Timepicker',
     description: 'Set time range',
   },
+  [LinkType.HTML]: {
+    value: LinkType.HTML,
+    label: 'HTML/Handlebars',
+    description: 'HTML element with handlebars support.',
+  },
+  [LinkType.LLMAPP]: {
+    value: LinkType.LLMAPP,
+    label: 'Business AI',
+    description: 'Open Business AI in a side bar.',
+  },
+};
+
+/**
+ * Link Type Options
+ */
+export const linkTypeOptions = [
+  linkTypeOptionMap[LinkType.LLMAPP],
+  linkTypeOptionMap[LinkType.DASHBOARD],
+  linkTypeOptionMap[LinkType.HTML],
+  linkTypeOptionMap[LinkType.SINGLE],
+  linkTypeOptionMap[LinkType.DROPDOWN],
+  linkTypeOptionMap[LinkType.TAGS],
+  linkTypeOptionMap[LinkType.TIMEPICKER],
 ];
 
 /**
  * Link Type Options in dropdown editor
  */
 export const linkTypeOptionsInDropdown = [
-  {
-    value: LinkType.SINGLE,
-    label: 'Link',
-    description: 'A single link with a configured URL.',
-  },
-  {
-    value: LinkType.DASHBOARD,
-    label: 'Dashboard',
-    description: 'Select the dashboard.',
-  },
-  {
-    value: LinkType.TAGS,
-    label: 'Tags',
-    description: 'Return available dashboards. Includes filtering by tags.',
-  },
-  {
-    value: LinkType.TIMEPICKER,
-    label: 'Timepicker',
-    description: 'Set time range',
-  },
-  {
-    value: LinkType.LLMAPP,
-    label: 'Business AI',
-    description: 'Open Business AI in a side bar.',
-  },
+  linkTypeOptionMap[LinkType.LLMAPP],
+  linkTypeOptionMap[LinkType.DASHBOARD],
+  linkTypeOptionMap[LinkType.SINGLE],
+  linkTypeOptionMap[LinkType.TAGS],
+  linkTypeOptionMap[LinkType.TIMEPICKER],
 ];
 
 /**

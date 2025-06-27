@@ -72,7 +72,7 @@ describe('useChatMessages', () => {
     const m1: ChatMessage = { id: '1', text: 'A', sender: 'user', timestamp: new Date() };
     const m2: ChatMessage = { id: '2', text: 'B', sender: 'assistant', timestamp: new Date() };
 
-    act(() => result.current.addMessage(m1));
+    act(() => result.current.addMessages([m1]));
     expect(result.current.messages).toEqual([m1]);
 
     act(() => result.current.addMessages([m2]));
@@ -149,10 +149,8 @@ describe('useFileAttachments', () => {
    */
   it('Should format file size correctly', () => {
     const { result } = renderHook(() => useFileAttachments());
-    expect(result.current.formatFileSize(0)).toBe('0 Bytes');
-    expect(result.current.formatFileSize(1024)).toBe('1 KB');
-    expect(result.current.formatFileSize(1536)).toBe('1.5 KB');
-    expect(result.current.formatFileSize(1024 * 1024)).toBe('1 MB');
+    expect(result.current.formatFileSize(0)).toBe('0 B');
+    expect(result.current.formatFileSize(1024 * 1024)).toBe('1.05 MB');
   });
 
   /**

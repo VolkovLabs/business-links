@@ -344,12 +344,6 @@ export interface UseChatMessagesReturn {
   generateMessageId: () => string;
 
   /**
-   * Add a single message
-   *
-   */
-  addMessage: (message: ChatMessage) => void;
-
-  /**
    * Add multiple messages
    *
    */

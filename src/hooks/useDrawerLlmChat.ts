@@ -1,3 +1,4 @@
+import { formattedValueToString, getValueFormat } from '@grafana/data';
 import { openai } from '@grafana/llm';
 import { useCallback, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -60,14 +61,6 @@ export const useChatMessages = (): UseChatMessagesReturn => {
   }, []);
 
   /**
-   * Adds a new message to the chat
-   * @param message - Message to add
-   */
-  const addMessage = useCallback((message: ChatMessage) => {
-    setMessages((prev) => [...prev, message]);
-  }, []);
-
-  /**
    * Adds multiple messages to the chat
    * @param newMessages - Messages to add
    */
@@ -94,7 +87,6 @@ export const useChatMessages = (): UseChatMessagesReturn => {
     messages,
     setMessages,
     generateMessageId,
-    addMessage,
     addMessages,
     updateLastMessage,
   };
@@ -117,14 +109,7 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
    * @returns Formatted file size string
    */
   const formatFileSize = useCallback((fileSizeInBytes: number): string => {
-    if (fileSizeInBytes === 0) {
-      return '0 Bytes';
-    }
-
-    const bytesInKilobyte = 1024;
-    const sizeUnits = ['Bytes', 'KB', 'MB'];
-    const unitIndex = Math.floor(Math.log(fileSizeInBytes) / Math.log(bytesInKilobyte));
-    return parseFloat((fileSizeInBytes / Math.pow(bytesInKilobyte, unitIndex)).toFixed(2)) + ' ' + sizeUnits[unitIndex];
+    return formattedValueToString(getValueFormat('decbytes')(fileSizeInBytes));
   }, []);
 
   /**

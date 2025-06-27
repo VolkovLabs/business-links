@@ -236,7 +236,7 @@ describe('ChatDrawer', () => {
       expect(mockAdjustTextareaHeight).toHaveBeenCalled();
     });
 
-    it('Should handle keyboard shortcuts (Ctrl+Enter to send, Escape to clear)', async () => {
+    it('Should handle keyboard shortcuts (Enter to send, Ctrl+Enter for new line, Escape to clear)', async () => {
       const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
       (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
@@ -245,7 +245,8 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
 
       fireEvent.change(textarea, { target: { value: 'Test message' } });
-      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+      
+      fireEvent.keyDown(textarea, { key: 'Enter' });
 
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalled();
@@ -255,6 +256,10 @@ describe('ChatDrawer', () => {
       mockClearAttachedFiles.mockClear();
 
       fireEvent.change(textarea, { target: { value: 'New message' } });
+      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+
+      expect(mockAddMessages).not.toHaveBeenCalled();
+
       fireEvent.keyDown(textarea, { key: 'Escape' });
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
@@ -741,26 +746,6 @@ describe('ChatDrawer', () => {
     });
     await act(async () => render(getComponent({})));
     expect(selectors.attachmentImageIcon()).toBeInTheDocument();
-  });
-
-  it('Should call removeAttachedFile for message attachment', async () => {
-    const messages = [
-      {
-        id: '1',
-        sender: 'user',
-        text: 'msg',
-        timestamp: new Date(),
-        attachments: [{ id: 'file1', name: 'test.txt', size: 123, type: 'text/plain' }],
-      },
-    ];
-    (hooks.useChatMessages as jest.Mock).mockReturnValue({
-      ...defaultUseChatMessages,
-      messages,
-    });
-    await act(async () => render(getComponent({})));
-    const removeButton = selectors.removeButton();
-    fireEvent.click(removeButton);
-    expect(mockRemoveAttachedFile).toHaveBeenCalledWith('file1');
   });
 
   it('Should render pulsingDot when message is streaming', async () => {
