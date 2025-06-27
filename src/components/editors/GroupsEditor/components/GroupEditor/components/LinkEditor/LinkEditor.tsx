@@ -1,5 +1,14 @@
 import { DataFrame, IconName, SelectableValue } from '@grafana/data';
-import { getAvailableIcons, InlineField, InlineSwitch, Input, RadioButtonGroup, Select, TagsInput } from '@grafana/ui';
+import {
+  getAvailableIcons,
+  InlineField,
+  InlineSwitch,
+  Input,
+  RadioButtonGroup,
+  Select,
+  TagsInput,
+  TextArea,
+} from '@grafana/ui';
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
@@ -60,65 +69,68 @@ interface Props extends EditorProps<LinkConfig> {
 }
 
 /**
- * Link Type Options
+ * Link Type Option Map
  */
-export const linkTypeOptions = [
-  {
+const linkTypeOptionMap = {
+  [LinkType.SINGLE]: {
     value: LinkType.SINGLE,
     label: 'Link',
     description: 'A single link with a configured URL.',
   },
-  {
+  [LinkType.DASHBOARD]: {
     value: LinkType.DASHBOARD,
     label: 'Dashboard',
     description: 'Select the dashboard.',
   },
-  {
+  [LinkType.DROPDOWN]: {
     value: LinkType.DROPDOWN,
     label: 'Menu',
     description: 'A configured list of nested elements.',
   },
-  {
+  [LinkType.TAGS]: {
     value: LinkType.TAGS,
     label: 'Tags',
     description: 'Return available dashboards. Includes filtering by tags.',
   },
-  {
+  [LinkType.TIMEPICKER]: {
     value: LinkType.TIMEPICKER,
     label: 'Timepicker',
     description: 'Set time range',
   },
-  {
+  [LinkType.HTML]: {
     value: LinkType.HTML,
     label: 'HTML/Handlebars',
-    description: 'HTML element with handlebars support',
+    description: 'HTML element with handlebars support.',
   },
+  [LinkType.LLMAPP]: {
+    value: LinkType.LLMAPP,
+    label: 'Business AI',
+    description: 'Open Business AI in a side bar.',
+  },
+};
+
+/**
+ * Link Type Options
+ */
+export const linkTypeOptions = [
+  linkTypeOptionMap[LinkType.LLMAPP],
+  linkTypeOptionMap[LinkType.DASHBOARD],
+  linkTypeOptionMap[LinkType.HTML],
+  linkTypeOptionMap[LinkType.SINGLE],
+  linkTypeOptionMap[LinkType.DROPDOWN],
+  linkTypeOptionMap[LinkType.TAGS],
+  linkTypeOptionMap[LinkType.TIMEPICKER],
 ];
 
 /**
  * Link Type Options in dropdown editor
  */
 export const linkTypeOptionsInDropdown = [
-  {
-    value: LinkType.SINGLE,
-    label: 'Link',
-    description: 'A single link with a configured URL.',
-  },
-  {
-    value: LinkType.DASHBOARD,
-    label: 'Dashboard',
-    description: 'Select the dashboard.',
-  },
-  {
-    value: LinkType.TAGS,
-    label: 'Tags',
-    description: 'Return available dashboards. Includes filtering by tags.',
-  },
-  {
-    value: LinkType.TIMEPICKER,
-    label: 'Timepicker',
-    description: 'Set time range',
-  },
+  linkTypeOptionMap[LinkType.LLMAPP],
+  linkTypeOptionMap[LinkType.DASHBOARD],
+  linkTypeOptionMap[LinkType.SINGLE],
+  linkTypeOptionMap[LinkType.TAGS],
+  linkTypeOptionMap[LinkType.TIMEPICKER],
 ];
 
 /**
@@ -292,6 +304,23 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             {...TEST_IDS.linkEditor.fieldLinkType.apply()}
           />
         </InlineField>
+
+        {value.linkType === LinkType.LLMAPP && (
+          <InlineField label="Initial Context" grow={true} labelWidth={20}>
+            <TextArea
+              cols={30}
+              placeholder="Provide your context prompt for Business AI"
+              value={value.contextPrompt}
+              onChange={(event) => {
+                onChange({
+                  ...value,
+                  contextPrompt: event.currentTarget.value,
+                });
+              }}
+              {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
+            />
+          </InlineField>
+        )}
 
         {value.linkType === LinkType.SINGLE && (
           <InlineField label="URL" grow={true} labelWidth={20}>
@@ -500,20 +529,22 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             </InlineField>
           )}
 
-          {value.linkType !== LinkType.DROPDOWN && value.linkType !== LinkType.TIMEPICKER && (
-            <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
-              <RadioButtonGroup
-                value={value.target}
-                onChange={(eventValue) => {
-                  onChange({
-                    ...value,
-                    target: eventValue,
-                  });
-                }}
-                options={linkTargetOptions}
-              />
-            </InlineField>
-          )}
+          {value.linkType !== LinkType.DROPDOWN &&
+            value.linkType !== LinkType.TIMEPICKER &&
+            value.linkType !== LinkType.LLMAPP && (
+              <InlineField grow={true} label="Open in" labelWidth={20} {...TEST_IDS.linkEditor.fieldTarget.apply()}>
+                <RadioButtonGroup
+                  value={value.target}
+                  onChange={(eventValue) => {
+                    onChange({
+                      ...value,
+                      target: eventValue,
+                    });
+                  }}
+                  options={linkTargetOptions}
+                />
+              </InlineField>
+            )}
 
           {optionId === 'groups' && (
             <InlineField
@@ -550,7 +581,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
       {value.linkType !== LinkType.TIMEPICKER &&
         value.linkType !== LinkType.HTML &&
-        value.linkType !== LinkType.DROPDOWN && (
+        value.linkType !== LinkType.DROPDOWN &&
+        value.linkType !== LinkType.LLMAPP && (
           <FieldsGroup label="Include">
             <InlineField
               label="Support kiosk mode"

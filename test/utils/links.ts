@@ -328,7 +328,7 @@ class PanelEditorHelper {
   }
 
   public async openGroupsEditor(name: string) {
-    await this.tablesEditorSelectors.itemHeader(name).click();
+    await this.tablesEditorSelectors.itemTitle(name).click();
   }
 
   public getGroupsEditor(name: string) {

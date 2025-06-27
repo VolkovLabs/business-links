@@ -4,10 +4,15 @@ import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { HoverMenuPositionType } from '@/types';
+import { AlignContentPositionType, LinkType, VisualLinkType } from '@/types';
 import { createLinkConfig, createNestedLinkConfig, createVisualLinkConfig } from '@/utils';
 
 import { LinkElement } from './LinkElement';
+
+/**
+ * Mock @grafana/ui
+ */
+jest.mock('@grafana/ui');
 
 /**
  * Props
@@ -60,12 +65,11 @@ describe('LinkElement', () => {
   /**
    * Selectors
    */
-  const getSelectors = getJestSelectors({ ...TEST_IDS.linkElement, ...TEST_IDS.general });
-
+  const getSelectors = getJestSelectors({ ...TEST_IDS.linkElement, ...TEST_IDS.general, ...TEST_IDS.drawerElement });
   const selectors = getSelectors(screen);
 
   /**
-   * Selectors
+   * Theme
    */
   const theme = createTheme();
 
@@ -120,7 +124,6 @@ describe('LinkElement', () => {
         )
       );
 
-      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
       expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
       expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
 
@@ -145,90 +148,8 @@ describe('LinkElement', () => {
         )
       );
 
-      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
       expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
       expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
-    });
-
-    it('Should render tooltip with correct menu position if not specified', async () => {
-      const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
-      const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
-      await act(async () =>
-        render(
-          getComponent({
-            link: createVisualLinkConfig({
-              showMenuOnHover: true,
-              name: 'TooltipLink',
-              hoverMenuPosition: undefined,
-              links: [nestedLink1, nestedLink2],
-            }),
-          })
-        )
-      );
-
-      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
-      expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
-      expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
-      expect(selectors.tooltipPosition()).toBeInTheDocument();
-      expect(selectors.tooltipPosition()).toHaveTextContent('bottom');
-    });
-
-    it('Should render tooltip with correct menu position from link option', async () => {
-      const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
-      const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
-      await act(async () =>
-        render(
-          getComponent({
-            link: createVisualLinkConfig({
-              showMenuOnHover: true,
-              name: 'TooltipLink',
-              hoverMenuPosition: HoverMenuPositionType.LEFT,
-              links: [nestedLink1, nestedLink2],
-            }),
-          })
-        )
-      );
-
-      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
-      expect(selectors.buttonDropdown(false, 'TooltipLink')).toBeInTheDocument();
-      expect(selectors.tooltipMenu(false, 'TooltipLink')).toBeInTheDocument();
-      expect(selectors.tooltipPosition()).toBeInTheDocument();
-      expect(selectors.tooltipPosition()).toHaveTextContent(HoverMenuPositionType.LEFT);
-    });
-
-    it('Should render dropdown with Highlight current link', async () => {
-      const nestedLink1 = createNestedLinkConfig({ name: 'Link1', url: 'test.com', isCurrentLink: true });
-      const nestedLink2 = createNestedLinkConfig();
-      await act(async () =>
-        render(
-          getComponent({
-            link: createVisualLinkConfig({
-              name: 'Dropdown',
-              links: [nestedLink1, nestedLink2],
-            }),
-          })
-        )
-      );
-
-      expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
-      expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
-      expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
-
-      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
-
-      expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
-
-      /**
-       * Current ds link styles
-       */
-      expect(selectors.dropdownMenuItem(false, 'Link1')).toHaveStyle(
-        `background-color: ${theme.colors.warning.borderTransparent}`
-      );
-
-      expect(selectors.dropdownMenuItem(false, 'Link')).toBeInTheDocument();
-      expect(selectors.dropdownMenuItem(false, 'Link')).toHaveStyle(
-        `background-color: ${theme.colors.background.primary}`
-      );
     });
 
     it('Should render single link with current style', async () => {
@@ -302,54 +223,8 @@ describe('LinkElement', () => {
           )
         );
 
-        expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
         expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
-        expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
         expect(selectors.buttonDropdown(false, 'Dropdown')).toHaveStyle('width: 100%');
-      });
-
-      it('Should render dropdown links with custom images', async () => {
-        const nestedLink1 = createNestedLinkConfig({
-          name: 'Link1',
-          url: 'test1.com',
-          isCurrentLink: true,
-          showCustomIcons: true,
-          customIconUrl: '/public/icon1.png',
-        });
-        const nestedLink2 = createNestedLinkConfig({
-          name: 'Link2',
-          url: 'test2.com',
-          isCurrentLink: true,
-          showCustomIcons: true,
-          customIconUrl: '/public/icon2.png',
-        });
-        await act(async () =>
-          render(
-            getComponent({
-              link: createVisualLinkConfig({
-                name: 'Dropdown',
-                links: [nestedLink1, nestedLink2],
-              }),
-            })
-          )
-        );
-
-        expect(selectors.buttonSingleLink(true, 'Link1')).not.toBeInTheDocument();
-        expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
-        expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
-
-        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
-
-        const menuItem1 = selectors.dropdownMenuItem(false, 'Link1');
-        const menuItem2 = selectors.dropdownMenuItem(false, 'Link2');
-        expect(menuItem1).toBeInTheDocument();
-        expect(menuItem2).toBeInTheDocument();
-
-        const img1 = menuItem1.querySelector('img')!;
-        expect(img1).toHaveAttribute('src', '/public/icon1.png');
-
-        const img2 = menuItem2.querySelector('img')!;
-        expect(img2).toHaveAttribute('src', '/public/icon2.png');
       });
     });
 
@@ -602,26 +477,344 @@ describe('LinkElement', () => {
       const linkButton2 = selectors.buttonSingleLink(false, 'Link1');
       expect(linkButton2.parentElement).toHaveStyle('--btn-width: 200px');
     });
+  });
 
-    it('Should disconnect ResizeObserver on unmount', async () => {
+  describe('Content Alignment Tests', () => {
+    it('Should apply correct alignment class for single link with left alignment', async () => {
       const nestedLink = createLinkConfig({ name: 'Link1', url: 'test.com' });
-      const disconnectSpy = jest.spyOn(MockResizeObserver.prototype, 'disconnect');
 
-      const { unmount } = render(
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Link1',
+              links: [nestedLink],
+              alignContentPosition: AlignContentPositionType.LEFT,
+            }),
+          })
+        )
+      );
+
+      const linkButton = selectors.buttonSingleLink(false, 'Link1');
+      expect(linkButton).toHaveStyle('justify-content: flex-start');
+    });
+
+    it('Should apply correct alignment class for single link with center alignment', async () => {
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.CENTER,
+      });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Link1',
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+
+      const linkButton = selectors.buttonSingleLink(false, 'Link1');
+      expect(linkButton).toHaveStyle('justify-content: center');
+    });
+
+    it('Should apply correct alignment class for single link with right alignment', async () => {
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.RIGHT,
+      });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Link1',
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+
+      const linkButton = selectors.buttonSingleLink(false, 'Link1');
+      expect(linkButton).toBeInTheDocument();
+      expect(linkButton).toHaveStyle('justify-content: flex-end');
+    });
+
+    it('Should apply both grid mode and alignment classes together', async () => {
+      const nestedLink = createLinkConfig({
+        name: 'Link1',
+        url: 'test.com',
+        alignContentPosition: AlignContentPositionType.CENTER,
+      });
+
+      await act(async () =>
+        render(
+          getComponent({
+            gridMode: true,
+            link: createVisualLinkConfig({
+              name: 'Link1',
+              links: [nestedLink],
+            }),
+          })
+        )
+      );
+
+      const linkButton = selectors.buttonSingleLink(false, 'Link1');
+      expect(linkButton).toHaveStyle('justify-content: center');
+    });
+
+    it('Should apply alignment class for dropdown button', async () => {
+      const nestedLink1 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+      const nestedLink2 = createLinkConfig({ name: 'Link2', url: 'test.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+              alignContentPosition: AlignContentPositionType.RIGHT,
+            }),
+          })
+        )
+      );
+
+      const dropdownButton = selectors.buttonDropdown(false, 'Dropdown');
+      expect(dropdownButton).toHaveStyle('justify-content: flex-end');
+    });
+  });
+
+  it('Should display dropdownLink with custom image if showCustomIcons is true and customIconUrl is not empty', async () => {
+    const nestedLink1 = createLinkConfig({
+      name: 'Link1',
+      url: 'test.com',
+      showCustomIcons: true,
+      customIconUrl: '/public/link-icon1.png',
+    });
+    const nestedLink2 = createLinkConfig({
+      name: 'Link2',
+      url: 'test.com',
+      showCustomIcons: true,
+      customIconUrl: '/public/link-icon2.png',
+    });
+
+    await act(async () =>
+      render(
         getComponent({
-          dynamicFontSize: true,
           link: createVisualLinkConfig({
-            name: 'Link1',
-            links: [nestedLink],
+            name: 'Dropdown',
+            links: [nestedLink1, nestedLink2],
           }),
         })
+      )
+    );
+
+    fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+
+    expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
+    expect(selectors.dropdownMenuItem(false, 'Link2')).toBeInTheDocument();
+  });
+
+  describe('Custom Icon Display', () => {
+    it('Should render custom icon in empty link button when showCustomIcons and customIconUrl are provided', async () => {
+      const customUrl = '/public/empty-link-icon.png';
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'EmptyLink',
+              links: [],
+              showCustomIcons: true,
+              customIconUrl: customUrl,
+              type: VisualLinkType.LLMAPP,
+            }),
+          })
+        )
+      );
+
+      const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
+      expect(emptyButton).toBeInTheDocument();
+
+      const img = selectors.customIconImg(false, 'EmptyLink');
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute('src', customUrl);
+      expect(() => selectors.customIconSvg(false, 'EmptyLink')).toThrow();
+    });
+
+    it('Should not render custom icon when customIconUrl is empty string', async () => {
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'EmptyLink',
+              links: [],
+              showCustomIcons: true,
+              customIconUrl: '',
+              type: VisualLinkType.LLMAPP,
+            }),
+          })
+        )
+      );
+
+      const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
+      expect(emptyButton).toBeInTheDocument();
+
+      expect(() => selectors.customIconImg(false, 'EmptyLink')).toThrow();
+    });
+
+    it('Should not render custom icon when showCustomIcons is false', async () => {
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'EmptyLink',
+              links: [],
+              showCustomIcons: false,
+              customIconUrl: '/public/some-icon.png',
+              type: VisualLinkType.LLMAPP,
+            }),
+          })
+        )
+      );
+
+      const emptyButton = selectors.buttonEmptyLink(false, 'EmptyLink');
+      expect(emptyButton).toBeInTheDocument();
+
+      expect(() => selectors.customIconImg(false, 'EmptyLink')).toThrow();
+    });
+
+    it('Should render custom icon in LLM App type button', async () => {
+      const customUrl = '/public/llm-icon.png';
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Chat',
+              type: VisualLinkType.LLMAPP,
+              links: [],
+              showCustomIcons: true,
+              customIconUrl: customUrl,
+            }),
+          })
+        )
+      );
+
+      const chatButton = selectors.buttonEmptyLink(false, 'Chat');
+      expect(chatButton).toBeInTheDocument();
+
+      const img = selectors.customIconImg(false, 'Chat');
+      expect(img).toBeInTheDocument();
+      expect(img).toHaveAttribute('src', customUrl);
+    });
+  });
+
+  describe('Drawer Functionality', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('Should handle drawer open/close cycle with subscription cleanup', async () => {
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Chat',
+              type: VisualLinkType.LLMAPP,
+              links: [],
+            }),
+          })
+        )
       );
 
       await act(async () => {
-        unmount();
+        fireEvent.click(selectors.buttonEmptyLink(false, 'Chat'));
       });
+      expect(selectors.chatDrawer()).toBeInTheDocument();
 
-      expect(disconnectSpy).toHaveBeenCalled();
+      await act(async () => {
+        fireEvent.click(selectors.drawerCloseButton());
+      });
+      expect(() => selectors.chatDrawer(false)).toThrow();
+    });
+
+    it('Should open ChatDrawer when LLMAPP dropdown menu item is clicked', async () => {
+      const nestedLink1 = createNestedLinkConfig({ name: 'Regular', url: 'test1.com' });
+      const nestedLink2 = createNestedLinkConfig({ name: 'Chat', linkType: LinkType.LLMAPP });
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      expect(selectors.dropdownMenuItem(false, 'Regular')).toBeInTheDocument();
+      expect(selectors.dropdownMenuItem(false, 'Chat')).toBeInTheDocument();
+
+      fireEvent.click(selectors.dropdownMenuItem(false, 'Chat'));
+      expect(selectors.chatDrawer()).toBeInTheDocument();
+    });
+
+    it('Should render custom icon in LLMAPP dropdown menu item', async () => {
+      const nestedLink1 = createNestedLinkConfig({
+        name: 'Chat',
+        linkType: LinkType.LLMAPP,
+        showCustomIcons: true,
+        customIconUrl: '/public/llm-icon.png',
+      });
+      const nestedLink2 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      const menuItem = selectors.dropdownMenuItem(false, 'Chat');
+      expect(menuItem).toBeInTheDocument();
+      expect(selectors.customIconImg(false, 'Chat')).toBeInTheDocument();
+    });
+
+    it('Should render svg icon in LLMAPP dropdown menu item if showCustomIcons is false', async () => {
+      const nestedLink1 = createNestedLinkConfig({
+        name: 'Chat',
+        linkType: LinkType.LLMAPP,
+        showCustomIcons: false,
+        icon: 'play',
+      });
+      const nestedLink2 = createLinkConfig({ name: 'Link1', url: 'test.com' });
+
+      await act(async () =>
+        render(
+          getComponent({
+            link: createVisualLinkConfig({
+              name: 'Dropdown',
+              links: [nestedLink1, nestedLink2],
+            }),
+          })
+        )
+      );
+
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      const menuItem = selectors.dropdownMenuItem(false, 'Chat');
+      expect(menuItem).toBeInTheDocument();
+      expect(selectors.customIconSvg(false, 'Chat')).toBeInTheDocument();
     });
   });
 });

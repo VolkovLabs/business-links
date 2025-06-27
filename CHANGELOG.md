@@ -2,21 +2,24 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.0.0] - 2025-06-27
+
+We're excited to announce the release of version 2.0.0 of the Business Links plugin for Grafana. This update introduces new features, important breaking changes, and enhancements to improve your experience. Below are the details of what's new and improved.
 
 ### Breaking Changes
 
-- Minimum Grafana version 11.5.
+- **Minimum Grafana Version**: This release requires Grafana version **11.5** or higher. Please ensure your Grafana instance is updated before installing this version.
 
 ### Added
 
-- Added kiosk mode support ([#17](https://github.com/VolkovLabs/business-links/issues/17)).
-- Added hide tooltip option ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
+- **Kiosk Mode Support**: Added support for kiosk mode to enable a distraction-free, full-screen experience. ([#17](https://github.com/VolkovLabs/business-links/issues/17))
+- **Hide Tooltip Option**: Introduced an option to hide tooltips for a cleaner interface. ([#42](https://github.com/VolkovLabs/business-links/issues/42))
+- **LLM App Link Integration**: Added integration with LLM applications, allowing seamless linking to AI-powered tools. ([#45](https://github.com/VolkovLabs/business-links/issues/45))
 
 ### Changed
 
-- Updated recalculation sticky positioning on resize ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
-- Updated dynamic menu font size ([#42](https://github.com/VolkovLabs/business-links/issues/42)).
+- **Sticky Positioning Recalculation**: Improved the recalculation of sticky positioning on window resize for better layout stability. ([#42](https://github.com/VolkovLabs/business-links/issues/42))
+- **Dynamic Menu Font Size**: Updated the font size of dynamic menus to enhance readability and adaptability across devices. ([#42](https://github.com/VolkovLabs/business-links/issues/42))
 
 ## [1.4.0] - 2025-06-02
 

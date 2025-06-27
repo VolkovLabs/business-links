@@ -52,6 +52,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedCustomIconUrl =
           !item.customIconUrl || item.customIconUrl === undefined ? '' : item.customIconUrl;
 
+        const normalizedAlignContentPosition =
+          !item.alignContentPosition || item.alignContentPosition === undefined ? 'left' : item.alignContentPosition;
+
         const normalizedHideTitleOnHover =
           !item.hideTooltipOnHover || item.hideTooltipOnHover === undefined ? false : item.hideTooltipOnHover;
 
@@ -66,6 +69,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           includeKioskMode: normalizedIncludeKioskMode,
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,
+          alignContentPosition: normalizedAlignContentPosition,
           hideTooltipOnHover: normalizedHideTitleOnHover,
         };
       });
