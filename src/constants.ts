@@ -104,6 +104,7 @@ export const TEST_IDS = {
     item: createSelector((name: unknown) => `data-testid groups-editor item-${name}`),
     fieldName: createSelector('data-testid groups-editor field-name'),
     itemHeader: createSelector((name: unknown) => `data-testid groups-editor item-header-${name}`),
+    itemTitle: createSelector((name: unknown) => `data-testid groups-editor item-title-${name}`),
     itemContent: createSelector((name: unknown) => `data-testid groups-editor item-content-${name}`),
     newItem: createSelector('data-testid groups-editor new-level'),
     newItemName: createSelector('data-testid groups-editor new-item-name'),

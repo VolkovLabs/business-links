@@ -114,7 +114,6 @@ test.describe('Business Links Panel', () => {
 
       await timePickerEditor.checkFieldFromPresence();
       await timePickerEditor.checkFieldToPresence();
-      // await singleLinkEditor.checkIconEditorPresence();
     });
   });
 
