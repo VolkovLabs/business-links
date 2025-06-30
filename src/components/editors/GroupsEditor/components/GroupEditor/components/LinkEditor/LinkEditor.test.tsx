@@ -149,6 +149,21 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow to add custom assistant name for Business AI link type', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP }) }));
+
+    expect(selectors.fieldAssistantName()).toBeInTheDocument();
+    expect(selectors.fieldAssistantName()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldAssistantName(), { target: { value: 'Business AI' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        assistantName: 'Business AI',
+      })
+    );
+  });
+
   it('Should allow change tags for TAGS type', () => {
     render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TAGS }) }));
 

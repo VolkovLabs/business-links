@@ -33,17 +33,24 @@ interface ChatDrawerProps {
   onClose: () => void;
 
   /**
-   * Whether the drawer is currently open
+   * Initial context prompt for Business AI
    *
    * @type {string}
    */
   initialPrompt?: string;
+
+  /**
+   * Custom assistant name for Business AI
+   *
+   * @type {string}
+   */
+  assistantName?: string;
 }
 
 /**
  * Chat Drawer component
  */
-export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initialPrompt }) => {
+export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initialPrompt, assistantName }) => {
   /**
    * Hooks
    */
@@ -116,6 +123,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
    * Checks if the send button should be disabled
    */
   const isSendDisabled = (!inputValue.trim() && attachedFiles.length === 0) || isLoading;
+
+  const customAssistantName = assistantName || 'Business AI';
 
   /**
    * Handles the main send message functionality
@@ -190,7 +199,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
             role: 'system' as const,
             content:
               initialPrompt ||
-              'You are a helpful Business AI integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.',
+              `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.`,
           },
           ...chatHistory,
           { role: 'user' as const, content: messageContent },
@@ -283,7 +292,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
         isStreaming: false,
       }));
     }
-  }, [isSendDisabled, checkLlmStatus, prepareMessageContent, inputValue, attachedFiles, formatFileSize, generateMessageId, addMessages, clearAttachedFiles, prepareChatHistory, messages, initialPrompt, updateLastMessage, handleLlmError]);
+  }, [isSendDisabled, checkLlmStatus, prepareMessageContent, inputValue, attachedFiles, formatFileSize, generateMessageId, addMessages, clearAttachedFiles, prepareChatHistory, messages, initialPrompt, customAssistantName, updateLastMessage, handleLlmError]);
 
   /**
    * Handles keyboard shortcuts in textarea
@@ -326,7 +335,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
   return (
     <>
       {isOpen && (
-        <Drawer title="Business AI" onClose={cleanupAndClose} size="md">
+        <Drawer title={customAssistantName} onClose={cleanupAndClose} size="md">
           <div className={styles.container}>
             <div className={styles.messagesContainer}>
               {messages.length === 0 && (
@@ -352,7 +361,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                       )}
                     >
                       <div className={styles.messageSender} {...testIds.messageSender.apply()}>
-                        {message.sender === 'assistant' ? 'Business AI' : message.sender}
+                        {message.sender === 'assistant' ? customAssistantName : message.sender}
                       </div>
                       <div className={styles.messageText}>
                         {message.text}

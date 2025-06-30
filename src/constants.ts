@@ -92,6 +92,7 @@ export const TEST_IDS = {
     fieldAlignContentOption: createSelector((name: unknown) => `link-editor field-align-content-${name}`),
     fieldHideTooltipOnHover: createSelector('data-testid link-editor field-hide-tooltip'),
     fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
+    fieldAssistantName: createSelector('data-testid link-editor field-assistant-name'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
