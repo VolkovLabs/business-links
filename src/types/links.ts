@@ -143,6 +143,13 @@ export interface VisualLink {
    * @type {string}
    */
   contextPrompt?: string;
+
+  /**
+   * Custom Assistant Name for Business AI
+   *
+   * @type {string}
+   */
+  assistantName?: string;
 }
 
 /**
@@ -442,7 +449,7 @@ export interface UseLlmServiceReturn {
    * Handle LLM errors
    *
    */
-  handleLlmError: (error: {message: string}) => string;
+  handleLlmError: (error: { message: string }) => string;
 }
 
 /**

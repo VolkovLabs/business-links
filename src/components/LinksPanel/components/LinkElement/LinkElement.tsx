@@ -118,7 +118,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.dropdownMenuItem.apply(dropdownLink.name)}
           >
             <div className={styles.menuItemWrapper}>
-              <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(dropdownLink.name)} />
+              <img
+                src={dropdownLink.customIconUrl}
+                alt=""
+                className={styles.customIcon}
+                {...testIds.customIconImg.apply(dropdownLink.name)}
+              />
               <span className={styles.menuItemText}>{dropdownLink.name}</span>
             </div>
           </a>
@@ -135,10 +140,20 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           >
             <div className={styles.menuItemWrapper}>
               {dropdownLink.showCustomIcons && dropdownLink.customIconUrl && !!dropdownLink.customIconUrl.length && (
-                <img src={dropdownLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(dropdownLink.name)} />
+                <img
+                  src={dropdownLink.customIconUrl}
+                  alt=""
+                  className={styles.customIcon}
+                  {...testIds.customIconImg.apply(dropdownLink.name)}
+                />
               )}
               {dropdownLink.icon && !dropdownLink.showCustomIcons && (
-                <Icon title={dropdownLink.icon} size="sm" name={dropdownLink.icon} {...testIds.customIconSvg.apply(dropdownLink.name)} />
+                <Icon
+                  title={dropdownLink.icon}
+                  size="sm"
+                  name={dropdownLink.icon}
+                  {...testIds.customIconSvg.apply(dropdownLink.name)}
+                />
               )}
               <span className={styles.menuItemText}>{dropdownLink.name}</span>
             </div>
@@ -174,7 +189,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           {...testIds.buttonDropdown.apply(link.name)}
         >
           {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
-            <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
+            <img
+              src={link.customIconUrl}
+              alt=""
+              className={styles.customIcon}
+              {...testIds.customIconImg.apply(link.name)}
+            />
           )}
           {link.name}
         </Button>
@@ -199,7 +219,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             </Tooltip>
           </div>
 
-          <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+          <ChatDrawer
+            isOpen={isDrawerOpen}
+            onClose={handleDrawerClose}
+            initialPrompt={link.contextPrompt}
+            assistantName={link.assistantName}
+          />
         </>
       );
     }
@@ -219,7 +244,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           </Dropdown>
         </div>
 
-        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+        <ChatDrawer
+          isOpen={isDrawerOpen}
+          onClose={handleDrawerClose}
+          initialPrompt={link.contextPrompt}
+          assistantName={link.assistantName}
+        />
       </>
     );
   }
@@ -253,7 +283,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.buttonSingleLink.apply(link.name)}
           >
             {currentLink.showCustomIcons && currentLink.customIconUrl && !!currentLink.customIconUrl.length && (
-              <img src={currentLink.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
+              <img
+                src={currentLink.customIconUrl}
+                alt=""
+                className={styles.customIcon}
+                {...testIds.customIconImg.apply(link.name)}
+              />
             )}
             {currentLink.name}
           </LinkButton>
@@ -287,13 +322,23 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             {...testIds.buttonEmptyLink.apply(link.name)}
           >
             {link.showCustomIcons && link.customIconUrl && !!link.customIconUrl.length && (
-              <img src={link.customIconUrl} alt="" className={styles.customIcon} {...testIds.customIconImg.apply(link.name)} />
+              <img
+                src={link.customIconUrl}
+                alt=""
+                className={styles.customIcon}
+                {...testIds.customIconImg.apply(link.name)}
+              />
             )}
             {link.name}
           </Button>
         </div>
 
-        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+        <ChatDrawer
+          isOpen={isDrawerOpen}
+          onClose={handleDrawerClose}
+          initialPrompt={link.contextPrompt}
+          assistantName={link.assistantName}
+        />
       </>
     );
   }

@@ -306,20 +306,35 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         </InlineField>
 
         {value.linkType === LinkType.LLMAPP && (
-          <InlineField label="Initial Context" grow={true} labelWidth={20}>
-            <TextArea
-              cols={30}
-              placeholder="Provide your context prompt for Business AI"
-              value={value.contextPrompt}
-              onChange={(event) => {
-                onChange({
-                  ...value,
-                  contextPrompt: event.currentTarget.value,
-                });
-              }}
-              {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
-            />
-          </InlineField>
+          <>
+            <InlineField label="Initial Context" grow={true} labelWidth={20}>
+              <TextArea
+                cols={30}
+                placeholder="Provide your context prompt for Business AI"
+                value={value.contextPrompt}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    contextPrompt: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
+              />
+            </InlineField>
+
+            <InlineField label="AI Assistant Name" grow={true} labelWidth={20}>
+              <Input
+                value={value.assistantName}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    assistantName: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldAssistantName.apply()}
+              />
+            </InlineField>
+          </>
         )}
 
         {value.linkType === LinkType.SINGLE && (
@@ -338,21 +353,19 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         )}
 
         {value.linkType === LinkType.TAGS && (
-          <>
-            <InlineField label="With Tags" grow={true} labelWidth={20}>
-              <TagsInput
-                tags={value.tags}
-                width={40}
-                onChange={(cookies) =>
-                  onChange({
-                    ...value,
-                    tags: cookies,
-                  })
-                }
-                {...TEST_IDS.linkEditor.fieldTags.apply()}
-              />
-            </InlineField>
-          </>
+          <InlineField label="With Tags" grow={true} labelWidth={20}>
+            <TagsInput
+              tags={value.tags}
+              width={40}
+              onChange={(cookies) =>
+                onChange({
+                  ...value,
+                  tags: cookies,
+                })
+              }
+              {...TEST_IDS.linkEditor.fieldTags.apply()}
+            />
+          </InlineField>
         )}
 
         {value.linkType === LinkType.DASHBOARD && (
