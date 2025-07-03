@@ -352,6 +352,14 @@ export interface LinkConfig {
    * @type {string}
    */
   contextPrompt?: string;
+
+  /**
+   * Temperature for LLM (0-1)
+   * 0 is most deterministic, 1 is most creative
+   *
+   * @type {number}
+   */
+  llmTemperature?: number;
 }
 
 /**

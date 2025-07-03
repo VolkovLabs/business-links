@@ -199,7 +199,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             </Tooltip>
           </div>
 
-          <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+          <ChatDrawer 
+            isOpen={isDrawerOpen} 
+            onClose={handleDrawerClose} 
+            initialPrompt={link.contextPrompt}
+            llmTemperature={link.llmTemperature}
+          />
         </>
       );
     }
@@ -219,7 +224,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           </Dropdown>
         </div>
 
-        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+        <ChatDrawer 
+          isOpen={isDrawerOpen} 
+          onClose={handleDrawerClose} 
+          initialPrompt={link.contextPrompt}
+          llmTemperature={link.llmTemperature}
+        />
       </>
     );
   }
@@ -293,7 +303,12 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           </Button>
         </div>
 
-        <ChatDrawer isOpen={isDrawerOpen} onClose={handleDrawerClose} initialPrompt={link.contextPrompt} />
+        <ChatDrawer 
+          isOpen={isDrawerOpen} 
+          onClose={handleDrawerClose} 
+          initialPrompt={link.contextPrompt}
+          llmTemperature={link.llmTemperature}
+        />
       </>
     );
   }

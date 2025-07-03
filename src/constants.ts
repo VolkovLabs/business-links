@@ -92,6 +92,7 @@ export const TEST_IDS = {
     fieldAlignContentOption: createSelector((name: unknown) => `link-editor field-align-content-${name}`),
     fieldHideTooltipOnHover: createSelector('data-testid link-editor field-hide-tooltip'),
     fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
+    fieldLlmTemperature: createSelector('data-testid link-editor field-llm-temperature'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
@@ -142,11 +143,12 @@ export const TEST_IDS = {
     attachmentImageIcon: createSelector('data-testid chat-drawer attachment-image-icon'),
     attachedFilesPreview: createSelector('data-testid chat-drawer attached-files-preview'),
     attachedFilesPreviewIcon: createSelector('data-testid chat-drawer attached-files-preview-icon'),
-    attachButton: createSelector('data-testid chat-drawer attach-button'),
-    fileInput: createSelector('data-testid chat-drawer file-input'),
+    attachButton: createSelector('data-testid-file-upload-input-field'),
     removeButton: createSelector('data-testid chat-drawer remove-button'),
     sendButton: createSelector('data-testid chat-drawer send-button'),
     messageSender: createSelector('data-testid chat-drawer message-sender'),
+    inputPanel: createSelector('data-testid chat-drawer input-panel'),
+    fileDropzoneOverlay: createSelector('data-testid chat-drawer file-dropzone-overlay'),
   },
 };
 

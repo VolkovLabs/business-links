@@ -149,6 +149,56 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change llmTemperature for Business AI link type', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP }) }));
+
+    expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
+    expect(selectors.fieldLlmTemperature()).toHaveValue('0.7');
+
+    fireEvent.change(selectors.fieldLlmTemperature(), { target: { value: 0.5 } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        llmTemperature: 0.5,
+      })
+    );
+  });
+
+  it('Should use default temperature value when llmTemperature is not set', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: undefined }) }));
+
+    expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
+    expect(selectors.fieldLlmTemperature()).toHaveValue('0.7');
+  });
+
+  it('Should allow change llmTemperature to different values', () => {
+    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: 0.3 }) }));
+
+    expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
+    expect(selectors.fieldLlmTemperature()).toHaveValue('0.3');
+
+    fireEvent.change(selectors.fieldLlmTemperature(), { target: { value: 0 } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        llmTemperature: 0,
+      })
+    );
+
+    fireEvent.change(selectors.fieldLlmTemperature(), { target: { value: 1 } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        llmTemperature: 1,
+      })
+    );
+
+    fireEvent.change(selectors.fieldLlmTemperature(), { target: { value: 0.8 } });
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        llmTemperature: 0.8,
+      })
+    );
+  });
+
   it('Should allow change tags for TAGS type', () => {
     render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.TAGS }) }));
 

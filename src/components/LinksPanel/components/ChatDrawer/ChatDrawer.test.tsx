@@ -1,5 +1,5 @@
-import { openai } from '@grafana/llm';
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { llm } from '@grafana/llm';
+import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 import { of } from 'rxjs';
@@ -7,8 +7,7 @@ import { of } from 'rxjs';
 import { TEST_IDS } from '@/constants';
 import * as hooks from '@/hooks';
 
-import { ChatDrawer } from './ChatDrawer';
-import { getStyles } from './ChatDrawer.styles';
+import { ChatDrawer, useDropzoneOverlay } from './ChatDrawer';
 
 /**
  * Mock @grafana/ui
@@ -19,8 +18,10 @@ jest.mock('@grafana/ui');
  * Mock @grafana/llm
  */
 jest.mock('@grafana/llm', () => ({
-  openai: {
+  llm: {
     streamChatCompletions: jest.fn(),
+    enabled: jest.fn(() => Promise.resolve(true)),
+    health: jest.fn(),
   },
 }));
 
@@ -67,9 +68,6 @@ jest.mock('@/hooks', () => ({
   },
 }));
 
-/**
- * Chat Drawer Tests
- */
 describe('ChatDrawer', () => {
   const getSelectors = getJestSelectors({
     ...TEST_IDS.drawerElement,
@@ -238,14 +236,14 @@ describe('ChatDrawer', () => {
 
     it('Should handle keyboard shortcuts (Enter to send, Ctrl+Enter for new line, Escape to clear)', async () => {
       const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
 
       fireEvent.change(textarea, { target: { value: 'Test message' } });
-      
+
       fireEvent.keyDown(textarea, { key: 'Enter' });
 
       await waitFor(() => {
@@ -264,37 +262,12 @@ describe('ChatDrawer', () => {
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
     });
-
-    it('Should return style object for a theme', () => {
-      const theme = {
-        spacing: () => '8px',
-        colors: {
-          text: { secondary: '#888', primary: '#000' },
-          primary: { main: '#00f', contrastText: '#fff', border: '#00f', shade: '#009' },
-          background: { secondary: '#eee', canvas: '#fff', primary: '#fff' },
-          border: { weak: '#ccc', medium: '#bbb' },
-        },
-        shape: { radius: { default: '4px' } },
-        shadows: { z1: '0 1px 3px #0002' },
-        typography: {
-          bodySmall: { fontSize: '12px' },
-          body: { fontSize: '14px' },
-          fontWeightMedium: 500,
-        },
-        isDark: false,
-      } as any;
-
-      const styles = getStyles(theme);
-      expect(styles).toBeDefined();
-      expect(typeof styles).toBe('object');
-      expect(styles.container).toBeDefined();
-    });
   });
 
   describe('Message Sending', () => {
     it('Should send message when send button is clicked', async () => {
       const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       await act(async () => render(getComponent({})));
 
@@ -318,8 +291,52 @@ describe('ChatDrawer', () => {
         }),
       ]);
 
-      expect(openai.streamChatCompletions).toHaveBeenCalled();
+      expect(llm.streamChatCompletions).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
+    });
+
+    it('Should use custom temperature when provided', async () => {
+      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+
+      await act(async () => render(getComponent({ llmTemperature: 0.3 })));
+
+      const textarea = selectors.input();
+      const sendButton = selectors.sendButton();
+
+      fireEvent.change(textarea, { target: { value: 'Test message' } });
+
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+
+      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          temperature: 0.3,
+        })
+      );
+    });
+
+    it('Should use default temperature when not provided', async () => {
+      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+
+      await act(async () => render(getComponent({})));
+
+      const textarea = selectors.input();
+      const sendButton = selectors.sendButton();
+
+      fireEvent.change(textarea, { target: { value: 'Test message' } });
+
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
+
+      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
+        expect.objectContaining({
+          temperature: 0.7,
+        })
+      );
     });
 
     it('Should not send message in various invalid states', async () => {
@@ -339,7 +356,7 @@ describe('ChatDrawer', () => {
       sendButton.dispatchEvent(forcedClick);
 
       expect(mockAddMessages).not.toHaveBeenCalled();
-      expect(openai.streamChatCompletions).not.toHaveBeenCalled();
+      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
 
       const mockStream = {
         pipe: jest.fn().mockReturnValue({
@@ -348,7 +365,7 @@ describe('ChatDrawer', () => {
           }),
         }),
       };
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       fireEvent.change(textarea, { target: { value: 'First message' } });
       await act(async () => {
@@ -357,11 +374,11 @@ describe('ChatDrawer', () => {
 
       fireEvent.change(textarea, { target: { value: 'Second message' } });
 
-      (openai.streamChatCompletions as jest.Mock).mockClear();
+      (llm.streamChatCompletions as jest.Mock).mockClear();
 
       fireEvent.click(sendButton);
 
-      expect(openai.streamChatCompletions).not.toHaveBeenCalled();
+      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
     });
 
     it('Should handle LLM status check failure', async () => {
@@ -383,12 +400,13 @@ describe('ChatDrawer', () => {
 
       expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          sender: 'assistant',
-          text: expect.stringContaining('LLM Error: LLM service unavailable'),
+          sender: 'system',
+          isError: true,
+          text: expect.stringContaining('LLM Service Error: LLM service unavailable'),
         }),
       ]);
 
-      expect(openai.streamChatCompletions).not.toHaveBeenCalled();
+      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
     });
   });
 
@@ -409,7 +427,7 @@ describe('ChatDrawer', () => {
       ];
 
       const testStream = of(...testResponses);
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(testStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(testStream);
 
       await act(async () => render(getComponent({})));
 
@@ -438,14 +456,7 @@ describe('ChatDrawer', () => {
           }),
         }),
       };
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
-
-      const mockUpdateFn = jest.fn();
-      mockUpdateLastMessage.mockImplementationOnce((callback) => {
-        const result = callback({ id: 'test-msg', text: '', isStreaming: true });
-        mockUpdateFn(result);
-        return result;
-      });
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       await act(async () => render(getComponent({})));
 
@@ -463,12 +474,13 @@ describe('ChatDrawer', () => {
       });
 
       expect(unsubscribeMock).toHaveBeenCalled();
-      expect(mockUpdateFn).toHaveBeenCalledWith(
+      expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          text: 'Request timeout. The LLM service might be overloaded or misconfigured.',
-          isStreaming: false,
-        })
-      );
+          sender: 'system',
+          isError: true,
+          text: expect.stringContaining('Request Timeout: The LLM service took too long to respond'),
+        }),
+      ]);
     });
 
     it('Should handle stream completion', async () => {
@@ -480,7 +492,7 @@ describe('ChatDrawer', () => {
           }),
         }),
       };
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       await act(async () => render(getComponent({})));
 
@@ -504,16 +516,7 @@ describe('ChatDrawer', () => {
     const textarea = selectors.input();
     fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
     expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
-    expect(openai.streamChatCompletions).not.toHaveBeenCalled();
-  });
-
-  it('Should open file input on attach click', async () => {
-    await act(async () => render(<ChatDrawer isOpen onClose={jest.fn()} />));
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    const clickSpy = jest.spyOn(input, 'click');
-    const attachBtn = selectors.attachButton();
-    fireEvent.click(attachBtn);
-    expect(clickSpy).toHaveBeenCalled();
+    expect(llm.streamChatCompletions).not.toHaveBeenCalled();
   });
 
   it('Should call unsubscribe() on click', async () => {
@@ -523,7 +526,7 @@ describe('ChatDrawer', () => {
         subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
       }),
     };
-    (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+    (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
     const onClose = jest.fn();
     await act(async () => render(<ChatDrawer isOpen onClose={onClose} />));
@@ -549,7 +552,7 @@ describe('ChatDrawer', () => {
           }),
         }),
       };
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
 
       mockHandleLlmError.mockReturnValue('Formatted error message');
 
@@ -565,11 +568,17 @@ describe('ChatDrawer', () => {
       });
 
       expect(mockHandleLlmError).toHaveBeenCalled();
-      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
+      expect(mockAddMessages).toHaveBeenCalledWith([
+        expect.objectContaining({
+          sender: 'system',
+          isError: true,
+          text: expect.stringContaining('LLM Error: Formatted error message'),
+        }),
+      ]);
     });
 
     it('Should handle connection errors in try/catch', async () => {
-      (openai.streamChatCompletions as jest.Mock).mockImplementation(() => {
+      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
         throw new Error('Connection failed');
       });
 
@@ -584,17 +593,17 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
-
-      const updateCallback = mockUpdateLastMessage.mock.calls[0][0];
-      const result = updateCallback({ id: 'msg-123', text: '', isStreaming: true });
-
-      expect(result.text).toContain('Connection Error: Connection failed');
-      expect(result.isStreaming).toBe(false);
+      expect(mockAddMessages).toHaveBeenLastCalledWith([
+        expect.objectContaining({
+          sender: 'system',
+          isError: true,
+          text: expect.stringContaining('Connection Error: Connection failed'),
+        }),
+      ]);
     });
 
     it('Should handle non-Error objects in catch block', async () => {
-      (openai.streamChatCompletions as jest.Mock).mockImplementation(() => {
+      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
         throw 'String error';
       });
 
@@ -609,10 +618,13 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      const updateCallback = mockUpdateLastMessage.mock.calls[0][0];
-      const result = updateCallback({ id: 'msg-123', text: '', isStreaming: true });
-
-      expect(result.text).toContain('Failed to connect to LLM service');
+      expect(mockAddMessages).toHaveBeenLastCalledWith([
+        expect.objectContaining({
+          sender: 'system',
+          isError: true,
+          text: expect.stringContaining('Connection Error: String error'),
+        }),
+      ]);
     });
   });
 
@@ -624,7 +636,7 @@ describe('ChatDrawer', () => {
           subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
         }),
       };
-      (openai.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
       mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
 
       const { unmount } = render(getComponent({ isOpen: true }));
@@ -639,14 +651,6 @@ describe('ChatDrawer', () => {
       });
       expect(unsubscribeMock).toHaveBeenCalled();
     });
-  });
-
-  it('Should handle file input change and call handleFileAttachment, then reset input value', async () => {
-    await act(async () => render(getComponent({})));
-    const fileInput = selectors.fileInput();
-    const files = [new File(['test'], 'test.txt', { type: 'text/plain' })];
-    fireEvent.change(fileInput, { target: { files } });
-    expect(mockHandleFileAttachment).toHaveBeenCalledWith(files);
   });
 
   it('Should call removeAttachedFile when remove button is clicked', async () => {
@@ -678,6 +682,21 @@ describe('ChatDrawer', () => {
     fireEvent.keyDown(textarea, { key: 'Escape' });
     expect(mockClearAttachedFiles).toHaveBeenCalled();
     expect(textarea).toHaveValue('');
+  });
+
+  it('Should show correct placeholder text', async () => {
+    await act(async () => render(getComponent({})));
+    const textarea = selectors.input();
+
+    expect(textarea).toHaveAttribute('placeholder', 'Type your message or drag files here...');
+  });
+
+  it('Should handle file drop through FileDropzone', async () => {
+    await act(async () => render(getComponent({})));
+    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
+    const onDrop = (hooks.useFileAttachments as jest.Mock).mock.results[0].value.handleFileAttachment;
+    onDrop([{ id: 'file-1', file, error: null }]);
+    expect(mockHandleFileAttachment).toHaveBeenCalled();
   });
 
   it('Should call scrollIntoView when messages change', async () => {
@@ -721,15 +740,6 @@ describe('ChatDrawer', () => {
     expect(selectors.attachmentImage(false, 'pic2.png')).toBeInTheDocument();
   });
 
-  it('Should call fileInputRef.current.click() when attach button is clicked', async () => {
-    await act(async () => render(getComponent({})));
-    const input = document.querySelector('input[type="file"]') as HTMLInputElement;
-    const clickSpy = jest.spyOn(input, 'click');
-    const attachBtn = selectors.attachButton();
-    fireEvent.click(attachBtn);
-    expect(clickSpy).toHaveBeenCalled();
-  });
-
   it('Should render image icon and <img> for image attachment in message', async () => {
     const messages = [
       {
@@ -765,5 +775,282 @@ describe('ChatDrawer', () => {
     await act(async () => render(getComponent({})));
 
     expect(selectors.message(false, 'Thinking...')).toBeInTheDocument();
+  });
+
+  describe('File dropzone and upload integration', () => {
+    it('Should render FileUpload and call handleFileInputUpload on file upload', async () => {
+      const handleFileAttachment = jest.fn();
+      (hooks.useFileAttachments as jest.Mock).mockReturnValue({
+        ...defaultUseFileAttachments,
+        handleFileAttachment,
+      });
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
+      const fileInput = screen.getByLabelText('Send message').parentElement?.querySelector('input[type="file"]');
+      const file = new File(['test'], 'file.txt', { type: 'text/plain' });
+      fireEvent.change(fileInput!, { target: { files: [file] } });
+      expect(handleFileAttachment).toHaveBeenCalled();
+    });
+
+    it('Should convert accepted files to dropzone files and call handleFileAttachment', () => {
+      const handleFileAttachment = jest.fn();
+      const setIsDropzoneVisible = jest.fn();
+      const acceptedFiles = [
+        new File(['content1'], 'file1.txt', { type: 'text/plain' }),
+        new File(['content2'], 'file2.png', { type: 'image/png' }),
+      ];
+
+      const originalDateNow = Date.now;
+      const originalRandom = Math.random;
+      const mockDateNow = jest.fn().mockReturnValue(1234567890);
+      const mockRandom = jest.fn().mockReturnValue(0.5);
+      Date.now = mockDateNow;
+      Math.random = mockRandom;
+
+      const handleDropFiles = (
+        acceptedFiles: File[],
+        handleFileAttachment: (files: any[]) => void,
+        setIsDropzoneVisible: (value: boolean) => void
+      ) => {
+        const dropzoneFiles = acceptedFiles.map((file) => ({
+          id: `file-${Date.now()}-${Math.random()}`,
+          file,
+          error: null,
+        }));
+        handleFileAttachment(dropzoneFiles);
+        setIsDropzoneVisible(false);
+      };
+
+      handleDropFiles(acceptedFiles, handleFileAttachment, setIsDropzoneVisible);
+
+      expect(handleFileAttachment).toHaveBeenCalledWith([
+        {
+          id: 'file-1234567890-0.5',
+          file: acceptedFiles[0],
+          error: null,
+        },
+        {
+          id: 'file-1234567890-0.5',
+          file: acceptedFiles[1],
+          error: null,
+        },
+      ]);
+      expect(setIsDropzoneVisible).toHaveBeenCalledWith(false);
+
+      Date.now = originalDateNow;
+      Math.random = originalRandom;
+    });
+
+    it('Should handle empty accepted files array', () => {
+      const handleFileAttachment = jest.fn();
+      const setIsDropzoneVisible = jest.fn();
+      const acceptedFiles: File[] = [];
+
+      const handleDropFiles = (
+        acceptedFiles: File[],
+        handleFileAttachment: (files: any[]) => void,
+        setIsDropzoneVisible: (value: boolean) => void
+      ) => {
+        const dropzoneFiles = acceptedFiles.map((file) => ({
+          id: `file-${Date.now()}-${Math.random()}`,
+          file,
+          error: null,
+        }));
+        handleFileAttachment(dropzoneFiles);
+        setIsDropzoneVisible(false);
+      };
+
+      handleDropFiles(acceptedFiles, handleFileAttachment, setIsDropzoneVisible);
+
+      expect(handleFileAttachment).toHaveBeenCalledWith([]);
+      expect(setIsDropzoneVisible).toHaveBeenCalledWith(false);
+    });
+
+    it('Should call setIsDropzoneVisible(true) on dragEnter and dragOver, and setIsDropzoneVisible(false) on dragLeave', () => {
+      const setIsDropzoneVisible = jest.fn();
+      const { result } = renderHook(() => useDropzoneOverlay(setIsDropzoneVisible));
+      const { handleDragEnter, handleDragOver, handleDragLeave } = result.current;
+      const event = { preventDefault: jest.fn(), stopPropagation: jest.fn() } as any;
+
+      handleDragEnter(event);
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
+      expect(setIsDropzoneVisible).toHaveBeenCalledWith(true);
+      setIsDropzoneVisible.mockClear();
+
+      handleDragOver(event);
+      expect(setIsDropzoneVisible).toHaveBeenCalledWith(true);
+      setIsDropzoneVisible.mockClear();
+
+      handleDragLeave(event);
+      expect(setIsDropzoneVisible).toHaveBeenCalledWith(false);
+    });
+
+    it('Should convert file input files to dropzone files and call handleFileAttachment', () => {
+      const handleFileAttachment = jest.fn();
+      const files = [
+        new File(['content1'], 'file1.txt', { type: 'text/plain' }),
+        new File(['content2'], 'file2.png', { type: 'image/png' }),
+      ];
+
+      const originalDateNow = Date.now;
+      const originalRandom = Math.random;
+      const mockDateNow = jest.fn().mockReturnValue(1234567890);
+      const mockRandom = jest.fn().mockReturnValue(0.5);
+      Date.now = mockDateNow;
+      Math.random = mockRandom;
+
+      const handleFileInputUpload = (
+        event: React.FormEvent<HTMLInputElement>,
+        handleFileAttachment: (files: any[]) => void
+      ) => {
+        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
+          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
+            id: `file-${Date.now()}-${Math.random()}`,
+            file,
+            error: null,
+          }));
+          handleFileAttachment(dropzoneFiles);
+          event.currentTarget.value = '';
+        }
+      };
+
+      const mockEvent = {
+        currentTarget: {
+          files,
+          value: 'some-value',
+        },
+      } as unknown as React.FormEvent<HTMLInputElement>;
+
+      handleFileInputUpload(mockEvent, handleFileAttachment);
+
+      expect(handleFileAttachment).toHaveBeenCalledWith([
+        {
+          id: 'file-1234567890-0.5',
+          file: files[0],
+          error: null,
+        },
+        {
+          id: 'file-1234567890-0.5',
+          file: files[1],
+          error: null,
+        },
+      ]);
+      expect(mockEvent.currentTarget.value).toBe('');
+
+      Date.now = originalDateNow;
+      Math.random = originalRandom;
+    });
+
+    it('Should handle event with no files', () => {
+      const handleFileAttachment = jest.fn();
+
+      const handleFileInputUpload = (
+        event: React.FormEvent<HTMLInputElement>,
+        handleFileAttachment: (files: any[]) => void
+      ) => {
+        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
+          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
+            id: `file-${Date.now()}-${Math.random()}`,
+            file,
+            error: null,
+          }));
+          handleFileAttachment(dropzoneFiles);
+          event.currentTarget.value = '';
+        }
+      };
+
+      const mockEvent = {
+        currentTarget: {
+          files: [],
+          value: 'some-value',
+        },
+      } as unknown as React.FormEvent<HTMLInputElement>;
+
+      handleFileInputUpload(mockEvent, handleFileAttachment);
+
+      expect(handleFileAttachment).not.toHaveBeenCalled();
+      expect(mockEvent.currentTarget.value).toBe('some-value');
+    });
+
+    it('Should handle event with null files', () => {
+      const handleFileAttachment = jest.fn();
+
+      const handleFileInputUpload = (
+        event: React.FormEvent<HTMLInputElement>,
+        handleFileAttachment: (files: any[]) => void
+      ) => {
+        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
+          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
+            id: `file-${Date.now()}-${Math.random()}`,
+            file,
+            error: null,
+          }));
+          handleFileAttachment(dropzoneFiles);
+          event.currentTarget.value = '';
+        }
+      };
+
+      const mockEvent = {
+        currentTarget: {
+          files: null,
+          value: 'some-value',
+        },
+      } as unknown as React.FormEvent<HTMLInputElement>;
+
+      handleFileInputUpload(mockEvent, handleFileAttachment);
+
+      expect(handleFileAttachment).not.toHaveBeenCalled();
+      expect(mockEvent.currentTarget.value).toBe('some-value');
+    });
+
+    it('Should handle single file upload', () => {
+      const handleFileAttachment = jest.fn();
+      const file = new File(['content'], 'single.txt', { type: 'text/plain' });
+
+      const originalDateNow = Date.now;
+      const originalRandom = Math.random;
+      const mockDateNow = jest.fn().mockReturnValue(1234567890);
+      const mockRandom = jest.fn().mockReturnValue(0.5);
+      Date.now = mockDateNow;
+      Math.random = mockRandom;
+
+      const handleFileInputUpload = (
+        event: React.FormEvent<HTMLInputElement>,
+        handleFileAttachment: (files: any[]) => void
+      ) => {
+        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
+          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
+            id: `file-${Date.now()}-${Math.random()}`,
+            file,
+            error: null,
+          }));
+          handleFileAttachment(dropzoneFiles);
+          event.currentTarget.value = '';
+        }
+      };
+
+      const mockEvent = {
+        currentTarget: {
+          files: [file],
+          value: 'some-value',
+        },
+      } as unknown as React.FormEvent<HTMLInputElement>;
+
+      handleFileInputUpload(mockEvent, handleFileAttachment);
+
+      expect(handleFileAttachment).toHaveBeenCalledWith([
+        {
+          id: 'file-1234567890-0.5',
+          file,
+          error: null,
+        },
+      ]);
+      expect(mockEvent.currentTarget.value).toBe('');
+
+      Date.now = originalDateNow;
+      Math.random = originalRandom;
+    });
   });
 });

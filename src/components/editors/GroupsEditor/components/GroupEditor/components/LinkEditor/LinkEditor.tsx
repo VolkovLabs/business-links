@@ -9,6 +9,7 @@ import {
   TagsInput,
   TextArea,
 } from '@grafana/ui';
+import { Slider } from '@volkovlabs/components';
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
@@ -306,20 +307,43 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         </InlineField>
 
         {value.linkType === LinkType.LLMAPP && (
-          <InlineField label="Initial Context" grow={true} labelWidth={20}>
-            <TextArea
-              cols={30}
-              placeholder="Provide your context prompt for Business AI"
-              value={value.contextPrompt}
-              onChange={(event) => {
-                onChange({
-                  ...value,
-                  contextPrompt: event.currentTarget.value,
-                });
-              }}
-              {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
-            />
-          </InlineField>
+          <>
+            <InlineField label="Initial Context" grow={true} labelWidth={20}>
+              <TextArea
+                cols={30}
+                placeholder="Provide your context prompt for Business AI"
+                value={value.contextPrompt}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    contextPrompt: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldContextPrompt.apply()}
+              />
+            </InlineField>
+
+            <InlineField
+              label="Set temperature"
+              grow={true}
+              tooltip="Set the temperature for the LLM, 0 is the most deterministic, 1 is the most creative."
+            >
+              <Slider
+                value={value.llmTemperature ?? 0.7}
+                min={0}
+                max={1}
+                step={0.1}
+                included={true}
+                onChange={(temp) => {
+                  onChange({
+                    ...value,
+                    llmTemperature: temp,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldLlmTemperature.apply()}
+              />
+            </InlineField>
+          </>
         )}
 
         {value.linkType === LinkType.SINGLE && (
