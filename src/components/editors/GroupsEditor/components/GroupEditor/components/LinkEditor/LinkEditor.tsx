@@ -323,6 +323,19 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               />
             </InlineField>
 
+            <InlineField label="AI Assistant Name" grow={true} labelWidth={20}>
+              <Input
+                value={value.assistantName}
+                onChange={(event) => {
+                  onChange({
+                    ...value,
+                    assistantName: event.currentTarget.value,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldAssistantName.apply()}
+              />
+            </InlineField>
+
             <InlineField
               label="Set temperature"
               grow={true}
@@ -362,21 +375,19 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         )}
 
         {value.linkType === LinkType.TAGS && (
-          <>
-            <InlineField label="With Tags" grow={true} labelWidth={20}>
-              <TagsInput
-                tags={value.tags}
-                width={40}
-                onChange={(cookies) =>
-                  onChange({
-                    ...value,
-                    tags: cookies,
-                  })
-                }
-                {...TEST_IDS.linkEditor.fieldTags.apply()}
-              />
-            </InlineField>
-          </>
+          <InlineField label="With Tags" grow={true} labelWidth={20}>
+            <TagsInput
+              tags={value.tags}
+              width={40}
+              onChange={(cookies) =>
+                onChange({
+                  ...value,
+                  tags: cookies,
+                })
+              }
+              {...TEST_IDS.linkEditor.fieldTags.apply()}
+            />
+          </InlineField>
         )}
 
         {value.linkType === LinkType.DASHBOARD && (

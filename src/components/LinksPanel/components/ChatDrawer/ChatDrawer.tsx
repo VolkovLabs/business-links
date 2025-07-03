@@ -67,7 +67,7 @@ interface ChatDrawerProps {
   onClose: () => void;
 
   /**
-   * Whether the drawer is currently open
+   * Initial context prompt for Business AI
    *
    * @type {string}
    */
@@ -80,12 +80,39 @@ interface ChatDrawerProps {
    * @type {number}
    */
   llmTemperature?: number;
+
+  /**
+   * Custom assistant name for Business AI
+   *
+   * @type {string}
+   */
+  assistantName?: string;
 }
 
 /**
  * Chat Drawer component
  */
-export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initialPrompt, llmTemperature }) => {
+export const ChatDrawer: React.FC<ChatDrawerProps> = ({
+  isOpen,
+  onClose,
+  initialPrompt,
+  assistantName,
+  llmTemperature,
+}) => {
+  /**
+   * Helper function to get display name for message sender
+   * @param sender - Sender identifier
+   * @returns Display name for the sender
+   */
+  const getSenderDisplayName = (sender: string): string => {
+    if (sender === 'assistant') {
+      return customAssistantName;
+    }
+    if (sender === 'system') {
+      return 'System';
+    }
+    return sender;
+  };
   /**
    * Hooks
    */
@@ -179,6 +206,11 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
   const isSendDisabled = (!inputValue.trim() && attachedFiles.length === 0) || isLoading;
 
   /**
+   * Custom assistant name, defaults to 'Business AI'
+   */
+  const customAssistantName = assistantName || 'Business AI';
+
+  /**
    * Handles the main send message functionality
    */
   const handleSend = useCallback(async () => {
@@ -241,7 +273,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
             role: 'system' as const,
             content:
               initialPrompt ||
-              'You are a helpful Business AI integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.',
+              `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.`,
           },
           ...chatHistory,
           { role: 'user' as const, content: messageContent },
@@ -340,6 +372,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
     handleLlmError,
     llmTemperature,
     addErrorMessage,
+    customAssistantName,
   ]);
 
   /**
@@ -429,7 +462,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
   return (
     <>
       {isOpen && (
-        <Drawer title="Business AI" onClose={cleanupAndClose} size="md">
+        <Drawer title={customAssistantName} onClose={cleanupAndClose} size="md">
           <div className={styles.container}>
             <div className={styles.messagesContainer}>
               {messages.length === 0 && (
@@ -459,11 +492,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, initial
                       )}
                     >
                       <div className={styles.messageSender} {...testIds.messageSender.apply()}>
-                        {message.sender === 'assistant'
-                          ? 'Business AI'
-                          : message.sender === 'system'
-                            ? 'System'
-                            : message.sender}
+                        {getSenderDisplayName(message.sender)}
                       </div>
                       <div className={styles.messageText}>
                         {message.text}

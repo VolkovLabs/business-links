@@ -93,6 +93,7 @@ export const TEST_IDS = {
     fieldHideTooltipOnHover: createSelector('data-testid link-editor field-hide-tooltip'),
     fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
     fieldLlmTemperature: createSelector('data-testid link-editor field-llm-temperature'),
+    fieldAssistantName: createSelector('data-testid link-editor field-assistant-name'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
