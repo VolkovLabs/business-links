@@ -224,6 +224,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             onClose={handleDrawerClose}
             initialPrompt={link.contextPrompt}
             assistantName={link.assistantName}
+            llmTemperature={link.llmTemperature}
           />
         </>
       );
@@ -249,6 +250,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           onClose={handleDrawerClose}
           initialPrompt={link.contextPrompt}
           assistantName={link.assistantName}
+          llmTemperature={link.llmTemperature}
         />
       </>
     );
@@ -338,6 +340,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           onClose={handleDrawerClose}
           initialPrompt={link.contextPrompt}
           assistantName={link.assistantName}
+          llmTemperature={link.llmTemperature}
         />
       </>
     );

@@ -1,5 +1,6 @@
 import { formattedValueToString, getValueFormat } from '@grafana/data';
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
+import { DropzoneFile } from '@grafana/ui';
 import { useCallback, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -98,9 +99,10 @@ export const useChatMessages = (): UseChatMessagesReturn => {
  * Handles file upload, validation, formatting, and management.
  * Supports various file types including images, documents, and text files.
  *
+ * @param addErrorMessage - Function to add error messages to chat
  * @returns Object with file management functions
  */
-export const useFileAttachments = (): UseFileAttachmentsReturn => {
+export const useFileAttachments = (addErrorMessage?: (message: string) => void): UseFileAttachmentsReturn => {
   const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
 
   /**
@@ -135,17 +137,26 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
    * @param files - FileList from input element
    */
   const handleFileAttachment = useCallback(
-    (files: FileList | null) => {
-      if (!files || files.length === 0) {
+    (dropzoneFiles: DropzoneFile[]) => {
+      if (!dropzoneFiles || dropzoneFiles.length === 0) {
         return;
       }
 
-      Array.from(files).forEach((file) => {
+      dropzoneFiles.forEach((dropzoneFile) => {
+        if (!dropzoneFile || !dropzoneFile.file) {
+          return;
+        }
+        const file = dropzoneFile.file;
+
         /**
          * Validate file size
          */
         if (!isFileSizeValid(file.size)) {
-          alert(`File ${file.name} is too large. Maximum size is ${formatFileSize(chatConfig.maxFileSize)}.`);
+          const errorMessage = `File too large: "${file.name}" exceeds the maximum size of ${formatFileSize(chatConfig.maxFileSize)}.\n\nHow to fix:\n• Compress the file or use a smaller version\n• Split large files into smaller parts\n• Use a different file format`;
+
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
           return;
         }
 
@@ -153,7 +164,11 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
          * Validate file type
          */
         if (!isFileTypeAllowed(file.type)) {
-          alert(`File type ${file.type} is not supported.`);
+          const errorMessage = `Unsupported file type: "${file.name}" (${file.type}) is not supported.\n\nSupported formats:\n• Images: JPEG, PNG, GIF, WebP\n• Documents: PDF, DOC, DOCX\n• Text: TXT, JSON, CSV\n\nHow to fix:\n• Convert the file to a supported format\n• Use a different file`;
+
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
           return;
         }
 
@@ -161,7 +176,7 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
         reader.onload = (e) => {
           const content = e.target?.result as string;
           const newFile: AttachedFile = {
-            id: `file-${uuidv4()}`,
+            id: dropzoneFile.id,
             name: file.name,
             size: file.size,
             type: file.type,
@@ -182,7 +197,7 @@ export const useFileAttachments = (): UseFileAttachmentsReturn => {
         }
       });
     },
-    [isFileSizeValid, isFileTypeAllowed, formatFileSize]
+    [formatFileSize, isFileSizeValid, isFileTypeAllowed, addErrorMessage]
   );
 
   /**
@@ -253,15 +268,15 @@ export const useLlmService = (): UseLlmServiceReturn => {
    */
   const checkLlmStatus = useCallback(async (): Promise<LlmHealthCheck> => {
     try {
-      if (!(await openai.enabled())) {
+      if (!(await llm.enabled())) {
         return { canProceed: false, error: 'LLM is not enabled in Grafana settings' };
       }
 
-      if (typeof openai.health !== 'function') {
+      if (typeof llm.health !== 'function') {
         return { canProceed: true };
       }
 
-      const health = await openai.health();
+      const health = await llm.health();
 
       if (!health.ok) {
         return {
