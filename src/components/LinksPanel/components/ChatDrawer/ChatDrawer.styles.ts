@@ -93,10 +93,15 @@ export const getStyles = (theme: GrafanaTheme2) => {
       background-color: currentColor;
       border-radius: 50%;
       animation: pulse 1.5s ease-in-out infinite;
-      
+
       @keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.3; }
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
       }
     `,
 
@@ -118,7 +123,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     attachmentImage: css`
       max-width: 100px;
       max-height: 100px;
-      border-radius: ${theme.shape.radius.default};;
+      border-radius: ${theme.shape.radius.default};
       margin-top: ${theme.spacing(0.5)};
     `,
 
@@ -163,7 +168,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
       background-color: ${theme.colors.background.secondary};
       border-radius: ${theme.shape.radius.default};
       border: 1px solid ${theme.colors.border.medium};
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
       width: fit-content;
       max-width: 100%;
     `,
@@ -176,7 +181,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
 
     fileTypeIcon: css`
-      border-radius: ${theme.shape.radius.default};;
+      border-radius: ${theme.shape.radius.default};
       padding: ${theme.spacing(0.5)};
       display: flex;
       align-items: center;
@@ -196,7 +201,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     fileThumbnail: css`
       width: 28px;
       height: 28px;
-      border-radius: ${theme.shape.radius.default};;
+      border-radius: ${theme.shape.radius.default};
       object-fit: cover;
       border: 1px solid ${theme.colors.border.weak};
     `,
@@ -210,22 +215,29 @@ export const getStyles = (theme: GrafanaTheme2) => {
       border-radius: ${theme.shape.radius.default};
       border: 2px solid ${theme.colors.border.medium};
       background-color: ${theme.colors.background.secondary};
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       overflow: hidden;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-      
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+
       &:focus-within {
         border-color: ${theme.colors.primary.text};
-        box-shadow: 0 0 0 1px ${theme.colors.primary.main}, 0 3px 8px rgba(0,0,0,0.1);
+        box-shadow:
+          0 0 0 1px ${theme.colors.primary.main},
+          0 3px 8px rgba(0, 0, 0, 0.1);
       }
-      
+
       &.dragOver {
         border-color: ${theme.colors.primary.main};
         background-color: ${theme.colors.primary.transparent};
-        box-shadow: 0 0 0 2px ${theme.colors.primary.main}, 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow:
+          0 0 0 2px ${theme.colors.primary.main},
+          0 4px 12px rgba(0, 0, 0, 0.15);
       }
-      
-      & > div[data-testid="dropzone"] {
+
+      & > div[data-testid='dropzone'] {
         border: none !important;
         background: transparent !important;
         padding: 0 !important;
@@ -237,7 +249,9 @@ export const getStyles = (theme: GrafanaTheme2) => {
     dragOver: css`
       border-color: ${theme.colors.primary.main} !important;
       background-color: ${theme.colors.primary.transparent} !important;
-      box-shadow: 0 0 0 2px ${theme.colors.primary.main}, 0 4px 12px rgba(0,0,0,0.15) !important;
+      box-shadow:
+        0 0 0 2px ${theme.colors.primary.main},
+        0 4px 12px rgba(0, 0, 0, 0.15) !important;
     `,
 
     textareaContainer: css`
@@ -257,25 +271,25 @@ export const getStyles = (theme: GrafanaTheme2) => {
       background-color: transparent;
       color: ${theme.colors.text.primary};
       outline: none;
-      
+
       &::placeholder {
         color: ${theme.colors.text.secondary};
       }
-      
+
       &::-webkit-scrollbar {
         width: 6px;
       }
-      
+
       &::-webkit-scrollbar-track {
         background: ${theme.colors.background.primary};
         border-radius: 3px;
       }
-      
+
       &::-webkit-scrollbar-thumb {
         background: ${theme.isDark ? 'rgba(204, 204, 220, 0.2)' : 'rgba(111, 112, 125, 0.5)'};
         border-radius: 3px;
       }
-      
+
       &::-webkit-scrollbar-thumb:hover {
         background: ${theme.isDark ? 'rgba(204, 204, 220, 0.3)' : 'rgba(111, 112, 125, 0.8)'};
       }
@@ -306,18 +320,21 @@ export const getStyles = (theme: GrafanaTheme2) => {
       border: 1px solid ${theme.colors.border.medium};
       border-radius: ${theme.shape.radius.default};
       cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s, color 0.2s;
+      transition:
+        background-color 0.2s,
+        transform 0.1s,
+        color 0.2s;
       color: ${theme.colors.text.primary};
-      
+
       &:hover:not(:disabled) {
         background-color: ${theme.colors.primary.main};
         color: ${theme.colors.primary.contrastText};
       }
-      
+
       &:active:not(:disabled) {
         transform: scale(0.95);
       }
-      
+
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
@@ -340,17 +357,19 @@ export const getStyles = (theme: GrafanaTheme2) => {
       border: 1px solid ${theme.colors.primary.border};
       border-radius: ${theme.shape.radius.default};
       cursor: pointer;
-      transition: background-color 0.2s, transform 0.1s;
+      transition:
+        background-color 0.2s,
+        transform 0.1s;
       color: ${theme.colors.primary.contrastText};
-      
+
       &:hover:not(:disabled) {
         background-color: ${theme.colors.primary.shade};
       }
-      
+
       &:active:not(:disabled) {
         transform: scale(0.95);
       }
-      
+
       &:disabled {
         opacity: 0.7;
         cursor: not-allowed;
@@ -361,10 +380,14 @@ export const getStyles = (theme: GrafanaTheme2) => {
 
     loadingSpinner: css`
       animation: spin 1s linear infinite;
-      
+
       @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     `,
 
@@ -392,7 +415,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     filesBadge: css`
       background-color: ${theme.colors.primary.main};
       padding: ${theme.spacing(0.25, 0.75)};
-      border-radius: ${theme.shape.radius.default};;
+      border-radius: ${theme.shape.radius.default};
       font-size: 10px;
       font-weight: ${theme.typography.fontWeightMedium};
       color: ${theme.colors.primary.contrastText};
@@ -401,7 +424,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     charsBadge: css`
       background-color: ${theme.colors.background.secondary};
       padding: ${theme.spacing(0.25, 0.75)};
-      border-radius: ${theme.shape.radius.default};;
+      border-radius: ${theme.shape.radius.default};
       font-size: 10px;
     `,
 
@@ -416,14 +439,14 @@ export const getStyles = (theme: GrafanaTheme2) => {
     dropzoneContent: css`
       text-align: center;
       padding: ${theme.spacing(2)};
-      
+
       h6 {
         margin: ${theme.spacing(1, 0, 0.5, 0)};
         font-size: ${theme.typography.h6.fontSize};
         font-weight: ${theme.typography.h6.fontWeight};
         color: ${theme.colors.text.primary};
       }
-      
+
       small {
         color: ${theme.colors.text.secondary};
         font-size: ${theme.typography.bodySmall.fontSize};
@@ -431,7 +454,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
 
     fileDropzoneOverlay: css`
-      background: rgba(255,255,255,0.92);
+      background: rgba(255, 255, 255, 0.92);
       display: flex;
       align-items: center;
       justify-content: center;
