@@ -9,6 +9,7 @@ import {
   TagsInput,
   TextArea,
 } from '@grafana/ui';
+import { Slider } from '@volkovlabs/components';
 import React, { useMemo } from 'react';
 
 import { FieldsGroup } from '@/components';
@@ -332,6 +333,28 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
                   });
                 }}
                 {...TEST_IDS.linkEditor.fieldAssistantName.apply()}
+              />
+            </InlineField>
+
+            <InlineField
+              label="Set temperature"
+              labelWidth={20}
+              grow={true}
+              tooltip="Set the temperature for the LLM, 0 is the most deterministic, 1 is the most creative."
+            >
+              <Slider
+                value={value.llmTemperature ?? 0.7}
+                min={0}
+                max={1}
+                step={0.1}
+                included={true}
+                onChange={(temp) => {
+                  onChange({
+                    ...value,
+                    llmTemperature: temp,
+                  });
+                }}
+                {...TEST_IDS.linkEditor.fieldLlmTemperature.apply()}
               />
             </InlineField>
           </>

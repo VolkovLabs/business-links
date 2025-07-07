@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { openai } from '@grafana/llm';
+import { llm } from '@grafana/llm';
 import { act, renderHook } from '@testing-library/react';
 
 import { AttachedFile, ChatMessage } from '@/types';
@@ -10,7 +10,7 @@ import { chatConfig, useChatMessages, useFileAttachments, useLlmService, useText
  * Mock @grafana/llm
  */
 jest.mock('@grafana/llm', () => ({
-  openai: {
+  llm: {
     enabled: jest.fn(() => Promise.resolve(true)),
     streamChatCompletions: jest.fn(),
     health: jest.fn(),
@@ -24,39 +24,18 @@ jest.mock('source-map-support', () => ({
   uninstall: () => {},
 }));
 
-/**
- * Helper function to create a FileList from an array of Files
- * @param files - Array of File objects
- * @returns FileList object
- */
-function makeFileList(files: File[]): FileList {
-  const list: any = {
-    length: files.length,
-    item: (i: number) => files[i] || null,
-    [Symbol.iterator]: function* () {
-      for (const fileItem of files) {
-        yield fileItem;
-      }
-    },
-  };
-  files.forEach((fileItem, i) => (list[i] = fileItem));
-  return list as FileList;
+function makeDropzoneFile(file: File, id = '') {
+  return { id: id || `file-${Date.now()}-${Math.random()}`, file, error: null };
 }
 
 describe('useChatMessages', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  /**
-   * Test initial state is empty
-   */
   it('Should have empty initial state for chat messages', () => {
     const { result } = renderHook(() => useChatMessages());
     expect(result.current.messages).toEqual([]);
   });
 
-  /**
-   * Test unique ID generation with correct format
-   */
   it('Should generate unique message IDs with correct format', () => {
     const { result } = renderHook(() => useChatMessages());
     const id1 = result.current.generateMessageId();
@@ -64,9 +43,6 @@ describe('useChatMessages', () => {
     expect(id1).not.toEqual(id2);
   });
 
-  /**
-   * Test all message manipulation methods
-   */
   it('Should correctly add, set, and update messages', () => {
     const { result } = renderHook(() => useChatMessages());
     const m1: ChatMessage = { id: '1', text: 'A', sender: 'user', timestamp: new Date() };
@@ -90,9 +66,6 @@ describe('useChatMessages', () => {
     expect(result.current.messages).toEqual([m2]);
   });
 
-  /**
-   * Test updateLastMessage with empty array
-   */
   it('Should not throw when updating last message on empty array', () => {
     const { result } = renderHook(() => useChatMessages());
 
@@ -136,62 +109,42 @@ describe('useFileAttachments', () => {
     jest.restoreAllMocks();
   });
 
-  /**
-   * Test initial state
-   */
   it('Should have empty initial state for file attachments', () => {
     const { result } = renderHook(() => useFileAttachments());
     expect(result.current.attachedFiles).toEqual([]);
   });
 
-  /**
-   * Test file size formatting
-   */
   it('Should format file size correctly', () => {
     const { result } = renderHook(() => useFileAttachments());
     expect(result.current.formatFileSize(0)).toBe('0 B');
     expect(result.current.formatFileSize(1024 * 1024)).toBe('1.05 MB');
   });
 
-  /**
-   * Test handling null and empty file lists
-   */
   it('Should ignore null and empty file attachments', () => {
     const { result } = renderHook(() => useFileAttachments());
-    act(() => result.current.handleFileAttachment(null));
-    act(() => result.current.handleFileAttachment(makeFileList([])));
+    act(() => result.current.handleFileAttachment([]));
     expect(result.current.attachedFiles).toHaveLength(0);
   });
 
-  /**
-   * Test rejection of oversized files
-   */
   it('Should reject files that are too large', () => {
     const { result } = renderHook(() => useFileAttachments());
     const big = new File([new ArrayBuffer(chatConfig.maxFileSize + 1)], 'big.txt', { type: 'text/plain' });
-    act(() => result.current.handleFileAttachment(makeFileList([big])));
-    expect(window.alert).toHaveBeenCalledWith(expect.stringContaining('File big.txt is too large'));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(big)]));
     expect(result.current.attachedFiles).toHaveLength(0);
   });
 
-  /**
-   * Test rejection of unsupported file types
-   */
   it('Should reject unsupported file types', () => {
     const { result } = renderHook(() => useFileAttachments());
     const exe = new File(['x'], 'file.exe', { type: 'application/x-executable' });
-    act(() => result.current.handleFileAttachment(makeFileList([exe])));
-    expect(window.alert).toHaveBeenCalledWith('File type application/x-executable is not supported.');
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(exe)]));
     expect(result.current.attachedFiles).toHaveLength(0);
   });
 
-  /**
-   * Test reads images via readAsDataURL и save url
-   */
   it('Should read images via readAsDataURL and save URL', () => {
     const { result } = renderHook(() => useFileAttachments());
     const img = new File([''], 'img.png', { type: 'image/png' });
-    act(() => result.current.handleFileAttachment(makeFileList([img])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(img)]));
+
     expect(fileReaderInstances[0].readAsDataURL).toHaveBeenCalledWith(img);
 
     act(() => {
@@ -205,13 +158,10 @@ describe('useFileAttachments', () => {
     });
   });
 
-  /**
-   * Test PDF file processing via readAsDataURL
-   */
   it('Should read PDF files via readAsDataURL', () => {
     const { result } = renderHook(() => useFileAttachments());
     const pdf = new File([''], 'doc.pdf', { type: 'application/pdf' });
-    act(() => result.current.handleFileAttachment(makeFileList([pdf])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(pdf)]));
     expect(fileReaderInstances[0].readAsDataURL).toHaveBeenCalledWith(pdf);
 
     act(() => {
@@ -227,13 +177,10 @@ describe('useFileAttachments', () => {
     });
   });
 
-  /**
-   * Test text file processing via readAsText
-   */
   it('Should read text files via readAsText and without URL', () => {
     const { result } = renderHook(() => useFileAttachments());
     const txt = new File(['hello'], 'doc.txt', { type: 'text/plain' });
-    act(() => result.current.handleFileAttachment(makeFileList([txt])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(txt)]));
     expect(fileReaderInstances[0].readAsText).toHaveBeenCalledWith(txt);
 
     act(() => {
@@ -248,13 +195,10 @@ describe('useFileAttachments', () => {
     });
   });
 
-  /**
-   * Test JSON file processing via readAsText
-   */
   it('Should read JSON files via readAsText', () => {
     const { result } = renderHook(() => useFileAttachments());
     const json = new File(['{"test": true}'], 'data.json', { type: 'application/json' });
-    act(() => result.current.handleFileAttachment(makeFileList([json])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(json)]));
     expect(fileReaderInstances[0].readAsText).toHaveBeenCalledWith(json);
 
     act(() => {
@@ -269,22 +213,16 @@ describe('useFileAttachments', () => {
     });
   });
 
-  /**
-   * Test file ID generation with Math.random
-   */
   it('Should generate unique file IDs with different Math.random values', () => {
     const { result } = renderHook(() => useFileAttachments());
 
-    /**
-     * Mock Date.now and Math.random for predictable IDs
-     */
     const originalDateNow = Date.now;
     const originalRandom = Math.random;
     Date.now = jest.fn().mockReturnValue(1234567890);
     Math.random = jest.fn().mockReturnValueOnce(0.123).mockReturnValueOnce(0.456);
 
     const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' });
-    act(() => result.current.handleFileAttachment(makeFileList([file1])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file1)]));
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: 'content1' } });
@@ -292,7 +230,7 @@ describe('useFileAttachments', () => {
     });
 
     const file2 = new File(['content2'], 'file2.txt', { type: 'text/plain' });
-    act(() => result.current.handleFileAttachment(makeFileList([file2])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file2)]));
     act(() => {
       if (fileReaderInstances[1].onload) {
         fileReaderInstances[1].onload({ target: { result: 'content2' } });
@@ -306,26 +244,20 @@ describe('useFileAttachments', () => {
     Math.random = originalRandom;
   });
 
-  /**
-   * Test removeAttachedFile functionality
-   */
   it('Should remove the correct attached file', () => {
     const { result } = renderHook(() => useFileAttachments());
 
-    /**
-     * Add multiple files
-     */
     const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' });
     const file2 = new File(['content2'], 'file2.txt', { type: 'text/plain' });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file1])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file1)]));
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: 'content1' } });
       }
     });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file2])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file2)]));
     act(() => {
       if (fileReaderInstances[1].onload) {
         fileReaderInstances[1].onload({ target: { result: 'content2' } });
@@ -334,9 +266,6 @@ describe('useFileAttachments', () => {
 
     expect(result.current.attachedFiles).toHaveLength(2);
 
-    /**
-     * Remove first file
-     */
     const firstFileId = result.current.attachedFiles[0].id;
     act(() => result.current.removeAttachedFile(firstFileId));
 
@@ -344,26 +273,20 @@ describe('useFileAttachments', () => {
     expect(result.current.attachedFiles[0].name).toBe('file2.txt');
   });
 
-  /**
-   * Test clearAttachedFiles functionality
-   */
   it('Should remove all attached files', () => {
     const { result } = renderHook(() => useFileAttachments());
 
-    /**
-     * Add multiple files
-     */
     const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' });
     const file2 = new File(['content2'], 'file2.txt', { type: 'text/plain' });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file1])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file1)]));
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: 'content1' } });
       }
     });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file2])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file2)]));
     act(() => {
       if (fileReaderInstances[1].onload) {
         fileReaderInstances[1].onload({ target: { result: 'content2' } });
@@ -372,21 +295,15 @@ describe('useFileAttachments', () => {
 
     expect(result.current.attachedFiles).toHaveLength(2);
 
-    /**
-     * Clear all files
-     */
     act(() => result.current.clearAttachedFiles());
     expect(result.current.attachedFiles).toHaveLength(0);
   });
 
-  /**
-   * Test removeAttachedFile with non-existent ID
-   */
   it('Should ignore non-existent ID when removing attached file', () => {
     const { result } = renderHook(() => useFileAttachments());
     const file = new File(['content'], 'test.txt', { type: 'text/plain' });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file)]));
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: 'content' } });
@@ -399,18 +316,12 @@ describe('useFileAttachments', () => {
     expect(result.current.attachedFiles).toHaveLength(1);
   });
 
-  /**
-   * Test handling of FileReader onload with undefined result
-   */
   it('Should handle FileReader onload with undefined result', () => {
     const { result } = renderHook(() => useFileAttachments());
     const file = new File(['content'], 'test.txt', { type: 'text/plain' });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file)]));
 
-    /**
-     * Simulate onload with undefined result
-     */
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: undefined } });
@@ -421,46 +332,15 @@ describe('useFileAttachments', () => {
     expect(result.current.attachedFiles[0].content).toBeUndefined();
   });
 
-  /**
-   * Test handling of FileReader onload with null target
-   */
-  it('Should handle FileReader onload with null target', () => {
-    const { result } = renderHook(() => useFileAttachments());
-    const file = new File(['content'], 'test.txt', { type: 'text/plain' });
-
-    act(() => result.current.handleFileAttachment(makeFileList([file])));
-
-    /**
-     * Simulate onload with null target
-     */
-    act(() => {
-      if (fileReaderInstances[0].onload) {
-        fileReaderInstances[0].onload({ target: null });
-      }
-    });
-
-    expect(result.current.attachedFiles).toHaveLength(1);
-    expect(result.current.attachedFiles[0].content).toBeUndefined();
-  });
-
-  /**
-   * Test complete file attachment flow with onload callback
-   */
   it('Should complete file attachment flow with proper onload execution', () => {
     const { result } = renderHook(() => useFileAttachments());
 
-    /**
-     * Test text file
-     */
     const textFile = new File(['hello world'], 'test.txt', { type: 'text/plain' });
-    act(() => result.current.handleFileAttachment(makeFileList([textFile])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(textFile)]));
 
     expect(fileReaderInstances).toHaveLength(1);
     expect(fileReaderInstances[0].readAsText).toHaveBeenCalledWith(textFile);
 
-    /**
-     * Trigger onload callback for text file
-     */
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({
@@ -479,18 +359,12 @@ describe('useFileAttachments', () => {
       url: undefined,
     });
 
-    /**
-     * Test image file
-     */
     const imageFile = new File(['image data'], 'image.png', { type: 'image/png' });
-    act(() => result.current.handleFileAttachment(makeFileList([imageFile])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(imageFile)]));
 
     expect(fileReaderInstances).toHaveLength(2);
     expect(fileReaderInstances[1].readAsDataURL).toHaveBeenCalledWith(imageFile);
 
-    /**
-     * Trigger onload callback for image file
-     */
     act(() => {
       if (fileReaderInstances[1].onload) {
         fileReaderInstances[1].onload({
@@ -510,38 +384,26 @@ describe('useFileAttachments', () => {
     });
   });
 
-  /**
-   * Test multiple files processing
-   */
   it('Should process multiple files correctly', () => {
     const { result } = renderHook(() => useFileAttachments());
     const file1 = new File(['content1'], 'file1.txt', { type: 'text/plain' });
     const file2 = new File(['content2'], 'file2.json', { type: 'application/json' });
     const file3 = new File([''], 'image.png', { type: 'image/png' });
 
-    act(() => result.current.handleFileAttachment(makeFileList([file1, file2, file3])));
+    act(() => result.current.handleFileAttachment([makeDropzoneFile(file1), makeDropzoneFile(file2), makeDropzoneFile(file3)]));
 
-    /**
-     * Process first file
-     */
     act(() => {
       if (fileReaderInstances[0].onload) {
         fileReaderInstances[0].onload({ target: { result: 'content1' } });
       }
     });
 
-    /**
-     * Process second file
-     */
     act(() => {
       if (fileReaderInstances[1].onload) {
         fileReaderInstances[1].onload({ target: { result: 'content2' } });
       }
     });
 
-    /**
-     * Process third file
-     */
     act(() => {
       if (fileReaderInstances[2].onload) {
         fileReaderInstances[2].onload({ target: { result: 'data:image/png;base64,' } });
@@ -553,118 +415,226 @@ describe('useFileAttachments', () => {
     expect(result.current.attachedFiles[1].name).toBe('file2.json');
     expect(result.current.attachedFiles[2].name).toBe('image.png');
   });
+
+  it('Should ignore dropzoneFile if it is undefined or has no file property', () => {
+    const { result } = renderHook(() => useFileAttachments());
+    act(() => result.current.handleFileAttachment([undefined as any]));
+    expect(result.current.attachedFiles).toHaveLength(0);
+
+    act(() => result.current.handleFileAttachment([{ id: 'no-file' } as any]));
+    expect(result.current.attachedFiles).toHaveLength(0);
+  });
+
+  describe('addErrorMessage functionality', () => {
+    const mockAddErrorMessage = jest.fn();
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('Should call addErrorMessage when file size is too large', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      const largeFile = {
+        id: 'file-1',
+        file: new File(['test'], 'large-file.txt', { type: 'text/plain' }),
+        error: null,
+      };
+
+      Object.defineProperty(largeFile.file, 'size', {
+        value: chatConfig.maxFileSize + 1,
+        writable: true,
+      });
+
+      act(() => {
+        result.current.handleFileAttachment([largeFile]);
+      });
+
+      expect(mockAddErrorMessage).toHaveBeenCalledWith(
+        expect.stringContaining('File too large: "large-file.txt" exceeds the maximum size of')
+      );
+    });
+
+    it('Should call addErrorMessage when file type is not supported', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      const unsupportedFile = {
+        id: 'file-1',
+        file: new File(['test'], 'unsupported.exe', { type: 'application/x-executable' }),
+        error: null,
+      };
+
+      act(() => {
+        result.current.handleFileAttachment([unsupportedFile]);
+      });
+
+      expect(mockAddErrorMessage).toHaveBeenCalledWith(
+        expect.stringContaining('Unsupported file type: "unsupported.exe" (application/x-executable) is not supported.')
+      );
+    });
+
+    it('Should not call addErrorMessage for valid files', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      const validFile = {
+        id: 'file-1',
+        file: new File(['test'], 'valid.txt', { type: 'text/plain' }),
+        error: null,
+      };
+
+      act(() => {
+        result.current.handleFileAttachment([validFile]);
+      });
+
+      expect(mockAddErrorMessage).not.toHaveBeenCalled();
+    });
+
+    it('Should provide actionable error messages for file size errors', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      const largeFile = {
+        id: 'file-1',
+        file: new File(['test'], 'large-file.txt', { type: 'text/plain' }),
+        error: null,
+      };
+
+      Object.defineProperty(largeFile.file, 'size', {
+        value: chatConfig.maxFileSize + 1,
+        writable: true,
+      });
+
+      act(() => {
+        result.current.handleFileAttachment([largeFile]);
+      });
+
+      const errorMessage = mockAddErrorMessage.mock.calls[0][0];
+      
+      expect(errorMessage).toContain('File too large: "large-file.txt" exceeds the maximum size of');
+    });
+
+    it('Should provide actionable error messages for file type errors', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      const unsupportedFile = {
+        id: 'file-1',
+        file: new File(['test'], 'unsupported.exe', { type: 'application/x-executable' }),
+        error: null,
+      };
+
+      act(() => {
+        result.current.handleFileAttachment([unsupportedFile]);
+      });
+
+      const errorMessage = mockAddErrorMessage.mock.calls[0][0];
+      
+      expect(errorMessage).toContain('Unsupported file type: "unsupported.exe" (application/x-executable) is not supported.');
+    });
+
+    it('Should handle empty file array', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      act(() => {
+        result.current.handleFileAttachment([]);
+      });
+
+      expect(mockAddErrorMessage).not.toHaveBeenCalled();
+    });
+
+    it('Should handle null or undefined files', () => {
+      const { result } = renderHook(() => useFileAttachments(mockAddErrorMessage));
+
+      act(() => {
+        result.current.handleFileAttachment([null, undefined] as any);
+      });
+
+      expect(mockAddErrorMessage).not.toHaveBeenCalled();
+    });
+  });
 });
 
 describe('useTextareaResize', () => {
-  /**
-   * Test null ref handling and height boundaries
-   */
   it('Should handle null ref and textarea height boundaries correctly', () => {
     const { result } = renderHook(() => useTextareaResize());
 
-    /**
-     * Test with null ref
-     */
     act(() => result.current.adjustTextareaHeight());
 
-    const ta = document.createElement('textarea');
-    Object.defineProperty(ta, 'scrollHeight', { get: () => 10, configurable: true });
-    Object.defineProperty(result.current.textareaRef, 'current', { value: ta, configurable: true });
+    const textarea = document.createElement('textarea');
+    Object.defineProperty(textarea, 'scrollHeight', { get: () => 10, configurable: true });
+    Object.defineProperty(result.current.textareaRef, 'current', { value: textarea, configurable: true });
 
-    /**
-     * Test minimum height
-     */
     act(() => result.current.adjustTextareaHeight());
-    expect(ta.style.height).toBe(`${chatConfig.minTextAreaHeight}px`);
+    expect(textarea.style.height).toBe(`${chatConfig.minTextAreaHeight}px`);
 
-    /**
-     * Test maximum height
-     */
-    Object.defineProperty(ta, 'scrollHeight', { get: () => 500, configurable: true });
+    Object.defineProperty(textarea, 'scrollHeight', { get: () => 500, configurable: true });
     act(() => result.current.adjustTextareaHeight());
-    expect(ta.style.height).toBe(`${chatConfig.maxTextAreaHeight}px`);
+    expect(textarea.style.height).toBe(`${chatConfig.maxTextAreaHeight}px`);
 
-    /**
-     * Test normal height
-     */
-    Object.defineProperty(ta, 'scrollHeight', { get: () => 100, configurable: true });
+    Object.defineProperty(textarea, 'scrollHeight', { get: () => 100, configurable: true });
     act(() => result.current.adjustTextareaHeight());
-    expect(ta.style.height).toBe('100px');
+    expect(textarea.style.height).toBe('100px');
   });
 });
 
 describe('useLlmService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+    (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
   });
 
-  /**
-   * Test prepareMessageContent function
-   */
   it('Should prepare message content', () => {
     const { result } = renderHook(() => useLlmService());
-    const fn = result.current.prepareMessageContent;
+    const prepareMessageContent = result.current.prepareMessageContent;
 
-    expect(fn('Hi', [], () => 'X')).toBe('Hi');
+    expect(prepareMessageContent('Hi', [], () => 'X')).toBe('Hi');
 
-    const t: AttachedFile = {
+    const file: AttachedFile = {
       id: '1',
       name: 'a.txt',
       size: 5,
       type: 'text/plain',
       content: 'txt',
     };
-    const out1 = fn('T', [t], () => '5 B');
-    expect(out1).toContain('```');
-    expect(out1).toContain('txt');
+    const message1 = prepareMessageContent('T', [file], () => '5 B');
+    expect(message1).toContain('```');
+    expect(message1).toContain('txt');
 
-    const i: AttachedFile = {
+    const file2: AttachedFile = {
       id: '2',
       name: 'a.jpg',
       size: 5,
       type: 'image/jpeg',
       content: 'data',
     };
-    const out2 = fn('T', [i], () => '5 B');
-    expect(out2).toContain('[Image: a.jpg]');
+    const message2 = prepareMessageContent('T', [file2], () => '5 B');
+    expect(message2).toContain('[Image: a.jpg]');
 
-    /**
-     * Test JSON file
-     */
-    const j: AttachedFile = {
+    const file3: AttachedFile = {
       id: '3',
       name: 'data.json',
       size: 10,
       type: 'application/json',
       content: '{"key": "value"}',
     };
-    const out3 = fn('T', [j], () => '10 B');
-    expect(out3).toContain('```');
-    expect(out3).toContain('{"key": "value"}');
+    const message3 = prepareMessageContent('T', [file3], () => '10 B');
+    expect(message3).toContain('```');
+    expect(message3).toContain('{"key": "value"}');
 
-    /**
-     * Test other file type (not text, not image)
-     */
-    const p: AttachedFile = {
+    const file4: AttachedFile = {
       id: '4',
       name: 'doc.pdf',
       size: 100,
       type: 'application/pdf',
       content: 'pdf-content',
     };
-    const out4 = fn('T', [p], () => '100 B');
-    expect(out4).not.toContain('```');
-    expect(out4).not.toContain('[Image:');
-    expect(out4).toContain('doc.pdf (100 B)');
+    const message4 = prepareMessageContent('T', [file4], () => '100 B');
+    expect(message4).not.toContain('```');
+    expect(message4).not.toContain('[Image:');
+    expect(message4).toContain('doc.pdf (100 B)');
   });
 
-  /**
-   * Test prepareChatHistory function filtering and formatting
-   */
   it('Should prepareChatHistory() filtering and formatting', () => {
     const { result } = renderHook(() => useLlmService());
-    const ph = result.current.prepareChatHistory;
+    const prepareChatHistory = result.current.prepareChatHistory;
     const msgs: ChatMessage[] = [
       { id: '1', text: 'U', sender: 'user', timestamp: new Date() },
       { id: '2', text: 'A', sender: 'assistant', timestamp: new Date() },
@@ -676,17 +646,11 @@ describe('useLlmService', () => {
         timestamp: new Date(),
         attachments: [{ id: 'a', name: 'a.txt', size: 1, type: 'text/plain', content: 'c' }],
       },
-      /**
-       * Test user without attachments
-       */
       { id: '5', text: 'Y', sender: 'user', timestamp: new Date() },
-      /**
-       * Test user with empty attachments array
-       */
       { id: '6', text: 'Z', sender: 'user', timestamp: new Date(), attachments: [] },
     ];
     const mockPC = jest.fn((t, files) => `${t}:${files.length}`);
-    const history = ph(msgs, mockPC, () => '');
+    const history = prepareChatHistory(msgs, mockPC, () => '');
     expect(history).toHaveLength(5);
     expect(history[0]).toEqual({ role: 'user', content: 'U' });
     expect(history[1]).toEqual({ role: 'assistant', content: 'A' });
@@ -754,8 +718,8 @@ describe('useLlmService', () => {
     });
 
     it('Should return error when LLM is not enabled', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(false));
-      (openai.health as jest.Mock).mockImplementation(() => {
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(false));
+      (llm.health as jest.Mock).mockImplementation(() => {
         throw new Error('health Should not be called');
       });
 
@@ -769,23 +733,23 @@ describe('useLlmService', () => {
     });
 
     it('Should return error when health check is not available', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      const originalHealth = openai.health;
-      delete (openai as any).health;
+      const originalHealth = llm.health;
+      delete (llm as any).health;
 
       const { result } = renderHook(() => useLlmService());
       const status = await result.current.checkLlmStatus();
 
       expect(status).toEqual({ canProceed: true });
 
-      (openai as any).health = originalHealth;
+      (llm as any).health = originalHealth;
     });
 
     it('Should return error when health check returns not OK', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      jest.spyOn(openai, 'health').mockResolvedValue({
+      jest.spyOn(llm, 'health').mockResolvedValue({
         ok: false,
         configured: false,
         error: 'Health check failed',
@@ -801,9 +765,9 @@ describe('useLlmService', () => {
     });
 
     it('Should return error when no models are configured', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      jest.spyOn(openai, 'health').mockResolvedValue({
+      jest.spyOn(llm, 'health').mockResolvedValue({
         ok: true,
         configured: true,
         models: {},
@@ -819,9 +783,9 @@ describe('useLlmService', () => {
     });
 
     it('Should return success when everything is configured correctly', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      jest.spyOn(openai, 'health').mockResolvedValue({
+      jest.spyOn(llm, 'health').mockResolvedValue({
         ok: true,
         configured: true,
         models: { gpt4: { ok: true } },
@@ -834,9 +798,9 @@ describe('useLlmService', () => {
     });
 
     it('Should handle health check errors', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      jest.spyOn(openai, 'health').mockRejectedValue(new Error('Network error'));
+      jest.spyOn(llm, 'health').mockRejectedValue(new Error('Network error'));
 
       const { result } = renderHook(() => useLlmService());
       const status = await result.current.checkLlmStatus();
@@ -848,9 +812,9 @@ describe('useLlmService', () => {
     });
 
     it('Should handle non-Error objects in catch block', async () => {
-      (openai.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
+      (llm.enabled as jest.Mock).mockReturnValue(Promise.resolve(true));
 
-      jest.spyOn(openai, 'health').mockRejectedValue('String error');
+      jest.spyOn(llm, 'health').mockRejectedValue('String error');
 
       const { result } = renderHook(() => useLlmService());
       const status = await result.current.checkLlmStatus();

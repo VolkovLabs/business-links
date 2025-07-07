@@ -430,6 +430,7 @@ export const prepareLinksToRender = ({
         result.push({
           type: VisualLinkType.LLMAPP,
           contextPrompt: item.contextPrompt,
+          llmTemperature: item.llmTemperature,
           assistantName: item.assistantName,
           id: item.id,
           name: item.name,

@@ -354,6 +354,14 @@ export interface LinkConfig {
   contextPrompt?: string;
 
   /**
+   * Temperature for LLM (0-1)
+   * 0 is most deterministic, 1 is most creative
+   *
+   * @type {number}
+   */
+  llmTemperature?: number;
+
+  /**
    * Custom Assistant Name for Business AI
    *
    * @type {string}

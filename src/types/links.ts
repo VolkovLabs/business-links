@@ -1,4 +1,4 @@
-import { IconName } from '@grafana/ui';
+import { DropzoneFile, IconName } from '@grafana/ui';
 
 import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
 
@@ -145,6 +145,14 @@ export interface VisualLink {
   contextPrompt?: string;
 
   /**
+   * Temperature for LLM (0-1)
+   * 0 is most deterministic, 1 is most creative
+   *
+   * @type {number}
+   */
+  llmTemperature?: number;
+
+  /**
    * Custom Assistant Name for Business AI
    *
    * @type {string}
@@ -183,9 +191,9 @@ export interface ChatMessage {
   /**
    * Who sent the message
    *
-   * @type {'user' | 'assistant'}
+   * @type {'user' | 'assistant' | 'system'}
    */
-  sender: 'user' | 'assistant';
+  sender: 'user' | 'assistant' | 'system';
 
   /**
    * Message content
@@ -214,6 +222,13 @@ export interface ChatMessage {
    * @type {AttachedFile[]}
    */
   attachments?: AttachedFile[];
+
+  /**
+   * Error message
+   *
+   * @type {boolean}
+   */
+  isError?: boolean;
 }
 
 /**
@@ -381,10 +396,10 @@ export interface UseFileAttachmentsReturn {
   formatFileSize: (bytes: number) => string;
 
   /**
-   * Handle file attachment from input
+   * Handle file attachment from FileDropzone
    *
    */
-  handleFileAttachment: (files: FileList | null) => void;
+  handleFileAttachment: (dropzoneFiles: DropzoneFile[]) => void;
 
   /**
    * Remove a specific attached file
