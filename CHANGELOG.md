@@ -6,7 +6,13 @@ All notable changes to the **Business Links** panel are documented in this file.
 
 ### Added
 
-- Add option to customize AI assistant name. ([#50](https://github.com/VolkovLabs/business-links/issues/50))
+- Added option to customize AI assistant name. ([#50](https://github.com/VolkovLabs/business-links/issues/50))
+- Added a new temperature option for LLM models. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
+
+### Changed
+
+- Updated the file upload feature in Business AI. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
+- Updated error message in Business AI. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
 
 ## [2.0.0] - 2025-06-27
 
