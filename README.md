@@ -16,6 +16,7 @@ Designed for seamless integration, it enables users to access critical resources
 
 ## Requirements
 
+- **Business Links Panel 2.x** requires **Grafana 11.5 or 12**.
 - **Business Links Panel 1.x** requires **Grafana 11 or 12**.
 
 ## Installation
@@ -43,6 +44,7 @@ Check out our installation guide:
 - **External Links**: Connect to external tools, documentation, or websites directly from the panel.
 - **Dashboard Navigation**: Quickly jump to other Grafana dashboards for a cohesive monitoring experience.
 - **Dynamic Dropdowns**: Utilize interactive dropdown menus to filter data or trigger actions, enhancing user control and flexibility.
+- **Business AI**: Leverage artificial intelligence to analyze business data, uncover trends, predict outcomes, and provide actionable insights for informed decision-making.
 
 Ideal for teams needing centralized access to diverse resources, the Business Links panel boosts productivity and simplifies navigation in Grafana environments.
 
