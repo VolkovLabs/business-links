@@ -2,17 +2,17 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.1.0] - Unreleased
+## [2.1.0] - 2025-07-06
 
 ### Added
 
-- Added option to customize AI assistant name. ([#50](https://github.com/VolkovLabs/business-links/issues/50))
-- Added a new temperature option for LLM models. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
+- **Custom AI Assistant Name**: Users can now personalize the name of their AI assistant. ([Issue #50](https://github.com/VolkovLabs/business-links/issues/50))
+- **Temperature Option for LLM Models**: Introduced a new setting to adjust the temperature of language models for more tailored responses. ([Issue #51](https://github.com/VolkovLabs/business-links/issues/51))
 
 ### Changed
 
-- Updated the file upload feature in Business AI. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
-- Updated error message in Business AI. ([#51](https://github.com/VolkovLabs/business-links/issues/51))
+- **File Upload Feature**: Enhanced the file upload functionality in Business AI for a smoother user experience. ([Issue #51](https://github.com/VolkovLabs/business-links/issues/51))
+- **Error Messaging**: Improved error messages in Business AI to provide clearer feedback. ([Issue #51](https://github.com/VolkovLabs/business-links/issues/51))
 
 ## [2.0.0] - 2025-06-27
 
