@@ -338,6 +338,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
 
             <InlineField
               label="Set temperature"
+              labelWidth={20}
               grow={true}
               tooltip="Set the temperature for the LLM, 0 is the most deterministic, 1 is the most creative."
             >
