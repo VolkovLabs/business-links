@@ -58,6 +58,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedHideTitleOnHover =
           !item.hideTooltipOnHover || item.hideTooltipOnHover === undefined ? false : item.hideTooltipOnHover;
 
+        const normalizedUseDefaultGrafanaMcp =
+          !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
+
         return {
           ...item,
           id: normalizedId,
@@ -71,6 +74,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           customIconUrl: normalizedCustomIconUrl,
           alignContentPosition: normalizedAlignContentPosition,
           hideTooltipOnHover: normalizedHideTitleOnHover,
+          useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
         };
       });
 

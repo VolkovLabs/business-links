@@ -1,12 +1,11 @@
 import { cx } from '@emotion/css';
-import { llm } from '@grafana/llm';
 import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { scan, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
-import { chatConfig, useChatMessages, useFileAttachments, useLlmService, useTextareaResize } from '@/hooks';
-import { ChatMessage } from '@/types';
+import { LlmMessage, McpTool, useChatMessages, useFileAttachments, useLlmService, useMcpLlmIntegration, useMcpService, useTextareaResize } from '@/hooks';
+import { ChatMessage, McpServerConfig } from '@/types';
 
 import { getStyles } from './ChatDrawer.styles';
 
@@ -87,6 +86,20 @@ interface ChatDrawerProps {
    * @type {string}
    */
   assistantName?: string;
+
+  /**
+   * Use default Grafana MCP server
+   *
+   * @type {boolean}
+   */
+  useDefaultGrafanaMcp?: boolean;
+
+  /**
+   * MCP Servers configuration
+   *
+   * @type {McpServerConfig[]}
+   */
+  mcpServers?: McpServerConfig[];
 }
 
 /**
@@ -97,7 +110,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   onClose,
   initialPrompt,
   assistantName,
-  llmTemperature,
+  useDefaultGrafanaMcp,
+  mcpServers,
 }) => {
   /**
    * Helper function to get display name for message sender
@@ -111,8 +125,20 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     if (sender === 'system') {
       return 'System';
     }
+    if (sender === 'tool') {
+      return 'Tool';
+    }
     return sender;
   };
+  /**
+   * State
+   */
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDropzoneVisible, setIsDropzoneVisible] = useState(false);
+  const [availableTools, setAvailableTools] = useState<McpTool[]>([]);
+  const [mcpEnabled, setMcpEnabled] = useState(false);
+
   /**
    * Hooks
    */
@@ -140,14 +166,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   const { attachedFiles, formatFileSize, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
     useFileAttachments(addErrorMessage);
   const { textareaRef, adjustTextareaHeight } = useTextareaResize();
-  const { checkLlmStatus, prepareMessageContent, prepareChatHistory, handleLlmError } = useLlmService();
-
-  /**
-   * State
-   */
-  const [inputValue, setInputValue] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDropzoneVisible, setIsDropzoneVisible] = useState(false);
+  const { prepareMessageContent, prepareChatHistory } = useLlmService();
+  const { checkMcpStatus, getAvailableTools } = useMcpService();
+  const { sendMessageWithTools, checkAvailability } = useMcpLlmIntegration();
 
   /**
    * Refs
@@ -210,16 +231,43 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
    */
   const customAssistantName = assistantName || 'Business AI';
 
+
+
   /**
-   * Handles the main send message functionality
+   * Initialize MCP tools
+   */
+  const initializeMcpTools = useCallback(async () => {
+    try {
+      const shouldUseDefaultGrafanaMcp = useDefaultGrafanaMcp ?? false;
+      
+      const mcpStatus = await checkMcpStatus();
+      if (mcpStatus.isAvailable) {
+        const tools = await getAvailableTools(mcpServers, shouldUseDefaultGrafanaMcp);
+        
+        setAvailableTools(tools);
+        setMcpEnabled(true);
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('MCP not available:', mcpStatus.error);
+        setMcpEnabled(false);
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Failed to initialize MCP tools:', error);
+      setMcpEnabled(false);
+    }
+  }, [checkMcpStatus, getAvailableTools, mcpServers, useDefaultGrafanaMcp]);
+
+  /**
+   * Handles the main send message functionality with MCP support
    */
   const handleSend = useCallback(async () => {
     /**
-     * Check LLM status
+     * Check LLM and MCP availability
      */
-    const statusCheck = await checkLlmStatus();
-    if (!statusCheck.canProceed) {
-      const errorMessage = `LLM Service Error: ${statusCheck.error}\n\nHow to fix:\n• Check that LLM plugin is installed and enabled\n• Configure at least one model in Grafana LLM settings\n• Verify API keys are properly set\n• Restart Grafana if needed`;
+    const availability = await checkAvailability();
+    if (!availability.isAvailable) {
+      const errorMessage = `Service Error: ${availability.error}\n\nHow to fix:\n• Check that LLM plugin is installed and enabled\n• Configure at least one model in Grafana LLM settings\n• Verify API keys are properly set\n• Ensure MCP service is enabled\n• Restart Grafana if needed`;
       addErrorMessage(errorMessage);
       return;
     }
@@ -235,18 +283,19 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       timestamp: new Date(),
       attachments: [...attachedFiles],
     };
-    const assistantMessage: ChatMessage = {
+    // Create a loading message instead of empty assistant message
+    const loadingMessage: ChatMessage = {
       id: generateMessageId(),
       sender: 'assistant',
       text: '',
       timestamp: new Date(),
-      isStreaming: true,
+      isStreaming: true, // Use isStreaming to indicate loading state
     };
 
     /**
      * Update UI
      */
-    addMessages([userMessage, assistantMessage]);
+    addMessages([userMessage, loadingMessage]);
     setInputValue('');
     clearAttachedFiles();
     setIsLoading(true);
@@ -260,120 +309,65 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
 
     try {
       /**
-       * Prepare chat history
+       * Prepare chat history for MCP
        */
       const chatHistory = prepareChatHistory(messages, prepareMessageContent, formatFileSize);
+      
+      // Convert to LlmMessage format
+      const llmMessages: LlmMessage[] = [
+        {
+          role: 'system',
+          content: initialPrompt ||
+            `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.${
+              mcpEnabled && availableTools?.length > 0
+                ? ` You also have access to ${availableTools?.length} MCP tools that you can use to gather real-time information about the system. Use these tools when appropriate to provide more accurate and up-to-date information.`
+                : ''
+            }`,
+        },
+        ...chatHistory.map(msg => ({
+          role: msg.role as 'user' | 'assistant' | 'tool',
+          content: msg.content,
+        })),
+        { role: 'user', content: messageContent },
+      ];
 
       /**
-       * Create stream
+       * Send message with MCP tools support
        */
-      const stream = llm.streamChatCompletions({
-        messages: [
-          {
-            role: 'system' as const,
-            content:
-              initialPrompt ||
-              `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.`,
-          },
-          ...chatHistory,
-          { role: 'user' as const, content: messageContent },
-        ],
-        temperature: llmTemperature || chatConfig.temperature,
-      });
+      const response = await sendMessageWithTools(
+        llmMessages,
+        (toolCallId: string, content: string, isError?: boolean) => {
+          // Add tool result to chat
+          const toolMessage: ChatMessage = {
+            id: generateMessageId(),
+            sender: 'tool',
+            text: isError ? `Error: ${content}` : `Tool Result: ${content}`,
+            timestamp: new Date(),
+            isError,
+            isStreaming: false, // Tool messages are complete when added
+          };
+          addMessages([toolMessage]);
+        },
+        mcpServers,
+        useDefaultGrafanaMcp ?? false
+      );
 
       /**
-       * Set timeout
+       * Update assistant message with response
        */
-      const timeoutId = setTimeout(() => {
-        if (subscriptionRef.current) {
-          subscriptionRef.current.unsubscribe();
-          subscriptionRef.current = null;
-        }
-        setIsLoading(false);
-        const errorMessage = `Request Timeout: The LLM service took too long to respond.\n\nHow to fix:\n• The LLM service might be overloaded\n• Try again in a few moments\n• Check your network connection\n• Contact your administrator if the problem persists`;
-        addErrorMessage(errorMessage);
-      }, chatConfig.requestTimeout);
+      updateLastMessage((msg) => ({
+        ...msg,
+        text: response,
+        isStreaming: false,
+      }));
 
-      /**
-       * Subscribe to stream
-       */
-      subscriptionRef.current = stream
-        .pipe(
-          scan((acc, chunk) => {
-            let delta = '';
-
-            if (typeof chunk === 'string') {
-              delta = chunk;
-            } else if (chunk && typeof chunk === 'object') {
-              /**
-               * Handle different response formats
-               */
-              if ('choices' in chunk && Array.isArray(chunk.choices) && chunk.choices.length > 0) {
-                const choice = chunk.choices[0];
-                if ('delta' in choice && choice.delta) {
-                  const deltaObj = choice.delta;
-                  if ('content' in deltaObj && typeof deltaObj.content === 'string') {
-                    delta = deltaObj.content;
-                  } else if ('text' in deltaObj && typeof deltaObj.text === 'string') {
-                    delta = deltaObj.text;
-                  }
-                }
-              } else if ('content' in chunk && typeof chunk.content === 'string') {
-                delta = chunk.content;
-              } else if ('text' in chunk && typeof chunk.text === 'string') {
-                delta = chunk.text;
-              }
-            }
-
-            return acc + delta;
-          }, '')
-        )
-        .subscribe({
-          next: (fullText) => {
-            clearTimeout(timeoutId);
-            updateLastMessage((msg) => ({
-              ...msg,
-              text: fullText || 'Receiving response...',
-            }));
-          },
-          error: (err) => {
-            clearTimeout(timeoutId);
-            setIsLoading(false);
-            const errorMessage = `LLM Error: ${handleLlmError(err)}\n\nHow to fix:\n• Check your LLM configuration\n• Verify API keys are valid\n• Try again in a few moments\n• Contact your administrator if the problem persists`;
-            addErrorMessage(errorMessage);
-          },
-          complete: () => {
-            clearTimeout(timeoutId);
-            setIsLoading(false);
-            updateLastMessage((msg) => ({
-              ...msg,
-              isStreaming: false,
-            }));
-          },
-        });
+      setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
       const errorMessage = `Connection Error: ${error instanceof Error ? error.message : String(error)}\n\nHow to fix:\n• Check your internet connection\n• Verify LLM service is running\n• Try again in a few moments\n• Contact your administrator if the problem persists`;
       addErrorMessage(errorMessage);
     }
-  }, [
-    checkLlmStatus,
-    prepareMessageContent,
-    inputValue,
-    attachedFiles,
-    formatFileSize,
-    generateMessageId,
-    addMessages,
-    clearAttachedFiles,
-    prepareChatHistory,
-    messages,
-    initialPrompt,
-    updateLastMessage,
-    handleLlmError,
-    llmTemperature,
-    addErrorMessage,
-    customAssistantName,
-  ]);
+  }, [checkAvailability, prepareMessageContent, inputValue, attachedFiles, formatFileSize, generateMessageId, addMessages, clearAttachedFiles, addErrorMessage, prepareChatHistory, messages, initialPrompt, customAssistantName, mcpEnabled, availableTools?.length, sendMessageWithTools, mcpServers, useDefaultGrafanaMcp, updateLastMessage]);
 
   /**
    * Handles keyboard shortcuts in textarea
@@ -405,6 +399,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   useEffect(() => {
     adjustTextareaHeight();
   }, [inputValue, adjustTextareaHeight]);
+
+  useEffect(() => {
+    if (isOpen) {
+      initializeMcpTools();
+    }
+  }, [isOpen, initializeMcpTools]);
+
+
 
   useEffect(() => {
     return () => {
@@ -462,12 +464,22 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   return (
     <>
       {isOpen && (
-        <Drawer title={customAssistantName} onClose={cleanupAndClose} size="md">
+        <Drawer 
+          title={customAssistantName}
+          onClose={cleanupAndClose} 
+          size="md"
+        >
           <div className={styles.container}>
             <div className={styles.messagesContainer}>
               {messages.length === 0 && (
                 <div className={styles.emptyState} {...testIds.chatDrawerEmptyState.apply()}>
-                  Start a conversation by typing a message or attaching files
+                  <div>Start a conversation by typing a message or attaching files</div>
+                  {mcpEnabled && availableTools?.length > 0 && (
+                    <div style={{ marginTop: '8px', fontSize: '12px', opacity: 0.7 }}>
+                      <Icon name="cog" style={{ marginRight: '4px' }} />
+                      {availableTools?.length} MCP tool{availableTools?.length !== 1 ? 's' : ''} available
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -488,7 +500,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                           ? styles.messageContentUser
                           : message.sender === 'system' || message.isError
                             ? styles.messageContentError
-                            : styles.messageContentAssistant
+                            : message.sender === 'tool'
+                              ? styles.messageContentTool
+                              : styles.messageContentAssistant
                       )}
                     >
                       <div className={styles.messageSender} {...testIds.messageSender.apply()}>
@@ -496,8 +510,16 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       </div>
                       <div className={styles.messageText}>
                         {message.text}
-                        {message.isStreaming && <span className={styles.pulsingDot} />}
                       </div>
+                      {message.isStreaming && (
+                        <div className={styles.loadingContainer}>
+                          <span className={styles.loadingDots}>
+                            <span className={styles.loadingDot} />
+                            <span className={styles.loadingDot} />
+                            <span className={styles.loadingDot} />
+                          </span>
+                        </div>
+                      )}
 
                       {message.attachments && message.attachments.length > 0 && (
                         <div className={styles.attachmentsContainer}>

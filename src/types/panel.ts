@@ -189,7 +189,33 @@ export interface DropdownConfig {
 }
 
 /**
- * Base Link Config
+ * MCP Server Configuration
+ */
+export interface McpServerConfig {
+  /**
+   * Server name
+   *
+   * @type {string}
+   */
+  name: string;
+
+  /**
+   * Server URL
+   *
+   * @type {string}
+   */
+  url: string;
+
+  /**
+   * Whether the server is enabled
+   *
+   * @type {boolean}
+   */
+  enabled: boolean;
+}
+
+/**
+ * Link Config
  */
 export interface LinkConfig {
   /**
@@ -367,6 +393,20 @@ export interface LinkConfig {
    * @type {string}
    */
   assistantName?: string;
+
+  /**
+   * Use default Grafana MCP server
+   *
+   * @type {boolean}
+   */
+  useDefaultGrafanaMcp?: boolean;
+
+  /**
+   * MCP Servers configuration for Business AI
+   *
+   * @type {McpServerConfig[]}
+   */
+  mcpServers?: McpServerConfig[];
 }
 
 /**

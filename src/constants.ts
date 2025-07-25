@@ -151,6 +151,24 @@ export const TEST_IDS = {
     inputPanel: createSelector('data-testid chat-drawer input-panel'),
     fileDropzoneOverlay: createSelector('data-testid chat-drawer file-dropzone-overlay'),
   },
+  mcpServersEditor: {
+    root: createSelector('data-testid mcp-servers-editor'),
+    newItem: createSelector('data-testid new-mcp-server'),
+    newItemName: createSelector('data-testid new-mcp-server-name'),
+    newItemUrl: createSelector('data-testid new-mcp-server-url'),
+    buttonAddNew: createSelector('data-testid add-mcp-server'),
+    itemHeader: createSelector((name: unknown) => `data-testid mcp-server-header-${name}`),
+    itemContent: createSelector((name: unknown) => `data-testid mcp-server-content-${name}`),
+    fieldName: createSelector('data-testid mcp-server-name-field'),
+    fieldUrl: createSelector('data-testid mcp-server-url-field'),
+    fieldEnabled: createSelector('data-testid mcp-server-enabled-field'),
+    buttonStartRename: createSelector('data-testid start-rename-mcp-server'),
+    buttonCancelRename: createSelector('data-testid cancel-rename-mcp-server'),
+    buttonSaveRename: createSelector('data-testid save-rename-mcp-server'),
+    buttonRemove: createSelector('data-testid remove-mcp-server'),
+    buttonEdit: createSelector('data-testid edit-mcp-server'),
+    buttonToggleEnabled: createSelector('data-testid toggle-mcp-server-enabled'),
+  },
 };
 
 /**

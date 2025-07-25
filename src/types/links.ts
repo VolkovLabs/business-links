@@ -1,6 +1,6 @@
 import { DropzoneFile, IconName } from '@grafana/ui';
 
-import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
+import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig, McpServerConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
   /**
@@ -158,6 +158,20 @@ export interface VisualLink {
    * @type {string}
    */
   assistantName?: string;
+
+  /**
+   * Use default Grafana MCP server
+   *
+   * @type {boolean}
+   */
+  useDefaultGrafanaMcp?: boolean;
+
+  /**
+   * MCP Servers configuration for Business AI
+   *
+   * @type {McpServerConfig[]}
+   */
+  mcpServers?: McpServerConfig[];
 }
 
 /**
@@ -191,9 +205,9 @@ export interface ChatMessage {
   /**
    * Who sent the message
    *
-   * @type {'user' | 'assistant' | 'system'}
+   * @type {'user' | 'assistant' | 'system' | 'tool'}
    */
-  sender: 'user' | 'assistant' | 'system';
+  sender: 'user' | 'assistant' | 'system' | 'tool';
 
   /**
    * Message content
@@ -229,6 +243,20 @@ export interface ChatMessage {
    * @type {boolean}
    */
   isError?: boolean;
+
+  /**
+   * Tool call ID for MCP tool results
+   *
+   * @type {string}
+   */
+  toolCallId?: string;
+
+  /**
+   * Whether this is a tool call message
+   *
+   * @type {boolean}
+   */
+  isToolCall?: boolean;
 }
 
 /**
@@ -304,9 +332,9 @@ export interface LlmMessage {
   /**
    * Message role
    *
-   * @type {'system' | 'user' | 'assistant'}
+   * @type {'system' | 'user' | 'assistant' | 'tool'}
    */
-  role: 'system' | 'user' | 'assistant';
+  role: 'system' | 'user' | 'assistant' | 'tool';
 
   /**
    * Message content
@@ -314,6 +342,13 @@ export interface LlmMessage {
    * @type {string}
    */
   content: string;
+
+  /**
+   * Tool call ID for tool messages
+   *
+   * @type {string}
+   */
+  toolCallId?: string;
 }
 
 /**

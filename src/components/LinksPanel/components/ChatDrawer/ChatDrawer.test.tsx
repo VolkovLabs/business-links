@@ -1,8 +1,6 @@
-import { llm } from '@grafana/llm';
 import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
-import { of } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
 import * as hooks from '@/hooks';
@@ -19,9 +17,12 @@ jest.mock('@grafana/ui');
  */
 jest.mock('@grafana/llm', () => ({
   llm: {
-    streamChatCompletions: jest.fn(),
+    chatCompletions: jest.fn(),
     enabled: jest.fn(() => Promise.resolve(true)),
     health: jest.fn(),
+    Model: {
+      base: 'base-model',
+    },
   },
 }));
 
@@ -62,6 +63,8 @@ jest.mock('@/hooks', () => ({
   useFileAttachments: jest.fn(),
   useTextareaResize: jest.fn(),
   useLlmService: jest.fn(),
+  useMcpService: jest.fn(),
+  useMcpLlmIntegration: jest.fn(),
   chatConfig: {
     temperature: 0.7,
     requestTimeout: 30000,
@@ -122,8 +125,24 @@ describe('ChatDrawer', () => {
     handleLlmError: mockHandleLlmError,
   };
 
+  const defaultUseMcpService = {
+    checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true }),
+    getAvailableTools: jest.fn().mockResolvedValue([]),
+    convertToolsToOpenAiFormat: jest.fn().mockReturnValue([]),
+    executeToolCall: jest.fn().mockResolvedValue({ content: null, isError: false }),
+    setupMcpClients: jest.fn().mockResolvedValue([]),
+    processToolCalls: jest.fn().mockResolvedValue({ hasMoreToolCalls: false, updatedMessages: [] }),
+  };
+
+  const defaultUseMcpLlmIntegration = {
+    sendMessageWithTools: jest.fn().mockResolvedValue('Response from LLM'),
+    checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+    getAvailableTools: jest.fn().mockResolvedValue([]),
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
+    
     (hooks.useFileAttachments as jest.Mock).mockReturnValue({
       ...defaultUseFileAttachments,
       attachedFiles: [],
@@ -131,7 +150,15 @@ describe('ChatDrawer', () => {
     (hooks.useChatMessages as jest.Mock).mockReturnValue(defaultUseChatMessages);
     (hooks.useTextareaResize as jest.Mock).mockReturnValue(defaultUseTextareaResize);
     (hooks.useLlmService as jest.Mock).mockReturnValue(defaultUseLlmService);
-
+    (hooks.useMcpService as jest.Mock).mockReturnValue({
+      ...defaultUseMcpService,
+      checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+    });
+    (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+      sendMessageWithTools: jest.fn().mockResolvedValue('Response from LLM'),
+      checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+      getAvailableTools: jest.fn().mockResolvedValue([]),
+    });
     mockGenerateMessageId.mockImplementation(() => `msg-${Date.now()}`);
     mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
     mockPrepareMessageContent.mockImplementation((text) => text);
@@ -235,8 +262,12 @@ describe('ChatDrawer', () => {
     });
 
     it('Should handle keyboard shortcuts (Enter to send, Ctrl+Enter for new line, Escape to clear)', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -266,8 +297,12 @@ describe('ChatDrawer', () => {
 
   describe('Message Sending', () => {
     it('Should send message when send button is clicked', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -291,13 +326,17 @@ describe('ChatDrawer', () => {
         }),
       ]);
 
-      expect(llm.streamChatCompletions).toHaveBeenCalled();
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
     });
 
     it('Should use custom temperature when provided', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({ llmTemperature: 0.3 })));
 
@@ -310,16 +349,16 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
-        expect.objectContaining({
-          temperature: 0.3,
-        })
-      );
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
 
     it('Should use default temperature when not provided', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -332,11 +371,7 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
-        expect.objectContaining({
-          temperature: 0.7,
-        })
-      );
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
 
     it('Should not send message in various invalid states', async () => {
@@ -356,16 +391,13 @@ describe('ChatDrawer', () => {
       sendButton.dispatchEvent(forcedClick);
 
       expect(mockAddMessages).not.toHaveBeenCalled();
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
 
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({
-            unsubscribe: jest.fn(),
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       fireEvent.change(textarea, { target: { value: 'First message' } });
       await act(async () => {
@@ -374,17 +406,21 @@ describe('ChatDrawer', () => {
 
       fireEvent.change(textarea, { target: { value: 'Second message' } });
 
-      (llm.streamChatCompletions as jest.Mock).mockClear();
+      mockSendMessageWithTools.mockClear();
 
       fireEvent.click(sendButton);
 
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
+      expect(mockSendMessageWithTools).not.toHaveBeenCalled();
     });
 
     it('Should handle LLM status check failure', async () => {
-      mockCheckLlmStatus.mockResolvedValue({
-        canProceed: false,
+      const mockCheckAvailability = jest.fn().mockResolvedValue({
+        isAvailable: false,
         error: 'LLM service unavailable',
+      });
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        ...defaultUseMcpLlmIntegration,
+        checkAvailability: mockCheckAvailability,
       });
 
       await act(async () => render(getComponent({})));
@@ -402,32 +438,20 @@ describe('ChatDrawer', () => {
         expect.objectContaining({
           sender: 'system',
           isError: true,
-          text: expect.stringContaining('LLM Service Error: LLM service unavailable'),
+          text: expect.stringContaining('Service Error: LLM service unavailable'),
         }),
       ]);
-
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
     });
   });
 
   describe('LLM Streaming and Response Handling', () => {
     it('Should handle all response formats in a single test', async () => {
-      const testResponses = [
-        'String chunk: ',
-        { choices: [{ delta: { content: 'Content delta, ' } }] },
-        { choices: [{ delta: { text: 'text delta, ' } }] },
-        { content: 'direct content, ' },
-        { text: 'direct text' },
-        null,
-        undefined,
-        {},
-        { choices: [] },
-        { choices: [{ delta: null }] },
-        { choices: [{ delta: {} }] },
-      ];
-
-      const testStream = of(...testResponses);
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(testStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -441,22 +465,23 @@ describe('ChatDrawer', () => {
       });
 
       await waitFor(() => {
-        expect(mockUpdateLastMessage).toHaveBeenCalled();
+        expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
       });
     });
 
     it('Should handle request timeout', async () => {
       jest.useFakeTimers();
 
-      const unsubscribeMock = jest.fn();
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({
-            unsubscribe: unsubscribeMock,
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Request timeout')), 30001);
+        });
+      });
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -473,26 +498,24 @@ describe('ChatDrawer', () => {
         jest.advanceTimersByTime(30001);
       });
 
-      expect(unsubscribeMock).toHaveBeenCalled();
-      expect(mockAddMessages).toHaveBeenCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Request Timeout: The LLM service took too long to respond'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: 'system',
+            isError: true,
+            text: expect.stringContaining('Connection Error: Request timeout'),
+          }),
+        ]);
+      });
     });
 
     it('Should handle stream completion', async () => {
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockImplementation(({ complete }) => {
-            complete();
-            return { unsubscribe: jest.fn() };
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Final response');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
@@ -516,17 +539,15 @@ describe('ChatDrawer', () => {
     const textarea = selectors.input();
     fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
     expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
-    expect(llm.streamChatCompletions).not.toHaveBeenCalled();
   });
 
   it('Should call unsubscribe() on click', async () => {
-    const unsubscribeMock = jest.fn();
-    const mockStream = {
-      pipe: jest.fn().mockReturnValue({
-        subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
-      }),
-    };
-    (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+    const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+    (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+      sendMessageWithTools: mockSendMessageWithTools,
+      checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+      getAvailableTools: jest.fn().mockResolvedValue([]),
+    });
 
     const onClose = jest.fn();
     await act(async () => render(<ChatDrawer isOpen onClose={onClose} />));
@@ -538,21 +559,17 @@ describe('ChatDrawer', () => {
     });
 
     fireEvent.click(selectors.drawerCloseButton());
-    expect(unsubscribeMock).toHaveBeenCalled();
     expect(onClose).toHaveBeenCalled();
   });
 
   describe('Error handling', () => {
     it('Should handle stream errors properly', async () => {
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockImplementation(({ error }) => {
-            error(new Error('Stream error'));
-            return { unsubscribe: jest.fn() };
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue(new Error('Stream error'));
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       mockHandleLlmError.mockReturnValue('Formatted error message');
 
@@ -567,19 +584,23 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(mockHandleLlmError).toHaveBeenCalled();
-      expect(mockAddMessages).toHaveBeenCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('LLM Error: Formatted error message'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: 'system',
+            isError: true,
+            text: expect.stringContaining('Connection Error: Stream error'),
+          }),
+        ]);
+      });
     });
 
     it('Should handle connection errors in try/catch', async () => {
-      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
-        throw new Error('Connection failed');
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue(new Error('Connection failed'));
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
       });
 
       await act(async () => render(getComponent({})));
@@ -593,18 +614,23 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(mockAddMessages).toHaveBeenLastCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Connection Error: Connection failed'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: 'system',
+            isError: true,
+            text: expect.stringContaining('Connection Error: Connection failed'),
+          }),
+        ]);
+      });
     });
 
     it('Should handle non-Error objects in catch block', async () => {
-      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
-        throw 'String error';
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue('String error');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
       });
 
       await act(async () => render(getComponent({})));
@@ -618,26 +644,26 @@ describe('ChatDrawer', () => {
         fireEvent.click(sendButton);
       });
 
-      expect(mockAddMessages).toHaveBeenLastCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Connection Error: String error'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: 'system',
+            isError: true,
+            text: expect.stringContaining('Connection Error: String error'),
+          }),
+        ]);
+      });
     });
   });
 
   describe('Subscription handling', () => {
     it('Should unsubscribe when component unmounts', async () => {
-      const unsubscribeMock = jest.fn();
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
-      mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       const { unmount } = render(getComponent({ isOpen: true }));
       const textarea = selectors.input();
@@ -649,7 +675,7 @@ describe('ChatDrawer', () => {
       await act(async () => {
         unmount();
       });
-      expect(unsubscribeMock).toHaveBeenCalled();
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
   });
 

@@ -74,6 +74,11 @@ export const getStyles = (theme: GrafanaTheme2) => {
       font-weight: ${theme.typography.fontWeightMedium};
     `,
 
+    messageContentTool: css`
+      background: ${theme.colors.background.secondary};
+      color: ${theme.colors.text.primary};
+    `,
+
     messageSender: css`
       font-size: ${theme.typography.bodySmall.fontSize};
       opacity: 0.7;
@@ -101,6 +106,49 @@ export const getStyles = (theme: GrafanaTheme2) => {
         }
         50% {
           opacity: 0.3;
+        }
+      }
+    `,
+
+    loadingContainer: css`
+      margin-top: ${theme.spacing(1)};
+      display: flex;
+      align-items: center;
+    `,
+
+    loadingDots: css`
+      display: inline-flex;
+      align-items: center;
+      gap: ${theme.spacing(0.25)};
+    `,
+
+    loadingDot: css`
+      width: 6px;
+      height: 6px;
+      background-color: currentColor;
+      border-radius: 50%;
+      animation: loadingDot 1.4s ease-in-out infinite both;
+
+      &:nth-child(1) {
+        animation-delay: -0.32s;
+      }
+
+      &:nth-child(2) {
+        animation-delay: -0.16s;
+      }
+
+      &:nth-child(3) {
+        animation-delay: 0s;
+      }
+
+      @keyframes loadingDot {
+        0%, 80%, 100% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
         }
       }
     `,

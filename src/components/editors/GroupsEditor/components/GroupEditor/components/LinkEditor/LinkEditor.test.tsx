@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import { createDropdownConfig, createLinkConfig } from '@/utils';
 
-import { ContentEditor, TimePickerEditor } from './components';
+import { ContentEditor, McpServersEditor, TimePickerEditor } from './components';
 import { LinkEditor } from './LinkEditor';
 
 type Props = React.ComponentProps<typeof LinkEditor>;
@@ -52,9 +52,26 @@ const ContentEditorMock = ({ value, onChange }: any) => {
   );
 };
 
+/**
+ * Mock McpServersEditor
+ */
+const McpServersEditorMock = ({ value, onChange }: any) => {
+  return (
+    <div data-testid="mcp-servers-editor">
+      <input
+        value={JSON.stringify(value)}
+        onChange={(e) => {
+          onChange(JSON.parse(e.target.value));
+        }}
+      />
+    </div>
+  );
+};
+
 jest.mock('./components', () => ({
   TimePickerEditor: jest.fn(),
   ContentEditor: jest.fn(),
+  McpServersEditor: jest.fn(),
 }));
 
 describe('LinkEditor', () => {
@@ -88,6 +105,7 @@ describe('LinkEditor', () => {
   beforeEach(() => {
     jest.mocked(TimePickerEditor).mockImplementation(TimePickerEditorMock);
     jest.mocked(ContentEditor).mockImplementation(ContentEditorMock);
+    jest.mocked(McpServersEditor).mockImplementation(McpServersEditorMock);
   });
 
   it('Should allow to change Link Type to Dropdown for groups', () => {

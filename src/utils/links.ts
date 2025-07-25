@@ -432,6 +432,8 @@ export const prepareLinksToRender = ({
           contextPrompt: item.contextPrompt,
           llmTemperature: item.llmTemperature,
           assistantName: item.assistantName,
+          useDefaultGrafanaMcp: item.useDefaultGrafanaMcp,
+          mcpServers: item.mcpServers,
           id: item.id,
           name: item.name,
           links: [],

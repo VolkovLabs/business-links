@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 16,
+  "id": 15,
   "links": [],
   "panels": [
     {
@@ -155,7 +155,8 @@
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "llmapp",
-                "name": "Open LLM App",
+                "mcpServers": [],
+                "name": "Open LLM App with MCP server",
                 "showCustomIcons": false,
                 "tags": [],
                 "target": "_blank",
@@ -163,7 +164,8 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": "https://volkovlabs.io/"
+                "url": "https://volkovlabs.io/",
+                "useDefaultGrafanaMcp": true
               },
               {
                 "alignContentPosition": "left",
@@ -354,6 +356,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "LLM App",
-  "uid": "bfdd85fb-6830-4735-ac6c-7ceac5c5c843",
-  "version": 2
+  "uid": "f123d3ef-b925-4a70-819d-5e5b2a7459df",
+  "version": 5
 }
