@@ -21,6 +21,20 @@ jest.mock('./useMcpService', () => ({
 
 const mockUseMcpService = useMcpService as jest.MockedFunction<typeof useMcpService>;
 
+/**
+ * Helper function to create a complete mock MCP service object
+ */
+const createMockMcpService = (overrides = {}) => ({
+  checkMcpStatus: jest.fn(),
+  getAvailableTools: jest.fn(),
+  convertToolsToOpenAiFormat: jest.fn(),
+  executeToolCall: jest.fn(),
+  setupMcpClients: jest.fn(),
+  processToolCalls: jest.fn(),
+  clearCache: jest.fn(),
+  ...overrides,
+});
+
 describe('useMcpLlmIntegration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -28,14 +42,9 @@ describe('useMcpLlmIntegration', () => {
 
   describe('checkAvailability', () => {
     it('Should return available when both LLM and MCP are enabled', async () => {
-      const mockMcpService = {
+      const mockMcpService = createMockMcpService({
         checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true }),
-        getAvailableTools: jest.fn(),
-        convertToolsToOpenAiFormat: jest.fn(),
-        executeToolCall: jest.fn(),
-        setupMcpClients: jest.fn(),
-        processToolCalls: jest.fn(),
-      };
+      });
 
       mockUseMcpService.mockReturnValue(mockMcpService);
 
@@ -52,14 +61,9 @@ describe('useMcpLlmIntegration', () => {
     });
 
     it('Should return unavailable when LLM is disabled', async () => {
-      const mockMcpService = {
+      const mockMcpService = createMockMcpService({
         checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true }),
-        getAvailableTools: jest.fn(),
-        convertToolsToOpenAiFormat: jest.fn(),
-        executeToolCall: jest.fn(),
-        setupMcpClients: jest.fn(),
-        processToolCalls: jest.fn(),
-      };
+      });
 
       mockUseMcpService.mockReturnValue(mockMcpService);
 
@@ -76,17 +80,12 @@ describe('useMcpLlmIntegration', () => {
     });
 
     it('Should return unavailable when MCP is disabled', async () => {
-      const mockMcpService = {
+      const mockMcpService = createMockMcpService({
         checkMcpStatus: jest.fn().mockResolvedValue({
           isAvailable: false,
           error: 'MCP connection failed',
         }),
-        getAvailableTools: jest.fn(),
-        convertToolsToOpenAiFormat: jest.fn(),
-        executeToolCall: jest.fn(),
-        setupMcpClients: jest.fn(),
-        processToolCalls: jest.fn(),
-      };
+      });
 
       mockUseMcpService.mockReturnValue(mockMcpService);
 
@@ -110,6 +109,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -133,6 +133,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -151,6 +152,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -183,6 +185,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -209,6 +212,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -254,6 +258,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -312,6 +317,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn().mockRejectedValue(new Error('Weather service unavailable')),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -372,6 +378,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -420,7 +427,7 @@ describe('useMcpLlmIntegration', () => {
       expect(onToolResult).toHaveBeenCalledWith('call_1', '"14:30 UTC"', false);
     });
 
-    it('Should filter out messages with null or empty content', async () => {
+    it('Should include assistant messages even with null content (they may have tool_calls)', async () => {
       const mockTools: any[] = [];
 
       const mockMcpService = {
@@ -430,6 +437,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -480,6 +488,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -533,6 +542,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -594,6 +604,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -655,6 +666,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -706,6 +718,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -767,6 +780,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -815,6 +829,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -866,6 +881,7 @@ describe('useMcpLlmIntegration', () => {
         }),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -924,6 +940,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn().mockRejectedValue(new Error('Weather service unavailable')),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -981,6 +998,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1026,6 +1044,7 @@ describe('useMcpLlmIntegration', () => {
         executeToolCall: jest.fn(),
         setupMcpClients: jest.fn(),
         processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
       };
 
       mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1051,6 +1070,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1073,6 +1093,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1097,6 +1118,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1134,6 +1156,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn().mockRejectedValue('String error'),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1182,14 +1205,9 @@ describe('useMcpLlmIntegration', () => {
   });
 
   it('Should handle sendMessageWithTools errors with non-Error objects', async () => {
-    const mockMcpService = {
-      checkMcpStatus: jest.fn(),
+    const mockMcpService = createMockMcpService({
       getAvailableTools: jest.fn().mockRejectedValue('String error'),
-      convertToolsToOpenAiFormat: jest.fn(),
-      executeToolCall: jest.fn(),
-      setupMcpClients: jest.fn(),
-      processToolCalls: jest.fn(),
-    };
+    });
 
     mockUseMcpService.mockReturnValue(mockMcpService);
 
@@ -1204,14 +1222,9 @@ describe('useMcpLlmIntegration', () => {
 
   it('Should handle sendMessageWithTools errors with addErrorMessage and non-Error objects', async () => {
     const mockAddErrorMessage = jest.fn();
-    const mockMcpService = {
-      checkMcpStatus: jest.fn(),
+    const mockMcpService = createMockMcpService({
       getAvailableTools: jest.fn().mockRejectedValue('String error'),
-      convertToolsToOpenAiFormat: jest.fn(),
-      executeToolCall: jest.fn(),
-      setupMcpClients: jest.fn(),
-      processToolCalls: jest.fn(),
-    };
+    });
 
     mockUseMcpService.mockReturnValue(mockMcpService);
 
@@ -1226,5 +1239,29 @@ describe('useMcpLlmIntegration', () => {
     expect(mockAddErrorMessage).toHaveBeenCalledWith(
       'Failed to use MCP with LLM: Unknown error'
     );
+  });
+
+  describe('clearMcpCache', () => {
+    it('Should call clearCache on MCP service', () => {
+      const mockMcpService = createMockMcpService();
+
+      mockUseMcpService.mockReturnValue(mockMcpService);
+
+      const { result } = renderHook(() => useMcpLlmIntegration());
+
+      result.current.clearMcpCache();
+
+      expect(mockMcpService.clearCache).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should not throw when clearCache is called', () => {
+      const mockMcpService = createMockMcpService();
+
+      mockUseMcpService.mockReturnValue(mockMcpService);
+
+      const { result } = renderHook(() => useMcpLlmIntegration());
+
+      expect(() => result.current.clearMcpCache()).not.toThrow();
+    });
   });
 });

@@ -172,11 +172,11 @@ const toolHandlers = {
   get_current_weather: async (args: any) => {
     const { city, units = 'celsius' } = args;
     
-    if (!weatherData[city]) {
+    if (!weatherData[city as keyof typeof weatherData]) {
       throw new Error(`Weather data not available for ${city}`);
     }
 
-    const weather = weatherData[city];
+    const weather = weatherData[city as keyof typeof weatherData];
     let temperature = weather.temperature;
     
     if (units === 'fahrenheit') {
@@ -184,37 +184,47 @@ const toolHandlers = {
     }
 
     return {
-      content: {
-        city,
-        temperature: {
-          value: temperature,
-          units,
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            city,
+            temperature: {
+              value: temperature,
+              units,
+            },
+            condition: weather.condition,
+            humidity: weather.humidity,
+            windSpeed: weather.windSpeed,
+            pressure: weather.pressure,
+            timestamp: new Date().toISOString(),
+          }),
         },
-        condition: weather.condition,
-        humidity: weather.humidity,
-        windSpeed: weather.windSpeed,
-        pressure: weather.pressure,
-        timestamp: new Date().toISOString(),
-      },
+      ],
     };
   },
 
   get_weather_forecast: async (args: any) => {
     const { city, days = 3 } = args;
     
-    if (!forecastData[city]) {
+    if (!forecastData[city as keyof typeof forecastData]) {
       throw new Error(`Forecast data not available for ${city}`);
     }
 
-    const forecast = forecastData[city].slice(0, days);
+    const forecast = forecastData[city as keyof typeof forecastData].slice(0, days);
 
     return {
-      content: {
-        city,
-        forecast,
-        requestedDays: days,
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            city,
+            forecast,
+            requestedDays: days,
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -222,7 +232,7 @@ const toolHandlers = {
     const { city } = args;
     
     /** Mock alerts based on city */
-    const alerts = {
+    const alerts: Record<string, Array<{ type: string; severity: string; message: string }>> = {
       'Moscow': [
         { type: 'wind', severity: 'moderate', message: 'Strong winds expected' },
       ],
@@ -237,11 +247,16 @@ const toolHandlers = {
     };
 
     return {
-      content: {
-        city,
-        alerts: alerts[city] || [],
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            city,
+            alerts: alerts[city] || [],
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -249,7 +264,7 @@ const toolHandlers = {
     const { city } = args;
     
     /** Mock air quality data */
-    const airQualityData = {
+    const airQualityData: Record<string, { aqi: number; level: string; pollutants: { pm25: number; pm10: number; o3: number } }> = {
       'Moscow': { aqi: 45, level: 'Good', pollutants: { pm25: 12, pm10: 25, o3: 35 } },
       'London': { aqi: 65, level: 'Moderate', pollutants: { pm25: 18, pm10: 35, o3: 45 } },
       'New York': { aqi: 55, level: 'Moderate', pollutants: { pm25: 15, pm10: 30, o3: 40 } },
@@ -262,11 +277,16 @@ const toolHandlers = {
     }
 
     return {
-      content: {
-        city,
-        ...airQualityData[city],
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            city,
+            ...airQualityData[city],
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -274,7 +294,7 @@ const toolHandlers = {
     const { city, period = 'daily' } = args;
     
     /** Mock statistics data */
-    const statsData = {
+    const statsData: Record<string, Record<string, { avgTemp: number; maxTemp: number; minTemp: number; totalRainfall: number }>> = {
       'Moscow': {
         daily: { avgTemp: 12, maxTemp: 18, minTemp: 5, totalRainfall: 2.5 },
         weekly: { avgTemp: 11, maxTemp: 20, minTemp: 3, totalRainfall: 15.2 },
@@ -292,12 +312,17 @@ const toolHandlers = {
     }
 
     return {
-      content: {
-        city,
-        period,
-        statistics: statsData[city][period],
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            city,
+            period,
+            statistics: statsData[city][period],
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 };

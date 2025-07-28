@@ -7,6 +7,7 @@ const createMockClient = () => ({
   connect: jest.fn().mockResolvedValue(undefined),
   listTools: jest.fn(),
   callTool: jest.fn(),
+  close: jest.fn(),
 });
 
 const mockTransport = {};
@@ -99,6 +100,7 @@ describe('useMcpService with multiple servers', () => {
     const mockResult = { content: 'Current time: 2024-01-01' };
     const mockClient1 = createMockClient();
     mockClient1.callTool.mockResolvedValue(mockResult);
+    mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
 
     (mcp.Client as jest.Mock).mockReturnValue(mockClient1);
 
@@ -130,7 +132,9 @@ describe('useMcpService with multiple servers', () => {
     const mockClient2 = createMockClient();
     
     mockClient1.callTool.mockRejectedValue(new Error('Tool not found'));
+    mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_weather' }] });
     mockClient2.callTool.mockResolvedValue(mockResult);
+    mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'get_weather' }] });
 
     (mcp.Client as jest.Mock)
       .mockReturnValueOnce(mockClient1)
@@ -160,8 +164,9 @@ describe('useMcpService with multiple servers', () => {
     const mockClient1 = createMockClient();
     const mockClient2 = createMockClient();
     
-    mockClient1.callTool.mockRejectedValue(new Error('Tool not found'));
-    mockClient2.callTool.mockRejectedValue(new Error('Tool not found'));
+    // These servers don't have the unknown_tool in their available tools
+    mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'other_tool' }] });
+    mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'different_tool' }] });
 
     (mcp.Client as jest.Mock)
       .mockReturnValueOnce(mockClient1)
@@ -180,7 +185,7 @@ describe('useMcpService with multiple servers', () => {
     const toolResult = await result.current.executeToolCall(toolCall, mcpServers);
 
     expect(toolResult.isError).toBe(true);
-    expect(toolResult.errorMessage).toContain('not found on any MCP server');
+    expect(toolResult.errorMessage).toContain('is not available on any connected MCP server');
   });
 
   it('Should convert tools to OpenAI format without server metadata', () => {
@@ -206,7 +211,9 @@ describe('useMcpService with multiple servers', () => {
     const mockClient2 = createMockClient();
     
     mockClient1.callTool.mockRejectedValue(new Error('Tool not found'));
+    mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
     mockClient2.callTool.mockResolvedValue({ content: 'Success result' });
+    mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
 
     (mcp.Client as jest.Mock)
       .mockReturnValueOnce(mockClient1)
@@ -347,7 +354,7 @@ describe('useMcpService with multiple servers', () => {
     const toolResult = await result.current.executeToolCall(toolCall);
 
     expect(toolResult.isError).toBe(true);
-    expect(toolResult.errorMessage).toContain('Tool \'test_tool\' not found on any MCP server');
+    expect(toolResult.errorMessage).toContain('Tool \'test_tool\' is not available on any connected MCP server');
     expect(mockAddErrorMessage).toHaveBeenCalledWith(
       expect.stringContaining('MCP tool call failed')
     );
@@ -359,6 +366,7 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.callTool.mockResolvedValue({ content: 'Tool result' });
+    mockClient.listTools.mockResolvedValue({ tools: [{ name: 'test_tool' }] });
     
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
@@ -514,6 +522,7 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.callTool.mockRejectedValue('String error');
+    mockClient.listTools.mockResolvedValue({ tools: [{ name: 'test_tool' }] });
     
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 

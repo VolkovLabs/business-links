@@ -242,10 +242,15 @@ const toolHandlers = {
     const stock = stockData[symbol as keyof typeof stockData];
 
     return {
-      content: {
-        ...stock,
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            ...stock,
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -261,14 +266,19 @@ const toolHandlers = {
     const rate = toCurrency.rate / fromCurrency.rate;
 
     return {
-      content: {
-        from: fromCurrency.code,
-        to: toCurrency.code,
-        rate,
-        change: toCurrency.change - fromCurrency.change,
-        changePercent: toCurrency.changePercent - fromCurrency.changePercent,
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            from: fromCurrency.code,
+            to: toCurrency.code,
+            rate,
+            change: toCurrency.change - fromCurrency.change,
+            changePercent: toCurrency.changePercent - fromCurrency.changePercent,
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -282,10 +292,15 @@ const toolHandlers = {
     const crypto = cryptoData[symbol as keyof typeof cryptoData];
 
     return {
-      content: {
-        ...crypto,
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            ...crypto,
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -334,10 +349,15 @@ const toolHandlers = {
     }
 
     return {
-      content: {
-        ...marketSummaries[market],
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            ...marketSummaries[market],
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 
@@ -373,12 +393,17 @@ const toolHandlers = {
     }
 
     return {
-      content: {
-        indicator,
-        country,
-        ...indicatorsData[indicator][country],
-        timestamp: new Date().toISOString(),
-      },
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify({
+            indicator,
+            country,
+            ...indicatorsData[indicator][country],
+            timestamp: new Date().toISOString(),
+          }),
+        },
+      ],
     };
   },
 };

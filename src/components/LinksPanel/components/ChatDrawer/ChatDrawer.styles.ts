@@ -373,6 +373,7 @@ export const getStyles = (theme: GrafanaTheme2) => {
         transform 0.1s,
         color 0.2s;
       color: ${theme.colors.text.primary};
+      gap: unset;
 
       &:hover:not(:disabled) {
         background-color: ${theme.colors.primary.main};

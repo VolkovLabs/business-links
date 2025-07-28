@@ -12,6 +12,7 @@ export interface LlmMessage {
   role: 'system' | 'user' | 'assistant' | 'tool';
   content: string | null | undefined;
   toolCallId?: string;
+  toolCalls?: any[]; // Add tool_calls for assistant messages
 }
 
 /**
@@ -37,6 +38,11 @@ export interface UseMcpLlmIntegrationReturn {
    * Get available tools from MCP servers
    */
   getAvailableTools: (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpTool[]>;
+
+  /**
+   * Clear MCP cache and force reconnection to servers
+   */
+  clearMcpCache: () => void;
 }
 
 /**
@@ -91,6 +97,13 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
   );
 
   /**
+   * Clear MCP cache and force reconnection to servers
+   */
+  const clearMcpCache = useCallback(() => {
+    mcpService.clearCache();
+  }, [mcpService]);
+
+  /**
    * Send message with MCP tools support
    */
   const sendMessageWithTools = useCallback(
@@ -108,9 +121,11 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
 
         const openAiMessages = messages
           .filter(msg => {
+            // Always include assistant messages (they may have tool_calls)
             if (msg.role === 'assistant') {
               return true;
             }
+            // For other roles, ensure they have valid content
             return msg.content != null && msg.content !== '';
           })
           .map(msg => {
@@ -134,10 +149,12 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
         });
 
         while (response.choices[0].message.tool_calls) {
+          // Add the assistant message with tool_calls
           const assistantMessage: LlmMessage = {
             role: 'assistant',
-            content: response.choices[0].message.content || '',
+            content: response.choices[0].message.content || null,
             toolCallId: undefined,
+            toolCalls: response.choices[0].message.tool_calls, // Store tool_calls in the message
           };
           messages.push(assistantMessage);
 
@@ -173,9 +190,11 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
 
           const updatedOpenAiMessages = messages
             .filter(msg => {
+              // Always include assistant messages (they may have tool_calls)
               if (msg.role === 'assistant') {
                 return true;
               }
+              // For other roles, ensure they have valid content
               return msg.content != null && msg.content !== '';
             })
             .map(msg => {
@@ -184,6 +203,13 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
                   role: msg.role,
                   content: String(msg.content),
                   tool_call_id: msg.toolCallId, // eslint-disable-line @typescript-eslint/naming-convention
+                };
+              }
+              if (msg.role === 'assistant' && msg.toolCalls) {
+                return {
+                  role: msg.role,
+                  content: String(msg.content),
+                  tool_calls: msg.toolCalls, // eslint-disable-line @typescript-eslint/naming-convention
                 };
               }
               return {
@@ -217,5 +243,6 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
     sendMessageWithTools,
     checkAvailability,
     getAvailableTools,
+    clearMcpCache,
   };
 }; 
