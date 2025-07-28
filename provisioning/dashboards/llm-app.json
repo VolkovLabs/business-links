@@ -18,13 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 15,
+  "id": 10,
   "links": [],
   "panels": [
     {
       "datasource": {
-        "type": "marcusolsson-static-datasource",
-        "uid": "P1D2C73DC01F2359B"
+        "type": "datasource",
+        "uid": "grafana"
       },
       "description": "",
       "fieldConfig": {
@@ -155,7 +155,18 @@
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "llmapp",
-                "mcpServers": [],
+                "mcpServers": [
+                  {
+                    "enabled": true,
+                    "name": "Test 1",
+                    "url": "http://localhost:3005"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "Test 2",
+                    "url": "http://localhost:3006"
+                  }
+                ],
                 "name": "Open LLM App with MCP server",
                 "showCustomIcons": false,
                 "tags": [],
@@ -192,7 +203,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
@@ -219,7 +231,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
@@ -246,7 +259,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               }
             ],
             "manualGridLayout": [],
@@ -357,5 +371,5 @@
   "timezone": "browser",
   "title": "LLM App",
   "uid": "f123d3ef-b925-4a70-819d-5e5b2a7459df",
-  "version": 5
+  "version": 1
 }

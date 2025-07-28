@@ -15,7 +15,7 @@ export interface LlmMessage {
 }
 
 /**
- * MCP LLM Integration Return interface
+ * MCP + LLM Integration Return interface
  */
 export interface UseMcpLlmIntegrationReturn {
   /**
@@ -29,42 +29,46 @@ export interface UseMcpLlmIntegrationReturn {
   ) => Promise<string>;
 
   /**
-   * Check if MCP and LLM are available
+   * Check if MCP + LLM integration is available
    */
   checkAvailability: () => Promise<{ isAvailable: boolean; error?: string }>;
 
   /**
-   * Get available tools
+   * Get available tools from MCP servers
    */
   getAvailableTools: (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpTool[]>;
 }
 
 /**
- * Custom hook for MCP + LLM integration with multiple servers
+ * Custom hook for MCP + LLM integration
  *
- * Provides functionality for using MCP tools with LLM requests,
+ * Provides functionality for integrating MCP tools with LLM chat completions,
  * following the complete agent pattern from Grafana documentation.
  *
+ * @param addErrorMessage - Optional function to add error messages to chat
  * @returns Object with MCP + LLM integration functions
  */
-export const useMcpLlmIntegration = (): UseMcpLlmIntegrationReturn => {
-  const mcpService = useMcpService();
+export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void): UseMcpLlmIntegrationReturn => {
+  const mcpService = useMcpService(addErrorMessage);
 
   /**
-   * Check if MCP and LLM are available
+   * Check if MCP + LLM integration is available
    */
   const checkAvailability = useCallback(async (): Promise<{ isAvailable: boolean; error?: string }> => {
     try {
-      // Check if LLM service is available and enabled
-      const llmEnabled = await llm.enabled();
-      if (!llmEnabled) {
-        return { isAvailable: false, error: 'LLM service is not configured or enabled' };
+      if (!(await llm.enabled())) {
+        return {
+          isAvailable: false,
+          error: 'LLM is not enabled in Grafana settings',
+        };
       }
 
-      // Check if MCP service is available and enabled
       const mcpStatus = await mcpService.checkMcpStatus();
       if (!mcpStatus.isAvailable) {
-        return { isAvailable: false, error: mcpStatus.error || 'MCP service is not enabled or configured' };
+        return {
+          isAvailable: false,
+          error: mcpStatus.error || 'MCP service is not available',
+        };
       }
 
       return { isAvailable: true };
@@ -77,11 +81,14 @@ export const useMcpLlmIntegration = (): UseMcpLlmIntegrationReturn => {
   }, [mcpService]);
 
   /**
-   * Get available tools
+   * Get available tools from MCP servers
    */
-  const getAvailableTools = useCallback(async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpTool[]> => {
-    return mcpService.getAvailableTools(mcpServers, useDefaultGrafanaMcp);
-  }, [mcpService]);
+  const getAvailableTools = useCallback(
+    async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpTool[]> => {
+      return mcpService.getAvailableTools(mcpServers, useDefaultGrafanaMcp);
+    },
+    [mcpService]
+  );
 
   /**
    * Send message with MCP tools support
@@ -120,17 +127,13 @@ export const useMcpLlmIntegration = (): UseMcpLlmIntegrationReturn => {
             };
           });
 
-        // Send initial request with tools available
-        
         let response = await llm.chatCompletions({
           model: llm.Model.BASE,
           messages: openAiMessages,
           tools,
         });
 
-        // Process any tool calls the LLM wants to make
         while (response.choices[0].message.tool_calls) {
-          // Add the LLM's response (with tool calls) to the conversation
           const assistantMessage: LlmMessage = {
             role: 'assistant',
             content: response.choices[0].message.content || '',
@@ -138,86 +141,57 @@ export const useMcpLlmIntegration = (): UseMcpLlmIntegrationReturn => {
           };
           messages.push(assistantMessage);
 
-          // Execute each tool call the LLM requested
           for (const toolCall of response.choices[0].message.tool_calls) {
             try {
-              // Use the MCP service to execute the tool call across all servers
               const result = await mcpService.executeToolCall(toolCall, mcpServers, useDefaultGrafanaMcp);
 
               const toolContent = JSON.stringify(result.content || '');
 
-              // Always add tool response, even if content is empty
               messages.push({
                 role: 'tool',
                 content: toolContent,
                 toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
               });
 
-              // Call callback if provided
               if (onToolResult) {
                 onToolResult(toolCall.id, toolContent, false);
               }
             } catch (toolError) {
               const errorContent = `Error executing ${toolCall.function.name}: ${toolError instanceof Error ? toolError.message : 'Unknown error'}`;
 
-              // eslint-disable-next-line no-console
-              console.error(`Tool call failed: ${errorContent}`);
-
-              // Always add error response
               messages.push({
                 role: 'tool',
                 content: errorContent,
                 toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
               });
 
-              // Call callback if provided
               if (onToolResult) {
                 onToolResult(toolCall.id, errorContent, true);
               }
             }
           }
 
-          // Convert updated messages to OpenAI format for the next request
           const updatedOpenAiMessages = messages
             .filter(msg => {
-              // Keep all assistant messages
               if (msg.role === 'assistant') {
                 return true;
               }
-              // Keep all tool messages (they must have responses)
-              if (msg.role === 'tool') {
-                return true;
-              }
-              // Filter out other messages with null/undefined content
               return msg.content != null && msg.content !== '';
             })
             .map(msg => {
               if (msg.role === 'tool' && msg.toolCallId) {
                 return {
                   role: msg.role,
-                  content: String(msg.content || ''), // Ensure content is string, use empty string if null
+                  content: String(msg.content),
                   tool_call_id: msg.toolCallId, // eslint-disable-line @typescript-eslint/naming-convention
                 };
               }
-              if (msg.role === 'assistant') {
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const messageObj: any = {
-                  role: msg.role,
-                  content: String(msg.content || ''), // Ensure content is string
-                };
-                // Only include tool_calls for the most recent assistant message
-                if (msg === assistantMessage && response.choices[0].message.tool_calls) {
-                  messageObj.tool_calls = response.choices[0].message.tool_calls;
-                }
-                return messageObj;
-              }
               return {
                 role: msg.role,
-                content: String(msg.content || ''), // Ensure content is string
+                content: String(msg.content),
               };
             });
 
-          // Get the LLM's response incorporating tool call results
           response = await llm.chatCompletions({
             model: llm.Model.BASE,
             messages: updatedOpenAiMessages,
@@ -228,12 +202,15 @@ export const useMcpLlmIntegration = (): UseMcpLlmIntegrationReturn => {
 
         return response.choices[0].message.content || 'No response received';
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Failed to use MCP with LLM:', error);
+        const errorMessage = `Failed to use MCP with LLM: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
+
         throw new Error(`MCP + LLM request failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     },
-    [mcpService]
+    [mcpService, addErrorMessage]
   );
 
   return {

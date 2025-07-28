@@ -245,7 +245,9 @@ describe('ChatDrawer', () => {
     it('Should close drawer and clean up', async () => {
       await act(async () => render(getComponent({})));
 
-      fireEvent.click(selectors.drawerCloseButton());
+      await act(async () => {
+        fireEvent.click(selectors.drawerCloseButton());
+      });
 
       expect(mockOnClose).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
@@ -255,7 +257,9 @@ describe('ChatDrawer', () => {
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
-      fireEvent.change(textarea, { target: { value: 'Hello world' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Hello world' } });
+      });
 
       expect(textarea).toHaveValue('Hello world');
       expect(mockAdjustTextareaHeight).toHaveBeenCalled();
@@ -273,9 +277,11 @@ describe('ChatDrawer', () => {
 
       const textarea = selectors.input();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
 
-      fireEvent.keyDown(textarea, { key: 'Enter' });
+        fireEvent.keyDown(textarea, { key: 'Enter' });
+      });
 
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalled();
@@ -284,12 +290,16 @@ describe('ChatDrawer', () => {
       mockAddMessages.mockClear();
       mockClearAttachedFiles.mockClear();
 
-      fireEvent.change(textarea, { target: { value: 'New message' } });
-      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'New message' } });
+        fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+      });
 
       expect(mockAddMessages).not.toHaveBeenCalled();
 
-      fireEvent.keyDown(textarea, { key: 'Escape' });
+      await act(async () => {
+        fireEvent.keyDown(textarea, { key: 'Escape' });
+      });
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
     });
@@ -309,7 +319,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -343,7 +355,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -365,7 +379,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -382,7 +398,9 @@ describe('ChatDrawer', () => {
 
       expect(sendButton).toBeDisabled();
 
-      fireEvent.change(textarea, { target: { value: '   \n\t  ' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: '   \n\t  ' } });
+      });
 
       const forcedClick = new MouseEvent('click', {
         bubbles: true,
@@ -398,17 +416,18 @@ describe('ChatDrawer', () => {
         checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
         getAvailableTools: jest.fn().mockResolvedValue([]),
       });
-
-      fireEvent.change(textarea, { target: { value: 'First message' } });
+      
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'First message' } });
         fireEvent.click(sendButton);
+        fireEvent.change(textarea, { target: { value: 'Second message' } });
       });
-
-      fireEvent.change(textarea, { target: { value: 'Second message' } });
 
       mockSendMessageWithTools.mockClear();
 
-      fireEvent.click(sendButton);
+      await act(async () => {
+        fireEvent.click(sendButton);
+      });
 
       expect(mockSendMessageWithTools).not.toHaveBeenCalled();
     });
@@ -428,7 +447,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -458,7 +479,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -488,7 +511,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -522,7 +547,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -537,7 +564,9 @@ describe('ChatDrawer', () => {
   it('Should not send message if input empty', async () => {
     await act(async () => render(<ChatDrawer isOpen onClose={jest.fn()} />));
     const textarea = selectors.input();
-    fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+    await act(async () => {
+      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+    });
     expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
   });
 
@@ -553,12 +582,13 @@ describe('ChatDrawer', () => {
     await act(async () => render(<ChatDrawer isOpen onClose={onClose} />));
 
     const textarea = selectors.input();
-    fireEvent.change(textarea, { target: { value: 'Test' } });
+
     await act(async () => {
+      fireEvent.change(textarea, { target: { value: 'Test' } });
       fireEvent.click(selectors.sendButton());
+      fireEvent.click(selectors.drawerCloseButton());
     });
 
-    fireEvent.click(selectors.drawerCloseButton());
     expect(onClose).toHaveBeenCalled();
   });
 
@@ -577,10 +607,9 @@ describe('ChatDrawer', () => {
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
-
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
+      
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
@@ -608,9 +637,8 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
@@ -638,9 +666,8 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
@@ -668,8 +695,9 @@ describe('ChatDrawer', () => {
       const { unmount } = render(getComponent({ isOpen: true }));
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
-      fireEvent.change(textarea, { target: { value: 'Test' } });
+
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test' } });
         fireEvent.click(sendButton);
       });
       await act(async () => {
@@ -687,7 +715,7 @@ describe('ChatDrawer', () => {
     });
     await act(async () => render(getComponent({})));
     const removeButton = selectors.removeButton();
-    fireEvent.click(removeButton);
+    await act(async () => fireEvent.click(removeButton));
     expect(mockRemoveAttachedFile).toHaveBeenCalledWith('file1');
   });
 
@@ -704,8 +732,10 @@ describe('ChatDrawer', () => {
   it('Should clear input and attached files on Escape key', async () => {
     await act(async () => render(getComponent({})));
     const textarea = selectors.input();
-    fireEvent.change(textarea, { target: { value: 'Some text' } });
-    fireEvent.keyDown(textarea, { key: 'Escape' });
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: 'Some text' } });
+      fireEvent.keyDown(textarea, { key: 'Escape' });
+    });
     expect(mockClearAttachedFiles).toHaveBeenCalled();
     expect(textarea).toHaveValue('');
   });
@@ -815,7 +845,9 @@ describe('ChatDrawer', () => {
       });
       const fileInput = screen.getByLabelText('Send message').parentElement?.querySelector('input[type="file"]');
       const file = new File(['test'], 'file.txt', { type: 'text/plain' });
-      fireEvent.change(fileInput!, { target: { files: [file] } });
+      await act(async () => {
+        fireEvent.change(fileInput!, { target: { files: [file] } });
+      });
       expect(handleFileAttachment).toHaveBeenCalled();
     });
 

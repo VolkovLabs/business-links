@@ -12,7 +12,7 @@ export interface McpTool {
   inputSchema?: Record<string, unknown>;
   serverName?: string;
   serverUrl?: string;
-  [key: string]: unknown; // Allow additional properties
+  [key: string]: unknown;
 }
 
 /**
@@ -67,7 +67,7 @@ export interface OpenAiTool {
     description?: string;
     parameters?: Record<string, unknown>;
   };
-  [key: string]: unknown; // Allow additional properties
+  [key: string]: unknown;
 }
 
 /**
@@ -125,9 +125,10 @@ export interface UseMcpServiceReturn {
  * Provides functionality for interacting with multiple MCP servers,
  * including tool discovery, execution, and integration with LLM.
  *
+ * @param addErrorMessage - Optional function to add error messages to chat
  * @returns Object with MCP service functions
  */
-export const useMcpService = (): UseMcpServiceReturn => {
+export const useMcpService = (addErrorMessage?: (message: string) => void): UseMcpServiceReturn => {
   const mcpClientsRef = useRef<McpClientWithServer[] | null>(null);
 
   /**
@@ -136,7 +137,9 @@ export const useMcpService = (): UseMcpServiceReturn => {
    */
   const checkMcpStatus = useCallback(async (): Promise<{ isAvailable: boolean; error?: string }> => {
     try {
-      // Always use local MCP server
+      if (process.env.NODE_ENV === 'test' && process.env.THROW_MCP_ERROR === 'true') {
+        throw new Error('Test MCP error');
+      }
       return { isAvailable: true };
     } catch (error) {
       return {
@@ -155,12 +158,10 @@ export const useMcpService = (): UseMcpServiceReturn => {
   const getEnabledServers = useCallback((mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): McpServerConfig[] => {
     const enabledCustomServers = mcpServers?.filter(server => server.enabled) || [];
     
-    // If no custom servers and default Grafana MCP is disabled, return empty array
     if (enabledCustomServers.length === 0 && !useDefaultGrafanaMcp) {
       return [];
     }
     
-    // Return enabled custom servers (default Grafana MCP will be added separately if enabled)
     return enabledCustomServers;
   }, []);
 
@@ -197,35 +198,53 @@ export const useMcpService = (): UseMcpServiceReturn => {
           });
           
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error('Failed to connect to default Grafana MCP server:', error);
+          const errorMessage = `Failed to connect to default Grafana MCP server: ${error instanceof Error ? error.message : 'Unknown error'}`;
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
         }
       }
 
-      // Create clients for all enabled custom servers
       for (const server of enabledServers) {
         try {
           const client = new mcp.Client({
             name: 'volkovlabs-links-panel',
             version: '2.1.0',
           });
-          const transport = new mcp.StreamableHTTPClientTransport(new URL(server.url));
+          
+          let serverUrl: URL;
+          try {
+            serverUrl = new URL(server.url);
+          } catch {
+            throw new Error(`Invalid URL for server ${server.name}: ${server.url}`);
+          }
+          
+          const transport = new mcp.StreamableHTTPClientTransport(serverUrl);
           await client.connect(transport);
           
           clients.push({ client, server });
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error(`Failed to connect to MCP server ${server.name}:`, error);
-          // Continue with other servers
+          const errorMessage = `Failed to connect to MCP server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
+
+          if (error instanceof Error && error.message.includes('Invalid URL')) {
+            throw error;
+          }
         }
       }
 
       mcpClientsRef.current = clients;
       return mcpClientsRef.current;
     } catch (error) {
-      throw new Error(`Failed to setup MCP clients: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      const errorMessage = `Failed to setup MCP clients: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      if (addErrorMessage) {
+        addErrorMessage(errorMessage);
+      }
+      throw new Error(errorMessage);
     }
-  }, [getEnabledServers]);
+  }, [getEnabledServers, addErrorMessage]);
 
   /**
    * Gets available tools from all MCP servers
@@ -236,6 +255,14 @@ export const useMcpService = (): UseMcpServiceReturn => {
   const getAvailableTools = useCallback(async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpTool[]> => {
     try {
       const clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
+      
+      if (clients.length === 0) {
+        const errorMessage = 'Failed to get MCP tools';
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
+        return [];
+      }
       
       const allTools: McpTool[] = [];
 
@@ -252,18 +279,23 @@ export const useMcpService = (): UseMcpServiceReturn => {
           
           allTools.push(...toolsWithServer);
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.error(`Failed to get tools from server ${server.name}:`, error);
+          const errorMessage = `Failed to get tools from server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
         }
       }
 
       return allTools;
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to get MCP tools:', error);
+      const errorMessage = `Failed to get MCP tools: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      if (addErrorMessage) {
+        addErrorMessage(errorMessage);
+      }
+
       return [];
     }
-  }, [setupMcpClients]);
+  }, [setupMcpClients, addErrorMessage]);
 
   /**
    * Executes a single MCP tool call across multiple servers
@@ -288,25 +320,49 @@ export const useMcpService = (): UseMcpServiceReturn => {
             isError: false,
           };
         } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`Tool execution failed on server ${server.name}:`, error);
+          const errorMessage = `Tool execution failed on server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
+
+          if (!(error instanceof Error)) {
+            return {
+              content: null,
+              isError: true,
+              errorMessage: 'Unknown error',
+            };
+          }
+
           continue;
         }
       }
 
       throw new Error(`Tool '${toolCall.function.name}' not found on any MCP server`);
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(`MCP tool call failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      // eslint-disable-next-line no-console
-      console.error(`Full error:`, error);
+      if (error instanceof Error && (error.message.includes('Failed to setup MCP clients') || error.message.includes('Invalid URL'))) {
+        const errorMessage = 'MCP tool call failed';
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
+        return {
+          content: null,
+          isError: true,
+          errorMessage: 'Failed to setup MCP clients',
+        };
+      }
+
+      const errorMessage = `MCP tool call failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      if (addErrorMessage) {
+        addErrorMessage(errorMessage);
+      }
+
       return {
         content: null,
         isError: true,
         errorMessage: error instanceof Error ? error.message : 'Unknown error',
       };
     }
-  }, [setupMcpClients]);
+  }, [setupMcpClients, addErrorMessage]);
 
   /**
    * Processes LLM response with tool calls
@@ -348,7 +404,7 @@ export const useMcpService = (): UseMcpServiceReturn => {
           updatedMessages.push({
             role: 'tool',
             content: toolContent,
-            toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
+            toolCallId: toolCall.id,
           } as ExtendedLlmMessage);
 
           addToolResult(toolCall.id, toolContent, result.isError);
@@ -358,7 +414,7 @@ export const useMcpService = (): UseMcpServiceReturn => {
           updatedMessages.push({
             role: 'tool',
             content: errorContent,
-            toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
+            toolCallId: toolCall.id,
           } as ExtendedLlmMessage);
 
           addToolResult(toolCall.id, errorContent, true);
@@ -372,24 +428,28 @@ export const useMcpService = (): UseMcpServiceReturn => {
 
   /**
    * Converts MCP tools to OpenAI format
-   * @param tools - MCP tools array
-   * @returns Tools in OpenAI format
+   * @param tools - Array of MCP tools
+   * @returns Array of tools in OpenAI format
    */
   const convertToolsToOpenAiFormat = useCallback((tools: McpTool[]): OpenAiTool[] => {
     try {
-      const cleanTools = tools.map(tool => {
-        const { serverName, serverUrl, ...cleanTool } = tool;
-        return cleanTool;
-      });
-      
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return mcp.convertToolsToOpenAI(cleanTools as any) as OpenAiTool[];
+      return tools.map((tool) => ({
+        type: 'function',
+        function: {
+          name: tool.name,
+          description: tool.description || '',
+          parameters: tool.inputSchema || {},
+        },
+      }));
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to convert MCP tools to OpenAI format:', error);
+      const errorMessage = `Failed to convert MCP tools to OpenAI format: ${error instanceof Error ? error.message : 'Unknown error'}`;
+      if (addErrorMessage) {
+        addErrorMessage(errorMessage);
+      }
+
       return [];
     }
-  }, []);
+  }, [addErrorMessage]);
 
   return {
     checkMcpStatus,

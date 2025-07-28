@@ -167,8 +167,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     useFileAttachments(addErrorMessage);
   const { textareaRef, adjustTextareaHeight } = useTextareaResize();
   const { prepareMessageContent, prepareChatHistory } = useLlmService();
-  const { checkMcpStatus, getAvailableTools } = useMcpService();
-  const { sendMessageWithTools, checkAvailability } = useMcpLlmIntegration();
+  const { checkMcpStatus, getAvailableTools } = useMcpService(addErrorMessage);
+  const { sendMessageWithTools, checkAvailability } = useMcpLlmIntegration(addErrorMessage);
 
   /**
    * Refs
@@ -192,7 +192,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
    * Scrolls to the bottom of the messages container
    */
   const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current && typeof messagesEndRef.current.scrollIntoView === 'function') {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, []);
 
   /**
@@ -247,16 +249,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         setAvailableTools(tools);
         setMcpEnabled(true);
       } else {
-        // eslint-disable-next-line no-console
-        console.warn('MCP not available:', mcpStatus.error);
+        addErrorMessage(`MCP not available: ${mcpStatus.error}`);
         setMcpEnabled(false);
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to initialize MCP tools:', error);
+      addErrorMessage(`Failed to initialize MCP tools: ${error instanceof Error ? error.message : String(error)}`);
       setMcpEnabled(false);
     }
-  }, [checkMcpStatus, getAvailableTools, mcpServers, useDefaultGrafanaMcp]);
+  }, [checkMcpStatus, getAvailableTools, mcpServers, useDefaultGrafanaMcp, addErrorMessage]);
 
   /**
    * Handles the main send message functionality with MCP support

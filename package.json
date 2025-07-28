@@ -35,6 +35,7 @@
     "@types/react-grid-layout": "^1.3.5",
     "@volkovlabs/eslint-config": "^1.3.0",
     "@volkovlabs/jest-selectors": "^1.5.0",
+    "concurrently": "^8.2.2",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
     "eslint": "^8.57.1",
@@ -80,7 +81,10 @@
     "test:e2e": "npx playwright test",
     "test:e2e:dev": "npx playwright test --ui",
     "test:e2e:docker": "docker compose --profile e2e up --exit-code-from test",
-    "upgrade": "npm upgrade --save"
+    "upgrade": "npm upgrade --save",
+    "server:finance": "cd server/server-finance && npm run dev",
+    "server:weather": "cd server/server-weather && npm run dev",
+    "servers:dev": "concurrently \"npm run server:finance\" \"npm run server:weather\""
   },
   "version": "2.1.0"
 }

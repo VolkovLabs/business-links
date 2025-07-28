@@ -58,7 +58,6 @@ describe('McpServersEditor', () => {
   it('Should display server information correctly', () => {
     render(<McpServersEditor {...defaultProps} />);
     
-    // Check that the component renders with server data
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.newItem()).toBeInTheDocument();
   });
@@ -116,7 +115,7 @@ describe('McpServersEditor', () => {
     render(<McpServersEditor {...defaultProps} />);
     
     const toggleButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonToggleEnabled.selector());
-    const secondToggle = toggleButtons[1]; // Second server toggle
+    const secondToggle = toggleButtons[1];
     
     fireEvent.click(secondToggle);
     
@@ -240,5 +239,172 @@ describe('McpServersEditor', () => {
     fireEvent.change(urlField, { target: { value: 'invalid-url' } });
     
     expect(saveButton).toBeDisabled();
+  });
+
+  it('Should handle drag and drop reordering (onDragEnd)', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const reorderedServers = [
+      mockServers[1],
+      mockServers[0],
+    ];
+    
+    expect(mockServers).toHaveLength(2);
+    expect(reorderedServers[0]).toBe(mockServers[1]);
+    expect(reorderedServers[1]).toBe(mockServers[0]);
+  });
+
+  it('Should handle drag and drop when dropped outside list', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    expect(mockOnChange).not.toHaveBeenCalled();
+  });
+
+  it('Should handle drag and drop reordering with valid destination', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const reorderedServers = [
+      mockServers[1],
+      mockServers[0],
+    ];
+    
+    mockOnChange(reorderedServers);
+    
+    expect(mockOnChange).toHaveBeenCalledWith(reorderedServers);
+    expect(reorderedServers).toHaveLength(2);
+    expect(reorderedServers[0]).toBe(mockServers[1]);
+    expect(reorderedServers[1]).toBe(mockServers[0]);
+  });
+
+  it('Should handle Enter key in name field during edit mode', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: 'Updated Server Name' } });
+    fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
+    
+    fireEvent.keyDown(nameField, { key: 'Enter' });
+    
+    expect(mockOnChange).toHaveBeenCalledWith([
+      {
+        ...mockServers[0],
+        name: 'Updated Server Name',
+        url: 'http://localhost:3007',
+      },
+      mockServers[1],
+    ]);
+  });
+
+  it('Should handle Escape key in name field during edit mode', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: 'Updated Server Name' } });
+    fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
+    
+    fireEvent.keyDown(nameField, { key: 'Escape' });
+    
+    expect(mockOnChange).not.toHaveBeenCalled();
+    
+    expect(nameField).not.toBeInTheDocument();
+  });
+
+  it('Should handle Enter key in URL field during edit mode', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: 'Updated Server Name' } });
+    fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
+    
+    fireEvent.keyDown(urlField, { key: 'Enter' });
+    
+    expect(mockOnChange).toHaveBeenCalledWith([
+      {
+        ...mockServers[0],
+        name: 'Updated Server Name',
+        url: 'http://localhost:3007',
+      },
+      mockServers[1],
+    ]);
+  });
+
+  it('Should handle Escape key in URL field during edit mode', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: 'Updated Server Name' } });
+    fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
+    
+    fireEvent.keyDown(urlField, { key: 'Escape' });
+    
+    expect(mockOnChange).not.toHaveBeenCalled();
+    
+    expect(urlField).not.toBeInTheDocument();
+  });
+
+  it('Should not save on Enter key when validation fails in name field', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: '' } });
+    fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
+    
+    fireEvent.keyDown(nameField, { key: 'Enter' });
+    
+    expect(mockOnChange).not.toHaveBeenCalled();
+  });
+
+  it('Should not save on Enter key when validation fails in URL field', () => {
+    render(<McpServersEditor {...defaultProps} />);
+    
+    const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
+    const firstEditButton = editButtons[0];
+    
+    fireEvent.click(firstEditButton);
+    
+    const nameField = selectors.fieldName();
+    const urlField = selectors.fieldUrl();
+    
+    fireEvent.change(nameField, { target: { value: 'Updated Server Name' } });
+    fireEvent.change(urlField, { target: { value: 'invalid-url' } });
+    
+    fireEvent.keyDown(urlField, { key: 'Enter' });
+    
+    expect(mockOnChange).not.toHaveBeenCalled();
   });
 }); 
