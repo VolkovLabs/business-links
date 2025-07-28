@@ -11,6 +11,9 @@ dist/
 # Not included in app code
 timescale/
 
+# Server directories
+server/
+
 # Playwright tests
 playwright.config.ts
 test/
