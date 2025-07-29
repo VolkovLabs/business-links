@@ -375,12 +375,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
               />
             </InlineField>
 
-            <InlineField
-              label="MCP Servers"
-              labelWidth={20}
-              grow={true}
-              tooltip="Configure external MCP servers for enhanced LLM capabilities"
-            >
+            <FieldsGroup label="MCP Servers" description="Configure external MCP servers for enhanced LLM capabilities">
               <McpServersEditor
                 value={value.mcpServers || []}
                 onChange={(mcpServers) => {
@@ -390,7 +385,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
                   });
                 }}
               />
-            </InlineField>
+            </FieldsGroup>
           </>
         )}
 
