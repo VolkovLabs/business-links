@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
@@ -7,34 +8,7 @@ import { McpServerConfig } from '@/types';
 
 import { McpServersEditor } from './McpServersEditor';
 
-/**
- * Mock data
- */
-const mockServers: McpServerConfig[] = [
-  {
-    name: 'Test Server 1',
-    url: 'http://localhost:3004',
-    enabled: true,
-  },
-  {
-    name: 'Test Server 2',
-    url: 'http://localhost:3005',
-    enabled: false,
-  },
-];
-
-/**
- * Mock onChange function
- */
-const mockOnChange = jest.fn();
-
-/**
- * Default props
- */
-const defaultProps = {
-  value: mockServers,
-  onChange: mockOnChange,
-};
+type Props = React.ComponentProps<typeof McpServersEditor>;
 
 describe('McpServersEditor', () => {
   /**
@@ -43,12 +17,40 @@ describe('McpServersEditor', () => {
   const getSelectors = getJestSelectors(TEST_IDS.mcpServersEditor);
   const selectors = getSelectors(screen);
 
+  /**
+   * Mock data
+   */
+  const defaultServers: McpServerConfig[] = [
+    {
+      name: 'Test Server 1',
+      url: 'http://localhost:3004',
+      enabled: true,
+    },
+    {
+      name: 'Test Server 2',
+      url: 'http://localhost:3005',
+      enabled: false,
+    },
+  ];
+
+  /**
+   * Change
+   */
+  const onChange = jest.fn();
+
+  /**
+   * Get component
+   */
+  const getComponent = (props: Partial<Props>) => {
+    return <McpServersEditor onChange={onChange} value={defaultServers} {...(props as any)} />;
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('Should render without crashing', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({ value: undefined }));
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.newItemName()).toBeInTheDocument();
     expect(selectors.newItemUrl()).toBeInTheDocument();
@@ -56,14 +58,14 @@ describe('McpServersEditor', () => {
   });
 
   it('Should display server information correctly', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     expect(selectors.root()).toBeInTheDocument();
     expect(selectors.newItem()).toBeInTheDocument();
   });
 
   it('Should allow adding a new server', async () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const nameInput = selectors.newItemName();
     const urlInput = selectors.newItemUrl();
@@ -74,8 +76,8 @@ describe('McpServersEditor', () => {
     fireEvent.click(addButton);
 
     await waitFor(() => {
-      expect(mockOnChange).toHaveBeenCalledWith([
-        ...mockServers,
+      expect(onChange).toHaveBeenCalledWith([
+        ...defaultServers,
         {
           name: 'New Server',
           url: 'http://localhost:3006',
@@ -86,7 +88,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should validate server name uniqueness', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const nameInput = selectors.newItemName();
     const urlInput = selectors.newItemUrl();
@@ -99,7 +101,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should validate URL format', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const nameInput = selectors.newItemName();
     const urlInput = selectors.newItemUrl();
@@ -112,35 +114,35 @@ describe('McpServersEditor', () => {
   });
 
   it('Should allow toggling server enabled state', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const toggleButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonToggleEnabled.selector());
     const secondToggle = toggleButtons[1];
 
     fireEvent.click(secondToggle);
 
-    expect(mockOnChange).toHaveBeenCalledWith([
-      mockServers[0],
+    expect(onChange).toHaveBeenCalledWith([
+      defaultServers[0],
       {
-        ...mockServers[1],
+        ...defaultServers[1],
         enabled: true,
       },
     ]);
   });
 
   it('Should allow removing a server', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const removeButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonRemove.selector());
     const firstRemoveButton = removeButtons[0];
 
     fireEvent.click(firstRemoveButton);
 
-    expect(mockOnChange).toHaveBeenCalledWith([mockServers[1]]);
+    expect(onChange).toHaveBeenCalledWith([defaultServers[1]]);
   });
 
   it('Should handle empty server list', () => {
-    render(<McpServersEditor value={[]} onChange={mockOnChange} />);
+    render(getComponent({}));
 
     expect(selectors.newItemName()).toBeInTheDocument();
     expect(selectors.newItemUrl()).toBeInTheDocument();
@@ -148,7 +150,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should prevent adding server with empty name', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const nameInput = selectors.newItemName();
     const urlInput = selectors.newItemUrl();
@@ -161,7 +163,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should prevent adding server with empty URL', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const nameInput = selectors.newItemName();
     const urlInput = selectors.newItemUrl();
@@ -174,7 +176,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should allow editing server name and URL', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -195,18 +197,18 @@ describe('McpServersEditor', () => {
     fireEvent.change(urlField, { target: { value: 'http://localhost:3007' } });
     fireEvent.click(saveButton);
 
-    expect(mockOnChange).toHaveBeenCalledWith([
+    expect(onChange).toHaveBeenCalledWith([
       {
-        ...mockServers[0],
+        ...defaultServers[0],
         name: 'Updated Server Name',
         url: 'http://localhost:3007',
       },
-      mockServers[1],
+      defaultServers[1],
     ]);
   });
 
   it('Should validate edited server name uniqueness', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -224,7 +226,7 @@ describe('McpServersEditor', () => {
   });
 
   it('Should validate edited URL format', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -241,37 +243,8 @@ describe('McpServersEditor', () => {
     expect(saveButton).toBeDisabled();
   });
 
-  it('Should handle drag and drop reordering (onDragEnd)', () => {
-    render(<McpServersEditor {...defaultProps} />);
-
-    const reorderedServers = [mockServers[1], mockServers[0]];
-
-    expect(mockServers).toHaveLength(2);
-    expect(reorderedServers[0]).toBe(mockServers[1]);
-    expect(reorderedServers[1]).toBe(mockServers[0]);
-  });
-
-  it('Should handle drag and drop when dropped outside list', () => {
-    render(<McpServersEditor {...defaultProps} />);
-
-    expect(mockOnChange).not.toHaveBeenCalled();
-  });
-
-  it('Should handle drag and drop reordering with valid destination', () => {
-    render(<McpServersEditor {...defaultProps} />);
-
-    const reorderedServers = [mockServers[1], mockServers[0]];
-
-    mockOnChange(reorderedServers);
-
-    expect(mockOnChange).toHaveBeenCalledWith(reorderedServers);
-    expect(reorderedServers).toHaveLength(2);
-    expect(reorderedServers[0]).toBe(mockServers[1]);
-    expect(reorderedServers[1]).toBe(mockServers[0]);
-  });
-
   it('Should handle Enter key in name field during edit mode', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -286,18 +259,18 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(nameField, { key: 'Enter' });
 
-    expect(mockOnChange).toHaveBeenCalledWith([
+    expect(onChange).toHaveBeenCalledWith([
       {
-        ...mockServers[0],
+        ...defaultServers[0],
         name: 'Updated Server Name',
         url: 'http://localhost:3007',
       },
-      mockServers[1],
+      defaultServers[1],
     ]);
   });
 
   it('Should handle Escape key in name field during edit mode', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -312,13 +285,13 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(nameField, { key: 'Escape' });
 
-    expect(mockOnChange).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
 
     expect(nameField).not.toBeInTheDocument();
   });
 
   it('Should handle Enter key in URL field during edit mode', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -333,18 +306,18 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(urlField, { key: 'Enter' });
 
-    expect(mockOnChange).toHaveBeenCalledWith([
+    expect(onChange).toHaveBeenCalledWith([
       {
-        ...mockServers[0],
+        ...defaultServers[0],
         name: 'Updated Server Name',
         url: 'http://localhost:3007',
       },
-      mockServers[1],
+      defaultServers[1],
     ]);
   });
 
   it('Should handle Escape key in URL field during edit mode', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -359,13 +332,13 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(urlField, { key: 'Escape' });
 
-    expect(mockOnChange).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
 
     expect(urlField).not.toBeInTheDocument();
   });
 
   it('Should not save on Enter key when validation fails in name field', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -380,11 +353,11 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(nameField, { key: 'Enter' });
 
-    expect(mockOnChange).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
   });
 
   it('Should not save on Enter key when validation fails in URL field', () => {
-    render(<McpServersEditor {...defaultProps} />);
+    render(getComponent({}));
 
     const editButtons = screen.getAllByTestId(TEST_IDS.mcpServersEditor.buttonEdit.selector());
     const firstEditButton = editButtons[0];
@@ -399,6 +372,62 @@ describe('McpServersEditor', () => {
 
     fireEvent.keyDown(urlField, { key: 'Enter' });
 
-    expect(mockOnChange).not.toHaveBeenCalled();
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it('Should reorder items', async () => {
+    let onDragEndHandler: (result: DropResult) => void = () => {};
+
+    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+      onDragEndHandler = onDragEnd;
+      return children;
+    });
+
+    const onChange = jest.fn();
+
+    await act(async () => render(getComponent({ onChange: onChange })));
+
+    /**
+     * Simulate drop field 1 to index 0
+     */
+    act(() =>
+      onDragEndHandler({
+        destination: {
+          index: 0,
+        },
+        source: {
+          index: 1,
+        },
+      } as any)
+    );
+
+    expect(onChange).toHaveBeenCalledWith([defaultServers[1], defaultServers[0]]);
+  });
+
+  it('Should not reorder items if drop outside the list', async () => {
+    let onDragEndHandler: (result: DropResult) => void = () => {};
+
+    jest.mocked(DragDropContext).mockImplementation(({ children, onDragEnd }: any) => {
+      onDragEndHandler = onDragEnd;
+      return children;
+    });
+
+    const onChange = jest.fn();
+
+    await act(async () => render(getComponent({ onChange: onChange })));
+
+    /**
+     * Simulate drop field 1 to outside the list
+     */
+    act(() =>
+      onDragEndHandler({
+        destination: null,
+        source: {
+          index: 1,
+        },
+      } as any)
+    );
+
+    expect(onChange).not.toHaveBeenCalled();
   });
 });
