@@ -328,10 +328,11 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
           )}
         </Droppable>
       </DragDropContext>
-      <InlineFieldRow className={styles.newItem} {...TEST_IDS.mcpServersEditor.newItem.apply()}>
+      <InlineFieldRow {...TEST_IDS.mcpServersEditor.newItem.apply()}>
         <InlineField
           label="Server Name"
-          grow={false}
+          grow={true}
+          labelWidth={12}
           invalid={isNameExistsError}
           error="Server with the same name already exists."
         >
@@ -345,6 +346,7 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
         <InlineField
           label="Server URL"
           grow={true}
+          labelWidth={12}
           invalid={!isUrlValid && newServerUrl.length > 0}
           error="Please enter a valid URL"
         >
@@ -355,16 +357,16 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
             {...TEST_IDS.mcpServersEditor.newItemUrl.apply()}
           />
         </InlineField>
-        <Button
-          icon="plus"
-          title="Add MCP Server"
-          disabled={!newServerName || isNameExistsError || !isUrlValid}
-          onClick={onAddNewServer}
-          {...TEST_IDS.mcpServersEditor.buttonAddNew.apply()}
-        >
-          Add Server
-        </Button>
       </InlineFieldRow>
+      <Button
+        icon="plus"
+        title="Add MCP Server"
+        disabled={!newServerName || isNameExistsError || !isUrlValid}
+        onClick={onAddNewServer}
+        {...TEST_IDS.mcpServersEditor.buttonAddNew.apply()}
+      >
+        Add Server
+      </Button>
     </div>
   );
 };

@@ -38,10 +38,12 @@ export const getStyles = (theme: GrafanaTheme2) => ({
   serverName: css({
     fontWeight: theme.typography.fontWeightMedium,
     color: theme.colors.text.primary,
+    fontSize: theme.typography.bodySmall.fontSize,
   }),
   serverUrl: css({
     color: theme.colors.text.secondary,
-    fontFamily: 'monospace',
+    fontFamily: theme.typography.fontFamily,
+    fontSize: theme.typography.bodySmall.fontSize,
   }),
   fieldName: css({
     marginBottom: 0,
