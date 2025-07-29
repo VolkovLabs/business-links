@@ -705,6 +705,57 @@ describe('useMcpLlmIntegration', () => {
       });
     });
 
+    it('Should handle messages with tool role', async () => {
+      const mockTools: any[] = [];
+
+      const mockMcpService = {
+        checkMcpStatus: jest.fn(),
+        getAvailableTools: jest.fn().mockResolvedValue(mockTools),
+        convertToolsToOpenAiFormat: jest.fn().mockReturnValue(mockTools),
+        executeToolCall: jest.fn(),
+        setupMcpClients: jest.fn(),
+        processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
+      };
+
+      mockUseMcpService.mockReturnValue(mockMcpService);
+
+      const { result } = renderHook(() => useMcpLlmIntegration());
+
+      const messages = [
+        { role: 'user', content: 'Hello' },
+        { role: 'tool', content: '/', toolCallId: 'call_kTFIvbxnDzZTvf1DdKHVxcBq' },
+        { role: 'system', content: 'You are a helpful assistant' },
+      ] as any;
+
+      const mockResponse = {
+        choices: [
+          {
+            message: {
+              content: 'Hello! How can I help you?',
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              tool_calls: undefined,
+            },
+          },
+        ],
+      };
+
+      (llm.chatCompletions as jest.Mock).mockResolvedValue(mockResponse);
+
+      await result.current.sendMessageWithTools(messages);
+
+      expect(llm.chatCompletions).toHaveBeenCalledWith({
+        model: llm.Model.BASE,
+        messages: [
+          { role: 'user', content: 'Hello' },
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          { role: 'tool', content: '/', tool_call_id: 'call_kTFIvbxnDzZTvf1DdKHVxcBq' },
+          { role: 'system', content: 'You are a helpful assistant' },
+        ],
+        tools: mockTools,
+      });
+    });
+
     it('Should handle tool messages with empty content in filter', async () => {
       const mockTools = [{ name: 'get_time', description: 'Get current time' }];
 
@@ -983,6 +1034,66 @@ describe('useMcpLlmIntegration', () => {
         .mockResolvedValueOnce(mockResponseFinal);
 
       const response = await result.current.sendMessageWithTools(messages);
+
+      expect(response).toBe('I encountered an error getting the weather.');
+      expect(mockMcpService.executeToolCall).toHaveBeenCalledWith(toolCall, undefined, undefined);
+    });
+
+    it('Should handle tool call errors with onToolResult callback', async () => {
+      const mockTools = [{ name: 'get_weather', description: 'Get weather info' }];
+
+      const onToolResult = jest.fn();
+
+      const mockMcpService = {
+        checkMcpStatus: jest.fn(),
+        getAvailableTools: jest.fn().mockResolvedValue(mockTools),
+        convertToolsToOpenAiFormat: jest.fn().mockReturnValue(mockTools),
+        executeToolCall: jest.fn().mockRejectedValue(new Error('Weather service unavailable')),
+        setupMcpClients: jest.fn(),
+        processToolCalls: jest.fn(),
+        clearCache: jest.fn(),
+      };
+
+      mockUseMcpService.mockReturnValue(mockMcpService);
+
+      const { result } = renderHook(() => useMcpLlmIntegration());
+
+      const messages = [{ role: 'user' as const, content: 'Get the weather' }];
+
+      const toolCall = {
+        id: 'call_1',
+        function: { name: 'get_weather', arguments: '{}' },
+      };
+
+      const mockResponseWithToolCall = {
+        choices: [
+          {
+            message: {
+              content: 'Let me get the weather for you.',
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              tool_calls: [toolCall],
+            },
+          },
+        ],
+      };
+
+      const mockResponseFinal = {
+        choices: [
+          {
+            message: {
+              content: 'I encountered an error getting the weather.',
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              tool_calls: undefined,
+            },
+          },
+        ],
+      };
+
+      (llm.chatCompletions as jest.Mock)
+        .mockResolvedValueOnce(mockResponseWithToolCall)
+        .mockResolvedValueOnce(mockResponseFinal);
+
+      const response = await result.current.sendMessageWithTools(messages, onToolResult);
 
       expect(response).toBe('I encountered an error getting the weather.');
       expect(mockMcpService.executeToolCall).toHaveBeenCalledWith(toolCall, undefined, undefined);

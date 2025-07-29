@@ -29,7 +29,11 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
         };
       }
 
+      /**
+       * Check MCP Status
+       */
       const mcpStatus = await mcpService.checkMcpStatus();
+
       if (!mcpStatus.isAvailable) {
         return {
           isAvailable: false,
@@ -98,7 +102,8 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               return {
                 role: msg.role,
                 content: String(msg.content),
-                tool_call_id: msg.toolCallId, // eslint-disable-line @typescript-eslint/naming-convention
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                tool_call_id: msg.toolCallId,
               };
             }
             return {
@@ -137,7 +142,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               messages.push({
                 role: 'tool',
                 content: toolContent,
-                toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
+                toolCallId: toolCall.id,
               });
 
               if (onToolResult) {
@@ -149,7 +154,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               messages.push({
                 role: 'tool',
                 content: errorContent,
-                toolCallId: toolCall.id, // eslint-disable-line @typescript-eslint/naming-convention
+                toolCallId: toolCall.id,
               });
 
               if (onToolResult) {
@@ -177,14 +182,16 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
                 return {
                   role: msg.role,
                   content: String(msg.content),
-                  tool_call_id: msg.toolCallId, // eslint-disable-line @typescript-eslint/naming-convention
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  tool_call_id: msg.toolCallId,
                 };
               }
               if (msg.role === 'assistant' && msg.toolCalls) {
                 return {
                   role: msg.role,
                   content: String(msg.content),
-                  tool_calls: msg.toolCalls, // eslint-disable-line @typescript-eslint/naming-convention
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
+                  tool_calls: msg.toolCalls,
                 };
               }
               return {
