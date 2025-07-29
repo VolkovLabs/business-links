@@ -921,4 +921,31 @@ describe('useMcpService with multiple servers', () => {
       true
     );
   });
+
+  it('Should handle tool execution errors gracefully with time out text', async () => {
+    const addErrorMessage = jest.fn();
+    const { result } = renderHook(() => useMcpService(addErrorMessage));
+
+    const mockClient1 = createMockClient();
+
+    mockClient1.callTool.mockRejectedValue(new Error('timed out test'));
+    mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
+
+    (mcp.Client as jest.Mock).mockReturnValueOnce(mockClient1).mockReturnValueOnce(mockClient1);
+
+    const mcpServers = [
+      { name: 'Server 1', url: 'http://localhost:3004', enabled: true },
+      { name: 'Server 2', url: 'http://localhost:3005', enabled: true },
+    ];
+
+    const toolCall = {
+      id: 'call_1',
+      function: { name: 'get_time', arguments: '{}' },
+    };
+
+    const toolResult = await result.current.executeToolCall(toolCall, mcpServers);
+
+    expect(toolResult.isError).toEqual(true);
+    expect(addErrorMessage).toHaveBeenCalledWith('Server Server 1 timed out (10000ms)');
+  });
 });
