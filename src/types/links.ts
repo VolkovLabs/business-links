@@ -1,5 +1,6 @@
 import { DropzoneFile, IconName } from '@grafana/ui';
 
+import { LlmMessage } from './llm-integrations';
 import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig, McpServerConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
@@ -323,32 +324,6 @@ export interface LlmHealthCheck {
    * @type {string}
    */
   error?: string;
-}
-
-/**
- * Chat message for LLM API
- */
-export interface LlmMessage {
-  /**
-   * Message role
-   *
-   * @type {'system' | 'user' | 'assistant' | 'tool'}
-   */
-  role: 'system' | 'user' | 'assistant' | 'tool';
-
-  /**
-   * Message content
-   *
-   * @type {string}
-   */
-  content: string;
-
-  /**
-   * Tool call ID for tool messages
-   *
-   * @type {string}
-   */
-  toolCallId?: string;
 }
 
 /**

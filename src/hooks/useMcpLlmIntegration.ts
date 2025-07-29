@@ -1,52 +1,9 @@
 import { llm } from '@grafana/llm';
 import { useCallback } from 'react';
 
-import { McpServerConfig } from '@/types';
+import { LlmMessage, McpLlmIntegration, McpServerConfig, McpTool } from '@/types';
 
-import { type McpTool, useMcpService } from './useMcpService';
-
-/**
- * LLM Message interface
- */
-export interface LlmMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
-  content: string | null | undefined;
-  toolCallId?: string;
-  /**
-   * Add tool_calls for assistant messages
-   */
-  toolCalls?: any[]; //
-}
-
-/**
- * MCP + LLM Integration Return interface
- */
-export interface UseMcpLlmIntegrationReturn {
-  /**
-   * Send message with MCP tools support
-   */
-  sendMessageWithTools: (
-    messages: LlmMessage[],
-    onToolResult?: (toolCallId: string, content: string, isError?: boolean) => void,
-    mcpServers?: McpServerConfig[],
-    useDefaultGrafanaMcp?: boolean
-  ) => Promise<string>;
-
-  /**
-   * Check if MCP + LLM integration is available
-   */
-  checkAvailability: () => Promise<{ isAvailable: boolean; error?: string }>;
-
-  /**
-   * Get available tools from MCP servers
-   */
-  getAvailableTools: (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpTool[]>;
-
-  /**
-   * Clear MCP cache and force reconnection to servers
-   */
-  clearMcpCache: () => void;
-}
+import { useMcpService } from './useMcpService';
 
 /**
  * Custom hook for MCP + LLM integration
@@ -57,7 +14,7 @@ export interface UseMcpLlmIntegrationReturn {
  * @param addErrorMessage - Optional function to add error messages to chat
  * @returns Object with MCP + LLM integration functions
  */
-export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void): UseMcpLlmIntegrationReturn => {
+export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void): McpLlmIntegration => {
   const mcpService = useMcpService(addErrorMessage);
 
   /**

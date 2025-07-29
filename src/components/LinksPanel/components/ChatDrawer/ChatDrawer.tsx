@@ -5,8 +5,6 @@ import { Subscription } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
 import {
-  LlmMessage,
-  McpTool,
   useChatMessages,
   useFileAttachments,
   useLlmService,
@@ -14,7 +12,7 @@ import {
   useMcpService,
   useTextareaResize,
 } from '@/hooks';
-import { ChatMessage, McpServerConfig } from '@/types';
+import { ChatMessage, LlmMessage, McpServerConfig, McpTool } from '@/types';
 
 import { getStyles } from './ChatDrawer.styles';
 

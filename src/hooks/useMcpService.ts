@@ -1,143 +1,18 @@
 import { mcp } from '@grafana/llm';
 import { useCallback, useRef } from 'react';
 
-import { McpServerConfig } from '@/types';
-
-/**
- * MCP Tool interface
- */
-export interface McpTool {
-  name: string;
-  description?: string;
-  inputSchema?: Record<string, unknown>;
-  serverName?: string;
-  serverUrl?: string;
-  [key: string]: unknown;
-}
-
-/**
- * MCP Tool Call interface
- */
-export interface McpToolCall {
-  id: string;
-  function: {
-    name: string;
-    arguments: string;
-  };
-}
-
-/**
- * MCP Tool Result interface
- */
-export interface McpToolResult {
-  content: unknown;
-  isError?: boolean;
-  errorMessage?: string;
-}
-
-/**
- * Extended LLM Message interface to support tool calls
- */
-export interface ExtendedLlmMessage {
-  role: 'system' | 'user' | 'assistant' | 'tool';
-  content: string;
-  toolCallId?: string; // eslint-disable-line @typescript-eslint/naming-convention
-}
-
-/**
- * LLM Response interface
- */
-export interface LlmResponse {
-  choices: Array<{
-    message: {
-      content?: string;
-      toolCalls?: McpToolCall[]; // eslint-disable-line @typescript-eslint/naming-convention
-      role?: string;
-    };
-  }>;
-}
-
-/**
- * OpenAI Tool interface
- */
-export interface OpenAiTool {
-  type: string;
-  function: {
-    name: string;
-    description?: string;
-    parameters?: Record<string, unknown>;
-  };
-  [key: string]: unknown;
-}
-
-/**
- * MCP Client with server info and cached tools
- */
-interface McpClientWithServer {
-  client: InstanceType<typeof mcp.Client>;
-  server: McpServerConfig;
-  availableTools?: string[];
-}
-
-/**
- * Cached MCP state
- */
-interface CachedMcpState {
-  clients: McpClientWithServer[];
-  tools: McpTool[];
-  configHash: string;
-  lastUpdated: number;
-}
-
-/**
- * MCP Service Return interface
- */
-export interface UseMcpServiceReturn {
-  /**
-   * Check if MCP is available
-   */
-  checkMcpStatus: () => Promise<{ isAvailable: boolean; error?: string }>;
-
-  /**
-   * Setup MCP clients for multiple servers
-   */
-  setupMcpClients: (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpClientWithServer[]>;
-
-  /**
-   * Get available tools from all MCP servers
-   */
-  getAvailableTools: (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpTool[]>;
-
-  /**
-   * Execute MCP tool call across multiple servers
-   */
-  executeToolCall: (
-    toolCall: McpToolCall,
-    mcpServers?: McpServerConfig[],
-    useDefaultGrafanaMcp?: boolean
-  ) => Promise<McpToolResult>;
-
-  /**
-   * Process LLM response with tool calls
-   */
-  processToolCalls: (
-    response: LlmResponse,
-    messages: ExtendedLlmMessage[],
-    addToolResult: (toolCallId: string, content: string, isError?: boolean) => void,
-    mcpServers?: McpServerConfig[],
-    useDefaultGrafanaMcp?: boolean
-  ) => Promise<{ hasMoreToolCalls: boolean; updatedMessages: ExtendedLlmMessage[] }>;
-
-  /**
-   * Convert MCP tools to OpenAI format
-   */
-  convertToolsToOpenAiFormat: (tools: McpTool[]) => OpenAiTool[];
-
-  /**
-   * Clear cached MCP state and force reconnection
-   */
-  clearCache: () => void;
-}
+import {
+  CachedMcpState,
+  ExtendedLlmMessage,
+  LlmResponse,
+  McpClientWithServer,
+  McpServerConfig,
+  McpTool,
+  McpToolCall,
+  McpToolResult,
+  OpenAiTool,
+  UseMcpServiceReturn,
+} from '@/types';
 
 /**
  * Generate hash from server configuration to detect changes
