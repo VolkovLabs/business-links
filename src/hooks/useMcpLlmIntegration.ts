@@ -167,7 +167,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
             /**
              * Store tool_calls in the message
              */
-            toolCalls: response.choices[0].message.tool_calls, //
+            toolCalls: response.choices[0].message.tool_calls,
           };
           messages.push(assistantMessage);
 

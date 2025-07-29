@@ -139,6 +139,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     }
     return sender;
   };
+
   /**
    * State
    */
