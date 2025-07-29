@@ -372,6 +372,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
                   };
                   onChange(newValue);
                 }}
+                {...TEST_IDS.linkEditor.fieldUseDefaultMcp.apply()}
               />
             </InlineField>
 

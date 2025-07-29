@@ -22,6 +22,7 @@ type Props = React.ComponentProps<typeof LinkEditor>;
 const inTestIds = {
   timePickerEditor: createSelector('data-testid time-picker-editor'),
   contentEditor: createSelector('data-testid content-editor'),
+  mcpServersEditor: createSelector('data-testid mcp-server-editor'),
 };
 
 /**
@@ -56,11 +57,15 @@ const ContentEditorMock = ({ value, onChange }: any) => {
  * Mock McpServersEditor
  */
 const McpServersEditorMock = ({ value, onChange }: any) => {
+  console.log('McpServersEditorMock value', value);
   return (
     <div data-testid="mcp-servers-editor">
       <input
+        {...inTestIds.mcpServersEditor.apply()}
         value={JSON.stringify(value)}
         onChange={(e) => {
+          console.log('McpServersEditorMock onChange', e.target.value);
+          console.log('McpServersEditorMock onChange', JSON.parse(e.target.value));
           onChange(JSON.parse(e.target.value));
         }}
       />
@@ -776,6 +781,64 @@ describe('LinkEditor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         hideTooltipOnHover: true,
+      })
+    );
+  });
+
+  it('Should allow change Default Grafana MCP', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP }),
+      })
+    );
+
+    expect(selectors.fieldUseDefaultMcp()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldUseDefaultMcp());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        useDefaultGrafanaMcp: true,
+      })
+    );
+  });
+
+  it('Should allow change MCP servers', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP }),
+      })
+    );
+
+    expect(selectors.mcpServersEditor()).toBeInTheDocument();
+    fireEvent.change(selectors.mcpServersEditor(), {
+      target: { value: JSON.stringify([{ id: 'server', name: 'server-1' }]) },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mcpServers: [{ id: 'server', name: 'server-1' }],
+      })
+    );
+  });
+
+  it('Should allow change MCP servers if mcp servers is undefined', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP, mcpServers: undefined }),
+      })
+    );
+
+    expect(selectors.mcpServersEditor()).toBeInTheDocument();
+    fireEvent.change(selectors.mcpServersEditor(), {
+      target: { value: JSON.stringify([{ id: 'server', name: 'server-1' }]) },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mcpServers: [{ id: 'server', name: 'server-1' }],
       })
     );
   });
