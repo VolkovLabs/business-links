@@ -142,7 +142,7 @@ describe('ChatDrawer', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     (hooks.useFileAttachments as jest.Mock).mockReturnValue({
       ...defaultUseFileAttachments,
       attachedFiles: [],
@@ -416,7 +416,7 @@ describe('ChatDrawer', () => {
         checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
         getAvailableTools: jest.fn().mockResolvedValue([]),
       });
-      
+
       await act(async () => {
         fireEvent.change(textarea, { target: { value: 'First message' } });
         fireEvent.click(sendButton);
@@ -607,7 +607,7 @@ describe('ChatDrawer', () => {
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
-      
+
       await act(async () => {
         fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);

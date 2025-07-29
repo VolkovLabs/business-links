@@ -1070,7 +1070,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
-        clearCache: jest.fn(),
+      clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1093,7 +1093,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
-        clearCache: jest.fn(),
+      clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1118,7 +1118,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn(),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
-        clearCache: jest.fn(),
+      clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1156,7 +1156,7 @@ describe('useMcpLlmIntegration', () => {
       executeToolCall: jest.fn().mockRejectedValue('String error'),
       setupMcpClients: jest.fn(),
       processToolCalls: jest.fn(),
-        clearCache: jest.fn(),
+      clearCache: jest.fn(),
     };
 
     mockUseMcpService.mockReturnValue(mockMcpService);
@@ -1236,9 +1236,7 @@ describe('useMcpLlmIntegration', () => {
       'MCP + LLM request failed: Unknown error'
     );
 
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      'Failed to use MCP with LLM: Unknown error'
-    );
+    expect(mockAddErrorMessage).toHaveBeenCalledWith('Failed to use MCP with LLM: Unknown error');
   });
 
   describe('clearMcpCache', () => {

@@ -34,8 +34,6 @@ const getItemStyle = (isDragging: boolean, draggableStyle: DraggingStyle | NotDr
   ...draggableStyle,
 });
 
-
-
 /**
  * MCP Servers Editor
  */
@@ -198,7 +196,10 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
                     >
                       <div className={styles.itemContent}>
                         {editItem === server.name ? (
-                          <div className={cx(styles.itemHeader, styles.itemHeaderForm)} {...TEST_IDS.mcpServersEditor.itemHeader.apply(server.name)}>
+                          <div
+                            className={cx(styles.itemHeader, styles.itemHeaderForm)}
+                            {...TEST_IDS.mcpServersEditor.itemHeader.apply(server.name)}
+                          >
                             <InlineField className={styles.fieldName} invalid={!isUpdatedNameValid}>
                               <Input
                                 autoFocus={true}
@@ -260,7 +261,10 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
                             />
                           </div>
                         ) : (
-                          <div className={cx(styles.itemHeader, styles.itemHeaderText)} {...TEST_IDS.mcpServersEditor.itemHeader.apply(server.name)}>
+                          <div
+                            className={cx(styles.itemHeader, styles.itemHeaderText)}
+                            {...TEST_IDS.mcpServersEditor.itemHeader.apply(server.name)}
+                          >
                             <div className={styles.serverInfo}>
                               <span className={styles.serverName}>{server.name}</span>
                               <span className={styles.serverUrl}>{server.url}</span>

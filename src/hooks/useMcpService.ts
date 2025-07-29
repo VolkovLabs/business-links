@@ -111,7 +111,11 @@ export interface UseMcpServiceReturn {
   /**
    * Execute MCP tool call across multiple servers
    */
-  executeToolCall: (toolCall: McpToolCall, mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean) => Promise<McpToolResult>;
+  executeToolCall: (
+    toolCall: McpToolCall,
+    mcpServers?: McpServerConfig[],
+    useDefaultGrafanaMcp?: boolean
+  ) => Promise<McpToolResult>;
 
   /**
    * Process LLM response with tool calls
@@ -140,7 +144,7 @@ export interface UseMcpServiceReturn {
  */
 const generateConfigHash = (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): string => {
   const config = {
-    servers: mcpServers?.filter(s => s.enabled).map(s => ({ name: s.name, url: s.url })) || [],
+    servers: mcpServers?.filter((s) => s.enabled).map((s) => ({ name: s.name, url: s.url })) || [],
     useDefault: useDefaultGrafanaMcp || false,
   };
   return JSON.stringify(config);
@@ -183,15 +187,18 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * @param useDefaultGrafanaMcp - Whether to use default Grafana MCP server
    * @returns Array of enabled servers
    */
-  const getEnabledServers = useCallback((mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): McpServerConfig[] => {
-    const enabledCustomServers = mcpServers?.filter(server => server.enabled) || [];
-    
-    if (enabledCustomServers.length === 0 && !useDefaultGrafanaMcp) {
-      return [];
-    }
-    
-    return enabledCustomServers;
-  }, []);
+  const getEnabledServers = useCallback(
+    (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): McpServerConfig[] => {
+      const enabledCustomServers = mcpServers?.filter((server) => server.enabled) || [];
+
+      if (enabledCustomServers.length === 0 && !useDefaultGrafanaMcp) {
+        return [];
+      }
+
+      return enabledCustomServers;
+    },
+    []
+  );
 
   /**
    * Clear cached MCP state and force reconnection
@@ -201,8 +208,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
       mcpCacheRef.current.clients.forEach(({ client }) => {
         try {
           client.close();
-        } catch {
-        }
+        } catch {}
       });
     }
     mcpCacheRef.current = null;
@@ -214,114 +220,118 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * @param useDefaultGrafanaMcp - Whether to use default Grafana MCP server
    * @returns Promise with array of MCP clients with server info
    */
-  const setupMcpClients = useCallback(async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpClientWithServer[]> => {
-    try {
-      const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
-      const now = Date.now();
-      const cacheTimeout = 5 * 60 * 1000;
-      
-      if (mcpCacheRef.current && 
+  const setupMcpClients = useCallback(
+    async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpClientWithServer[]> => {
+      try {
+        const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
+        const now = Date.now();
+        const cacheTimeout = 5 * 60 * 1000;
+
+        if (
+          mcpCacheRef.current &&
           mcpCacheRef.current.configHash === configHash &&
-          (now - mcpCacheRef.current.lastUpdated) < cacheTimeout) {
-        return mcpCacheRef.current.clients;
-      }
-      
-      if (mcpCacheRef.current && mcpCacheRef.current.configHash !== configHash) {
-        clearCache();
-      }
-      
-      const enabledServers = getEnabledServers(mcpServers, useDefaultGrafanaMcp);
-      const clients: McpClientWithServer[] = [];
+          now - mcpCacheRef.current.lastUpdated < cacheTimeout
+        ) {
+          return mcpCacheRef.current.clients;
+        }
 
-      if (useDefaultGrafanaMcp) {
-        try {
-          const defaultClient = new mcp.Client({
-            name: 'volkovlabs-links-panel',
-            version: '2.1.0',
-          });
-          const transport = new mcp.StreamableHTTPClientTransport(mcp.streamableHTTPURL());
-          await defaultClient.connect(transport);
-          
-          let availableTools: string[] = [];
+        if (mcpCacheRef.current && mcpCacheRef.current.configHash !== configHash) {
+          clearCache();
+        }
+
+        const enabledServers = getEnabledServers(mcpServers, useDefaultGrafanaMcp);
+        const clients: McpClientWithServer[] = [];
+
+        if (useDefaultGrafanaMcp) {
           try {
-            const toolsResponse = await defaultClient.listTools();
-            availableTools = toolsResponse.tools?.map((tool: McpTool) => tool.name) || [];
-          } catch {
-            availableTools = [];
-          }
-          
-          clients.push({
-            client: defaultClient,
-            server: {
-              name: 'Default Grafana MCP',
-              url: mcp.streamableHTTPURL().toString(),
-              enabled: true,
-            },
-            availableTools,
-          });
-          
-        } catch (error) {
-          const errorMessage = `Failed to connect to default Grafana MCP server: ${error instanceof Error ? error.message : 'Unknown error'}`;
-          if (addErrorMessage) {
-            addErrorMessage(errorMessage);
+            const defaultClient = new mcp.Client({
+              name: 'volkovlabs-links-panel',
+              version: '2.1.0',
+            });
+            const transport = new mcp.StreamableHTTPClientTransport(mcp.streamableHTTPURL());
+            await defaultClient.connect(transport);
+
+            let availableTools: string[] = [];
+            try {
+              const toolsResponse = await defaultClient.listTools();
+              availableTools = toolsResponse.tools?.map((tool: McpTool) => tool.name) || [];
+            } catch {
+              availableTools = [];
+            }
+
+            clients.push({
+              client: defaultClient,
+              server: {
+                name: 'Default Grafana MCP',
+                url: mcp.streamableHTTPURL().toString(),
+                enabled: true,
+              },
+              availableTools,
+            });
+          } catch (error) {
+            const errorMessage = `Failed to connect to default Grafana MCP server: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            if (addErrorMessage) {
+              addErrorMessage(errorMessage);
+            }
           }
         }
-      }
 
-      for (const server of enabledServers) {
-        try {
-          const client = new mcp.Client({
-            name: 'volkovlabs-links-panel',
-            version: '2.1.0',
-          });
-          
-          let serverUrl: URL;
+        for (const server of enabledServers) {
           try {
-            serverUrl = new URL(server.url);
-          } catch {
-            throw new Error(`Invalid URL for server ${server.name}: ${server.url}`);
-          }
-          
-          const transport = new mcp.StreamableHTTPClientTransport(serverUrl);
-          await client.connect(transport);
-          
-          let availableTools: string[] = [];
-          try {
-            const toolsResponse = await client.listTools();
-            availableTools = toolsResponse.tools?.map((tool: McpTool) => tool.name) || [];
-          } catch {
-            availableTools = [];
-          }
-          
-          clients.push({ client, server, availableTools });
-        } catch (error) {
-          const errorMessage = `Failed to connect to MCP server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
-          if (addErrorMessage) {
-            addErrorMessage(errorMessage);
-          }
+            const client = new mcp.Client({
+              name: 'volkovlabs-links-panel',
+              version: '2.1.0',
+            });
 
-          if (error instanceof Error && error.message.includes('Invalid URL')) {
-            throw error;
+            let serverUrl: URL;
+            try {
+              serverUrl = new URL(server.url);
+            } catch {
+              throw new Error(`Invalid URL for server ${server.name}: ${server.url}`);
+            }
+
+            const transport = new mcp.StreamableHTTPClientTransport(serverUrl);
+            await client.connect(transport);
+
+            let availableTools: string[] = [];
+            try {
+              const toolsResponse = await client.listTools();
+              availableTools = toolsResponse.tools?.map((tool: McpTool) => tool.name) || [];
+            } catch {
+              availableTools = [];
+            }
+
+            clients.push({ client, server, availableTools });
+          } catch (error) {
+            const errorMessage = `Failed to connect to MCP server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            if (addErrorMessage) {
+              addErrorMessage(errorMessage);
+            }
+
+            if (error instanceof Error && error.message.includes('Invalid URL')) {
+              throw error;
+            }
           }
         }
-      }
 
-      mcpCacheRef.current = {
-        clients,
-        tools: [],
-        configHash,
-        lastUpdated: now,
-      };
+        mcpCacheRef.current = {
+          clients,
+          tools: [],
+          configHash,
+          lastUpdated: now,
+        };
 
-      return clients;
-    } catch (error) {
-      const errorMessage = `Failed to setup MCP clients: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      if (addErrorMessage) {
-        addErrorMessage(errorMessage);
+        return clients;
+      } catch (error) {
+        const errorMessage = `Failed to setup MCP clients: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
+        throw new Error(errorMessage);
       }
-      throw new Error(errorMessage);
-    }
-  }, [getEnabledServers, addErrorMessage, clearCache]);
+    },
+    [getEnabledServers, addErrorMessage, clearCache]
+  );
 
   /**
    * Gets available tools from all MCP servers with caching
@@ -329,66 +339,71 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * @param useDefaultGrafanaMcp - Whether to use default Grafana MCP server
    * @returns Promise with array of available tools from all servers
    */
-  const getAvailableTools = useCallback(async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpTool[]> => {
-    try {
-      const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
-      const now = Date.now();
-      const cacheTimeout = 5 * 60 * 1000;
-      
-      if (mcpCacheRef.current && 
+  const getAvailableTools = useCallback(
+    async (mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpTool[]> => {
+      try {
+        const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
+        const now = Date.now();
+        const cacheTimeout = 5 * 60 * 1000;
+
+        if (
+          mcpCacheRef.current &&
           mcpCacheRef.current.configHash === configHash &&
           mcpCacheRef.current.tools.length > 0 &&
-          (now - mcpCacheRef.current.lastUpdated) < cacheTimeout) {
-        return mcpCacheRef.current.tools;
-      }
-      
-      const clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
-      
-      if (clients.length === 0) {
-        const errorMessage = 'Failed to get MCP tools';
-        if (addErrorMessage) {
-          addErrorMessage(errorMessage);
+          now - mcpCacheRef.current.lastUpdated < cacheTimeout
+        ) {
+          return mcpCacheRef.current.tools;
         }
-        return [];
-      }
-      
-      const allTools: McpTool[] = [];
 
-      for (const { client, server } of clients) {
-        try {
-          const toolsResponse = await client.listTools();
-          const tools = toolsResponse.tools || [];
-          
-          const toolsWithServer = tools.map((tool: McpTool) => ({
-            ...tool,
-            serverName: server.name,
-            serverUrl: server.url,
-          }));
-          
-          allTools.push(...toolsWithServer);
-        } catch (error) {
-          const errorMessage = `Failed to get tools from server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        const clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
+
+        if (clients.length === 0) {
+          const errorMessage = 'Failed to get MCP tools';
           if (addErrorMessage) {
             addErrorMessage(errorMessage);
           }
+          return [];
         }
-      }
 
-      if (mcpCacheRef.current) {
-        mcpCacheRef.current.tools = allTools;
-        mcpCacheRef.current.lastUpdated = now;
-      }
+        const allTools: McpTool[] = [];
 
-      return allTools;
-    } catch (error) {
-      const errorMessage = `Failed to get MCP tools: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      if (addErrorMessage) {
-        addErrorMessage(errorMessage);
-      }
+        for (const { client, server } of clients) {
+          try {
+            const toolsResponse = await client.listTools();
+            const tools = toolsResponse.tools || [];
 
-      return [];
-    }
-  }, [setupMcpClients, addErrorMessage]);
+            const toolsWithServer = tools.map((tool: McpTool) => ({
+              ...tool,
+              serverName: server.name,
+              serverUrl: server.url,
+            }));
+
+            allTools.push(...toolsWithServer);
+          } catch (error) {
+            const errorMessage = `Failed to get tools from server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+            if (addErrorMessage) {
+              addErrorMessage(errorMessage);
+            }
+          }
+        }
+
+        if (mcpCacheRef.current) {
+          mcpCacheRef.current.tools = allTools;
+          mcpCacheRef.current.lastUpdated = now;
+        }
+
+        return allTools;
+      } catch (error) {
+        const errorMessage = `Failed to get MCP tools: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
+
+        return [];
+      }
+    },
+    [setupMcpClients, addErrorMessage]
+  );
 
   /**
    * Executes a single MCP tool call across multiple servers using cached clients
@@ -397,96 +412,107 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * @param useDefaultGrafanaMcp - Whether to use default Grafana MCP server
    * @returns Promise with tool execution result
    */
-  const executeToolCall = useCallback(async (toolCall: McpToolCall, mcpServers?: McpServerConfig[], useDefaultGrafanaMcp?: boolean): Promise<McpToolResult> => {
-    try {
-      const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
-      let clients: McpClientWithServer[];
-      
-      if (mcpCacheRef.current && mcpCacheRef.current.configHash === configHash) {
-        clients = mcpCacheRef.current.clients;
-      } else {
-        clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
-      }
-      
-      let lastError: Error | null = null;
-      const errorMessages: string[] = [];
-      
-      const serverTimeout = 10000;
-      
-      for (const { client, server, availableTools } of clients) {
-        try {
-          if (availableTools && !availableTools.includes(toolCall.function.name)) {
+  const executeToolCall = useCallback(
+    async (
+      toolCall: McpToolCall,
+      mcpServers?: McpServerConfig[],
+      useDefaultGrafanaMcp?: boolean
+    ): Promise<McpToolResult> => {
+      try {
+        const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
+        let clients: McpClientWithServer[];
+
+        if (mcpCacheRef.current && mcpCacheRef.current.configHash === configHash) {
+          clients = mcpCacheRef.current.clients;
+        } else {
+          clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
+        }
+
+        let lastError: Error | null = null;
+        const errorMessages: string[] = [];
+
+        const serverTimeout = 10000;
+
+        for (const { client, server, availableTools } of clients) {
+          try {
+            if (availableTools && !availableTools.includes(toolCall.function.name)) {
+              continue;
+            }
+
+            const timeoutPromise = new Promise<never>((unused, reject) => {
+              setTimeout(() => {
+                reject(new Error(`Server ${server.name} timed out after ${serverTimeout}ms`));
+              }, serverTimeout);
+            });
+
+            const result = await Promise.race([
+              client.callTool({
+                name: toolCall.function.name,
+                arguments: JSON.parse(toolCall.function.arguments),
+              }),
+              timeoutPromise,
+            ]);
+
+            return {
+              content: result.content,
+              isError: false,
+            };
+          } catch (error) {
+            const errorMessage =
+              error instanceof Error && error.message.includes('timed out')
+                ? `Server ${server.name} timed out (${serverTimeout}ms)`
+                : `Tool execution failed on server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
+
+            errorMessages.push(errorMessage);
+            lastError = error instanceof Error ? error : new Error('Unknown error');
+
             continue;
           }
-          
-          const timeoutPromise = new Promise<never>((unused, reject) => {
-            setTimeout(() => {
-              reject(new Error(`Server ${server.name} timed out after ${serverTimeout}ms`));
-            }, serverTimeout);
-          });
-          
-          const result = await Promise.race([
-            client.callTool({
-              name: toolCall.function.name,
-              arguments: JSON.parse(toolCall.function.arguments),
-            }),
-            timeoutPromise
-          ]);
-
-          return {
-            content: result.content,
-            isError: false,
-          };
-        } catch (error) {
-          const errorMessage = error instanceof Error && error.message.includes('timed out')
-            ? `Server ${server.name} timed out (${serverTimeout}ms)`
-            : `Tool execution failed on server ${server.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
-          
-          errorMessages.push(errorMessage);
-          lastError = error instanceof Error ? error : new Error('Unknown error');
-          
-          continue;
         }
-      }
 
-      if (addErrorMessage) {
-        errorMessages.forEach(msg => addErrorMessage(msg));
-      }
-      
-      const serversWithTool = clients.filter(({ availableTools }) => 
-        !availableTools || availableTools.includes(toolCall.function.name)
-      );
-      
-      if (serversWithTool.length === 0) {
-        throw new Error(`Tool '${toolCall.function.name}' is not available on any connected MCP server`);
-      } else {
-        throw lastError || new Error(`Tool '${toolCall.function.name}' failed on all servers that support it`);
-      }
-    } catch (error) {
-      if (error instanceof Error && (error.message.includes('Failed to setup MCP clients') || error.message.includes('Invalid URL'))) {
-        const errorMessage = 'MCP tool call failed';
+        if (addErrorMessage) {
+          errorMessages.forEach((msg) => addErrorMessage(msg));
+        }
+
+        const serversWithTool = clients.filter(
+          ({ availableTools }) => !availableTools || availableTools.includes(toolCall.function.name)
+        );
+
+        if (serversWithTool.length === 0) {
+          throw new Error(`Tool '${toolCall.function.name}' is not available on any connected MCP server`);
+        } else {
+          throw lastError || new Error(`Tool '${toolCall.function.name}' failed on all servers that support it`);
+        }
+      } catch (error) {
+        if (
+          error instanceof Error &&
+          (error.message.includes('Failed to setup MCP clients') || error.message.includes('Invalid URL'))
+        ) {
+          const errorMessage = 'MCP tool call failed';
+          if (addErrorMessage) {
+            addErrorMessage(errorMessage);
+          }
+          return {
+            content: null,
+            isError: true,
+            errorMessage: 'Failed to setup MCP clients',
+          };
+        }
+
+        const errorMessage = `MCP tool call failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         if (addErrorMessage) {
           addErrorMessage(errorMessage);
         }
+
         return {
           content: null,
           isError: true,
-          errorMessage: 'Failed to setup MCP clients',
+          errorMessage: error instanceof Error ? error.message : 'Unknown error',
         };
       }
-
-      const errorMessage = `MCP tool call failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      if (addErrorMessage) {
-        addErrorMessage(errorMessage);
-      }
-
-      return {
-        content: null,
-        isError: true,
-        errorMessage: error instanceof Error ? error.message : 'Unknown error',
-      };
-    }
-  }, [setupMcpClients, addErrorMessage]);
+    },
+    [setupMcpClients, addErrorMessage]
+  );
 
   /**
    * Processes LLM response with tool calls
@@ -520,12 +546,12 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
       for (const toolCall of response.choices[0].message.toolCalls) {
         try {
           const result = await executeToolCall(toolCall, mcpServers, useDefaultGrafanaMcp);
-          
+
           const toolContent = result.isError
             ? `Error executing ${toolCall.function.name}: ${result.errorMessage}`
-            : (Array.isArray(result.content) 
-                ? result.content.map(c => c.text || JSON.stringify(c)).join('\n')
-                : JSON.stringify(result.content));
+            : Array.isArray(result.content)
+              ? result.content.map((c) => c.text || JSON.stringify(c)).join('\n')
+              : JSON.stringify(result.content);
 
           updatedMessages.push({
             role: 'tool',
@@ -536,7 +562,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
           addToolResult(toolCall.id, toolContent, result.isError);
         } catch (error) {
           const errorContent = `Error executing ${toolCall.function.name}: ${error instanceof Error ? error.message : 'Unknown error'}`;
-          
+
           updatedMessages.push({
             role: 'tool',
             content: errorContent,
@@ -557,25 +583,28 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * @param tools - Array of MCP tools
    * @returns Array of tools in OpenAI format
    */
-  const convertToolsToOpenAiFormat = useCallback((tools: McpTool[]): OpenAiTool[] => {
-    try {
-      return tools.map((tool) => ({
-        type: 'function',
-        function: {
-          name: tool.name,
-          description: tool.description || '',
-          parameters: tool.inputSchema || {},
-        },
-      }));
-    } catch (error) {
-      const errorMessage = `Failed to convert MCP tools to OpenAI format: ${error instanceof Error ? error.message : 'Unknown error'}`;
-      if (addErrorMessage) {
-        addErrorMessage(errorMessage);
-      }
+  const convertToolsToOpenAiFormat = useCallback(
+    (tools: McpTool[]): OpenAiTool[] => {
+      try {
+        return tools.map((tool) => ({
+          type: 'function',
+          function: {
+            name: tool.name,
+            description: tool.description || '',
+            parameters: tool.inputSchema || {},
+          },
+        }));
+      } catch (error) {
+        const errorMessage = `Failed to convert MCP tools to OpenAI format: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        if (addErrorMessage) {
+          addErrorMessage(errorMessage);
+        }
 
-      return [];
-    }
-  }, [addErrorMessage]);
+        return [];
+      }
+    },
+    [addErrorMessage]
+  );
 
   return {
     checkMcpStatus,
@@ -586,4 +615,4 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
     convertToolsToOpenAiFormat,
     clearCache,
   };
-}; 
+};

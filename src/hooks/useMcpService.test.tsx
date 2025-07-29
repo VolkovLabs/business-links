@@ -67,19 +67,15 @@ describe('useMcpService with multiple servers', () => {
       { name: 'calculate', description: 'Calculate math' },
     ];
 
-    const mockTools2 = [
-      { name: 'get_weather', description: 'Get weather info' },
-    ];
+    const mockTools2 = [{ name: 'get_weather', description: 'Get weather info' }];
 
     const mockClient1 = createMockClient();
     const mockClient2 = createMockClient();
-    
+
     mockClient1.listTools.mockResolvedValue({ tools: mockTools1 });
     mockClient2.listTools.mockResolvedValue({ tools: mockTools2 });
 
-    (mcp.Client as jest.Mock)
-      .mockReturnValueOnce(mockClient1)
-      .mockReturnValueOnce(mockClient2);
+    (mcp.Client as jest.Mock).mockReturnValueOnce(mockClient1).mockReturnValueOnce(mockClient2);
 
     const mcpServers = [
       { name: 'Server 1', url: 'http://localhost:3004', enabled: true },
@@ -130,15 +126,13 @@ describe('useMcpService with multiple servers', () => {
     const mockResult = { content: 'Weather: sunny' };
     const mockClient1 = createMockClient();
     const mockClient2 = createMockClient();
-    
+
     mockClient1.callTool.mockRejectedValue(new Error('Tool not found'));
     mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_weather' }] });
     mockClient2.callTool.mockResolvedValue(mockResult);
     mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'get_weather' }] });
 
-    (mcp.Client as jest.Mock)
-      .mockReturnValueOnce(mockClient1)
-      .mockReturnValueOnce(mockClient2);
+    (mcp.Client as jest.Mock).mockReturnValueOnce(mockClient1).mockReturnValueOnce(mockClient2);
 
     const toolCall = {
       id: '1',
@@ -163,14 +157,12 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient1 = createMockClient();
     const mockClient2 = createMockClient();
-    
+
     // These servers don't have the unknown_tool in their available tools
     mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'other_tool' }] });
     mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'different_tool' }] });
 
-    (mcp.Client as jest.Mock)
-      .mockReturnValueOnce(mockClient1)
-      .mockReturnValueOnce(mockClient2);
+    (mcp.Client as jest.Mock).mockReturnValueOnce(mockClient1).mockReturnValueOnce(mockClient2);
 
     const toolCall = {
       id: '1',
@@ -209,15 +201,13 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient1 = createMockClient();
     const mockClient2 = createMockClient();
-    
+
     mockClient1.callTool.mockRejectedValue(new Error('Tool not found'));
     mockClient1.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
     mockClient2.callTool.mockResolvedValue({ content: 'Success result' });
     mockClient2.listTools.mockResolvedValue({ tools: [{ name: 'get_time' }] });
 
-    (mcp.Client as jest.Mock)
-      .mockReturnValueOnce(mockClient1)
-      .mockReturnValueOnce(mockClient2);
+    (mcp.Client as jest.Mock).mockReturnValueOnce(mockClient1).mockReturnValueOnce(mockClient2);
 
     const mcpServers = [
       { name: 'Server 1', url: 'http://localhost:3004', enabled: true },
@@ -241,12 +231,10 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Connection failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     await result.current.setupMcpClients(mcpServers);
 
@@ -261,12 +249,10 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Connection failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     await result.current.setupMcpClients(mcpServers);
 
@@ -277,7 +263,7 @@ describe('useMcpService with multiple servers', () => {
 
   it('Should handle checkMcpStatus error case', async () => {
     const { result } = renderHook(() => useMcpService());
-    
+
     const status = await result.current.checkMcpStatus();
     expect(status.isAvailable).toBe(true);
   });
@@ -288,7 +274,7 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Default MCP connection failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const clients = await result.current.setupMcpClients([], true);
@@ -305,15 +291,13 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Setup failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const tools = await result.current.getAvailableTools([]);
 
     expect(tools).toEqual([]);
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to get MCP tools')
-    );
+    expect(mockAddErrorMessage).toHaveBeenCalledWith(expect.stringContaining('Failed to get MCP tools'));
   });
 
   it('Should handle getAvailableTools error when listTools fails', async () => {
@@ -322,12 +306,10 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.listTools.mockRejectedValue(new Error('List tools failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     const tools = await result.current.getAvailableTools(mcpServers);
 
@@ -343,7 +325,7 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Setup failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const toolCall = {
@@ -354,10 +336,8 @@ describe('useMcpService with multiple servers', () => {
     const toolResult = await result.current.executeToolCall(toolCall);
 
     expect(toolResult.isError).toBe(true);
-    expect(toolResult.errorMessage).toContain('Tool \'test_tool\' is not available on any connected MCP server');
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('MCP tool call failed')
-    );
+    expect(toolResult.errorMessage).toContain("Tool 'test_tool' is not available on any connected MCP server");
+    expect(mockAddErrorMessage).toHaveBeenCalledWith(expect.stringContaining('MCP tool call failed'));
   });
 
   it('Should handle processToolCalls with tool calls', async () => {
@@ -367,31 +347,30 @@ describe('useMcpService with multiple servers', () => {
     const mockClient = createMockClient();
     mockClient.callTool.mockResolvedValue({ content: 'Tool result' });
     mockClient.listTools.mockResolvedValue({ tools: [{ name: 'test_tool' }] });
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const response = {
-      choices: [{
-        message: {
-          content: 'Assistant message',
-          toolCalls: [{
-            id: 'tool_call_1',
-            function: { name: 'test_tool', arguments: '{}' }
-          }]
-        }
-      }]
+      choices: [
+        {
+          message: {
+            content: 'Assistant message',
+            toolCalls: [
+              {
+                id: 'tool_call_1',
+                function: { name: 'test_tool', arguments: '{}' },
+              },
+            ],
+          },
+        },
+      ],
     };
 
-    const messages = [
-      { role: 'user' as const, content: 'User message' }
-    ];
+    const messages = [{ role: 'user' as const, content: 'User message' }];
 
-    const processResult = await result.current.processToolCalls(
-      response,
-      messages,
-      mockAddToolResult,
-      [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }]
-    );
+    const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
+      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
+    ]);
 
     expect(processResult.hasMoreToolCalls).toBe(true);
     expect(processResult.updatedMessages).toHaveLength(3);
@@ -403,22 +382,18 @@ describe('useMcpService with multiple servers', () => {
     const mockAddToolResult = jest.fn();
 
     const response = {
-      choices: [{
-        message: {
-          content: 'Assistant message'
-        }
-      }]
+      choices: [
+        {
+          message: {
+            content: 'Assistant message',
+          },
+        },
+      ],
     };
 
-    const messages = [
-      { role: 'user' as const, content: 'User message' }
-    ];
+    const messages = [{ role: 'user' as const, content: 'User message' }];
 
-    const processResult = await result.current.processToolCalls(
-      response,
-      messages,
-      mockAddToolResult
-    );
+    const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult);
 
     expect(processResult.hasMoreToolCalls).toBe(false);
     expect(processResult.updatedMessages).toEqual(messages);
@@ -431,35 +406,38 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.callTool.mockRejectedValue(new Error('Tool execution failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const response = {
-      choices: [{
-        message: {
-          content: 'Assistant message',
-          toolCalls: [{
-            id: 'tool_call_1',
-            function: { name: 'test_tool', arguments: '{}' }
-          }]
-        }
-      }]
+      choices: [
+        {
+          message: {
+            content: 'Assistant message',
+            toolCalls: [
+              {
+                id: 'tool_call_1',
+                function: { name: 'test_tool', arguments: '{}' },
+              },
+            ],
+          },
+        },
+      ],
     };
 
-    const messages = [
-      { role: 'user' as const, content: 'User message' }
-    ];
+    const messages = [{ role: 'user' as const, content: 'User message' }];
 
-    const processResult = await result.current.processToolCalls(
-      response,
-      messages,
-      mockAddToolResult,
-      [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }]
-    );
+    const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
+      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
+    ]);
 
     expect(processResult.hasMoreToolCalls).toBe(true);
     expect(processResult.updatedMessages).toHaveLength(3);
-    expect(mockAddToolResult).toHaveBeenCalledWith('tool_call_1', expect.stringContaining('Error executing test_tool'), true);
+    expect(mockAddToolResult).toHaveBeenCalledWith(
+      'tool_call_1',
+      expect.stringContaining('Error executing test_tool'),
+      true
+    );
   });
 
   it('Should handle convertToolsToOpenAiFormat error', () => {
@@ -484,12 +462,10 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.listTools.mockResolvedValue({ tools: undefined });
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     const tools = await result.current.getAvailableTools(mcpServers);
 
@@ -502,18 +478,14 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue('String error');
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     await result.current.setupMcpClients(mcpServers);
 
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('Unknown error')
-    );
+    expect(mockAddErrorMessage).toHaveBeenCalledWith(expect.stringContaining('Unknown error'));
   });
 
   it('Should handle executeToolCall with non-Error objects', async () => {
@@ -523,7 +495,7 @@ describe('useMcpService with multiple servers', () => {
     const mockClient = createMockClient();
     mockClient.callTool.mockRejectedValue('String error');
     mockClient.listTools.mockResolvedValue({ tools: [{ name: 'test_tool' }] });
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const toolCall = {
@@ -531,9 +503,7 @@ describe('useMcpService with multiple servers', () => {
       function: { name: 'test_tool', arguments: '{}' },
     };
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }];
 
     const toolResult = await result.current.executeToolCall(toolCall, mcpServers);
 
@@ -549,12 +519,10 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('General setup error'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'invalid-url', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'invalid-url', enabled: true }];
 
     await expect(result.current.setupMcpClients(mcpServers)).rejects.toThrow(
       'Invalid URL for server Test Server: invalid-url'
@@ -567,19 +535,15 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Setup error'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'invalid-url', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'invalid-url', enabled: true }];
 
     const tools = await result.current.getAvailableTools(mcpServers);
 
     expect(tools).toEqual([]);
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('Failed to get MCP tools')
-    );
+    expect(mockAddErrorMessage).toHaveBeenCalledWith(expect.stringContaining('Failed to get MCP tools'));
   });
 
   it('Should handle executeToolCall when setupMcpClients throws', async () => {
@@ -588,7 +552,7 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.connect.mockRejectedValue(new Error('Setup error'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const toolCall = {
@@ -596,17 +560,13 @@ describe('useMcpService with multiple servers', () => {
       function: { name: 'test_tool', arguments: '{}' },
     };
 
-    const mcpServers = [
-      { name: 'Test Server', url: 'invalid-url', enabled: true },
-    ];
+    const mcpServers = [{ name: 'Test Server', url: 'invalid-url', enabled: true }];
 
     const toolResult = await result.current.executeToolCall(toolCall, mcpServers);
 
     expect(toolResult.isError).toBe(true);
     expect(toolResult.errorMessage).toContain('Failed to setup MCP clients');
-    expect(mockAddErrorMessage).toHaveBeenCalledWith(
-      expect.stringContaining('MCP tool call failed')
-    );
+    expect(mockAddErrorMessage).toHaveBeenCalledWith(expect.stringContaining('MCP tool call failed'));
   });
 
   it('Should handle processToolCalls with addErrorMessage', async () => {
@@ -616,35 +576,38 @@ describe('useMcpService with multiple servers', () => {
 
     const mockClient = createMockClient();
     mockClient.callTool.mockRejectedValue(new Error('Tool execution failed'));
-    
+
     (mcp.Client as jest.Mock).mockReturnValue(mockClient);
 
     const response = {
-      choices: [{
-        message: {
-          content: 'Assistant message',
-          toolCalls: [{
-            id: 'tool_call_1',
-            function: { name: 'test_tool', arguments: '{}' }
-          }]
-        }
-      }]
+      choices: [
+        {
+          message: {
+            content: 'Assistant message',
+            toolCalls: [
+              {
+                id: 'tool_call_1',
+                function: { name: 'test_tool', arguments: '{}' },
+              },
+            ],
+          },
+        },
+      ],
     };
 
-    const messages = [
-      { role: 'user' as const, content: 'User message' }
-    ];
+    const messages = [{ role: 'user' as const, content: 'User message' }];
 
-    const processResult = await result.current.processToolCalls(
-      response,
-      messages,
-      mockAddToolResult,
-      [{ name: 'Test Server', url: 'http://localhost:3004', enabled: true }]
-    );
+    const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
+      { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
+    ]);
 
     expect(processResult.hasMoreToolCalls).toBe(true);
     expect(processResult.updatedMessages).toHaveLength(3);
-    expect(mockAddToolResult).toHaveBeenCalledWith('tool_call_1', expect.stringContaining('Error executing test_tool'), true);
+    expect(mockAddToolResult).toHaveBeenCalledWith(
+      'tool_call_1',
+      expect.stringContaining('Error executing test_tool'),
+      true
+    );
   });
 
   it('Should handle convertToolsToOpenAiFormat with addErrorMessage', () => {
@@ -664,21 +627,20 @@ describe('useMcpService with multiple servers', () => {
     );
   });
 
-
   it('Should handle checkMcpStatus error case', async () => {
     const originalEnv = process.env.NODE_ENV;
     const originalThrowError = process.env.THROW_MCP_ERROR;
-    
+
     process.env.NODE_ENV = 'test';
     process.env.THROW_MCP_ERROR = 'true';
-    
+
     const { result } = renderHook(() => useMcpService());
-    
+
     const status = await result.current.checkMcpStatus();
-    
+
     expect(status.isAvailable).toBe(false);
     expect(status.error).toContain('Test MCP error');
-    
+
     process.env.NODE_ENV = originalEnv;
     process.env.THROW_MCP_ERROR = originalThrowError;
   });
@@ -691,7 +653,7 @@ describe('useMcpService with multiple servers', () => {
       length: 1,
       [Symbol.iterator]: function* () {
         yield { name: 'test' };
-      }
+      },
     };
 
     const originalMap = Array.prototype.map;
@@ -716,7 +678,7 @@ describe('useMcpService with multiple servers', () => {
       length: 1,
       [Symbol.iterator]: function* () {
         yield { name: 'test' };
-      }
+      },
     };
 
     const originalMap = Array.prototype.map;
@@ -738,7 +700,7 @@ describe('useMcpService with multiple servers', () => {
       length: 1,
       [Symbol.iterator]: function* () {
         yield { name: 'test' };
-      }
+      },
     };
 
     const originalMap = Array.prototype.map;
@@ -760,7 +722,7 @@ describe('useMcpService with multiple servers', () => {
       length: 1,
       [Symbol.iterator]: function* () {
         yield { name: 'test' };
-      }
+      },
     };
 
     const originalMap = Array.prototype.map;
@@ -783,7 +745,7 @@ describe('useMcpService with multiple servers', () => {
         throw new Error('Property access error');
       },
       description: 'test',
-      inputSchema: {}
+      inputSchema: {},
     };
 
     const tools = [toolWithErrorGetter];
@@ -792,4 +754,4 @@ describe('useMcpService with multiple servers', () => {
 
     expect(convertedTools).toEqual([]);
   });
-}); 
+});

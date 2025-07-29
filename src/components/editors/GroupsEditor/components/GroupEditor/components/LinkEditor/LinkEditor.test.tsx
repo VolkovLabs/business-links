@@ -183,14 +183,21 @@ describe('LinkEditor', () => {
   });
 
   it('Should use default temperature value when llmTemperature is not set', () => {
-    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: undefined }) }));
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: undefined }),
+      })
+    );
 
     expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
     expect(selectors.fieldLlmTemperature()).toHaveValue('0.7');
   });
 
   it('Should allow change llmTemperature to different values', () => {
-    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: 0.3 }) }));
+    render(
+      getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: 0.3 }) })
+    );
 
     expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
     expect(selectors.fieldLlmTemperature()).toHaveValue('0.3');
