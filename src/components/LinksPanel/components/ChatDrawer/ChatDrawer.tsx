@@ -4,7 +4,16 @@ import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { Subscription } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
-import { LlmMessage, McpTool, useChatMessages, useFileAttachments, useLlmService, useMcpLlmIntegration, useMcpService, useTextareaResize } from '@/hooks';
+import {
+  LlmMessage,
+  McpTool,
+  useChatMessages,
+  useFileAttachments,
+  useLlmService,
+  useMcpLlmIntegration,
+  useMcpService,
+  useTextareaResize,
+} from '@/hooks';
 import { ChatMessage, McpServerConfig } from '@/types';
 
 import { getStyles } from './ChatDrawer.styles';
@@ -233,19 +242,17 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
    */
   const customAssistantName = assistantName || 'Business AI';
 
-
-
   /**
    * Initialize MCP tools
    */
   const initializeMcpTools = useCallback(async () => {
     try {
       const shouldUseDefaultGrafanaMcp = useDefaultGrafanaMcp ?? false;
-      
+
       const mcpStatus = await checkMcpStatus();
       if (mcpStatus.isAvailable) {
         const tools = await getAvailableTools(mcpServers, shouldUseDefaultGrafanaMcp);
-        
+
         setAvailableTools(tools);
         setMcpEnabled(true);
       } else {
@@ -283,13 +290,19 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       timestamp: new Date(),
       attachments: [...attachedFiles],
     };
-    // Create a loading message instead of empty assistant message
+
+    /**
+     * Create a loading message instead of empty assistant message
+     */
     const loadingMessage: ChatMessage = {
       id: generateMessageId(),
       sender: 'assistant',
       text: '',
       timestamp: new Date(),
-      isStreaming: true, // Use isStreaming to indicate loading state
+      /**
+       * Use isStreaming to indicate loading state
+       */
+      isStreaming: true,
     };
 
     /**
@@ -312,19 +325,22 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
        * Prepare chat history for MCP
        */
       const chatHistory = prepareChatHistory(messages, prepareMessageContent, formatFileSize);
-      
-      // Convert to LlmMessage format
+
+      /**
+       * Convert to LlmMessage format
+       */
       const llmMessages: LlmMessage[] = [
         {
           role: 'system',
-          content: initialPrompt ||
+          content:
+            initialPrompt ||
             `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.${
               mcpEnabled && availableTools?.length > 0
                 ? ` You also have access to ${availableTools?.length} MCP tools that you can use to gather real-time information about the system. Use these tools when appropriate to provide more accurate and up-to-date information.`
                 : ''
             }`,
         },
-        ...chatHistory.map(msg => ({
+        ...chatHistory.map((msg) => ({
           role: msg.role as 'user' | 'assistant' | 'tool',
           content: msg.content,
         })),
@@ -337,14 +353,20 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       const response = await sendMessageWithTools(
         llmMessages,
         (toolCallId: string, content: string, isError?: boolean) => {
-          // Add tool result to chat
+          /**
+           * Add tool result to chat
+           */
           const toolMessage: ChatMessage = {
             id: generateMessageId(),
             sender: 'tool',
             text: isError ? `Error: ${content}` : `Tool Result: ${content}`,
             timestamp: new Date(),
             isError,
-            isStreaming: false, // Tool messages are complete when added
+
+            /**
+             * Tool messages are complete when added
+             */
+            isStreaming: false,
           };
           addMessages([toolMessage]);
         },
@@ -367,7 +389,27 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       const errorMessage = `Connection Error: ${error instanceof Error ? error.message : String(error)}\n\nHow to fix:\n• Check your internet connection\n• Verify LLM service is running\n• Try again in a few moments\n• Contact your administrator if the problem persists`;
       addErrorMessage(errorMessage);
     }
-  }, [checkAvailability, prepareMessageContent, inputValue, attachedFiles, formatFileSize, generateMessageId, addMessages, clearAttachedFiles, addErrorMessage, prepareChatHistory, messages, initialPrompt, customAssistantName, mcpEnabled, availableTools?.length, sendMessageWithTools, mcpServers, useDefaultGrafanaMcp, updateLastMessage]);
+  }, [
+    checkAvailability,
+    prepareMessageContent,
+    inputValue,
+    attachedFiles,
+    formatFileSize,
+    generateMessageId,
+    addMessages,
+    clearAttachedFiles,
+    addErrorMessage,
+    prepareChatHistory,
+    messages,
+    initialPrompt,
+    customAssistantName,
+    mcpEnabled,
+    availableTools?.length,
+    sendMessageWithTools,
+    mcpServers,
+    useDefaultGrafanaMcp,
+    updateLastMessage,
+  ]);
 
   /**
    * Handles keyboard shortcuts in textarea
@@ -405,8 +447,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       initializeMcpTools();
     }
   }, [isOpen, initializeMcpTools]);
-
-
 
   useEffect(() => {
     return () => {
@@ -464,11 +504,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   return (
     <>
       {isOpen && (
-        <Drawer 
-          title={customAssistantName}
-          onClose={cleanupAndClose} 
-          size="md"
-        >
+        <Drawer title={customAssistantName} onClose={cleanupAndClose} size="md">
           <div className={styles.container}>
             <div className={styles.messagesContainer}>
               {messages.length === 0 && (
@@ -508,9 +544,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       <div className={styles.messageSender} {...testIds.messageSender.apply()}>
                         {getSenderDisplayName(message.sender)}
                       </div>
-                      <div className={styles.messageText}>
-                        {message.text}
-                      </div>
+                      <div className={styles.messageText}>{message.text}</div>
                       {message.isStreaming && (
                         <div className={styles.loadingContainer}>
                           <span className={styles.loadingDots}>
