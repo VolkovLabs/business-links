@@ -995,7 +995,7 @@ describe('ChatDrawer', () => {
           error: null,
         },
       ]);
-      expect(mockEvent.currentTarget.value).toBe('');
+      expect(mockEvent.currentTarget.value).toEqual('');
 
       Date.now = originalDateNow;
       Math.random = originalRandom;
@@ -1029,7 +1029,7 @@ describe('ChatDrawer', () => {
       handleFileInputUpload(mockEvent, handleFileAttachment);
 
       expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toBe('some-value');
+      expect(mockEvent.currentTarget.value).toEqual('some-value');
     });
 
     it('Should handle event with null files', () => {
@@ -1060,7 +1060,7 @@ describe('ChatDrawer', () => {
       handleFileInputUpload(mockEvent, handleFileAttachment);
 
       expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toBe('some-value');
+      expect(mockEvent.currentTarget.value).toEqual('some-value');
     });
 
     it('Should handle single file upload', () => {
@@ -1105,7 +1105,7 @@ describe('ChatDrawer', () => {
           error: null,
         },
       ]);
-      expect(mockEvent.currentTarget.value).toBe('');
+      expect(mockEvent.currentTarget.value).toEqual('');
 
       Date.now = originalDateNow;
       Math.random = originalRandom;

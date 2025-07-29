@@ -13,6 +13,7 @@ import {
   OpenAiTool,
   UseMcpServiceReturn,
 } from '@/types';
+import { clearMcpCache, prepareToolContent, timeoutError } from '@/utils';
 
 /**
  * Generate hash from server configuration to detect changes
@@ -79,14 +80,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
    * Clear cached MCP state and force reconnection
    */
   const clearCache = useCallback(() => {
-    if (mcpCacheRef.current) {
-      mcpCacheRef.current.clients.forEach(({ client }) => {
-        try {
-          client.close();
-        } catch {}
-      });
-    }
-    mcpCacheRef.current = null;
+    clearMcpCache(mcpCacheRef);
   }, []);
 
   /**
@@ -101,16 +95,11 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
         const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
         const now = Date.now();
         const cacheTimeout = 5 * 60 * 1000;
-
-        if (
-          mcpCacheRef.current &&
-          mcpCacheRef.current.configHash === configHash &&
-          now - mcpCacheRef.current.lastUpdated < cacheTimeout
-        ) {
+        if (mcpCacheRef.current?.configHash === configHash && now - mcpCacheRef.current.lastUpdated < cacheTimeout) {
           return mcpCacheRef.current.clients;
         }
 
-        if (mcpCacheRef.current && mcpCacheRef.current.configHash !== configHash) {
+        if (mcpCacheRef.current?.configHash !== configHash) {
           clearCache();
         }
 
@@ -195,7 +184,6 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
           configHash,
           lastUpdated: now,
         };
-
         return clients;
       } catch (error) {
         const errorMessage = `Failed to setup MCP clients: ${error instanceof Error ? error.message : 'Unknown error'}`;
@@ -222,10 +210,9 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
         const cacheTimeout = 5 * 60 * 1000;
 
         if (
-          mcpCacheRef.current &&
-          mcpCacheRef.current.configHash === configHash &&
-          mcpCacheRef.current.tools.length > 0 &&
-          now - mcpCacheRef.current.lastUpdated < cacheTimeout
+          mcpCacheRef.current?.configHash === configHash &&
+          mcpCacheRef.current?.tools.length > 0 &&
+          now - mcpCacheRef.current?.lastUpdated < cacheTimeout
         ) {
           return mcpCacheRef.current.tools;
         }
@@ -297,7 +284,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
         const configHash = generateConfigHash(mcpServers, useDefaultGrafanaMcp);
         let clients: McpClientWithServer[];
 
-        if (mcpCacheRef.current && mcpCacheRef.current.configHash === configHash) {
+        if (mcpCacheRef?.current?.configHash === configHash) {
           clients = mcpCacheRef.current.clients;
         } else {
           clients = await setupMcpClients(mcpServers, useDefaultGrafanaMcp);
@@ -314,18 +301,14 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
               continue;
             }
 
-            const timeoutPromise = new Promise<never>((unused, reject) => {
-              setTimeout(() => {
-                reject(new Error(`Server ${server.name} timed out after ${serverTimeout}ms`));
-              }, serverTimeout);
-            });
+            const errorOnTimeout = timeoutError(server.name, serverTimeout);
 
             const result = await Promise.race([
               client.callTool({
                 name: toolCall.function.name,
                 arguments: JSON.parse(toolCall.function.arguments),
               }),
-              timeoutPromise,
+              errorOnTimeout,
             ]);
 
             return {
@@ -421,12 +404,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
       for (const toolCall of response.choices[0].message.toolCalls) {
         try {
           const result = await executeToolCall(toolCall, mcpServers, useDefaultGrafanaMcp);
-
-          const toolContent = result.isError
-            ? `Error executing ${toolCall.function.name}: ${result.errorMessage}`
-            : Array.isArray(result.content)
-              ? result.content.map((c) => c.text || JSON.stringify(c)).join('\n')
-              : JSON.stringify(result.content);
+          const toolContent = prepareToolContent(result, toolCall.function.name, result.errorMessage);
 
           updatedMessages.push({
             role: 'tool',
