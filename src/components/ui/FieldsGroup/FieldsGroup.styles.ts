@@ -6,10 +6,5 @@ export const getStyles = (theme: GrafanaTheme2) => {
     root: css`
       margin-bottom: ${theme.spacing(1)};
     `,
-    labelContainer: css`
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    `,
   };
 };
