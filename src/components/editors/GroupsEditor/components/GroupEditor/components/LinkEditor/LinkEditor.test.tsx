@@ -57,15 +57,12 @@ const ContentEditorMock = ({ value, onChange }: any) => {
  * Mock McpServersEditor
  */
 const McpServersEditorMock = ({ value, onChange }: any) => {
-  console.log('McpServersEditorMock value', value);
   return (
     <div data-testid="mcp-servers-editor">
       <input
         {...inTestIds.mcpServersEditor.apply()}
         value={JSON.stringify(value)}
         onChange={(e) => {
-          console.log('McpServersEditorMock onChange', e.target.value);
-          console.log('McpServersEditorMock onChange', JSON.parse(e.target.value));
           onChange(JSON.parse(e.target.value));
         }}
       />
