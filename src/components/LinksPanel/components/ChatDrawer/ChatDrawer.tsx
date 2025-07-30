@@ -13,6 +13,7 @@ import {
   useTextareaResize,
 } from '@/hooks';
 import { ChatMessage, LlmMessage, McpServerConfig, McpTool } from '@/types';
+import { getSenderDisplayName } from '@/utils';
 
 import { getStyles } from './ChatDrawer.styles';
 
@@ -120,24 +121,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   useDefaultGrafanaMcp,
   mcpServers,
 }) => {
-  /**
-   * Helper function to get display name for message sender
-   * @param sender - Sender identifier
-   * @returns Display name for the sender
-   */
-  const getSenderDisplayName = (sender: string): string => {
-    if (sender === 'assistant') {
-      return customAssistantName;
-    }
-    if (sender === 'system') {
-      return 'System';
-    }
-    if (sender === 'tool') {
-      return 'Tool';
-    }
-    return sender;
-  };
-
   /**
    * State
    */
@@ -540,8 +523,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                               : styles.messageContentAssistant
                       )}
                     >
-                      <div className={styles.messageSender} {...testIds.messageSender.apply()}>
-                        {getSenderDisplayName(message.sender)}
+                      <div className={styles.messageSender} {...testIds.messageSender.apply(message.sender)}>
+                        {getSenderDisplayName(message.sender, customAssistantName)}
                       </div>
                       <div className={styles.messageText}>{message.text}</div>
                       {message.isStreaming && (

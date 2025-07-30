@@ -148,7 +148,7 @@ export const TEST_IDS = {
     attachButton: createSelector('data-testid-file-upload-input-field'),
     removeButton: createSelector('data-testid chat-drawer remove-button'),
     sendButton: createSelector('data-testid chat-drawer send-button'),
-    messageSender: createSelector('data-testid chat-drawer message-sender'),
+    messageSender: createSelector((name: unknown) => `data-testid chat-drawer message-sender-${name}`),
     inputPanel: createSelector('data-testid chat-drawer input-panel'),
     fileDropzoneOverlay: createSelector('data-testid chat-drawer file-dropzone-overlay'),
   },

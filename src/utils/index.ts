@@ -6,6 +6,7 @@ export * from './handlebars';
 export * from './helpers';
 export * from './html';
 export * from './links';
+export * from './llm';
 export * from './mcp-service';
 export * from './test';
 export * from './timeRange';

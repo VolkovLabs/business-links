@@ -239,6 +239,50 @@ describe('ChatDrawer', () => {
       expect(selectors.attachmentImage(false, 'document.pdf')).toBeInTheDocument();
       expect(selectors.attachmentImage(false, 'image.png')).toBeInTheDocument();
     });
+
+    it('Should render messages from tools', async () => {
+      const messages = [
+        {
+          id: '1',
+          sender: 'user' as const,
+          text: 'Hello',
+          timestamp: new Date(),
+          attachments: [
+            {
+              id: 'att1',
+              name: 'document.pdf',
+              size: 1024,
+              type: 'application/pdf',
+              url: 'test/document.pdf',
+            },
+            {
+              id: 'att2',
+              name: 'image.png',
+              size: 2048,
+              type: 'image/png',
+              url: 'data:image/png;base64,test',
+            },
+          ],
+        },
+        {
+          id: '2',
+          sender: 'tool',
+          text: 'Here is list of dashboards',
+          timestamp: new Date(),
+          isStreaming: false,
+        },
+      ];
+
+      (hooks.useChatMessages as jest.Mock).mockReturnValue({
+        ...defaultUseChatMessages,
+        messages,
+      });
+
+      await act(async () => render(getComponent({})));
+
+      expect(selectors.messageSender(false, messages[1].sender)).toBeInTheDocument();
+      expect(selectors.messageSender(false, messages[1].sender)).toHaveTextContent('Tool');
+    });
   });
 
   describe('Basic Interactions', () => {
