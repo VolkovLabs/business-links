@@ -252,6 +252,37 @@ const IconMock = ({ name, onClick, ...restProps }: any) => {
 
 const Icon = jest.fn(IconMock);
 
+/**
+ * Mock FileDropzone
+ */
+const FileDropzoneMock = ({ onChange, options, onFileRemove, ...props }: any) => {
+  const { onDrop } = options;
+
+  return (
+    <>
+      <input
+        type="file"
+        onChange={(event) => {
+          if (onDrop) {
+            onDrop(event.target.files);
+          }
+        }}
+        data-testid={props['data-testid']}
+      />
+      <input
+        type="file"
+        aria-label="Remove File"
+        onChange={(event) => {
+          onFileRemove(event.target.files);
+        }}
+        data-testid={`${props['data-testid']}-remove`}
+      />
+    </>
+  );
+};
+
+const FileDropzone = jest.fn(FileDropzoneMock);
+
 beforeEach(() => {
   ToolbarButtonRow.mockImplementation(ToolbarButtonRowMock);
   MenuItem.mockImplementation(MenuItemMock);
@@ -264,6 +295,7 @@ beforeEach(() => {
   RelativeTimeRangePicker.mockImplementation(RelativeTimeRangePickerMock);
   Drawer.mockImplementation(DrawerMock);
   Icon.mockImplementation(IconMock);
+  FileDropzone.mockImplementation(FileDropzoneMock);
 });
 
 module.exports = {
@@ -278,5 +310,6 @@ module.exports = {
   RelativeTimeRangePicker,
   Tooltip,
   Drawer,
-  Icon
+  Icon,
+  FileDropzone,
 };

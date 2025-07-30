@@ -1,5 +1,5 @@
 import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
-import { getJestSelectors } from '@volkovlabs/jest-selectors';
+import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -71,9 +71,14 @@ jest.mock('@/hooks', () => ({
   },
 }));
 
+const inTestIds = {
+  removeFileDropZone: createSelector('data-testid chat-drawer file-dropzone-remove'),
+};
+
 describe('ChatDrawer', () => {
   const getSelectors = getJestSelectors({
     ...TEST_IDS.drawerElement,
+    ...inTestIds,
   });
   const selectors = getSelectors(screen);
 
@@ -791,14 +796,6 @@ describe('ChatDrawer', () => {
     expect(textarea).toHaveAttribute('placeholder', 'Type your message or drag files here...');
   });
 
-  it('Should handle file drop through FileDropzone', async () => {
-    await act(async () => render(getComponent({})));
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    const onDrop = (hooks.useFileAttachments as jest.Mock).mock.results[0].value.handleFileAttachment;
-    onDrop([{ id: 'file-1', file, error: null }]);
-    expect(mockHandleFileAttachment).toHaveBeenCalled();
-  });
-
   it('Should call scrollIntoView when messages change', async () => {
     const scrollSpy = jest.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
     const messages1 = [{ id: '1', sender: 'user', text: 'Hello', timestamp: new Date() }];
@@ -1045,114 +1042,91 @@ describe('ChatDrawer', () => {
       Math.random = originalRandom;
     });
 
-    it('Should handle event with no files', () => {
-      const handleFileAttachment = jest.fn();
+    it('Should render FileDropZone ', async () => {
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      const mockEvent = {
-        currentTarget: {
-          files: [],
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
-
-      handleFileInputUpload(mockEvent, handleFileAttachment);
-
-      expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toEqual('some-value');
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
     });
 
-    it('Should handle event with null files', () => {
+    it('Should render FileDropZone and add file', async () => {
       const handleFileAttachment = jest.fn();
+      (hooks.useFileAttachments as jest.Mock).mockReturnValue({
+        ...defaultUseFileAttachments,
+        handleFileAttachment,
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      const image = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
 
-      const mockEvent = {
-        currentTarget: {
-          files: null,
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      handleFileInputUpload(mockEvent, handleFileAttachment);
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toEqual('some-value');
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
+
+      /**
+       * Select file
+       */
+      await act(() =>
+        fireEvent.change(selectors.fileDropzone(), {
+          target: {
+            files: [image],
+          },
+        })
+      );
+
+      expect(handleFileAttachment).toHaveBeenCalled();
     });
 
-    it('Should handle single file upload', () => {
-      const handleFileAttachment = jest.fn();
-      const file = new File(['content'], 'single.txt', { type: 'text/plain' });
+    it('Should render FileDropZone and remove file', async () => {
+      const attachedFiles = [{ id: 'file1', name: 'test.txt', size: 123, type: 'text/plain' }];
+      const removeAttachedFile = jest.fn();
+      (hooks.useFileAttachments as jest.Mock).mockReturnValue({
+        ...defaultUseFileAttachments,
+        removeAttachedFile,
+        attachedFiles,
+      });
 
-      const originalDateNow = Date.now;
-      const originalRandom = Math.random;
-      const mockDateNow = jest.fn().mockReturnValue(1234567890);
-      const mockRandom = jest.fn().mockReturnValue(0.5);
-      Date.now = mockDateNow;
-      Math.random = mockRandom;
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      const mockEvent = {
-        currentTarget: {
-          files: [file],
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
+      expect(selectors.removeFileDropZone()).toBeInTheDocument();
 
-      handleFileInputUpload(mockEvent, handleFileAttachment);
-
-      expect(handleFileAttachment).toHaveBeenCalledWith([
-        {
-          id: 'file-1234567890-0.5',
-          file,
-          error: null,
-        },
-      ]);
-      expect(mockEvent.currentTarget.value).toEqual('');
-
-      Date.now = originalDateNow;
-      Math.random = originalRandom;
+      /**
+       * Select file
+       */
+      await act(() =>
+        fireEvent.change(selectors.removeFileDropZone(), {
+          target: {
+            files: attachedFiles,
+          },
+        })
+      );
+      expect(removeAttachedFile).toHaveBeenCalled();
     });
   });
 });

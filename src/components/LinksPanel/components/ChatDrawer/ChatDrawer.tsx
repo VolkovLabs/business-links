@@ -590,6 +590,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       },
                     }}
                     onFileRemove={onFileRemove}
+                    {...testIds.fileDropzone.apply()}
                   >
                     <div className={styles.dropzoneContent}>
                       <Icon name="upload" size="xl" />

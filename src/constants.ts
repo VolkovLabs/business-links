@@ -151,6 +151,7 @@ export const TEST_IDS = {
     messageSender: createSelector((name: unknown) => `data-testid chat-drawer message-sender-${name}`),
     inputPanel: createSelector('data-testid chat-drawer input-panel'),
     fileDropzoneOverlay: createSelector('data-testid chat-drawer file-dropzone-overlay'),
+    fileDropzone: createSelector('data-testid chat-drawer file-dropzone'),
   },
   mcpServersEditor: {
     root: createSelector('data-testid mcp-servers-editor'),
