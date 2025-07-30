@@ -673,6 +673,39 @@ describe('ChatDrawer', () => {
       });
     });
 
+    it('Should Call addError on MCP init if MCP is disabled', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: false, error: 'test' }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        ...defaultUseMcpService,
+        checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: false, error: 'MCP Disabled in test' }),
+      });
+
+      await act(async () => render(getComponent({})));
+      expect(mockAddMessages).toHaveBeenCalled();
+    });
+
+    it('Should Call addError on MCP init throw error', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: false, error: 'test' }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        ...defaultUseMcpService,
+        checkMcpStatus: jest.fn().mockRejectedValue(new Error('Mocked checkMcpStatus failure')),
+      });
+
+      await act(async () => render(getComponent({})));
+      expect(mockAddMessages).toHaveBeenCalled();
+    });
+
     it('Should handle connection errors in try/catch', async () => {
       const mockSendMessageWithTools = jest.fn().mockRejectedValue(new Error('Connection failed'));
       (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
