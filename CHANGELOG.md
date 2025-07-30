@@ -6,7 +6,8 @@ All notable changes to the **Business Links** panel are documented in this file.
 
 ### Changed
 
-- Use raw values for time range in URL ([Issue #59](https://github.com/VolkovLabs/business-links/issues/59))
+- Use raw values for time range in URL ([Issue #59](https://github.com/VolkovLabs/business-links/issues/59)).
+- Updated ESLint configuration ([#60](https://github.com/VolkovLabs/business-text/issues/60)).
 
 ## [2.1.0] - 2025-07-06
 
