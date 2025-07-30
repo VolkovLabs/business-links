@@ -363,6 +363,13 @@ describe('ChatDrawer', () => {
         getAvailableTools: jest.fn().mockResolvedValue([]),
       });
 
+      mockPrepareChatHistory.mockReturnValue([
+        {
+          content: 'test',
+          role: 'user',
+        },
+      ]);
+
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
@@ -389,6 +396,7 @@ describe('ChatDrawer', () => {
 
       expect(mockSendMessageWithTools).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
+      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
     });
 
     it('Should use custom temperature when provided', async () => {
