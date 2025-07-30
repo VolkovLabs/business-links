@@ -2,6 +2,12 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - Unreleased
+
+### Changed
+
+- Use raw values for time range in URL ([Issue #59](https://github.com/VolkovLabs/business-links/issues/59))
+
 ## [2.1.0] - 2025-07-06
 
 ### Added

@@ -63,11 +63,6 @@ Subscribe to [Business Suite Enterprise](https://volkovlabs.io/pricing/) for:
 - In-person consultations
 - Access to Business Intelligence platform
 
-## Feedback & Support
-
-- Ask questions or share feedback on [GitHub Issues](https://github.com/volkovlabs/business-links/issues).
-- Subscribe to our [YouTube Channel](https://youtube.com/@volkovlabs) for tutorials and updates.
-
 ## License
 
 Licensed under the [Apache License 2.0](https://github.com/volkovlabs/business-links/blob/main/LICENSE).
