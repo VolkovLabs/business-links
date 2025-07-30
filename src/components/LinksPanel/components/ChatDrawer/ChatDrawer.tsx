@@ -12,7 +12,7 @@ import {
   useTextareaResize,
 } from '@/hooks';
 import { ChatMessage, LlmMessage, McpServerConfig, McpTool } from '@/types';
-import { getSenderDisplayName } from '@/utils';
+import { generateMessageId, getSenderDisplayName } from '@/utils';
 
 import { getStyles } from './ChatDrawer.styles';
 
@@ -133,7 +133,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
    * Hooks
    */
   const styles = useStyles2(getStyles);
-  const { messages, generateMessageId, addMessages, updateLastMessage } = useChatMessages();
+  const { messages, addMessages, updateLastMessage } = useChatMessages();
 
   /**
    * Function to add error messages to chat
@@ -150,7 +150,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       };
       addMessages([errorMessage]);
     },
-    [generateMessageId, addMessages]
+    [addMessages]
   );
 
   const { attachedFiles, formatFileSize, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
@@ -364,7 +364,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     inputValue,
     attachedFiles,
     formatFileSize,
-    generateMessageId,
     addMessages,
     clearAttachedFiles,
     addErrorMessage,

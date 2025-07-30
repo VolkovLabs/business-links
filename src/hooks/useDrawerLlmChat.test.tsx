@@ -36,13 +36,6 @@ describe('useChatMessages', () => {
     expect(result.current.messages).toEqual([]);
   });
 
-  it('Should generate unique message IDs with correct format', () => {
-    const { result } = renderHook(() => useChatMessages());
-    const id1 = result.current.generateMessageId();
-    const id2 = result.current.generateMessageId();
-    expect(id1).not.toEqual(id2);
-  });
-
   it('Should correctly add, set, and update messages', () => {
     const { result } = renderHook(() => useChatMessages());
     const m1: ChatMessage = { id: '1', text: 'A', sender: 'user', timestamp: new Date() };

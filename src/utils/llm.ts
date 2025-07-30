@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 /**
  * Helper function to get display name for message sender
  * @param sender - Sender identifier
@@ -12,4 +14,12 @@ export const getSenderDisplayName = (sender: string, customAssistantName: string
   };
 
   return senderDisplayNameMap[sender] ?? sender;
+};
+
+/**
+ * Generates a unique message ID
+ * @returns Unique message identifier
+ */
+export const generateMessageId = (): string => {
+  return `msg-${uuidv4()}`;
 };

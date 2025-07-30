@@ -2,7 +2,6 @@ import { formattedValueToString, getValueFormat } from '@grafana/data';
 import { llm } from '@grafana/llm';
 import { DropzoneFile } from '@grafana/ui';
 import { useCallback, useRef, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
   AttachedFile,
@@ -54,14 +53,6 @@ export const useChatMessages = (): UseChatMessagesReturn => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   /**
-   * Generates a unique message ID
-   * @returns Unique message identifier
-   */
-  const generateMessageId = useCallback((): string => {
-    return `msg-${uuidv4()}`;
-  }, []);
-
-  /**
    * Adds multiple messages to the chat
    * @param newMessages - Messages to add
    */
@@ -87,7 +78,6 @@ export const useChatMessages = (): UseChatMessagesReturn => {
   return {
     messages,
     setMessages,
-    generateMessageId,
     addMessages,
     updateLastMessage,
   };

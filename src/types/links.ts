@@ -370,12 +370,6 @@ export interface UseChatMessagesReturn {
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
 
   /**
-   * Generate unique message ID
-   *
-   */
-  generateMessageId: () => string;
-
-  /**
    * Add multiple messages
    *
    */
