@@ -12,7 +12,7 @@ import {
   useTextareaResize,
 } from '@/hooks';
 import { ChatMessage, LlmMessage, McpServerConfig, McpTool } from '@/types';
-import { generateMessageId, getSenderDisplayName } from '@/utils';
+import { createToolResultHandler, generateMessageId, getSenderDisplayName } from '@/utils';
 
 import { getStyles } from './ChatDrawer.styles';
 
@@ -317,31 +317,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       ];
 
       /**
+       * Create onToolResult with utils helper
+       */
+      const onToolResult = createToolResultHandler(addMessages);
+
+      /**
        * Send message with MCP tools support
        */
-      const response = await sendMessageWithTools(
-        llmMessages,
-        (toolCallId: string, content: string, isError?: boolean) => {
-          /**
-           * Add tool result to chat
-           */
-          const toolMessage: ChatMessage = {
-            id: generateMessageId(),
-            sender: 'tool',
-            text: isError ? `Error: ${content}` : `Tool Result: ${content}`,
-            timestamp: new Date(),
-            isError,
-
-            /**
-             * Tool messages are complete when added
-             */
-            isStreaming: false,
-          };
-          addMessages([toolMessage]);
-        },
-        mcpServers,
-        useDefaultGrafanaMcp ?? false
-      );
+      const response = await sendMessageWithTools(llmMessages, onToolResult, mcpServers, useDefaultGrafanaMcp ?? false);
 
       /**
        * Update assistant message with response
