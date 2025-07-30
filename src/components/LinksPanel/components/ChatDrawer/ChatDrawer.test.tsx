@@ -831,18 +831,30 @@ describe('ChatDrawer', () => {
 
   it('Should call scrollIntoView when messages change', async () => {
     const scrollSpy = jest.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
+
     const messages1 = [{ id: '1', sender: 'user', text: 'Hello', timestamp: new Date() }];
     const messages2 = [...messages1, { id: '2', sender: 'assistant', text: 'World', timestamp: new Date() }];
+
     (hooks.useChatMessages as jest.Mock).mockReturnValue({
       ...defaultUseChatMessages,
       messages: messages1,
     });
-    const { rerender } = render(getComponent({}));
+
+    let utils: ReturnType<typeof render>;
+
+    await act(async () => {
+      utils = render(getComponent({}));
+    });
+
     (hooks.useChatMessages as jest.Mock).mockReturnValue({
       ...defaultUseChatMessages,
       messages: messages2,
     });
-    rerender(getComponent({}));
+
+    await act(async () => {
+      utils.rerender(getComponent({}));
+    });
+
     expect(scrollSpy).toHaveBeenCalled();
     scrollSpy.mockRestore();
   });
