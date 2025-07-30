@@ -1,7 +1,6 @@
 import { cx } from '@emotion/css';
 import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { Subscription } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
 import {
@@ -164,7 +163,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   /**
    * Refs
    */
-  const subscriptionRef = useRef<Subscription | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   /**
@@ -203,10 +201,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
    * Cleans up subscription and resets component state
    */
   const cleanupAndClose = useCallback(() => {
-    if (subscriptionRef.current) {
-      subscriptionRef.current.unsubscribe();
-      subscriptionRef.current = null;
-    }
     setIsLoading(false);
     clearAttachedFiles();
     setInputValue('');
@@ -294,13 +288,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     setInputValue('');
     clearAttachedFiles();
     setIsLoading(true);
-
-    /**
-     * Clean up previous subscription
-     */
-    if (subscriptionRef.current) {
-      subscriptionRef.current.unsubscribe();
-    }
 
     try {
       /**
@@ -429,14 +416,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       initializeMcpTools();
     }
   }, [isOpen, initializeMcpTools]);
-
-  useEffect(() => {
-    return () => {
-      if (subscriptionRef.current) {
-        subscriptionRef.current.unsubscribe();
-      }
-    };
-  }, []);
 
   /**
    * Handles drag and drop events for the file dropzone overlay
