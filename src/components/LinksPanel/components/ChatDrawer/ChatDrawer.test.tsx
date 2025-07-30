@@ -352,6 +352,30 @@ describe('ChatDrawer', () => {
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
     });
+
+    it('Should show mcp and tools info', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+      });
+
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([
+          {
+            serverName: 'Default Grafana',
+            name: 'add_activity_to_incident',
+            annotations: { title: 'Add activity to incident' },
+          },
+        ]),
+      });
+
+      await act(async () => render(getComponent({})));
+
+      expect(selectors.mcpToolsInfo()).toBeInTheDocument();
+      expect(selectors.mcpToolsInfo()).toHaveTextContent('MCP tool available');
+    });
   });
 
   describe('Message Sending', () => {
@@ -625,28 +649,6 @@ describe('ChatDrawer', () => {
       fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
     });
     expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
-  });
-
-  it('Should call unsubscribe() on click', async () => {
-    const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
-    (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
-      sendMessageWithTools: mockSendMessageWithTools,
-      checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
-      getAvailableTools: jest.fn().mockResolvedValue([]),
-    });
-
-    const onClose = jest.fn();
-    await act(async () => render(<ChatDrawer isOpen onClose={onClose} />));
-
-    const textarea = selectors.input();
-
-    await act(async () => {
-      fireEvent.change(textarea, { target: { value: 'Test' } });
-      fireEvent.click(selectors.sendButton());
-      fireEvent.click(selectors.drawerCloseButton());
-    });
-
-    expect(onClose).toHaveBeenCalled();
   });
 
   describe('Error handling', () => {

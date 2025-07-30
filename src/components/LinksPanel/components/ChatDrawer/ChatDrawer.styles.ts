@@ -466,5 +466,10 @@ export const getStyles = (theme: GrafanaTheme2) => {
       border-radius: inherit;
       pointer-events: all;
     `,
+    mcpToolsInfo: css`
+      margin-top: ${theme.spacing(1)};
+      font-size: 12px;
+      opacity: 0.7;
+    `,
   };
 };

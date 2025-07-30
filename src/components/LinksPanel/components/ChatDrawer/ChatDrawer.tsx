@@ -454,7 +454,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                 <div className={styles.emptyState} {...testIds.chatDrawerEmptyState.apply()}>
                   <div>Start a conversation by typing a message or attaching files</div>
                   {mcpEnabled && availableTools?.length > 0 && (
-                    <div style={{ marginTop: '8px', fontSize: '12px', opacity: 0.7 }}>
+                    <div className={styles.mcpToolsInfo} {...testIds.mcpToolsInfo.apply()}>
                       <Icon name="cog" style={{ marginRight: '4px' }} />
                       {availableTools?.length} MCP tool{availableTools?.length !== 1 ? 's' : ''} available
                     </div>
