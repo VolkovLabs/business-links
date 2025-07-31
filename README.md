@@ -2,7 +2,7 @@
 
 ![Links Screenshot](https://github.com/VolkovLabs/business-links/raw/main/src/img/panel.png)
 
-![Grafana](https://img.shields.io/badge/Grafana-12.0-orange)
+![Grafana](https://img.shields.io/badge/Grafana-12.1-orange)
 ![CI](https://github.com/volkovlabs/business-links/workflows/CI/badge.svg)
 ![E2E](https://github.com/volkovlabs/business-links/workflows/E2E/badge.svg)
 [![Codecov](https://codecov.io/gh/VolkovLabs/business-links/branch/main/graph/badge.svg)](https://codecov.io/gh/VolkovLabs/business-links)
@@ -62,11 +62,6 @@ Subscribe to [Business Suite Enterprise](https://volkovlabs.io/pricing/) for:
 - Priority feature requests and bug fixes
 - In-person consultations
 - Access to Business Intelligence platform
-
-## Feedback & Support
-
-- Ask questions or share feedback on [GitHub Issues](https://github.com/volkovlabs/business-links/issues).
-- Subscribe to our [YouTube Channel](https://youtube.com/@volkovlabs) for tutorials and updates.
 
 ## License
 

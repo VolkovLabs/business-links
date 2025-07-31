@@ -25,6 +25,28 @@ export const extractParamsByPrefix = (search: string, prefix: string): string =>
   return result.toString();
 };
 
+export const prepareFromAndToParams = (timeRange: TimeRange) => {
+  let fromValue = '';
+  let toValue = '';
+
+  if (timeRange.raw?.from && typeof timeRange.raw?.from === 'string') {
+    fromValue = timeRange.raw.from;
+  } else {
+    fromValue = timeRange.from.toISOString();
+  }
+
+  if (timeRange.raw?.to && typeof timeRange.raw?.to === 'string') {
+    toValue = timeRange.raw.to;
+  } else {
+    toValue = timeRange.to.toISOString();
+  }
+
+  return {
+    from: fromValue,
+    to: toValue,
+  };
+};
+
 /**
  * prepareUrlWithParams
  * @param includeTimeRange
@@ -68,7 +90,8 @@ export const prepareUrlWithParams = (
    * Apply Time Range
    */
   if (item.includeTimeRange) {
-    const timeRangeParams = `from=${timeRange.from.toISOString()}&to=${timeRange.to.toISOString()}`;
+    const params = prepareFromAndToParams(timeRange);
+    const timeRangeParams = `from=${params.from}&to=${params.to}`;
     currentUrl = `${currentUrl}${item.includeVariables ? `&${timeRangeParams}` : `?${timeRangeParams}`}`;
   }
 
