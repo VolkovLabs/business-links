@@ -27,7 +27,7 @@ import {
   LinkType,
 } from '@/types';
 
-import { ContentEditor, TimePickerEditor } from './components';
+import { ContentEditor, McpServersEditor, TimePickerEditor } from './components';
 
 /**
  * Properties
@@ -357,6 +357,36 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
                 {...TEST_IDS.linkEditor.fieldLlmTemperature.apply()}
               />
             </InlineField>
+
+            <InlineField
+              label="Use Grafana MCP"
+              labelWidth={20}
+              tooltip="Enable default Grafana MCP server for enhanced LLM capabilities"
+            >
+              <InlineSwitch
+                value={value.useDefaultGrafanaMcp || false}
+                onChange={(event) => {
+                  const newValue = {
+                    ...value,
+                    useDefaultGrafanaMcp: event.currentTarget.checked,
+                  };
+                  onChange(newValue);
+                }}
+                {...TEST_IDS.linkEditor.fieldUseDefaultMcp.apply()}
+              />
+            </InlineField>
+
+            <FieldsGroup label="MCP Servers" description="Configure external MCP servers for enhanced LLM capabilities">
+              <McpServersEditor
+                value={value.mcpServers || []}
+                onChange={(mcpServers) => {
+                  onChange({
+                    ...value,
+                    mcpServers,
+                  });
+                }}
+              />
+            </FieldsGroup>
           </>
         )}
 

@@ -16,12 +16,17 @@ interface Props {
    * Children
    */
   children: React.ReactNode | React.ReactNode[];
+
+  /**
+   * Description
+   */
+  description?: string;
 }
 
 /**
  * Fields Group
  */
-export const FieldsGroup: React.FC<Props> = ({ label, children }) => {
+export const FieldsGroup: React.FC<Props> = ({ label, children, description }) => {
   /**
    * Styles
    */
@@ -29,7 +34,7 @@ export const FieldsGroup: React.FC<Props> = ({ label, children }) => {
 
   return (
     <fieldset className={styles.root}>
-      <Label>{label}</Label>
+      <Label description={description}>{label}</Label>
       {children}
     </fieldset>
   );

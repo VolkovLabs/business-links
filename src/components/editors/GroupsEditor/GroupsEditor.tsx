@@ -255,7 +255,12 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
                                 />
                               </div>
                             ) : (
-                              <div className={cx(styles.itemHeader, styles.itemHeaderText)} {...testIds.itemTitle.apply(item.name)}>{item.name}</div>
+                              <div
+                                className={cx(styles.itemHeader, styles.itemHeaderText)}
+                                {...testIds.itemTitle.apply(item.name)}
+                              >
+                                {item.name}
+                              </div>
                             )
                           }
                           headerTestId={testIds.itemHeader.selector(item.name)}

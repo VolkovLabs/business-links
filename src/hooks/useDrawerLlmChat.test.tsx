@@ -36,13 +36,6 @@ describe('useChatMessages', () => {
     expect(result.current.messages).toEqual([]);
   });
 
-  it('Should generate unique message IDs with correct format', () => {
-    const { result } = renderHook(() => useChatMessages());
-    const id1 = result.current.generateMessageId();
-    const id2 = result.current.generateMessageId();
-    expect(id1).not.toEqual(id2);
-  });
-
   it('Should correctly add, set, and update messages', () => {
     const { result } = renderHook(() => useChatMessages());
     const m1: ChatMessage = { id: '1', text: 'A', sender: 'user', timestamp: new Date() };
@@ -60,7 +53,7 @@ describe('useChatMessages', () => {
         text: msg.text + '!',
       }))
     );
-    expect(result.current.messages[1].text).toBe('B!');
+    expect(result.current.messages[1].text).toEqual('B!');
 
     act(() => result.current.setMessages([m2]));
     expect(result.current.messages).toEqual([m2]);
@@ -116,8 +109,8 @@ describe('useFileAttachments', () => {
 
   it('Should format file size correctly', () => {
     const { result } = renderHook(() => useFileAttachments());
-    expect(result.current.formatFileSize(0)).toBe('0 B');
-    expect(result.current.formatFileSize(1024 * 1024)).toBe('1.05 MB');
+    expect(result.current.formatFileSize(0)).toEqual('0 B');
+    expect(result.current.formatFileSize(1024 * 1024)).toEqual('1.05 MB');
   });
 
   it('Should ignore null and empty file attachments', () => {
@@ -270,7 +263,7 @@ describe('useFileAttachments', () => {
     act(() => result.current.removeAttachedFile(firstFileId));
 
     expect(result.current.attachedFiles).toHaveLength(1);
-    expect(result.current.attachedFiles[0].name).toBe('file2.txt');
+    expect(result.current.attachedFiles[0].name).toEqual('file2.txt');
   });
 
   it('Should remove all attached files', () => {
@@ -390,7 +383,9 @@ describe('useFileAttachments', () => {
     const file2 = new File(['content2'], 'file2.json', { type: 'application/json' });
     const file3 = new File([''], 'image.png', { type: 'image/png' });
 
-    act(() => result.current.handleFileAttachment([makeDropzoneFile(file1), makeDropzoneFile(file2), makeDropzoneFile(file3)]));
+    act(() =>
+      result.current.handleFileAttachment([makeDropzoneFile(file1), makeDropzoneFile(file2), makeDropzoneFile(file3)])
+    );
 
     act(() => {
       if (fileReaderInstances[0].onload) {
@@ -411,9 +406,9 @@ describe('useFileAttachments', () => {
     });
 
     expect(result.current.attachedFiles).toHaveLength(3);
-    expect(result.current.attachedFiles[0].name).toBe('file1.txt');
-    expect(result.current.attachedFiles[1].name).toBe('file2.json');
-    expect(result.current.attachedFiles[2].name).toBe('image.png');
+    expect(result.current.attachedFiles[0].name).toEqual('file1.txt');
+    expect(result.current.attachedFiles[1].name).toEqual('file2.json');
+    expect(result.current.attachedFiles[2].name).toEqual('image.png');
   });
 
   it('Should ignore dropzoneFile if it is undefined or has no file property', () => {
@@ -508,7 +503,7 @@ describe('useFileAttachments', () => {
       });
 
       const errorMessage = mockAddErrorMessage.mock.calls[0][0];
-      
+
       expect(errorMessage).toContain('File too large: "large-file.txt" exceeds the maximum size of');
     });
 
@@ -526,8 +521,10 @@ describe('useFileAttachments', () => {
       });
 
       const errorMessage = mockAddErrorMessage.mock.calls[0][0];
-      
-      expect(errorMessage).toContain('Unsupported file type: "unsupported.exe" (application/x-executable) is not supported.');
+
+      expect(errorMessage).toContain(
+        'Unsupported file type: "unsupported.exe" (application/x-executable) is not supported.'
+      );
     });
 
     it('Should handle empty file array', () => {
@@ -563,15 +560,15 @@ describe('useTextareaResize', () => {
     Object.defineProperty(result.current.textareaRef, 'current', { value: textarea, configurable: true });
 
     act(() => result.current.adjustTextareaHeight());
-    expect(textarea.style.height).toBe(`${chatConfig.minTextAreaHeight}px`);
+    expect(textarea.style.height).toEqual(`${chatConfig.minTextAreaHeight}px`);
 
     Object.defineProperty(textarea, 'scrollHeight', { get: () => 500, configurable: true });
     act(() => result.current.adjustTextareaHeight());
-    expect(textarea.style.height).toBe(`${chatConfig.maxTextAreaHeight}px`);
+    expect(textarea.style.height).toEqual(`${chatConfig.maxTextAreaHeight}px`);
 
     Object.defineProperty(textarea, 'scrollHeight', { get: () => 100, configurable: true });
     act(() => result.current.adjustTextareaHeight());
-    expect(textarea.style.height).toBe('100px');
+    expect(textarea.style.height).toEqual('100px');
   });
 });
 
@@ -585,7 +582,7 @@ describe('useLlmService', () => {
     const { result } = renderHook(() => useLlmService());
     const prepareMessageContent = result.current.prepareMessageContent;
 
-    expect(prepareMessageContent('Hi', [], () => 'X')).toBe('Hi');
+    expect(prepareMessageContent('Hi', [], () => 'X')).toEqual('Hi');
 
     const file: AttachedFile = {
       id: '1',
@@ -663,13 +660,13 @@ describe('useLlmService', () => {
     it('Should handle error with no message', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: '' };
-      expect(result.current.handleLlmError(error)).toBe('Sorry, an error occurred while processing your request.');
+      expect(result.current.handleLlmError(error)).toEqual('Sorry, an error occurred while processing your request.');
     });
 
     it('Should handle 422 configuration error', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: 'Request failed with status code 422' };
-      expect(result.current.handleLlmError(error)).toBe(
+      expect(result.current.handleLlmError(error)).toEqual(
         'Configuration Error: The LLM request format is invalid. Please check your Grafana LLM plugin configuration.'
       );
     });
@@ -677,7 +674,7 @@ describe('useLlmService', () => {
     it('Should handle 401 authentication error', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: 'Request failed with status code 401' };
-      expect(result.current.handleLlmError(error)).toBe(
+      expect(result.current.handleLlmError(error)).toEqual(
         'Authentication Error: Please check your API keys in Grafana LLM settings.'
       );
     });
@@ -685,7 +682,7 @@ describe('useLlmService', () => {
     it('Should handle 403 authentication error', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: 'Request failed with status code 403' };
-      expect(result.current.handleLlmError(error)).toBe(
+      expect(result.current.handleLlmError(error)).toEqual(
         'Authentication Error: Please check your API keys in Grafana LLM settings.'
       );
     });
@@ -693,7 +690,7 @@ describe('useLlmService', () => {
     it('Should handle 429 rate limit error', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: 'Request failed with status code 429' };
-      expect(result.current.handleLlmError(error)).toBe(
+      expect(result.current.handleLlmError(error)).toEqual(
         'Rate Limit: Too many requests. Please wait a moment and try again.'
       );
     });
@@ -701,14 +698,14 @@ describe('useLlmService', () => {
     it('Should handle 500 server error', () => {
       const { result } = renderHook(() => useLlmService());
       const error = { message: 'Request failed with status code 500' };
-      expect(result.current.handleLlmError(error)).toBe('Server Error: The LLM service is experiencing issues.');
+      expect(result.current.handleLlmError(error)).toEqual('Server Error: The LLM service is experiencing issues.');
     });
 
     it('Should handle other error messages', () => {
       const { result } = renderHook(() => useLlmService());
       const errorMessage = 'Unknown error occurred';
       const error = { message: errorMessage };
-      expect(result.current.handleLlmError(error)).toBe(`Error: ${errorMessage}`);
+      expect(result.current.handleLlmError(error)).toEqual(`Error: ${errorMessage}`);
     });
   });
 

@@ -412,28 +412,28 @@ describe('migration', () => {
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
 
-      expect(normalizedItem.showCustomIcons).toBe(false);
-      expect(normalizedItem.customIconUrl).toBe('');
+      expect(normalizedItem.showCustomIcons).toEqual(false);
+      expect(normalizedItem.customIconUrl).toEqual('');
     });
 
     it('Should normalize hideTooltipOnHover to false', async () => {
       const item = createLinkConfig({ id: 'item-1-test-id' });
       const group = createGroupConfig({ items: [item] });
-  
+
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
-  
-      expect(normalizedItem.hideTooltipOnHover).toBe(false);
+
+      expect(normalizedItem.hideTooltipOnHover).toEqual(false);
     });
 
     it('Should normalize alignContentPosition to left', async () => {
       const item = createLinkConfig({ id: 'item-1-test-id' });
       const group = createGroupConfig({ items: [item] });
-  
+
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
-  
-      expect(normalizedItem.alignContentPosition).toBe('left');
+
+      expect(normalizedItem.alignContentPosition).toEqual('left');
     });
   });
 });
