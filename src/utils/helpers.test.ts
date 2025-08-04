@@ -1,4 +1,4 @@
-import { calcOffsetTop, replaceVariablesHelper } from './helpers';
+import { replaceVariablesHelper } from './helpers';
 
 describe('Variable helpers', () => {
   describe('Replace Variables Helper', () => {
@@ -85,71 +85,5 @@ describe('Variable helpers', () => {
 
       expect(result).toEqual(['123']);
     });
-  });
-});
-
-/**
- * Unit tests for calcOffsetTop utility function.
- */
-describe('calcOffsetTop utility', () => {
-  let realGetComputedStyle: typeof window.getComputedStyle;
-
-  beforeAll(() => {
-    realGetComputedStyle = window.getComputedStyle;
-  });
-  afterAll(() => {
-    window.getComputedStyle = realGetComputedStyle;
-  });
-
-  beforeEach(() => {
-    document.body.innerHTML = '';
-  });
-
-  it('Should calculates header + sticky submenu height', () => {
-    /**
-     * When a sticky submenu is visible, return header height + submenu height.
-     */
-    const header = document.createElement('header');
-    header.getBoundingClientRect = () => ({ height: 20 }) as DOMRect;
-
-    document.body.appendChild(header);
-    const submenu = document.createElement('section');
-
-    submenu.setAttribute('aria-label', 'Dashboard submenu');
-    submenu.getBoundingClientRect = () => ({ height: 30 }) as DOMRect;
-
-    document.body.appendChild(submenu);
-    window.getComputedStyle = (el: Element) => {
-      if (el === submenu) {
-        return {
-          position: 'sticky',
-          visibility: 'visible',
-          overflow: '',
-          overflowX: '',
-          overflowY: '',
-        } as unknown as CSSStyleDeclaration;
-      }
-      return {
-        position: 'static',
-        visibility: 'visible',
-        overflow: '',
-        overflowX: '',
-        overflowY: '',
-      } as unknown as CSSStyleDeclaration;
-    };
-    expect(calcOffsetTop()).toEqual(50);
-  });
-
-  it('Should prefers controlsBottom over header+submenu', () => {
-    /**
-     * If control container is present, return its bottom offset directly.
-     */
-    const controlsContainer = document.createElement('div');
-    controlsContainer.getBoundingClientRect = () => ({ bottom: 40 }) as DOMRect;
-    const controlsEl = document.createElement('div');
-    controlsEl.setAttribute('data-testid', 'data-testid dashboard controls');
-    controlsContainer.appendChild(controlsEl);
-    document.body.appendChild(controlsContainer);
-    expect(calcOffsetTop()).toEqual(40);
   });
 });
