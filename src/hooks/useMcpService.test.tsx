@@ -4,6 +4,7 @@ import { renderHook } from '@testing-library/react';
 import { clearMcpCache, prepareToolContent } from '@/utils';
 
 import { useMcpService } from './useMcpService';
+import { LlmRole } from '@/types';
 
 jest.mock('@/utils', () => ({
   ...jest.requireActual('@/utils'),
@@ -374,7 +375,7 @@ describe('useMcpService with multiple servers', () => {
       ],
     };
 
-    const messages = [{ role: 'user' as const, content: 'User message' }];
+    const messages = [{ role: LlmRole.USER, content: 'User message' }];
 
     const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
       { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
@@ -399,7 +400,7 @@ describe('useMcpService with multiple servers', () => {
       ],
     };
 
-    const messages = [{ role: 'user' as const, content: 'User message' }];
+    const messages = [{ role: LlmRole.USER, content: 'User message' }];
 
     const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult);
 
@@ -433,7 +434,7 @@ describe('useMcpService with multiple servers', () => {
       ],
     };
 
-    const messages = [{ role: 'user' as const, content: 'User message' }];
+    const messages = [{ role: LlmRole.USER, content: 'User message' }];
 
     const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
       { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
@@ -599,7 +600,7 @@ describe('useMcpService with multiple servers', () => {
       ],
     };
 
-    const messages = [{ role: 'user' as const, content: 'User message' }];
+    const messages = [{ role: LlmRole.USER, content: 'User message' }];
 
     const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
       { name: 'Test Server', url: 'http://localhost:3004', enabled: true },
@@ -908,7 +909,7 @@ describe('useMcpService with multiple servers', () => {
       ],
     };
 
-    const messages = [{ role: 'user' as const, content: 'User message' }];
+    const messages = [{ role: LlmRole.USER, content: 'User message' }];
 
     const processResult = await result.current.processToolCalls(response, messages, mockAddToolResult, [
       { name: 'Test Server', url: 'http://localhost:3004', enabled: true },

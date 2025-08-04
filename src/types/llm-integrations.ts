@@ -45,15 +45,25 @@ interface ToolCall {
 }
 
 /**
+ * LLM Role
+ */
+export enum LlmRole {
+  SYSTEM = 'system',
+  USER = 'user',
+  ASSISTANT = 'assistant',
+  TOOL = 'tool',
+}
+
+/**
  * Chat message for LLM API
  */
 export interface LlmMessage {
   /**
    * Message role
    *
-   * @type {'system' | 'user' | 'assistant' | 'tool'}
+   * @type {LlmRole}
    */
-  role: 'system' | 'user' | 'assistant' | 'tool';
+  role: LlmRole;
 
   /**
    * Message content

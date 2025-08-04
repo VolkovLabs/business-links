@@ -1,6 +1,6 @@
 import { DropzoneFile, IconName } from '@grafana/ui';
 
-import { LlmMessage } from './llm-integrations';
+import { LlmMessage, LlmRole } from './llm-integrations';
 import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig, McpServerConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
@@ -206,9 +206,9 @@ export interface ChatMessage {
   /**
    * Who sent the message
    *
-   * @type {'user' | 'assistant' | 'system' | 'tool'}
+   * @type {LlmRole}
    */
-  sender: 'user' | 'assistant' | 'system' | 'tool';
+  sender: LlmRole;
 
   /**
    * Message content

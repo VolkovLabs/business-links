@@ -1,5 +1,6 @@
 import { mcp } from '@grafana/llm';
 
+import { LlmRole } from './llm-integrations';
 import { McpServerConfig } from './panel';
 
 /**
@@ -83,7 +84,7 @@ export interface ExtendedLlmMessage {
   /**
    * Role
    */
-  role: 'system' | 'user' | 'assistant' | 'tool';
+  role: LlmRole;
 
   /**
    * Content

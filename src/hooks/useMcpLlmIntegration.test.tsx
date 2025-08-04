@@ -1,6 +1,7 @@
 import { llm } from '@grafana/llm';
 import { renderHook } from '@testing-library/react';
 
+import { LlmRole } from '@/types';
 import { useMcpLlmIntegration } from './useMcpLlmIntegration';
 import { useMcpService } from './useMcpService';
 
@@ -159,7 +160,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration(mockAddErrorMessage));
 
-      const messages = [{ role: 'user' as const, content: 'Hello' }];
+      const messages = [{ role: LlmRole.USER, content: 'Hello' }];
 
       await expect(result.current.sendMessageWithTools(messages)).rejects.toThrow(
         'MCP + LLM request failed: MCP service error'
@@ -219,7 +220,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'Hello, how are you?' }];
+      const messages = [{ role: LlmRole.USER, content: 'Hello, how are you?' }];
 
       const mockResponse = {
         choices: [
@@ -265,7 +266,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'What time is it?' }];
+      const messages = [{ role: LlmRole.USER, content: 'What time is it?' }];
 
       const toolCall = {
         id: 'call_1',
@@ -324,7 +325,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'Get the weather' }];
+      const messages = [{ role: LlmRole.USER, content: 'Get the weather' }];
 
       const toolCall = {
         id: 'call_1',
@@ -385,7 +386,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'What time is it?' }];
+      const messages = [{ role: LlmRole.USER, content: 'What time is it?' }];
 
       const toolCall = {
         id: 'call_1',
@@ -445,10 +446,10 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'assistant' as const, content: null },
-        { role: 'user' as const, content: '' },
-        { role: 'system' as const, content: 'You are a helpful assistant' },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.ASSISTANT as const, content: null },
+        { role: LlmRole.USER, content: '' },
+        { role: LlmRole.SYSTEM as const, content: 'You are a helpful assistant' },
       ];
 
       const mockResponse = {
@@ -496,10 +497,10 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'user' as const, content: '' },
-        { role: 'user' as const, content: '   ' },
-        { role: 'system' as const, content: 'You are a helpful assistant' },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.USER, content: '' },
+        { role: LlmRole.USER, content: '   ' },
+        { role: LlmRole.SYSTEM, content: 'You are a helpful assistant' },
       ];
 
       const mockResponse = {
@@ -549,7 +550,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'What time is it?' }];
+      const messages = [{ role: LlmRole.USER, content: 'What time is it?' }];
 
       const toolCall = {
         id: 'call_1',
@@ -612,8 +613,8 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'What time is it?' },
-        { role: 'user' as const, content: '' },
+        { role: LlmRole.USER, content: 'What time is it?' },
+        { role: LlmRole.USER, content: '' },
       ];
 
       const toolCall = {
@@ -674,9 +675,9 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'user' as const, content: '' },
-        { role: 'system' as const, content: 'You are a helpful assistant' },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.USER, content: '' },
+        { role: LlmRole.SYSTEM, content: 'You are a helpful assistant' },
       ];
 
       const mockResponse = {
@@ -698,8 +699,8 @@ describe('useMcpLlmIntegration', () => {
       expect(llm.chatCompletions).toHaveBeenCalledWith({
         model: llm.Model.BASE,
         messages: [
-          { role: 'user', content: 'Hello' },
-          { role: 'system', content: 'You are a helpful assistant' },
+          { role: LlmRole.USER, content: 'Hello' },
+          { role: LlmRole.SYSTEM, content: 'You are a helpful assistant' },
         ],
         tools: mockTools,
       });
@@ -777,8 +778,8 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'What time is it?' },
-        { role: 'tool' as const, content: '', toolCallId: 'call_1' },
+        { role: LlmRole.USER, content: 'What time is it?' },
+        { role: LlmRole.TOOL, content: '', toolCallId: 'call_1' },
       ];
 
       const toolCall = {
@@ -839,9 +840,9 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'system' as const, content: '' },
-        { role: 'system' as const, content: 'You are a helpful assistant' },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.SYSTEM, content: '' },
+        { role: LlmRole.SYSTEM, content: 'You are a helpful assistant' },
       ];
 
       const mockResponse = {
@@ -888,9 +889,9 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'user' as const, content: '' },
-        { role: 'system' as const, content: 'You are a helpful assistant' },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.USER, content: '' },
+        { role: LlmRole.SYSTEM, content: 'You are a helpful assistant' },
       ];
 
       const mockResponse = {
@@ -939,7 +940,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'What time is it?' }];
+      const messages = [{ role: LlmRole.USER, content: 'What time is it?' }];
 
       const toolCall = {
         id: 'call_1',
@@ -998,7 +999,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'Get the weather' }];
+      const messages = [{ role: LlmRole.USER, content: 'Get the weather' }];
 
       const toolCall = {
         id: 'call_1',
@@ -1058,7 +1059,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'Get the weather' }];
+      const messages = [{ role: LlmRole.USER, content: 'Get the weather' }];
 
       const toolCall = {
         id: 'call_1',
@@ -1117,8 +1118,8 @@ describe('useMcpLlmIntegration', () => {
       const { result } = renderHook(() => useMcpLlmIntegration());
 
       const messages = [
-        { role: 'user' as const, content: 'Hello' },
-        { role: 'tool' as const, content: 'Tool response', toolCallId: undefined },
+        { role: LlmRole.USER, content: 'Hello' },
+        { role: LlmRole.TOOL, content: 'Tool response', toolCallId: undefined },
       ];
 
       const mockResponse = {
@@ -1162,7 +1163,7 @@ describe('useMcpLlmIntegration', () => {
 
       const { result } = renderHook(() => useMcpLlmIntegration());
 
-      const messages = [{ role: 'user' as const, content: 'Hello' }];
+      const messages = [{ role: LlmRole.USER, content: 'Hello' }];
 
       await expect(result.current.sendMessageWithTools(messages)).rejects.toThrow(
         'MCP + LLM request failed: MCP service error'
@@ -1236,7 +1237,7 @@ describe('useMcpLlmIntegration', () => {
 
     const { result } = renderHook(() => useMcpLlmIntegration());
 
-    const messages = [{ role: 'user' as const, content: 'Hello' }];
+    const messages = [{ role: LlmRole.USER, content: 'Hello' }];
 
     const mockResponse = {
       choices: [
@@ -1274,7 +1275,7 @@ describe('useMcpLlmIntegration', () => {
 
     const { result } = renderHook(() => useMcpLlmIntegration());
 
-    const messages = [{ role: 'user' as const, content: 'Get the weather' }];
+    const messages = [{ role: LlmRole.USER, content: 'Get the weather' }];
 
     const toolCall = {
       id: 'call_1',
@@ -1324,7 +1325,7 @@ describe('useMcpLlmIntegration', () => {
 
     const { result } = renderHook(() => useMcpLlmIntegration());
 
-    const messages = [{ role: 'user' as const, content: 'Hello' }];
+    const messages = [{ role: LlmRole.USER, content: 'Hello' }];
 
     await expect(result.current.sendMessageWithTools(messages)).rejects.toThrow(
       'MCP + LLM request failed: Unknown error'
@@ -1341,7 +1342,7 @@ describe('useMcpLlmIntegration', () => {
 
     const { result } = renderHook(() => useMcpLlmIntegration(mockAddErrorMessage));
 
-    const messages = [{ role: 'user' as const, content: 'Hello' }];
+    const messages = [{ role: LlmRole.USER, content: 'Hello' }];
 
     await expect(result.current.sendMessageWithTools(messages)).rejects.toThrow(
       'MCP + LLM request failed: Unknown error'

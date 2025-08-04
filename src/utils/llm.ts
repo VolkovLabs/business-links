@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import { ChatMessage } from '@/types';
+import { ChatMessage, LlmRole } from '@/types';
 
 /**
  * Helper function to get display name for message sender
@@ -37,7 +37,7 @@ export const createToolResultHandler = (
   return (toolCallId: string, content: string, isError?: boolean) => {
     const toolMessage: ChatMessage = {
       id: generateMessageId(),
-      sender: 'tool',
+      sender: LlmRole.TOOL,
       text: isError ? `Error: ${content}` : `Tool Result: ${content}`,
       timestamp: new Date(),
       isError,

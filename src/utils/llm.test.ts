@@ -1,4 +1,5 @@
 import { createToolResultHandler } from './llm';
+import { LlmRole } from '@/types';
 
 describe('createToolResultHandler', () => {
   const mockAddMessages = jest.fn();
@@ -15,7 +16,7 @@ describe('createToolResultHandler', () => {
       expect.objectContaining({
         id: expect.anything(),
         isError: undefined,
-        sender: 'tool',
+        sender: LlmRole.TOOL,
         text: 'Tool Result: Successful result',
         isStreaming: false,
         timestamp: expect.anything(),
@@ -30,7 +31,7 @@ describe('createToolResultHandler', () => {
       expect.objectContaining({
         id: expect.anything(),
         isError: true,
-        sender: 'tool',
+        sender: LlmRole.TOOL,
         text: 'Error: Something went wrong',
         isStreaming: false,
         timestamp: expect.anything(),

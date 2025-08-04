@@ -3,6 +3,7 @@ import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { LlmRole } from '@/types';
 import * as hooks from '@/hooks';
 
 import { ChatDrawer, useDropzoneOverlay } from './ChatDrawer';
@@ -195,7 +196,7 @@ describe('ChatDrawer', () => {
       const messages = [
         {
           id: '1',
-          sender: 'user' as const,
+          sender: LlmRole.USER,
           text: 'Hello',
           timestamp: new Date(),
           attachments: [
@@ -217,14 +218,14 @@ describe('ChatDrawer', () => {
         },
         {
           id: '2',
-          sender: 'assistant' as const,
+          sender: LlmRole.ASSISTANT,
           text: 'Hi there!',
           timestamp: new Date(),
           isStreaming: false,
         },
         {
           id: '3',
-          sender: 'assistant' as const,
+          sender: LlmRole.ASSISTANT,
           text: 'Thinking...',
           timestamp: new Date(),
           isStreaming: true,
@@ -249,7 +250,7 @@ describe('ChatDrawer', () => {
       const messages = [
         {
           id: '1',
-          sender: 'user' as const,
+          sender: LlmRole.USER,
           text: 'Hello',
           timestamp: new Date(),
           attachments: [
@@ -271,7 +272,7 @@ describe('ChatDrawer', () => {
         },
         {
           id: '2',
-          sender: 'tool',
+          sender: LlmRole.TOOL,
           text: 'Here is list of dashboards',
           timestamp: new Date(),
           isStreaming: false,
@@ -409,11 +410,11 @@ describe('ChatDrawer', () => {
 
       expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          sender: 'user',
+          sender: LlmRole.USER,
           text: 'Test message',
         }),
         expect.objectContaining({
-          sender: 'assistant',
+          sender: LlmRole.ASSISTANT,
           isStreaming: true,
         }),
       ]);
@@ -538,7 +539,7 @@ describe('ChatDrawer', () => {
 
       expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          sender: 'system',
+          sender: LlmRole.SYSTEM,
           isError: true,
           text: expect.stringContaining('Service Error: LLM service unavailable'),
         }),
@@ -607,7 +608,7 @@ describe('ChatDrawer', () => {
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalledWith([
           expect.objectContaining({
-            sender: 'system',
+            sender: LlmRole.SYSTEM,
             isError: true,
             text: expect.stringContaining('Connection Error: Request timeout'),
           }),
@@ -675,7 +676,7 @@ describe('ChatDrawer', () => {
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalledWith([
           expect.objectContaining({
-            sender: 'system',
+            sender: LlmRole.SYSTEM,
             isError: true,
             text: expect.stringContaining('Connection Error: Stream error'),
           }),
@@ -737,7 +738,7 @@ describe('ChatDrawer', () => {
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalledWith([
           expect.objectContaining({
-            sender: 'system',
+            sender: LlmRole.SYSTEM,
             isError: true,
             text: expect.stringContaining('Connection Error: Connection failed'),
           }),
@@ -766,7 +767,7 @@ describe('ChatDrawer', () => {
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalledWith([
           expect.objectContaining({
-            sender: 'system',
+            sender: LlmRole.SYSTEM,
             isError: true,
             text: expect.stringContaining('Connection Error: String error'),
           }),
@@ -842,8 +843,8 @@ describe('ChatDrawer', () => {
   it('Should call scrollIntoView when messages change', async () => {
     const scrollSpy = jest.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
 
-    const messages1 = [{ id: '1', sender: 'user', text: 'Hello', timestamp: new Date() }];
-    const messages2 = [...messages1, { id: '2', sender: 'assistant', text: 'World', timestamp: new Date() }];
+    const messages1 = [{ id: '1', sender: LlmRole.USER, text: 'Hello', timestamp: new Date() }];
+    const messages2 = [...messages1, { id: '2', sender: LlmRole.ASSISTANT, text: 'World', timestamp: new Date() }];
 
     (hooks.useChatMessages as jest.Mock).mockReturnValue({
       ...defaultUseChatMessages,
@@ -896,7 +897,7 @@ describe('ChatDrawer', () => {
     const messages = [
       {
         id: '1',
-        sender: 'user',
+        sender: LlmRole.USER,
         text: 'msg',
         timestamp: new Date(),
         attachments: [{ id: 'img1', name: 'pic.png', size: 100, type: 'image/png', url: 'data:image/png;base64,abc' }],
@@ -914,7 +915,7 @@ describe('ChatDrawer', () => {
     const messages = [
       {
         id: '1',
-        sender: 'assistant',
+        sender: LlmRole.ASSISTANT,
         text: 'Thinking...',
         timestamp: new Date(),
         isStreaming: true,

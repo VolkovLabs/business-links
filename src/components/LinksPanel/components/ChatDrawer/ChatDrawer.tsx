@@ -11,7 +11,7 @@ import {
   useMcpService,
   useTextareaResize,
 } from '@/hooks';
-import { ChatMessage, LlmMessage, McpServerConfig, McpTool } from '@/types';
+import { ChatMessage, LlmMessage, LlmRole, McpServerConfig, McpTool } from '@/types';
 import { createToolResultHandler, generateMessageId, getSenderDisplayName } from '@/utils';
 
 import { getStyles } from './ChatDrawer.styles';
@@ -142,7 +142,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     (errorText: string) => {
       const errorMessage: ChatMessage = {
         id: generateMessageId(),
-        sender: 'system',
+        sender: LlmRole.SYSTEM,
         text: errorText,
         timestamp: new Date(),
         isStreaming: false,
@@ -261,7 +261,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     const messageContent = prepareMessageContent(inputValue.trim(), attachedFiles, formatFileSize);
     const userMessage: ChatMessage = {
       id: generateMessageId(),
-      sender: 'user',
+      sender: LlmRole.USER,
       text: inputValue.trim(),
       timestamp: new Date(),
       attachments: [...attachedFiles],
@@ -272,7 +272,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
      */
     const loadingMessage: ChatMessage = {
       id: generateMessageId(),
-      sender: 'assistant',
+      sender: LlmRole.ASSISTANT,
       text: '',
       timestamp: new Date(),
       /**
@@ -300,7 +300,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
        */
       const llmMessages: LlmMessage[] = [
         {
-          role: 'system',
+          role: LlmRole.SYSTEM,
           content:
             initialPrompt ||
             `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.${
@@ -310,10 +310,10 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
             }`,
         },
         ...chatHistory.map((msg) => ({
-          role: msg.role as 'user' | 'assistant' | 'tool',
+          role: msg.role,
           content: msg.content,
         })),
-        { role: 'user', content: messageContent },
+        { role: LlmRole.USER, content: messageContent },
       ];
 
       /**
@@ -468,18 +468,18 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                     key={message.id}
                     className={cx(
                       styles.messageRow,
-                      message.sender === 'user' ? styles.messageRowUser : styles.messageRowAssistant
+                      message.sender === LlmRole.USER ? styles.messageRowUser : styles.messageRowAssistant
                     )}
                     {...testIds.message.apply(message.text)}
                   >
                     <div
                       className={cx(
                         styles.messageContent,
-                        message.sender === 'user'
+                        message.sender === LlmRole.USER
                           ? styles.messageContentUser
-                          : message.sender === 'system' || message.isError
+                          : message.sender === LlmRole.SYSTEM || message.isError
                             ? styles.messageContentError
-                            : message.sender === 'tool'
+                            : message.sender === LlmRole.TOOL
                               ? styles.messageContentTool
                               : styles.messageContentAssistant
                       )}

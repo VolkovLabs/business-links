@@ -8,6 +8,7 @@ import {
   ChatMessage,
   LlmHealthCheck,
   LlmMessage,
+  LlmRole,
   UseChatMessagesReturn,
   UseFileAttachmentsReturn,
   UseLlmServiceReturn,
@@ -336,9 +337,9 @@ export const useLlmService = (): UseLlmServiceReturn => {
       return messages
         .filter((message) => !message.isStreaming)
         .map((messageItem) => ({
-          role: messageItem.sender === 'user' ? ('user' as const) : ('assistant' as const),
+          role: messageItem.sender === LlmRole.USER ? LlmRole.USER : LlmRole.ASSISTANT,
           content:
-            messageItem.sender === 'user' && messageItem.attachments && messageItem.attachments.length > 0
+            messageItem.sender === LlmRole.USER && messageItem.attachments && messageItem.attachments.length > 0
               ? prepareContent(messageItem.text, messageItem.attachments, formatFileSize)
               : messageItem.text,
         }));

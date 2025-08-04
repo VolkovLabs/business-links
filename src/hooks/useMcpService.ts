@@ -1,6 +1,7 @@
 import { mcp } from '@grafana/llm';
 import { useCallback, useRef } from 'react';
 
+import { DEFAULT_MCP_CLIENT_CONFIG } from '@/constants';
 import {
   CachedMcpState,
   ExtendedLlmMessage,
@@ -108,10 +109,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
 
         if (useDefaultGrafanaMcp) {
           try {
-            const defaultClient = new mcp.Client({
-              name: 'volkovlabs-links-panel',
-              version: '2.1.0',
-            });
+            const defaultClient = new mcp.Client(DEFAULT_MCP_CLIENT_CONFIG);
             const transport = new mcp.StreamableHTTPClientTransport(mcp.streamableHTTPURL());
             await defaultClient.connect(transport);
 

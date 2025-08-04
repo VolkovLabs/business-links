@@ -1,7 +1,7 @@
 import { llm } from '@grafana/llm';
 import { useCallback } from 'react';
 
-import { LlmMessage, McpLlmIntegration, McpServerConfig, McpTool } from '@/types';
+import { LlmMessage, LlmRole, McpLlmIntegration, McpServerConfig, McpTool } from '@/types';
 
 import { useMcpService } from './useMcpService';
 
@@ -88,7 +88,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
             /**
              * Always include assistant messages (they may have tool_calls)
              */
-            if (msg.role === 'assistant') {
+            if (msg.role === LlmRole.ASSISTANT) {
               return true;
             }
 
@@ -98,7 +98,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
             return msg.content != null && msg.content !== '';
           })
           .map((msg) => {
-            if (msg.role === 'tool' && msg.toolCallId) {
+            if (msg.role === LlmRole.TOOL && msg.toolCallId) {
               return {
                 role: msg.role,
                 content: String(msg.content),
@@ -123,7 +123,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
            * Add the assistant message with tool_calls
            */
           const assistantMessage: LlmMessage = {
-            role: 'assistant',
+            role: LlmRole.ASSISTANT,
             content: response.choices[0].message.content || null,
             toolCallId: undefined,
             /**
@@ -140,7 +140,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               const toolContent = JSON.stringify(result.content || '');
 
               messages.push({
-                role: 'tool',
+                role: LlmRole.TOOL,
                 content: toolContent,
                 toolCallId: toolCall.id,
               });
@@ -152,7 +152,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               const errorContent = `Error executing ${toolCall.function.name}: ${toolError instanceof Error ? toolError.message : 'Unknown error'}`;
 
               messages.push({
-                role: 'tool',
+                role: LlmRole.TOOL,
                 content: errorContent,
                 toolCallId: toolCall.id,
               });
@@ -168,7 +168,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               /**
                * Always include assistant messages (they may have tool_calls)
                */
-              if (msg.role === 'assistant') {
+              if (msg.role === LlmRole.ASSISTANT) {
                 return true;
               }
 
@@ -178,7 +178,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               return msg.content != null && msg.content !== '';
             })
             .map((msg) => {
-              if (msg.role === 'tool' && msg.toolCallId) {
+              if (msg.role === LlmRole.TOOL && msg.toolCallId) {
                 return {
                   role: msg.role,
                   content: String(msg.content),
@@ -186,7 +186,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
                   tool_call_id: msg.toolCallId,
                 };
               }
-              if (msg.role === 'assistant' && msg.toolCalls) {
+              if (msg.role === LlmRole.ASSISTANT && msg.toolCalls) {
                 return {
                   role: msg.role,
                   content: String(msg.content),

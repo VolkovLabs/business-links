@@ -2,7 +2,7 @@
 import { llm } from '@grafana/llm';
 import { act, renderHook } from '@testing-library/react';
 
-import { AttachedFile, ChatMessage } from '@/types';
+import { AttachedFile, ChatMessage, LlmRole } from '@/types';
 
 import { chatConfig, useChatMessages, useFileAttachments, useLlmService, useTextareaResize } from './useDrawerLlmChat';
 
@@ -38,8 +38,8 @@ describe('useChatMessages', () => {
 
   it('Should correctly add, set, and update messages', () => {
     const { result } = renderHook(() => useChatMessages());
-    const m1: ChatMessage = { id: '1', text: 'A', sender: 'user', timestamp: new Date() };
-    const m2: ChatMessage = { id: '2', text: 'B', sender: 'assistant', timestamp: new Date() };
+    const m1: ChatMessage = { id: '1', text: 'A', sender: LlmRole.SYSTEM, timestamp: new Date() };
+    const m2: ChatMessage = { id: '2', text: 'B', sender: LlmRole.ASSISTANT, timestamp: new Date() };
 
     act(() => result.current.addMessages([m1]));
     expect(result.current.messages).toEqual([m1]);
@@ -633,27 +633,27 @@ describe('useLlmService', () => {
     const { result } = renderHook(() => useLlmService());
     const prepareChatHistory = result.current.prepareChatHistory;
     const msgs: ChatMessage[] = [
-      { id: '1', text: 'U', sender: 'user', timestamp: new Date() },
-      { id: '2', text: 'A', sender: 'assistant', timestamp: new Date() },
-      { id: '3', text: '...', sender: 'assistant', timestamp: new Date(), isStreaming: true },
+      { id: '1', text: 'U', sender: LlmRole.USER, timestamp: new Date() },
+      { id: '2', text: 'A', sender: LlmRole.ASSISTANT, timestamp: new Date() },
+      { id: '3', text: '...', sender: LlmRole.ASSISTANT, timestamp: new Date(), isStreaming: true },
       {
         id: '4',
         text: 'X',
-        sender: 'user',
+        sender: LlmRole.USER,
         timestamp: new Date(),
         attachments: [{ id: 'a', name: 'a.txt', size: 1, type: 'text/plain', content: 'c' }],
       },
-      { id: '5', text: 'Y', sender: 'user', timestamp: new Date() },
-      { id: '6', text: 'Z', sender: 'user', timestamp: new Date(), attachments: [] },
+      { id: '5', text: 'Y', sender: LlmRole.USER, timestamp: new Date() },
+      { id: '6', text: 'Z', sender: LlmRole.USER, timestamp: new Date(), attachments: [] },
     ];
     const mockPC = jest.fn((t, files) => `${t}:${files.length}`);
     const history = prepareChatHistory(msgs, mockPC, () => '');
     expect(history).toHaveLength(5);
-    expect(history[0]).toEqual({ role: 'user', content: 'U' });
-    expect(history[1]).toEqual({ role: 'assistant', content: 'A' });
-    expect(history[2]).toEqual({ role: 'user', content: 'X:1' });
-    expect(history[3]).toEqual({ role: 'user', content: 'Y' });
-    expect(history[4]).toEqual({ role: 'user', content: 'Z' });
+    expect(history[0]).toEqual({ role: LlmRole.USER, content: 'U' });
+    expect(history[1]).toEqual({ role: LlmRole.ASSISTANT, content: 'A' });
+    expect(history[2]).toEqual({ role: LlmRole.USER, content: 'X:1' });
+    expect(history[3]).toEqual({ role: LlmRole.USER, content: 'Y' });
+    expect(history[4]).toEqual({ role: LlmRole.USER, content: 'Z' });
   });
 
   describe('handleLlmError', () => {

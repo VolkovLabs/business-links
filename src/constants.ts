@@ -181,3 +181,11 @@ export const STICKY_OPTIONS = [
   { value: true, label: 'Enabled', description: 'Follow when scrolling.' },
   { value: false, label: 'Disabled', description: 'Scroll with dashboard.' },
 ];
+
+/**
+ * Default MCP Client Config
+ */
+export const DEFAULT_MCP_CLIENT_CONFIG = {
+  name: 'volkovlabs-links-panel',
+  version: '2.1.0',
+};
