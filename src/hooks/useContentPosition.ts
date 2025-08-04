@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { calcOffsetTop } from '@/utils';
+import { useElementResize } from './useElementResize';
+import { useOffsetCalculator } from './useOffsetCalculator';
 
 /**
  * Hook to position and optionally stick content based on scroll position.
@@ -19,22 +20,28 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
    */
   const [windowWidth, setWindowWidth] = useState<number>(() => (typeof window !== 'undefined' ? window.innerWidth : 0));
 
+  /**
+   * Observe element sizes
+   */
+  const headerRect = useElementResize('header', sticky);
+  const submenuRect = useElementResize('[aria-label="Dashboard submenu"]', sticky);
+  const controlsRect = useElementResize('[data-testid="data-testid dashboard controls"]', sticky);
+
+  /**
+   * Calculate offsetTop
+   */
+  const offsetTop = useOffsetCalculator(headerRect, submenuRect, controlsRect);
+
+  /**
+   * Update windowWidth state
+   */
   useEffect(() => {
-    /**
-     * Update windowWidth state
-     */
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
-    /**
-     * Subscribe to window resize event
-     */
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useLayoutEffect(() => {
@@ -45,13 +52,11 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
       document.querySelector<HTMLElement>(`[data-griditem-key="grid-item-${panelId}"]`) ||
       document.querySelector<HTMLElement>(`[data-panelid="${panelId}"]`);
 
-    if (!wrapper || !sticky) {
+    if (!wrapper || !sticky || offsetTop === undefined) {
       return;
     }
 
     containerRef.current = wrapper;
-
-    const offsetTop = calcOffsetTop();
 
     /**
      * Set initial styles
@@ -92,7 +97,7 @@ export const useContentPosition = ({ panelId, sticky }: { panelId: number | stri
       wrapper.style.willChange = '';
       wrapper.style.zIndex = '';
     };
-  }, [panelId, sticky, windowWidth]);
+  }, [panelId, sticky, windowWidth, offsetTop]);
 
   return { containerRef };
 };
