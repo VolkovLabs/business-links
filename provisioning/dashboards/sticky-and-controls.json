@@ -1,0 +1,1079 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 15,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "customPadding": 0,
+        "dropdowns": [],
+        "groups": [
+          {
+            "dynamicFontSize": false,
+            "gridColumns": 10,
+            "gridLayout": false,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": true,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "1h",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 3600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "fc494382-d22d-4d7d-889f-ea3067acf7a6",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "6h",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 21600,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "f98ee678-e311-420d-81ce-9782b4ef52b8",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "12h",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 43200,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "f069e3e5-e603-4b05-bb25-714284d8fd98",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "24h",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 86400,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "name": "7d",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "relativeTimeRange": {
+                    "from": 604800,
+                    "to": 0
+                  },
+                  "type": "relative"
+                },
+                "type": "link",
+                "url": ""
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Group1"
+          }
+        ],
+        "groupsSorting": false,
+        "sticky": true
+      },
+      "targets": [
+        {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "timeFrom",
+                "type": "string",
+                "values": ["2025-05-01"]
+              },
+              {
+                "config": {},
+                "name": "timeTo",
+                "type": "string",
+                "values": ["2025-05-11"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Sticky panel",
+      "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 5,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 35
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 9,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "Random Walk",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": ["Engineer 1"],
+          "value": ["Engineer 1"]
+        },
+        "includeAll": true,
+        "label": "Engineer",
+        "multi": true,
+        "name": "Engineer",
+        "options": [
+          {
+            "selected": true,
+            "text": "Engineer 1",
+            "value": "Engineer 1"
+          },
+          {
+            "selected": false,
+            "text": "Engineer 2",
+            "value": "Engineer 2"
+          },
+          {
+            "selected": false,
+            "text": "Engineer 3",
+            "value": "Engineer 3"
+          },
+          {
+            "selected": false,
+            "text": "Engineer 4",
+            "value": "Engineer 4"
+          },
+          {
+            "selected": false,
+            "text": "Engineer 5",
+            "value": "Engineer 5"
+          }
+        ],
+        "query": "Engineer 1, Engineer 2, Engineer 3, Engineer 4, Engineer 5",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": [""],
+          "value": [""]
+        },
+        "includeAll": true,
+        "label": "LongVariableName",
+        "multi": true,
+        "name": "LongVariableName",
+        "options": [
+          {
+            "selected": false,
+            "text": "LongVariableName 1",
+            "value": "LongVariableName 1"
+          },
+          {
+            "selected": false,
+            "text": "LongVariableName",
+            "value": "LongVariableName"
+          },
+          {
+            "selected": false,
+            "text": "LongVariableName 3",
+            "value": "LongVariableName 3"
+          },
+          {
+            "selected": false,
+            "text": "LongVariableName 4",
+            "value": "LongVariableName 4"
+          },
+          {
+            "selected": false,
+            "text": "LongVariableName 5",
+            "value": "LongVariableName 5"
+          },
+          {
+            "selected": false,
+            "text": "LongVariableName 6",
+            "value": "LongVariableName 6"
+          },
+          {
+            "selected": true,
+            "text": "",
+            "value": ""
+          }
+        ],
+        "query": "LongVariableName 1, LongVariableName, LongVariableName 3, LongVariableName 4, LongVariableName 5, LongVariableName 6, ",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": ["Test 1"],
+          "value": ["Test 1"]
+        },
+        "description": "",
+        "includeAll": true,
+        "label": "test",
+        "multi": true,
+        "name": "test",
+        "options": [
+          {
+            "selected": true,
+            "text": "Test 1",
+            "value": "Test 1"
+          },
+          {
+            "selected": false,
+            "text": "Test 2",
+            "value": "Test 2"
+          },
+          {
+            "selected": false,
+            "text": "Test 3",
+            "value": "Test 3"
+          },
+          {
+            "selected": false,
+            "text": "Test 4",
+            "value": "Test 4"
+          }
+        ],
+        "query": "Test 1, Test 2, Test 3 , Test 4",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": ["$__all"],
+          "value": ["$__all"]
+        },
+        "includeAll": true,
+        "label": "Another Variable Long Long Title",
+        "multi": true,
+        "name": "AnotherVariable",
+        "options": [
+          {
+            "selected": false,
+            "text": "AnotherVariable 1",
+            "value": "AnotherVariable 1"
+          },
+          {
+            "selected": false,
+            "text": "AnotherVariable 2",
+            "value": "AnotherVariable 2"
+          },
+          {
+            "selected": false,
+            "text": "AnotherVariable 3",
+            "value": "AnotherVariable 3"
+          },
+          {
+            "selected": false,
+            "text": "AnotherVariable 4",
+            "value": "AnotherVariable 4"
+          },
+          {
+            "selected": false,
+            "text": "AnotherVariable 5",
+            "value": "AnotherVariable 5"
+          }
+        ],
+        "query": "AnotherVariable 1, AnotherVariable 2, AnotherVariable 3, AnotherVariable 4, AnotherVariable 5",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": ["test2-1"],
+          "value": ["test2-1"]
+        },
+        "includeAll": true,
+        "label": "Test 2 variable ",
+        "multi": true,
+        "name": "test2",
+        "options": [
+          {
+            "selected": true,
+            "text": "test2-1",
+            "value": "test2-1"
+          },
+          {
+            "selected": false,
+            "text": "test2-2",
+            "value": "test2-2"
+          },
+          {
+            "selected": false,
+            "text": "test2-3",
+            "value": "test2-3"
+          },
+          {
+            "selected": false,
+            "text": "test2-4",
+            "value": "test2-4"
+          },
+          {
+            "selected": false,
+            "text": "test2-5",
+            "value": "test2-5"
+          }
+        ],
+        "query": "test2-1,test2-2,test2-3,test2-4,test2-5",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "includeAll": true,
+        "label": "variableNew1",
+        "multi": true,
+        "name": "variableNew1",
+        "options": [],
+        "query": "",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "includeAll": true,
+        "label": "variableNew2",
+        "multi": true,
+        "name": "variableNew2",
+        "options": [],
+        "query": "",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "",
+          "value": ""
+        },
+        "includeAll": true,
+        "label": "variableNew3",
+        "multi": true,
+        "name": "variableNew3",
+        "options": [],
+        "query": "",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": ["one1"],
+          "value": ["one1"]
+        },
+        "description": "",
+        "includeAll": true,
+        "label": "variableNew4",
+        "multi": true,
+        "name": "variableNew4",
+        "options": [
+          {
+            "selected": true,
+            "text": "one1",
+            "value": "one1"
+          },
+          {
+            "selected": false,
+            "text": "one2",
+            "value": "one2"
+          }
+        ],
+        "query": "one1,one2",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Sticky panel With variables contols",
+  "uid": "1ef53813-8c6e-421a-9935-500a8d950c02",
+  "version": 15
+}

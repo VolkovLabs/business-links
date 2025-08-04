@@ -1,7 +1,22 @@
 import { act, render, screen, waitFor } from '@testing-library/react';
 import React from 'react';
-
+import { useElementResize } from './useElementResize';
+import { useOffsetCalculator } from './useOffsetCalculator';
 import { useContentPosition } from './useContentPosition';
+
+/**
+ * Mock useElementResize.
+ */
+jest.mock('./useElementResize', () => ({
+  useElementResize: jest.fn(),
+}));
+
+/**
+ * Mock useOffsetCalculator.
+ */
+jest.mock('./useOffsetCalculator', () => ({
+  useOffsetCalculator: jest.fn(),
+}));
 
 jest.useFakeTimers();
 
@@ -21,8 +36,6 @@ Object.defineProperty(window, 'getComputedStyle', {
   configurable: true,
   value: mockGetComputedStyle,
 });
-
-/* eslint-disable @typescript-eslint/naming-convention */
 
 /**
  * Minimal DOMMatrix polyfill for transform matrix parsing.
@@ -72,6 +85,12 @@ Object.defineProperty(window, 'DOMRect', {
  * Integration tests for useContentPosition hook.
  */
 describe('useContentPosition', () => {
+  /**
+   * Cast to jest mocks for proper typing.
+   */
+  const mockUseElementResize = useElementResize as jest.MockedFunction<typeof useElementResize>;
+  const mockUseOffsetCalculator = useOffsetCalculator as jest.MockedFunction<typeof useOffsetCalculator>;
+
   beforeEach(() => {
     /**
      * Reset DOM and mocks before each test
@@ -88,6 +107,12 @@ describe('useContentPosition', () => {
       position: 'static',
       visibility: 'visible',
     });
+
+    /**
+     * default mocks returns
+     */
+    mockUseElementResize.mockReturnValue(undefined);
+    mockUseOffsetCalculator.mockReturnValue(50);
   });
 
   afterEach(() => jest.runOnlyPendingTimers());
@@ -128,6 +153,9 @@ describe('useContentPosition', () => {
       position: 'static',
       visibility: 'visible',
     });
+
+    mockUseOffsetCalculator.mockReturnValue(50);
+
     document.body.innerHTML = '<header style="height:50px"></header>';
     render(<TestComponent panelId="p2" sticky={true} />);
     const w = screen.getByTestId('wrapper');
@@ -139,6 +167,8 @@ describe('useContentPosition', () => {
     /**
      * On unmount, scroll/resize listeners should be removed and styles reset.
      */
+    mockUseOffsetCalculator.mockReturnValue(50);
+
     const removeSpy = jest.spyOn(window, 'removeEventListener');
     const { unmount } = render(<TestComponent panelId="p5" sticky={true} />);
     const w = screen.getByTestId('wrapper');
