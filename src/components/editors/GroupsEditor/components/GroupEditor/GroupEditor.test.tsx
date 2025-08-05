@@ -850,5 +850,78 @@ describe('ColumnsEditor', () => {
         })
       );
     });
+
+    it('Should don`t display grid rows if manual layout is disabled', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: false,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldRowsInManualLayout(true)).not.toBeInTheDocument();
+    });
+
+    it('Should allow change Grid Rows for manual if gridColumns undefined', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: true,
+            gridRowHeight: undefined,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldRowsInManualLayout()).toBeInTheDocument();
+      expect(selectors.fieldRowsInManualLayout()).toHaveValue('16');
+
+      fireEvent.change(selectors.fieldRowsInManualLayout(), { target: { value: 32 } });
+      fireEvent.blur(selectors.fieldRowsInManualLayout(), { target: { value: 32 } });
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gridRowHeight: 32,
+        })
+      );
+    });
+
+    it('Should allow change Grid Rows for manual ', () => {
+      const onChange = jest.fn();
+
+      render(
+        getComponent({
+          value: {
+            ...defaultGroupConfig,
+            gridLayout: true,
+            gridRowHeight: 16,
+          },
+          onChange,
+        })
+      );
+
+      expect(selectors.fieldGridLayout()).toBeInTheDocument();
+      expect(selectors.fieldRowsInManualLayout()).toBeInTheDocument();
+      expect(selectors.fieldRowsInManualLayout()).toHaveValue('16');
+
+      fireEvent.change(selectors.fieldRowsInManualLayout(), { target: { value: 32 } });
+      fireEvent.blur(selectors.fieldRowsInManualLayout(), { target: { value: 32 } });
+
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          gridRowHeight: 32,
+        })
+      );
+    });
   });
 });
