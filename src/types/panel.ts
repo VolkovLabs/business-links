@@ -411,14 +411,14 @@ export interface GroupConfig {
   /**
    * Grid columns
    *
-   * @type {[]}
+   * @type {number}
    */
   gridColumns?: number;
 
   /**
    * Grid minimum row height
    *
-   * @type {[]}
+   * @type {number}
    */
   gridRowHeight?: number;
 

@@ -9,6 +9,7 @@ All notable changes to the **Business Links** panel are documented in this file.
 - Use raw values for time range in URL ([Issue #59](https://github.com/VolkovLabs/business-links/issues/59)).
 - Updated ESLint configuration ([#60](https://github.com/VolkovLabs/business-text/issues/60)).
 - Update sticky positioning for dynamic layouts ([#62](https://github.com/VolkovLabs/business-text/issues/62)).
+- Update Grid options for row height and width ([#63](https://github.com/VolkovLabs/business-text/issues/63)).
 
 ## [2.1.0] - 2025-07-06
 
