@@ -70,30 +70,3 @@ export const replaceVariablesHelper = (name: string, replaceVariables: Interpola
 
   return values;
 };
-
-/**
- * Calculates the top offset to account for header, submenu, and controls heights.
- * @returns Total vertical offset in pixels
- */
-export const calcOffsetTop = (): number => {
-  const headerEl = document.querySelector<HTMLElement>('header');
-  const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
-
-  let submenuH = 0;
-  const submenuEl = document.querySelector<HTMLElement>('[aria-label="Dashboard submenu"]');
-  if (
-    submenuEl &&
-    getComputedStyle(submenuEl).position === 'sticky' &&
-    getComputedStyle(submenuEl).visibility !== 'hidden'
-  ) {
-    submenuH = submenuEl.getBoundingClientRect().height;
-  }
-
-  let controlsBottom = 0;
-  const controlsEl = document.querySelector<HTMLElement>('[data-testid="data-testid dashboard controls"]');
-  if (controlsEl?.parentElement) {
-    controlsBottom = controlsEl.parentElement.getBoundingClientRect().bottom;
-  }
-
-  return controlsBottom || headerH + submenuH;
-};
