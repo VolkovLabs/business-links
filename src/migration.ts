@@ -1,6 +1,7 @@
 import { PanelModel } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
+import { GRID_COLUMN_SIZE, GRID_ROW_SIZE } from './constants';
 import { GroupConfig, PanelOptions, TimeConfigType } from './types';
 import { createDropdownConfig } from './utils';
 
@@ -114,7 +115,14 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
        * Normalize gridColumns
        */
       if (normalizedGroup.gridColumns === undefined) {
-        normalizedGroup.gridColumns = 10;
+        normalizedGroup.gridColumns = GRID_COLUMN_SIZE;
+      }
+
+      /**
+       * Normalize gridRows
+       */
+      if (normalizedGroup.gridRowHeight === undefined) {
+        normalizedGroup.gridRowHeight = GRID_ROW_SIZE;
       }
 
       /**

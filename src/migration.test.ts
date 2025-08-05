@@ -1,3 +1,4 @@
+import { GRID_COLUMN_SIZE, GRID_ROW_SIZE } from './constants';
 import { getMigratedOptions } from './migration';
 import { ButtonSize, DropdownAlign, DropdownType, TimeConfigType } from './types';
 import { createGroupConfig, createLinkConfig } from './utils';
@@ -143,7 +144,7 @@ describe('migration', () => {
         groups: expect.arrayContaining([
           expect.objectContaining({
             name: 'Group1',
-            gridColumns: 10,
+            gridColumns: GRID_COLUMN_SIZE,
           }),
         ]),
       })
@@ -242,6 +243,43 @@ describe('migration', () => {
           expect.objectContaining({
             name: 'Group1',
             dynamicFontSize: true,
+          }),
+        ]),
+      })
+    );
+  });
+
+  it('Should migrate gridRowHeight option', async () => {
+    const group1 = createGroupConfig({ name: 'Group1', gridRowHeight: undefined });
+
+    expect(await getMigratedOptions({ options: { groups: [group1] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridRowHeight: GRID_ROW_SIZE,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridRowHeight: 32 }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridRowHeight: 32,
+          }),
+        ]),
+      })
+    );
+
+    expect(await getMigratedOptions({ options: { groups: [{ ...group1, gridRowHeight: 0 }] } } as any)).toEqual(
+      expect.objectContaining({
+        groups: expect.arrayContaining([
+          expect.objectContaining({
+            name: 'Group1',
+            gridRowHeight: 0,
           }),
         ]),
       })
@@ -419,20 +457,20 @@ describe('migration', () => {
     it('Should normalize hideTooltipOnHover to false', async () => {
       const item = createLinkConfig({ id: 'item-1-test-id' });
       const group = createGroupConfig({ items: [item] });
-  
+
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
-  
+
       expect(normalizedItem.hideTooltipOnHover).toBe(false);
     });
 
     it('Should normalize alignContentPosition to left', async () => {
       const item = createLinkConfig({ id: 'item-1-test-id' });
       const group = createGroupConfig({ items: [item] });
-  
+
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
-  
+
       expect(normalizedItem.alignContentPosition).toBe('left');
     });
   });

@@ -172,12 +172,17 @@ describe('Grid layout', () => {
       type: VisualLinkType.MENU,
     });
 
+    const defaultLLMElement = createVisualLinkConfig({
+      name: 'Link5',
+      type: VisualLinkType.LLMAPP,
+    });
+
     await act(async () =>
       render(
         getComponent({
           width: 400,
           height: 400,
-          links: [defaultLink, defaultTimePickerLink, defaultContentElement, defaultMenuElement],
+          links: [defaultLink, defaultTimePickerLink, defaultContentElement, defaultMenuElement, defaultLLMElement],
           options: options,
           onOptionsChange: onOptionsChange,
           activeGroup: activeGroup,
