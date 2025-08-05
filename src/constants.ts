@@ -118,6 +118,7 @@ export const TEST_IDS = {
     fieldHighlightTimepicker: createSelector('data-testid group-editor field-highlight-timepicker'),
     fieldGridLayout: createSelector('data-testid group-editor field-manual-layout'),
     fieldColumnsInManualLayout: createSelector('data-testid group-editor field-columns-in-manual-layout'),
+    fieldRowsInManualLayout: createSelector('data-testid group-editor field-rows-in-manual-layout'),
     buttonAddNew: createSelector('data-testid group-editor button-add-new'),
     buttonRemove: createSelector('data-testid group-editor button-remove'),
     buttonToggleVisibility: createSelector('data-testid group-editor button-toggle-visibility'),
@@ -189,3 +190,23 @@ export const DEFAULT_MCP_CLIENT_CONFIG = {
   name: 'volkovlabs-links-panel',
   version: '2.1.0',
 };
+
+/**
+ * Default Grid Column Size
+ */
+export const GRID_COLUMN_SIZE = 10;
+
+/**
+ * Default Grid Row Size
+ */
+export const GRID_ROW_SIZE = 16;
+
+/**
+ * Panel Title height
+ */
+export const PANEL_TITLE_HEIGHT = 38;
+
+/**
+ * Default Grid margin gap
+ */
+export const GRID_MARGIN_GAP = 5;

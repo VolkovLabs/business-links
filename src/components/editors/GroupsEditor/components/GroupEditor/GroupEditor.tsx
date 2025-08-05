@@ -6,7 +6,7 @@ import { Collapse, Slider } from '@volkovlabs/components';
 import React, { useCallback, useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { TEST_IDS } from '@/constants';
+import { GRID_COLUMN_SIZE, GRID_ROW_SIZE, TEST_IDS } from '@/constants';
 import {
   AlignContentPositionType,
   DashboardMeta,
@@ -89,7 +89,8 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
   const [newLinkName, setNewLinkName] = useState('');
   const [editItem, setEditItem] = useState('');
   const [editName, setEditName] = useState('');
-  const [gridColumnsSize, setGridColumnsSize] = useState(value.gridColumns ?? 10);
+  const [gridColumnsSize, setGridColumnsSize] = useState(value.gridColumns ?? GRID_COLUMN_SIZE);
+  const [gridRowHeight, setGridRowHeight] = useState(value.gridRowHeight ?? GRID_ROW_SIZE);
 
   /**
    * Links
@@ -251,24 +252,49 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         </InlineField>
       )}
       {optionId === 'groups' && value.gridLayout && (
-        <InlineField label="Grid columns size" labelWidth={25} grow={true}>
-          <Slider
-            value={gridColumnsSize}
-            min={1}
-            max={24}
-            step={1}
-            onChange={(size) => {
-              setGridColumnsSize(size);
-            }}
-            onAfterChange={(size) => {
-              onChange({
-                ...value,
-                gridColumns: size,
-              });
-            }}
-            {...testIds.fieldColumnsInManualLayout.apply()}
-          />
-        </InlineField>
+        <>
+          <InlineField label="Grid columns size" labelWidth={25} grow={true}>
+            <Slider
+              value={gridColumnsSize}
+              min={1}
+              max={24}
+              step={1}
+              onChange={(size) => {
+                setGridColumnsSize(size);
+              }}
+              onAfterChange={(size) => {
+                onChange({
+                  ...value,
+                  gridColumns: size,
+                });
+              }}
+              {...testIds.fieldColumnsInManualLayout.apply()}
+            />
+          </InlineField>
+          <InlineField
+            label="Row height size"
+            labelWidth={25}
+            grow={true}
+            tooltip="Minimum grid row size. Change step 16px. "
+          >
+            <Slider
+              value={gridRowHeight}
+              min={16}
+              max={96}
+              step={16}
+              onChange={(size) => {
+                setGridRowHeight(size);
+              }}
+              onAfterChange={(size) => {
+                onChange({
+                  ...value,
+                  gridRowHeight: size,
+                });
+              }}
+              {...testIds.fieldRowsInManualLayout.apply()}
+            />
+          </InlineField>
+        </>
       )}
       {optionId === 'groups' && value.gridLayout && (
         <InlineField label="Dynamic font size" labelWidth={25}>

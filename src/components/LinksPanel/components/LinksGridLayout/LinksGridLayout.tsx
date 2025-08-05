@@ -8,7 +8,7 @@ import { Icon, useStyles2 } from '@grafana/ui';
 import React, { RefObject, useMemo, useRef } from 'react';
 import ReactGridLayout from 'react-grid-layout';
 
-import { TEST_IDS } from '@/constants';
+import { GRID_COLUMN_SIZE, GRID_MARGIN_GAP, GRID_ROW_SIZE, PANEL_TITLE_HEIGHT, TEST_IDS } from '@/constants';
 import { GroupConfig, PanelOptions, VisualLink, VisualLinkType } from '@/types';
 
 import { ContentElement } from '../ContentElement';
@@ -140,7 +140,7 @@ export const LinksGridLayout: React.FC<Props> = ({
     /**
      * Panel title height
      */
-    const titleHeight = panelTitle ? 38 : 0;
+    const titleHeight = panelTitle ? PANEL_TITLE_HEIGHT : 0;
 
     /**
      * Toolbar height
@@ -154,8 +154,15 @@ export const LinksGridLayout: React.FC<Props> = ({
    * Column Size
    */
   const currentColumnsSize = useMemo(() => {
-    return activeGroup?.gridColumns ?? 10;
+    return activeGroup?.gridColumns ?? GRID_COLUMN_SIZE;
   }, [activeGroup?.gridColumns]);
+
+  /**
+   * Grid Row Size
+   */
+  const gridCurrentRowSize = useMemo(() => {
+    return activeGroup?.gridRowHeight ?? GRID_ROW_SIZE;
+  }, [activeGroup?.gridRowHeight]);
 
   /**
    * Dynamic Font Size
@@ -213,8 +220,8 @@ export const LinksGridLayout: React.FC<Props> = ({
         key={currentColumnsSize}
         layout={linksLayout}
         cols={currentColumnsSize}
-        rowHeight={16}
-        margin={[5, 5]}
+        rowHeight={gridCurrentRowSize}
+        margin={[GRID_MARGIN_GAP, GRID_MARGIN_GAP]}
         width={width - 5}
         autoSize={true}
         compactType="vertical"
