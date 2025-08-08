@@ -17,6 +17,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
    */
   if (options.groups && options.groups.length > 0) {
     const items = options.groups;
+
     options.groups = items.map((group) => {
       /**
        * Normalize links items
@@ -114,6 +115,37 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
       }
 
       return normalizedGroup;
+    });
+  }
+
+  /**
+   * Normalize drop downs
+   */
+  if (options.dropdowns && options.dropdowns.length > 0) {
+    const items = options.dropdowns;
+
+    options.dropdowns = items.map((dropdown) => {
+      /**
+       * Normalize links items
+       */
+      const normalizedItems = dropdown.items.map((item) => {
+        const normalizedTimePickerConfig = migrateTimePickerConfiguration(item.timePickerConfig);
+
+        return {
+          ...item,
+          timePickerConfig: normalizedTimePickerConfig,
+        };
+      });
+
+      /**
+       * Normalize Dropdown defined
+       */
+      const normalizedDropdown = {
+        ...dropdown,
+        items: normalizedItems,
+      } as GroupConfig;
+
+      return normalizedDropdown;
     });
   }
 
