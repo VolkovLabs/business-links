@@ -2,20 +2,8 @@ import { PanelModel } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
 import { GRID_COLUMN_SIZE, GRID_ROW_SIZE } from './constants';
-import { GroupConfig, PanelOptions, TimeConfigType } from './types';
-import { createDropdownConfig } from './utils';
-
-/**
- * Outdated Panel Options
- */
-interface OutdatedPanelOptions extends Omit<PanelOptions, 'groupsSorting'> {
-  /**
-   * Groups Sorting
-   *
-   * Introduced in 1.1.0
-   */
-  groupsSorting?: boolean;
-}
+import { GroupConfig, OutdatedPanelOptions, PanelOptions } from './types';
+import { createDropdownConfig, migrateTimePickerConfiguration } from './utils';
 
 /**
  * Get Migrated Options
@@ -36,11 +24,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
       const normalizedItems = group.items.map((item) => {
         const normalizedId = !item.id || item.id === undefined ? uuidv4() : item.id;
 
-        const normalizedTimeConfigType =
-          !item.timePickerConfig?.type || item.timePickerConfig?.type === undefined
-            ? TimeConfigType.FIELD
-            : item.timePickerConfig.type;
-
+        const normalizedTimePickerConfig = migrateTimePickerConfiguration(item.timePickerConfig);
         const normalizedDropdownConfig =
           !item.dropdownConfig || item.dropdownConfig === undefined ? createDropdownConfig() : item.dropdownConfig;
 
@@ -63,10 +47,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           ...item,
           id: normalizedId,
           dropdownConfig: normalizedDropdownConfig,
-          timePickerConfig: {
-            ...item.timePickerConfig,
-            type: normalizedTimeConfigType,
-          },
+          timePickerConfig: normalizedTimePickerConfig,
           includeKioskMode: normalizedIncludeKioskMode,
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,

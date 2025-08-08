@@ -6,5 +6,6 @@ export * from './handlebars';
 export * from './helpers';
 export * from './html';
 export * from './links';
+export * from './migration';
 export * from './test';
 export * from './timeRange';

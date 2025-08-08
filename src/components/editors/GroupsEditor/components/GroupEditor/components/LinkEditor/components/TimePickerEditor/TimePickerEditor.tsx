@@ -1,5 +1,5 @@
-import { DataFrame, DateTime, dateTime, getDefaultRelativeTimeRange, RelativeTimeRange } from '@grafana/data';
-import { DateTimePicker, InlineField, InlineFieldRow, RadioButtonGroup, RelativeTimeRangePicker } from '@grafana/ui';
+import { DataFrame, getDefaultTimeRange, TimeRange } from '@grafana/data';
+import { InlineField, InlineFieldRow, RadioButtonGroup, TimeRangeInput } from '@grafana/ui';
 import React from 'react';
 
 import { FieldPicker, FieldsGroup } from '@/components';
@@ -28,14 +28,9 @@ export const timePickerTypeOptions = [
     ariaLabel: TEST_IDS.timePickerEditor.fieldTimeRangeTypeOption.selector(TimeConfigType.FIELD),
   },
   {
-    label: 'Manual',
-    value: TimeConfigType.MANUAL,
-    ariaLabel: TEST_IDS.timePickerEditor.fieldTimeRangeTypeOption.selector(TimeConfigType.MANUAL),
-  },
-  {
-    label: 'Relative',
-    value: TimeConfigType.RELATIVE,
-    ariaLabel: TEST_IDS.timePickerEditor.fieldTimeRangeTypeOption.selector(TimeConfigType.RELATIVE),
+    label: 'Manual / Relative',
+    value: TimeConfigType.CUSTOM,
+    ariaLabel: TEST_IDS.timePickerEditor.fieldTimeRangeTypeOption.selector(TimeConfigType.CUSTOM),
   },
 ];
 
@@ -107,102 +102,27 @@ export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data }) => 
               </InlineFieldRow>
             </>
           )}
-          {value.timePickerConfig?.type === TimeConfigType.MANUAL && (
-            <>
-              <InlineField label="Set 'from' time" grow={true} labelWidth={20}>
-                <DateTimePicker
-                  clearable={true}
-                  date={
-                    value.timePickerConfig.manualTimeRange?.from
-                      ? dateTime(value.timePickerConfig.manualTimeRange.from)
-                      : undefined
-                  }
-                  onChange={(dateTime?: DateTime) => {
-                    if (dateTime) {
-                      onChange({
-                        ...value,
-                        timePickerConfig: {
-                          ...value.timePickerConfig,
-                          manualTimeRange: {
-                            ...value.timePickerConfig?.manualTimeRange,
-                            from: dateTime.valueOf(),
-                          },
-                        },
-                      });
-
-                      return;
-                    }
-
+          {value.timePickerConfig?.type === TimeConfigType.CUSTOM && (
+            <div>
+              <InlineField label="Range" grow={true} labelWidth={20}>
+                <TimeRangeInput
+                  value={value.timePickerConfig.customTimeRange ?? getDefaultTimeRange()}
+                  onChange={(timeRange: TimeRange) => {
                     onChange({
                       ...value,
                       timePickerConfig: {
                         ...value.timePickerConfig,
-                        manualTimeRange: {
-                          ...value.timePickerConfig?.manualTimeRange,
-                          from: 0,
-                        },
+                        customTimeRange: timeRange,
                       },
                     });
                   }}
-                  {...TEST_IDS.timePickerEditor.fieldFromDateTimePicker.apply()}
+                  timeZone="browser"
+                  isReversed={false}
+                  showIcon={true}
+                  {...TEST_IDS.timePickerEditor.fieldRelativeTimeRange.apply()}
                 />
               </InlineField>
-              <InlineField label="Set 'to' time" grow={true} labelWidth={20}>
-                <DateTimePicker
-                  clearable={true}
-                  date={
-                    value.timePickerConfig.manualTimeRange?.to
-                      ? dateTime(value.timePickerConfig.manualTimeRange.to)
-                      : undefined
-                  }
-                  onChange={(dateTime?: DateTime) => {
-                    if (dateTime) {
-                      onChange({
-                        ...value,
-                        timePickerConfig: {
-                          ...value.timePickerConfig,
-                          manualTimeRange: {
-                            ...value.timePickerConfig?.manualTimeRange,
-                            to: dateTime.valueOf(),
-                          },
-                        },
-                      });
-
-                      return;
-                    }
-
-                    onChange({
-                      ...value,
-                      timePickerConfig: {
-                        ...value.timePickerConfig,
-                        manualTimeRange: {
-                          ...value.timePickerConfig?.manualTimeRange,
-                          to: 0,
-                        },
-                      },
-                    });
-                  }}
-                  {...TEST_IDS.timePickerEditor.fieldToDateTimePicker.apply()}
-                />
-              </InlineField>
-            </>
-          )}
-          {value.timePickerConfig?.type === TimeConfigType.RELATIVE && (
-            <InlineField label="Range" grow={true} labelWidth={20}>
-              <RelativeTimeRangePicker
-                timeRange={value.timePickerConfig?.relativeTimeRange ?? getDefaultRelativeTimeRange()}
-                onChange={(timeRange: RelativeTimeRange) => {
-                  onChange({
-                    ...value,
-                    timePickerConfig: {
-                      ...value.timePickerConfig,
-                      relativeTimeRange: timeRange,
-                    },
-                  });
-                }}
-                {...TEST_IDS.timePickerEditor.fieldRelativeTimeRange.apply()}
-              />
-            </InlineField>
+            </div>
           )}
         </FieldsGroup>
       )}
