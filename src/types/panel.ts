@@ -1,3 +1,4 @@
+import { TimeRange } from '@grafana/data';
 import { IconName } from '@grafana/ui';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import ReactGridLayout from 'react-grid-layout';
@@ -53,6 +54,11 @@ export enum AlignContentPositionType {
  */
 export enum TimeConfigType {
   FIELD = 'field',
+  CUSTOM = 'custom',
+
+  /**
+   * Outdated since 2.2.0
+   */
   MANUAL = 'manual',
   RELATIVE = 'relative',
 }
@@ -109,43 +115,9 @@ export interface TimeConfig {
   fieldTo?: FieldSource;
 
   /**
-   * Manual time range config
+   * Custom time range
    */
-  manualTimeRange?: {
-    /**
-     * From
-     *
-     * @type {number}
-     */
-    from?: number;
-
-    /**
-     * To
-     *
-     * @type {number}
-     */
-    to?: number;
-  };
-
-  /**
-   * Relative Time Range
-   *
-   */
-  relativeTimeRange?: {
-    /**
-     * From
-     *
-     * @type {number}
-     */
-    from: number;
-
-    /**
-     * To
-     *
-     * @type {number}
-     */
-    to: number;
-  };
+  customTimeRange?: TimeRange;
 }
 
 /**

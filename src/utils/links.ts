@@ -5,7 +5,7 @@ import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { filterDashboardsByTags } from './dashboards';
 import { getFieldFromFrame, getFrameBySource } from './fields';
-import { mapRelativeTimeRangeToOption, timeToSeconds } from './timeRange';
+import { prepareFromAndToParams, timeToSeconds } from './timeRange';
 
 /**
  * extractParamsByPrefix
@@ -23,28 +23,6 @@ export const extractParamsByPrefix = (search: string, prefix: string): string =>
   }
 
   return result.toString();
-};
-
-export const prepareFromAndToParams = (timeRange: TimeRange) => {
-  let fromValue = '';
-  let toValue = '';
-
-  if (timeRange.raw?.from && typeof timeRange.raw?.from === 'string') {
-    fromValue = timeRange.raw.from;
-  } else {
-    fromValue = timeRange.from.toISOString();
-  }
-
-  if (timeRange.raw?.to && typeof timeRange.raw?.to === 'string') {
-    toValue = timeRange.raw.to;
-  } else {
-    toValue = timeRange.to.toISOString();
-  }
-
-  return {
-    from: fromValue,
-    to: toValue,
-  };
 };
 
 /**
@@ -136,30 +114,16 @@ export const preparePickerTimeRange = ({
   }
 
   switch (config.type) {
-    case TimeConfigType.RELATIVE: {
+    case TimeConfigType.CUSTOM: {
       /**
-       * Map relative options to raw correct time range
-       * if no relative options return empty it will return by default
-       */
-      const options =
-        config.relativeTimeRange?.from || config.relativeTimeRange?.to
-          ? mapRelativeTimeRangeToOption(config.relativeTimeRange)
-          : { from: '', to: '' };
-
-      return {
-        from: options.from || dashboardTimeRange.from,
-        to: options.to || dashboardTimeRange.to,
-      };
-    }
-
-    case TimeConfigType.MANUAL: {
-      /**
-       * Return manual values
+       * Return custom values
        * or default range
        */
+      const params = prepareFromAndToParams(config.customTimeRange);
+
       return {
-        from: config.manualTimeRange?.from ?? dashboardTimeRange.from,
-        to: config.manualTimeRange?.to ?? dashboardTimeRange.to,
+        from: params.from || dashboardTimeRange.from,
+        to: params.to || dashboardTimeRange.to,
       };
     }
 
