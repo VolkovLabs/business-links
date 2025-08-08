@@ -127,7 +127,9 @@ describe('LinkElement', () => {
       expect(selectors.buttonDropdown(false, 'Dropdown')).toBeInTheDocument();
       expect(selectors.dropdown(false, 'Dropdown')).toBeInTheDocument();
 
-      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      await act(async () => {
+        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      });
 
       expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
       expect(selectors.dropdownMenuItem(false, 'Link2')).toBeInTheDocument();
@@ -613,7 +615,9 @@ describe('LinkElement', () => {
       )
     );
 
-    fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+    await act(async () => {
+      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+    });
 
     expect(selectors.dropdownMenuItem(false, 'Link1')).toBeInTheDocument();
     expect(selectors.dropdownMenuItem(false, 'Link2')).toBeInTheDocument();
@@ -757,11 +761,15 @@ describe('LinkElement', () => {
         )
       );
 
-      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      await act(async () => {
+        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      });
       expect(selectors.dropdownMenuItem(false, 'Regular')).toBeInTheDocument();
       expect(selectors.dropdownMenuItem(false, 'Chat')).toBeInTheDocument();
 
-      fireEvent.click(selectors.dropdownMenuItem(false, 'Chat'));
+      await act(async () => {
+        fireEvent.click(selectors.dropdownMenuItem(false, 'Chat'));
+      });
       expect(selectors.chatDrawer()).toBeInTheDocument();
     });
 
@@ -785,7 +793,9 @@ describe('LinkElement', () => {
         )
       );
 
-      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      await act(async () => {
+        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      });
       const menuItem = selectors.dropdownMenuItem(false, 'Chat');
       expect(menuItem).toBeInTheDocument();
       expect(selectors.customIconImg(false, 'Chat')).toBeInTheDocument();
@@ -811,7 +821,9 @@ describe('LinkElement', () => {
         )
       );
 
-      fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      await act(async () => {
+        fireEvent.click(selectors.dropdown(false, 'Dropdown'));
+      });
       const menuItem = selectors.dropdownMenuItem(false, 'Chat');
       expect(menuItem).toBeInTheDocument();
       expect(selectors.customIconSvg(false, 'Chat')).toBeInTheDocument();

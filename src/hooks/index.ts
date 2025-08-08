@@ -3,6 +3,8 @@ export * from './useDrawerLlmChat';
 export * from './useElementResize';
 export * from './useGrafanaLocationService';
 export * from './useLocalStorage';
+export * from './useMcpLlmIntegration';
+export * from './useMcpService';
 export * from './useOffsetCalculator';
 export * from './useSavedState';
 export * from './useStorage';

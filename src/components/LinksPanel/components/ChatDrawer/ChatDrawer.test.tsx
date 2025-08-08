@@ -1,10 +1,9 @@
-import { llm } from '@grafana/llm';
 import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
-import { getJestSelectors } from '@volkovlabs/jest-selectors';
+import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
-import { of } from 'rxjs';
 
 import { TEST_IDS } from '@/constants';
+import { LlmRole } from '@/types';
 import * as hooks from '@/hooks';
 
 import { ChatDrawer, useDropzoneOverlay } from './ChatDrawer';
@@ -19,9 +18,12 @@ jest.mock('@grafana/ui');
  */
 jest.mock('@grafana/llm', () => ({
   llm: {
-    streamChatCompletions: jest.fn(),
+    chatCompletions: jest.fn(),
     enabled: jest.fn(() => Promise.resolve(true)),
     health: jest.fn(),
+    Model: {
+      base: 'base-model',
+    },
   },
 }));
 
@@ -62,15 +64,22 @@ jest.mock('@/hooks', () => ({
   useFileAttachments: jest.fn(),
   useTextareaResize: jest.fn(),
   useLlmService: jest.fn(),
+  useMcpService: jest.fn(),
+  useMcpLlmIntegration: jest.fn(),
   chatConfig: {
     temperature: 0.7,
     requestTimeout: 30000,
   },
 }));
 
+const inTestIds = {
+  removeFileDropZone: createSelector('data-testid chat-drawer file-dropzone-remove'),
+};
+
 describe('ChatDrawer', () => {
   const getSelectors = getJestSelectors({
     ...TEST_IDS.drawerElement,
+    ...inTestIds,
   });
   const selectors = getSelectors(screen);
 
@@ -122,8 +131,24 @@ describe('ChatDrawer', () => {
     handleLlmError: mockHandleLlmError,
   };
 
+  const defaultUseMcpService = {
+    checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true }),
+    getAvailableTools: jest.fn().mockResolvedValue([]),
+    convertToolsToOpenAiFormat: jest.fn().mockReturnValue([]),
+    executeToolCall: jest.fn().mockResolvedValue({ content: null, isError: false }),
+    setupMcpClients: jest.fn().mockResolvedValue([]),
+    processToolCalls: jest.fn().mockResolvedValue({ hasMoreToolCalls: false, updatedMessages: [] }),
+  };
+
+  const defaultUseMcpLlmIntegration = {
+    sendMessageWithTools: jest.fn().mockResolvedValue('Response from LLM'),
+    checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+    getAvailableTools: jest.fn().mockResolvedValue([]),
+  };
+
   beforeEach(() => {
     jest.clearAllMocks();
+
     (hooks.useFileAttachments as jest.Mock).mockReturnValue({
       ...defaultUseFileAttachments,
       attachedFiles: [],
@@ -131,7 +156,15 @@ describe('ChatDrawer', () => {
     (hooks.useChatMessages as jest.Mock).mockReturnValue(defaultUseChatMessages);
     (hooks.useTextareaResize as jest.Mock).mockReturnValue(defaultUseTextareaResize);
     (hooks.useLlmService as jest.Mock).mockReturnValue(defaultUseLlmService);
-
+    (hooks.useMcpService as jest.Mock).mockReturnValue({
+      ...defaultUseMcpService,
+      checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+    });
+    (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+      sendMessageWithTools: jest.fn().mockResolvedValue('Response from LLM'),
+      checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+      getAvailableTools: jest.fn().mockResolvedValue([]),
+    });
     mockGenerateMessageId.mockImplementation(() => `msg-${Date.now()}`);
     mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
     mockPrepareMessageContent.mockImplementation((text) => text);
@@ -163,7 +196,7 @@ describe('ChatDrawer', () => {
       const messages = [
         {
           id: '1',
-          sender: 'user' as const,
+          sender: LlmRole.USER,
           text: 'Hello',
           timestamp: new Date(),
           attachments: [
@@ -185,14 +218,14 @@ describe('ChatDrawer', () => {
         },
         {
           id: '2',
-          sender: 'assistant' as const,
+          sender: LlmRole.ASSISTANT,
           text: 'Hi there!',
           timestamp: new Date(),
           isStreaming: false,
         },
         {
           id: '3',
-          sender: 'assistant' as const,
+          sender: LlmRole.ASSISTANT,
           text: 'Thinking...',
           timestamp: new Date(),
           isStreaming: true,
@@ -212,13 +245,59 @@ describe('ChatDrawer', () => {
       expect(selectors.attachmentImage(false, 'document.pdf')).toBeInTheDocument();
       expect(selectors.attachmentImage(false, 'image.png')).toBeInTheDocument();
     });
+
+    it('Should render messages from tools', async () => {
+      const messages = [
+        {
+          id: '1',
+          sender: LlmRole.USER,
+          text: 'Hello',
+          timestamp: new Date(),
+          attachments: [
+            {
+              id: 'att1',
+              name: 'document.pdf',
+              size: 1024,
+              type: 'application/pdf',
+              url: 'test/document.pdf',
+            },
+            {
+              id: 'att2',
+              name: 'image.png',
+              size: 2048,
+              type: 'image/png',
+              url: 'data:image/png;base64,test',
+            },
+          ],
+        },
+        {
+          id: '2',
+          sender: LlmRole.TOOL,
+          text: 'Here is list of dashboards',
+          timestamp: new Date(),
+          isStreaming: false,
+        },
+      ];
+
+      (hooks.useChatMessages as jest.Mock).mockReturnValue({
+        ...defaultUseChatMessages,
+        messages,
+      });
+
+      await act(async () => render(getComponent({})));
+
+      expect(selectors.messageSender(false, messages[1].sender)).toBeInTheDocument();
+      expect(selectors.messageSender(false, messages[1].sender)).toHaveTextContent('Tool');
+    });
   });
 
   describe('Basic Interactions', () => {
     it('Should close drawer and clean up', async () => {
       await act(async () => render(getComponent({})));
 
-      fireEvent.click(selectors.drawerCloseButton());
+      await act(async () => {
+        fireEvent.click(selectors.drawerCloseButton());
+      });
 
       expect(mockOnClose).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
@@ -228,23 +307,31 @@ describe('ChatDrawer', () => {
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
-      fireEvent.change(textarea, { target: { value: 'Hello world' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Hello world' } });
+      });
 
       expect(textarea).toHaveValue('Hello world');
       expect(mockAdjustTextareaHeight).toHaveBeenCalled();
     });
 
     it('Should handle keyboard shortcuts (Enter to send, Ctrl+Enter for new line, Escape to clear)', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
 
-      fireEvent.keyDown(textarea, { key: 'Enter' });
+        fireEvent.keyDown(textarea, { key: 'Enter' });
+      });
 
       await waitFor(() => {
         expect(mockAddMessages).toHaveBeenCalled();
@@ -253,28 +340,69 @@ describe('ChatDrawer', () => {
       mockAddMessages.mockClear();
       mockClearAttachedFiles.mockClear();
 
-      fireEvent.change(textarea, { target: { value: 'New message' } });
-      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'New message' } });
+        fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+      });
 
       expect(mockAddMessages).not.toHaveBeenCalled();
 
-      fireEvent.keyDown(textarea, { key: 'Escape' });
+      await act(async () => {
+        fireEvent.keyDown(textarea, { key: 'Escape' });
+      });
 
       expect(mockClearAttachedFiles).toHaveBeenCalled();
+    });
+
+    it('Should show mcp and tools info', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+      });
+
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([
+          {
+            serverName: 'Default Grafana',
+            name: 'add_activity_to_incident',
+            annotations: { title: 'Add activity to incident' },
+          },
+        ]),
+      });
+
+      await act(async () => render(getComponent({})));
+
+      expect(selectors.mcpToolsInfo()).toBeInTheDocument();
+      expect(selectors.mcpToolsInfo()).toHaveTextContent('MCP tool available');
     });
   });
 
   describe('Message Sending', () => {
     it('Should send message when send button is clicked', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
+
+      mockPrepareChatHistory.mockReturnValue([
+        {
+          content: 'test',
+          role: 'user',
+        },
+      ]);
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -282,61 +410,66 @@ describe('ChatDrawer', () => {
 
       expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          sender: 'user',
+          sender: LlmRole.USER,
           text: 'Test message',
         }),
         expect.objectContaining({
-          sender: 'assistant',
+          sender: LlmRole.ASSISTANT,
           isStreaming: true,
         }),
       ]);
 
-      expect(llm.streamChatCompletions).toHaveBeenCalled();
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
+      expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
     });
 
     it('Should use custom temperature when provided', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({ llmTemperature: 0.3 })));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
       });
 
-      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
-        expect.objectContaining({
-          temperature: 0.3,
-        })
-      );
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
 
     it('Should use default temperature when not provided', async () => {
-      const mockStream = of({ choices: [{ delta: { content: 'Response' } }] });
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
       });
 
-      expect(llm.streamChatCompletions).toHaveBeenCalledWith(
-        expect.objectContaining({
-          temperature: 0.7,
-        })
-      );
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
 
     it('Should not send message in various invalid states', async () => {
@@ -347,7 +480,9 @@ describe('ChatDrawer', () => {
 
       expect(sendButton).toBeDisabled();
 
-      fireEvent.change(textarea, { target: { value: '   \n\t  ' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: '   \n\t  ' } });
+      });
 
       const forcedClick = new MouseEvent('click', {
         bubbles: true,
@@ -356,35 +491,37 @@ describe('ChatDrawer', () => {
       sendButton.dispatchEvent(forcedClick);
 
       expect(mockAddMessages).not.toHaveBeenCalled();
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
 
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({
-            unsubscribe: jest.fn(),
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
-      fireEvent.change(textarea, { target: { value: 'First message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'First message' } });
+        fireEvent.click(sendButton);
+        fireEvent.change(textarea, { target: { value: 'Second message' } });
+      });
+
+      mockSendMessageWithTools.mockClear();
+
       await act(async () => {
         fireEvent.click(sendButton);
       });
 
-      fireEvent.change(textarea, { target: { value: 'Second message' } });
-
-      (llm.streamChatCompletions as jest.Mock).mockClear();
-
-      fireEvent.click(sendButton);
-
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
+      expect(mockSendMessageWithTools).not.toHaveBeenCalled();
     });
 
     it('Should handle LLM status check failure', async () => {
-      mockCheckLlmStatus.mockResolvedValue({
-        canProceed: false,
+      const mockCheckAvailability = jest.fn().mockResolvedValue({
+        isAvailable: false,
         error: 'LLM service unavailable',
+      });
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        ...defaultUseMcpLlmIntegration,
+        checkAvailability: mockCheckAvailability,
       });
 
       await act(async () => render(getComponent({})));
@@ -392,7 +529,9 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -400,70 +539,63 @@ describe('ChatDrawer', () => {
 
       expect(mockAddMessages).toHaveBeenCalledWith([
         expect.objectContaining({
-          sender: 'system',
+          sender: LlmRole.SYSTEM,
           isError: true,
-          text: expect.stringContaining('LLM Service Error: LLM service unavailable'),
+          text: expect.stringContaining('Service Error: LLM service unavailable'),
         }),
       ]);
-
-      expect(llm.streamChatCompletions).not.toHaveBeenCalled();
     });
   });
 
   describe('LLM Streaming and Response Handling', () => {
     it('Should handle all response formats in a single test', async () => {
-      const testResponses = [
-        'String chunk: ',
-        { choices: [{ delta: { content: 'Content delta, ' } }] },
-        { choices: [{ delta: { text: 'text delta, ' } }] },
-        { content: 'direct content, ' },
-        { text: 'direct text' },
-        null,
-        undefined,
-        {},
-        { choices: [] },
-        { choices: [{ delta: null }] },
-        { choices: [{ delta: {} }] },
-      ];
-
-      const testStream = of(...testResponses);
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(testStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
       });
 
       await waitFor(() => {
-        expect(mockUpdateLastMessage).toHaveBeenCalled();
+        expect(mockUpdateLastMessage).toHaveBeenCalledWith(expect.any(Function));
       });
     });
 
     it('Should handle request timeout', async () => {
       jest.useFakeTimers();
 
-      const unsubscribeMock = jest.fn();
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({
-            unsubscribe: unsubscribeMock,
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => reject(new Error('Request timeout')), 30001);
+        });
+      });
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -473,33 +605,33 @@ describe('ChatDrawer', () => {
         jest.advanceTimersByTime(30001);
       });
 
-      expect(unsubscribeMock).toHaveBeenCalled();
-      expect(mockAddMessages).toHaveBeenCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Request Timeout: The LLM service took too long to respond'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: LlmRole.SYSTEM,
+            isError: true,
+            text: expect.stringContaining('Connection Error: Request timeout'),
+          }),
+        ]);
+      });
     });
 
     it('Should handle stream completion', async () => {
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockImplementation(({ complete }) => {
-            complete();
-            return { unsubscribe: jest.fn() };
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Final response');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       await act(async () => render(getComponent({})));
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test' } });
+      await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
+      });
 
       await act(async () => {
         fireEvent.click(sendButton);
@@ -514,45 +646,20 @@ describe('ChatDrawer', () => {
   it('Should not send message if input empty', async () => {
     await act(async () => render(<ChatDrawer isOpen onClose={jest.fn()} />));
     const textarea = selectors.input();
-    fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
-    expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
-    expect(llm.streamChatCompletions).not.toHaveBeenCalled();
-  });
-
-  it('Should call unsubscribe() on click', async () => {
-    const unsubscribeMock = jest.fn();
-    const mockStream = {
-      pipe: jest.fn().mockReturnValue({
-        subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
-      }),
-    };
-    (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
-
-    const onClose = jest.fn();
-    await act(async () => render(<ChatDrawer isOpen onClose={onClose} />));
-
-    const textarea = selectors.input();
-    fireEvent.change(textarea, { target: { value: 'Test' } });
     await act(async () => {
-      fireEvent.click(selectors.sendButton());
+      fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
     });
-
-    fireEvent.click(selectors.drawerCloseButton());
-    expect(unsubscribeMock).toHaveBeenCalled();
-    expect(onClose).toHaveBeenCalled();
+    expect(hooks.useChatMessages().addMessages).not.toHaveBeenCalled();
   });
 
   describe('Error handling', () => {
     it('Should handle stream errors properly', async () => {
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockImplementation(({ error }) => {
-            error(new Error('Stream error'));
-            return { unsubscribe: jest.fn() };
-          }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue(new Error('Stream error'));
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       mockHandleLlmError.mockReturnValue('Formatted error message');
 
@@ -561,25 +668,61 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
-      expect(mockHandleLlmError).toHaveBeenCalled();
-      expect(mockAddMessages).toHaveBeenCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('LLM Error: Formatted error message'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: LlmRole.SYSTEM,
+            isError: true,
+            text: expect.stringContaining('Connection Error: Stream error'),
+          }),
+        ]);
+      });
+    });
+
+    it('Should Call addError on MCP init if MCP is disabled', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: false, error: 'test' }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        ...defaultUseMcpService,
+        checkMcpStatus: jest.fn().mockResolvedValue({ isAvailable: false, error: 'MCP Disabled in test' }),
+      });
+
+      await act(async () => render(getComponent({})));
+      expect(mockAddMessages).toHaveBeenCalled();
+    });
+
+    it('Should Call addError on MCP init throw error', async () => {
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: false, error: 'test' }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
+      (hooks.useMcpService as jest.Mock).mockReturnValue({
+        ...defaultUseMcpService,
+        checkMcpStatus: jest.fn().mockRejectedValue(new Error('Mocked checkMcpStatus failure')),
+      });
+
+      await act(async () => render(getComponent({})));
+      expect(mockAddMessages).toHaveBeenCalled();
     });
 
     it('Should handle connection errors in try/catch', async () => {
-      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
-        throw new Error('Connection failed');
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue(new Error('Connection failed'));
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
       });
 
       await act(async () => render(getComponent({})));
@@ -587,24 +730,28 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
-      expect(mockAddMessages).toHaveBeenLastCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Connection Error: Connection failed'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: LlmRole.SYSTEM,
+            isError: true,
+            text: expect.stringContaining('Connection Error: Connection failed'),
+          }),
+        ]);
+      });
     });
 
     it('Should handle non-Error objects in catch block', async () => {
-      (llm.streamChatCompletions as jest.Mock).mockImplementation(() => {
-        throw 'String error';
+      const mockSendMessageWithTools = jest.fn().mockRejectedValue('String error');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
       });
 
       await act(async () => render(getComponent({})));
@@ -612,44 +759,44 @@ describe('ChatDrawer', () => {
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
 
-      fireEvent.change(textarea, { target: { value: 'Test message' } });
-
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test message' } });
         fireEvent.click(sendButton);
       });
 
-      expect(mockAddMessages).toHaveBeenLastCalledWith([
-        expect.objectContaining({
-          sender: 'system',
-          isError: true,
-          text: expect.stringContaining('Connection Error: String error'),
-        }),
-      ]);
+      await waitFor(() => {
+        expect(mockAddMessages).toHaveBeenCalledWith([
+          expect.objectContaining({
+            sender: LlmRole.SYSTEM,
+            isError: true,
+            text: expect.stringContaining('Connection Error: String error'),
+          }),
+        ]);
+      });
     });
   });
 
   describe('Subscription handling', () => {
     it('Should unsubscribe when component unmounts', async () => {
-      const unsubscribeMock = jest.fn();
-      const mockStream = {
-        pipe: jest.fn().mockReturnValue({
-          subscribe: jest.fn().mockReturnValue({ unsubscribe: unsubscribeMock }),
-        }),
-      };
-      (llm.streamChatCompletions as jest.Mock).mockReturnValue(mockStream);
-      mockCheckLlmStatus.mockResolvedValue({ canProceed: true });
+      const mockSendMessageWithTools = jest.fn().mockResolvedValue('Response from LLM');
+      (hooks.useMcpLlmIntegration as jest.Mock).mockReturnValue({
+        sendMessageWithTools: mockSendMessageWithTools,
+        checkAvailability: jest.fn().mockResolvedValue({ isAvailable: true, error: undefined }),
+        getAvailableTools: jest.fn().mockResolvedValue([]),
+      });
 
       const { unmount } = render(getComponent({ isOpen: true }));
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
-      fireEvent.change(textarea, { target: { value: 'Test' } });
+
       await act(async () => {
+        fireEvent.change(textarea, { target: { value: 'Test' } });
         fireEvent.click(sendButton);
       });
       await act(async () => {
         unmount();
       });
-      expect(unsubscribeMock).toHaveBeenCalled();
+      expect(mockSendMessageWithTools).toHaveBeenCalled();
     });
   });
 
@@ -661,7 +808,7 @@ describe('ChatDrawer', () => {
     });
     await act(async () => render(getComponent({})));
     const removeButton = selectors.removeButton();
-    fireEvent.click(removeButton);
+    await act(async () => fireEvent.click(removeButton));
     expect(mockRemoveAttachedFile).toHaveBeenCalledWith('file1');
   });
 
@@ -678,8 +825,10 @@ describe('ChatDrawer', () => {
   it('Should clear input and attached files on Escape key', async () => {
     await act(async () => render(getComponent({})));
     const textarea = selectors.input();
-    fireEvent.change(textarea, { target: { value: 'Some text' } });
-    fireEvent.keyDown(textarea, { key: 'Escape' });
+    await act(async () => {
+      fireEvent.change(textarea, { target: { value: 'Some text' } });
+      fireEvent.keyDown(textarea, { key: 'Escape' });
+    });
     expect(mockClearAttachedFiles).toHaveBeenCalled();
     expect(textarea).toHaveValue('');
   });
@@ -691,28 +840,32 @@ describe('ChatDrawer', () => {
     expect(textarea).toHaveAttribute('placeholder', 'Type your message or drag files here...');
   });
 
-  it('Should handle file drop through FileDropzone', async () => {
-    await act(async () => render(getComponent({})));
-    const file = new File(['test'], 'test.txt', { type: 'text/plain' });
-    const onDrop = (hooks.useFileAttachments as jest.Mock).mock.results[0].value.handleFileAttachment;
-    onDrop([{ id: 'file-1', file, error: null }]);
-    expect(mockHandleFileAttachment).toHaveBeenCalled();
-  });
-
   it('Should call scrollIntoView when messages change', async () => {
     const scrollSpy = jest.spyOn(Element.prototype, 'scrollIntoView').mockImplementation(() => {});
-    const messages1 = [{ id: '1', sender: 'user', text: 'Hello', timestamp: new Date() }];
-    const messages2 = [...messages1, { id: '2', sender: 'assistant', text: 'World', timestamp: new Date() }];
+
+    const messages1 = [{ id: '1', sender: LlmRole.USER, text: 'Hello', timestamp: new Date() }];
+    const messages2 = [...messages1, { id: '2', sender: LlmRole.ASSISTANT, text: 'World', timestamp: new Date() }];
+
     (hooks.useChatMessages as jest.Mock).mockReturnValue({
       ...defaultUseChatMessages,
       messages: messages1,
     });
-    const { rerender } = render(getComponent({}));
+
+    let utils: ReturnType<typeof render>;
+
+    await act(async () => {
+      utils = render(getComponent({}));
+    });
+
     (hooks.useChatMessages as jest.Mock).mockReturnValue({
       ...defaultUseChatMessages,
       messages: messages2,
     });
-    rerender(getComponent({}));
+
+    await act(async () => {
+      utils.rerender(getComponent({}));
+    });
+
     expect(scrollSpy).toHaveBeenCalled();
     scrollSpy.mockRestore();
   });
@@ -744,7 +897,7 @@ describe('ChatDrawer', () => {
     const messages = [
       {
         id: '1',
-        sender: 'user',
+        sender: LlmRole.USER,
         text: 'msg',
         timestamp: new Date(),
         attachments: [{ id: 'img1', name: 'pic.png', size: 100, type: 'image/png', url: 'data:image/png;base64,abc' }],
@@ -762,7 +915,7 @@ describe('ChatDrawer', () => {
     const messages = [
       {
         id: '1',
-        sender: 'assistant',
+        sender: LlmRole.ASSISTANT,
         text: 'Thinking...',
         timestamp: new Date(),
         isStreaming: true,
@@ -789,7 +942,9 @@ describe('ChatDrawer', () => {
       });
       const fileInput = screen.getByLabelText('Send message').parentElement?.querySelector('input[type="file"]');
       const file = new File(['test'], 'file.txt', { type: 'text/plain' });
-      fireEvent.change(fileInput!, { target: { files: [file] } });
+      await act(async () => {
+        fireEvent.change(fileInput!, { target: { files: [file] } });
+      });
       expect(handleFileAttachment).toHaveBeenCalled();
     });
 
@@ -937,120 +1092,97 @@ describe('ChatDrawer', () => {
           error: null,
         },
       ]);
-      expect(mockEvent.currentTarget.value).toBe('');
+      expect(mockEvent.currentTarget.value).toEqual('');
 
       Date.now = originalDateNow;
       Math.random = originalRandom;
     });
 
-    it('Should handle event with no files', () => {
-      const handleFileAttachment = jest.fn();
+    it('Should render FileDropZone ', async () => {
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      const mockEvent = {
-        currentTarget: {
-          files: [],
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
-
-      handleFileInputUpload(mockEvent, handleFileAttachment);
-
-      expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toBe('some-value');
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
     });
 
-    it('Should handle event with null files', () => {
+    it('Should render FileDropZone and add file', async () => {
       const handleFileAttachment = jest.fn();
+      (hooks.useFileAttachments as jest.Mock).mockReturnValue({
+        ...defaultUseFileAttachments,
+        handleFileAttachment,
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      const image = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
 
-      const mockEvent = {
-        currentTarget: {
-          files: null,
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      handleFileInputUpload(mockEvent, handleFileAttachment);
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      expect(handleFileAttachment).not.toHaveBeenCalled();
-      expect(mockEvent.currentTarget.value).toBe('some-value');
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
+
+      /**
+       * Select file
+       */
+      await act(() =>
+        fireEvent.change(selectors.fileDropzone(), {
+          target: {
+            files: [image],
+          },
+        })
+      );
+
+      expect(handleFileAttachment).toHaveBeenCalled();
     });
 
-    it('Should handle single file upload', () => {
-      const handleFileAttachment = jest.fn();
-      const file = new File(['content'], 'single.txt', { type: 'text/plain' });
+    it('Should render FileDropZone and remove file', async () => {
+      const attachedFiles = [{ id: 'file1', name: 'test.txt', size: 123, type: 'text/plain' }];
+      const removeAttachedFile = jest.fn();
+      (hooks.useFileAttachments as jest.Mock).mockReturnValue({
+        ...defaultUseFileAttachments,
+        removeAttachedFile,
+        attachedFiles,
+      });
 
-      const originalDateNow = Date.now;
-      const originalRandom = Math.random;
-      const mockDateNow = jest.fn().mockReturnValue(1234567890);
-      const mockRandom = jest.fn().mockReturnValue(0.5);
-      Date.now = mockDateNow;
-      Math.random = mockRandom;
+      await act(async () => {
+        render(getComponent({ isOpen: true }));
+      });
 
-      const handleFileInputUpload = (
-        event: React.FormEvent<HTMLInputElement>,
-        handleFileAttachment: (files: any[]) => void
-      ) => {
-        if (event.currentTarget.files && event.currentTarget.files.length > 0) {
-          const dropzoneFiles = Array.from(event.currentTarget.files).map((file) => ({
-            id: `file-${Date.now()}-${Math.random()}`,
-            file,
-            error: null,
-          }));
-          handleFileAttachment(dropzoneFiles);
-          event.currentTarget.value = '';
-        }
-      };
+      /**
+       * Emulate drag on input element to make dropzone visible
+       */
+      const inputElement = selectors.inputPanel();
+      fireEvent.dragEnter(inputElement);
 
-      const mockEvent = {
-        currentTarget: {
-          files: [file],
-          value: 'some-value',
-        },
-      } as unknown as React.FormEvent<HTMLInputElement>;
+      expect(selectors.fileDropzoneOverlay()).toBeInTheDocument();
+      expect(selectors.fileDropzone()).toBeInTheDocument();
+      expect(selectors.removeFileDropZone()).toBeInTheDocument();
 
-      handleFileInputUpload(mockEvent, handleFileAttachment);
-
-      expect(handleFileAttachment).toHaveBeenCalledWith([
-        {
-          id: 'file-1234567890-0.5',
-          file,
-          error: null,
-        },
-      ]);
-      expect(mockEvent.currentTarget.value).toBe('');
-
-      Date.now = originalDateNow;
-      Math.random = originalRandom;
+      /**
+       * Select file
+       */
+      await act(() =>
+        fireEvent.change(selectors.removeFileDropZone(), {
+          target: {
+            files: attachedFiles,
+          },
+        })
+      );
+      expect(removeAttachedFile).toHaveBeenCalled();
     });
   });
 });

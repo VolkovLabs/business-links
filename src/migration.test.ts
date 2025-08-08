@@ -450,8 +450,8 @@ describe('migration', () => {
       const result = await getMigratedOptions({ options: { groups: [group] } } as any);
       const normalizedItem = result.groups[0].items[0];
 
-      expect(normalizedItem.showCustomIcons).toBe(false);
-      expect(normalizedItem.customIconUrl).toBe('');
+      expect(normalizedItem.showCustomIcons).toEqual(false);
+      expect(normalizedItem.customIconUrl).toEqual('');
     });
 
     it('Should normalize hideTooltipOnHover to false', async () => {

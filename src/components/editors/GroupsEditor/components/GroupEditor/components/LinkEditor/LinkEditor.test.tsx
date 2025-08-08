@@ -14,7 +14,7 @@ import {
 } from '@/types';
 import { createDropdownConfig, createLinkConfig } from '@/utils';
 
-import { ContentEditor, TimePickerEditor } from './components';
+import { ContentEditor, McpServersEditor, TimePickerEditor } from './components';
 import { LinkEditor } from './LinkEditor';
 
 type Props = React.ComponentProps<typeof LinkEditor>;
@@ -22,6 +22,7 @@ type Props = React.ComponentProps<typeof LinkEditor>;
 const inTestIds = {
   timePickerEditor: createSelector('data-testid time-picker-editor'),
   contentEditor: createSelector('data-testid content-editor'),
+  mcpServersEditor: createSelector('data-testid mcp-server-editor'),
 };
 
 /**
@@ -52,9 +53,27 @@ const ContentEditorMock = ({ value, onChange }: any) => {
   );
 };
 
+/**
+ * Mock McpServersEditor
+ */
+const McpServersEditorMock = ({ value, onChange }: any) => {
+  return (
+    <div data-testid="mcp-servers-editor">
+      <input
+        {...inTestIds.mcpServersEditor.apply()}
+        value={JSON.stringify(value)}
+        onChange={(e) => {
+          onChange(JSON.parse(e.target.value));
+        }}
+      />
+    </div>
+  );
+};
+
 jest.mock('./components', () => ({
   TimePickerEditor: jest.fn(),
   ContentEditor: jest.fn(),
+  McpServersEditor: jest.fn(),
 }));
 
 describe('LinkEditor', () => {
@@ -88,6 +107,7 @@ describe('LinkEditor', () => {
   beforeEach(() => {
     jest.mocked(TimePickerEditor).mockImplementation(TimePickerEditorMock);
     jest.mocked(ContentEditor).mockImplementation(ContentEditorMock);
+    jest.mocked(McpServersEditor).mockImplementation(McpServersEditorMock);
   });
 
   it('Should allow to change Link Type to Dropdown for groups', () => {
@@ -165,14 +185,21 @@ describe('LinkEditor', () => {
   });
 
   it('Should use default temperature value when llmTemperature is not set', () => {
-    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: undefined }) }));
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: undefined }),
+      })
+    );
 
     expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
     expect(selectors.fieldLlmTemperature()).toHaveValue('0.7');
   });
 
   it('Should allow change llmTemperature to different values', () => {
-    render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: 0.3 }) }));
+    render(
+      getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP, llmTemperature: 0.3 }) })
+    );
 
     expect(selectors.fieldLlmTemperature()).toBeInTheDocument();
     expect(selectors.fieldLlmTemperature()).toHaveValue('0.3');
@@ -751,6 +778,64 @@ describe('LinkEditor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         hideTooltipOnHover: true,
+      })
+    );
+  });
+
+  it('Should allow change Default Grafana MCP', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP }),
+      })
+    );
+
+    expect(selectors.fieldUseDefaultMcp()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldUseDefaultMcp());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        useDefaultGrafanaMcp: true,
+      })
+    );
+  });
+
+  it('Should allow change MCP servers', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP }),
+      })
+    );
+
+    expect(selectors.mcpServersEditor()).toBeInTheDocument();
+    fireEvent.change(selectors.mcpServersEditor(), {
+      target: { value: JSON.stringify([{ id: 'server', name: 'server-1' }]) },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mcpServers: [{ id: 'server', name: 'server-1' }],
+      })
+    );
+  });
+
+  it('Should allow change MCP servers if mcp servers is undefined', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP, mcpServers: undefined }),
+      })
+    );
+
+    expect(selectors.mcpServersEditor()).toBeInTheDocument();
+    fireEvent.change(selectors.mcpServersEditor(), {
+      target: { value: JSON.stringify([{ id: 'server', name: 'server-1' }]) },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        mcpServers: [{ id: 'server', name: 'server-1' }],
       })
     );
   });
