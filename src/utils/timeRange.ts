@@ -1,4 +1,4 @@
-import { dateTime, rangeUtil, RelativeTimeRange, TimeOption } from '@grafana/data';
+import { dateTime, rangeUtil, RelativeTimeRange, TimeOption, TimeRange } from '@grafana/data';
 
 /**
  * Formats the given duration in seconds into a human-readable string representation.
@@ -71,4 +71,37 @@ export const timeToSeconds = (time: string | number): number => {
 
   const { from } = rangeUtil.convertRawToRange({ from: raw, to: raw });
   return from.valueOf();
+};
+
+/**
+ * prepareUrlWithParams
+ * @param timeRange
+ */
+export const prepareFromAndToParams = (timeRange?: TimeRange) => {
+  let fromValue = '';
+  let toValue = '';
+
+  if (!timeRange) {
+    return {
+      from: fromValue,
+      to: toValue,
+    };
+  }
+
+  if (timeRange.raw?.from && typeof timeRange.raw?.from === 'string') {
+    fromValue = timeRange.raw.from;
+  } else {
+    fromValue = timeRange.from.toISOString();
+  }
+
+  if (timeRange.raw?.to && typeof timeRange.raw?.to === 'string') {
+    toValue = timeRange.raw.to;
+  } else {
+    toValue = timeRange.to.toISOString();
+  }
+
+  return {
+    from: fromValue,
+    to: toValue,
+  };
 };

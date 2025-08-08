@@ -1,6 +1,13 @@
 import { RelativeTimeRange, TimeOption } from '@grafana/data';
 
-import { formatDuration, mapRelativeTimeRangeToOption, secondsToRelativeFormat, timeToSeconds } from './timeRange';
+import {
+  formatDuration,
+  mapRelativeTimeRangeToOption,
+  prepareFromAndToParams,
+  secondsToRelativeFormat,
+  timeToSeconds,
+} from './timeRange';
+import dayjs from 'dayjs';
 
 describe('formatDuration', () => {
   it('Should format seconds correctly', () => {
@@ -126,5 +133,100 @@ describe('timeToSeconds', () => {
     expect(timeToSeconds('now')).toBe(baseDate.getTime());
     expect(timeToSeconds('now-1h')).toBe(baseDate.getTime() - 60 * 60 * 1000);
     expect(timeToSeconds('now+1h')).toBe(baseDate.getTime() + 60 * 60 * 1000);
+  });
+});
+
+describe('prepareFromAndToParams', () => {
+  const fromDate = dayjs('2023-01-01T00:00:00.000Z');
+  const toDate = dayjs('2023-01-02T00:00:00.000Z');
+
+  it('Should return raw string values if from and to are strings', () => {
+    const timeRange = {
+      from: fromDate,
+      to: toDate,
+      raw: {
+        from: 'now-1h',
+        to: 'now',
+      },
+    } as any;
+
+    const result = prepareFromAndToParams(timeRange);
+    expect(result).toEqual({ from: 'now-1h', to: 'now' });
+  });
+
+  it('Should return ISO strings if raw values are not strings', () => {
+    const timeRange = {
+      from: fromDate,
+      to: toDate,
+      raw: {
+        from: fromDate,
+        to: toDate,
+      },
+    } as any;
+
+    const result = prepareFromAndToParams(timeRange);
+    expect(result).toEqual({
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+    });
+  });
+
+  it('Should handle mixed raw values (from string, to DateTime)', () => {
+    const timeRange = {
+      from: fromDate,
+      to: toDate,
+      raw: {
+        from: '2023-01-01T12:00:00Z',
+        to: toDate,
+      },
+    } as any;
+
+    const result = prepareFromAndToParams(timeRange);
+    expect(result).toEqual({
+      from: '2023-01-01T12:00:00Z',
+      to: toDate.toISOString(),
+    });
+  });
+
+  it('Should handle mixed raw values (from DateTime, to string)', () => {
+    const timeRange = {
+      from: fromDate,
+      to: toDate,
+      raw: {
+        from: fromDate,
+        to: 'now',
+      },
+    } as any;
+
+    const result = prepareFromAndToParams(timeRange);
+    expect(result).toEqual({
+      from: fromDate.toISOString(),
+      to: 'now',
+    });
+  });
+
+  it('Should handle from DateTime, to string if raw is empty', () => {
+    const timeRange = {
+      from: fromDate,
+      to: toDate,
+      raw: {
+        from: '',
+        to: '',
+      },
+    } as any;
+
+    const result = prepareFromAndToParams(timeRange);
+    expect(result).toEqual({
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+    });
+  });
+
+  it('Should return empty from and to if timeRange is undefined', () => {
+    const result = prepareFromAndToParams(undefined);
+    expect(result).toEqual({
+      from: '',
+      to: '',
+    });
   });
 });

@@ -1,15 +1,8 @@
 import { DataFrame, Field } from '@grafana/data';
-import dayjs from 'dayjs';
 
 import { AlignContentPositionType, LinkConfig, LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
-import {
-  extractParamsByPrefix,
-  prepareFromAndToParams,
-  prepareLinksToRender,
-  preparePickerTimeRange,
-  prepareUrlWithParams,
-} from './links';
+import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
 import { createDropdownConfig } from './test';
 
 /**
@@ -707,80 +700,6 @@ describe('preparePickerTimeRange', () => {
     expect(result).toEqual(defaultDashboardTimeRange);
   });
 
-  it('Should handle Relative type with valid relativeTimeRange', () => {
-    const result = preparePickerTimeRange({
-      item: {
-        timePickerConfig: {
-          type: TimeConfigType.RELATIVE,
-          relativeTimeRange: { from: 3600, to: 0 },
-        },
-      },
-      series: [],
-      dashboardTimeRange: defaultDashboardTimeRange,
-    });
-
-    expect(result).toEqual({ from: 'now-1h', to: 'now' });
-  });
-
-  it('Should handle Relative type with empty relativeTimeRange', () => {
-    const result = preparePickerTimeRange({
-      item: {
-        timePickerConfig: {
-          type: TimeConfigType.RELATIVE,
-        },
-      },
-      series: [],
-      dashboardTimeRange: defaultDashboardTimeRange,
-    });
-
-    expect(result).toEqual(defaultDashboardTimeRange);
-  });
-
-  it('Should handle Manual type with valid manualTimeRange', () => {
-    const result = preparePickerTimeRange({
-      item: {
-        timePickerConfig: {
-          type: TimeConfigType.MANUAL,
-          manualTimeRange: { from: 1747144711, to: 1747144715 },
-        },
-      },
-      series: [],
-      dashboardTimeRange: defaultDashboardTimeRange,
-    });
-
-    expect(result).toEqual({ from: 1747144711, to: 1747144715 });
-  });
-
-  it('Should handle Manual type with partial manualTimeRange', () => {
-    const result = preparePickerTimeRange({
-      item: {
-        timePickerConfig: {
-          type: TimeConfigType.MANUAL,
-          manualTimeRange: { from: 1747144711 },
-        },
-      },
-      series: [],
-      dashboardTimeRange: defaultDashboardTimeRange,
-    });
-
-    expect(result).toEqual({ from: 1747144711, to: defaultDashboardTimeRange.to });
-  });
-
-  it('Should handle Manual type with partial manualTimeRange to', () => {
-    const result = preparePickerTimeRange({
-      item: {
-        timePickerConfig: {
-          type: TimeConfigType.MANUAL,
-          manualTimeRange: { to: 1747144711 },
-        },
-      },
-      series: [],
-      dashboardTimeRange: defaultDashboardTimeRange,
-    });
-
-    expect(result).toEqual({ from: defaultDashboardTimeRange.from, to: 1747144711 });
-  });
-
   it('Should handle Field type with valid Field values', () => {
     const result = preparePickerTimeRange({
       item: {
@@ -813,6 +732,46 @@ describe('preparePickerTimeRange', () => {
     expect(result).toEqual(defaultDashboardTimeRange);
   });
 
+  it('Should handle Custom type ', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.CUSTOM,
+          customTimeRange: {
+            from: '',
+            to: '',
+            raw: {
+              from: 'now-1w',
+              to: 'now',
+            },
+          } as any,
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual({
+      from: 'now-1w',
+      to: 'now',
+    });
+  });
+
+  it('Should handle Custom type if range not specified for custom ', () => {
+    const result = preparePickerTimeRange({
+      item: {
+        timePickerConfig: {
+          type: TimeConfigType.CUSTOM,
+          customTimeRange: undefined,
+        },
+      },
+      series: [],
+      dashboardTimeRange: defaultDashboardTimeRange,
+    });
+
+    expect(result).toEqual(defaultDashboardTimeRange);
+  });
+
   it('Should return dashboardTimeRange for unknown config type', () => {
     const result = preparePickerTimeRange({
       item: {
@@ -825,92 +784,5 @@ describe('preparePickerTimeRange', () => {
     });
 
     expect(result).toEqual(defaultDashboardTimeRange);
-  });
-});
-
-describe('prepareFromAndToParams', () => {
-  const fromDate = dayjs('2023-01-01T00:00:00.000Z');
-  const toDate = dayjs('2023-01-02T00:00:00.000Z');
-
-  it('Should return raw string values if from and to are strings', () => {
-    const timeRange = {
-      from: fromDate,
-      to: toDate,
-      raw: {
-        from: 'now-1h',
-        to: 'now',
-      },
-    } as any;
-
-    const result = prepareFromAndToParams(timeRange);
-    expect(result).toEqual({ from: 'now-1h', to: 'now' });
-  });
-
-  it('Should return ISO strings if raw values are not strings', () => {
-    const timeRange = {
-      from: fromDate,
-      to: toDate,
-      raw: {
-        from: fromDate,
-        to: toDate,
-      },
-    } as any;
-
-    const result = prepareFromAndToParams(timeRange);
-    expect(result).toEqual({
-      from: fromDate.toISOString(),
-      to: toDate.toISOString(),
-    });
-  });
-
-  it('Should handle mixed raw values (from string, to DateTime)', () => {
-    const timeRange = {
-      from: fromDate,
-      to: toDate,
-      raw: {
-        from: '2023-01-01T12:00:00Z',
-        to: toDate,
-      },
-    } as any;
-
-    const result = prepareFromAndToParams(timeRange);
-    expect(result).toEqual({
-      from: '2023-01-01T12:00:00Z',
-      to: toDate.toISOString(),
-    });
-  });
-
-  it('Should handle mixed raw values (from DateTime, to string)', () => {
-    const timeRange = {
-      from: fromDate,
-      to: toDate,
-      raw: {
-        from: fromDate,
-        to: 'now',
-      },
-    } as any;
-
-    const result = prepareFromAndToParams(timeRange);
-    expect(result).toEqual({
-      from: fromDate.toISOString(),
-      to: 'now',
-    });
-  });
-
-  it('Should handle from DateTime, to string if raw is empty', () => {
-    const timeRange = {
-      from: fromDate,
-      to: toDate,
-      raw: {
-        from: '',
-        to: '',
-      },
-    } as any;
-
-    const result = prepareFromAndToParams(timeRange);
-    expect(result).toEqual({
-      from: fromDate.toISOString(),
-      to: toDate.toISOString(),
-    });
   });
 });

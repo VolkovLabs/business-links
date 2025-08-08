@@ -81,12 +81,12 @@ describe('LinkEditor', () => {
     render(getComponent({}));
 
     expect(selectors.fieldTimeRangeType()).toBeInTheDocument();
-    fireEvent.click(selectors.fieldTimeRangeTypeOption(false, TimeConfigType.MANUAL));
+    fireEvent.click(selectors.fieldTimeRangeTypeOption(false, TimeConfigType.CUSTOM));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         timePickerConfig: expect.objectContaining({
-          type: TimeConfigType.MANUAL,
+          type: TimeConfigType.CUSTOM,
         }),
       })
     );
@@ -105,12 +105,12 @@ describe('LinkEditor', () => {
     );
 
     expect(selectors.fieldTimeRangeType()).toBeInTheDocument();
-    fireEvent.click(selectors.fieldTimeRangeTypeOption(false, TimeConfigType.MANUAL));
+    fireEvent.click(selectors.fieldTimeRangeTypeOption(false, TimeConfigType.CUSTOM));
 
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         timePickerConfig: expect.objectContaining({
-          type: TimeConfigType.MANUAL,
+          type: TimeConfigType.CUSTOM,
         }),
       })
     );
@@ -168,132 +168,14 @@ describe('LinkEditor', () => {
     );
   });
 
-  it('Should allow to change From Date', () => {
+  it('Should allow change Custom Range', () => {
     render(
       getComponent({
         value: createLinkConfig({
           linkType: LinkType.TIMEPICKER,
           timePickerConfig: createTimeConfig({
-            type: TimeConfigType.MANUAL,
-          }),
-        }),
-      })
-    );
-
-    expect(selectors.fieldFromDateTimePicker()).toBeInTheDocument();
-
-    const newDateString = new Date('2023-05-12').toISOString();
-    fireEvent.change(selectors.fieldFromDateTimePicker(), { target: { value: newDateString } });
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        timePickerConfig: expect.objectContaining({
-          manualTimeRange: expect.objectContaining({
-            from: 1683849600000,
-          }),
-        }),
-      })
-    );
-  });
-
-  it('Should allow to change To Date', () => {
-    render(
-      getComponent({
-        value: createLinkConfig({
-          linkType: LinkType.TIMEPICKER,
-          timePickerConfig: createTimeConfig({
-            type: TimeConfigType.MANUAL,
-          }),
-        }),
-      })
-    );
-
-    expect(selectors.fieldToDateTimePicker()).toBeInTheDocument();
-
-    const newDateString = new Date('2023-05-17').toISOString();
-    fireEvent.change(selectors.fieldToDateTimePicker(), { target: { value: newDateString } });
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        timePickerConfig: expect.objectContaining({
-          manualTimeRange: expect.objectContaining({
-            to: 1684281600000,
-          }),
-        }),
-      })
-    );
-  });
-
-  it('Should allow clear To Date', () => {
-    render(
-      getComponent({
-        value: createLinkConfig({
-          linkType: LinkType.TIMEPICKER,
-          timePickerConfig: createTimeConfig({
-            type: TimeConfigType.MANUAL,
-            manualTimeRange: {
-              to: 1684281600000,
-            },
-          }),
-        }),
-      })
-    );
-
-    expect(selectors.fieldToDateTimePicker()).toBeInTheDocument();
-
-    fireEvent.change(selectors.fieldToDateTimePicker(), { target: { value: 'clear' } });
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        timePickerConfig: expect.objectContaining({
-          manualTimeRange: expect.objectContaining({
-            to: 0,
-          }),
-        }),
-      })
-    );
-  });
-
-  it('Should allow clear From Date', () => {
-    render(
-      getComponent({
-        value: createLinkConfig({
-          linkType: LinkType.TIMEPICKER,
-          timePickerConfig: createTimeConfig({
-            type: TimeConfigType.MANUAL,
-            manualTimeRange: {
-              from: 1684281600000,
-            },
-          }),
-        }),
-      })
-    );
-
-    expect(selectors.fieldFromDateTimePicker()).toBeInTheDocument();
-
-    fireEvent.change(selectors.fieldFromDateTimePicker(), { target: { value: 'clear' } });
-
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        timePickerConfig: expect.objectContaining({
-          manualTimeRange: expect.objectContaining({
-            from: 0,
-          }),
-        }),
-      })
-    );
-  });
-
-  it('Should allow change Relative Range', () => {
-    render(
-      getComponent({
-        value: createLinkConfig({
-          linkType: LinkType.TIMEPICKER,
-          timePickerConfig: createTimeConfig({
-            type: TimeConfigType.RELATIVE,
-            manualTimeRange: {
-              from: 1684281600000,
-            },
+            type: TimeConfigType.CUSTOM,
+            customTimeRange: undefined,
           }),
         }),
       })
@@ -313,7 +195,7 @@ describe('LinkEditor', () => {
     expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         timePickerConfig: expect.objectContaining({
-          relativeTimeRange: expect.objectContaining({
+          customTimeRange: expect.objectContaining({
             from: 6000,
             to: 0,
           }),

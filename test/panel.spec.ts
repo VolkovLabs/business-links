@@ -338,6 +338,7 @@ test.describe('Business Links Panel', () => {
       const dashboard = await readProvisionedDashboard({ fileName: 'sticky-panel.json' });
       const dashboardPage = await gotoDashboardPage({ uid: dashboard.uid });
 
+      await page.waitForTimeout(2500);
       /**
        * Scroll Page
        */

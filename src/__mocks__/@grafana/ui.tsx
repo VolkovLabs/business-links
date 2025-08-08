@@ -215,6 +215,25 @@ const RelativeTimeRangePickerMock = ({ onChange, ...restProps }: any) => {
 const RelativeTimeRangePicker = jest.fn(RelativeTimeRangePickerMock);
 
 /**
+ * Mock TimeRangeInput component
+ */
+const TimeRangeInputMock = ({ onChange, ...restProps }: any) => {
+  return (
+    <input
+      data-testid={restProps['data-testid']}
+      value={JSON.stringify(restProps.timeRange)}
+      onChange={(event) => {
+        if (onChange) {
+          onChange(JSON.parse(event.target.value));
+        }
+      }}
+    />
+  );
+};
+
+const TimeRangeInput = jest.fn(TimeRangeInputMock);
+
+/**
  * Drawer Mock
  * since grafana.ui version 11.5.1
  * ReferenceError: IntersectionObserver is not defined
@@ -262,6 +281,7 @@ beforeEach(() => {
   Tooltip.mockImplementation(TooltipMock);
   DateTimePicker.mockImplementation(DateTimePickerMock);
   RelativeTimeRangePicker.mockImplementation(RelativeTimeRangePickerMock);
+  TimeRangeInput.mockImplementation(TimeRangeInputMock);
   Drawer.mockImplementation(DrawerMock);
   Icon.mockImplementation(IconMock);
 });
@@ -276,7 +296,8 @@ module.exports = {
   TagsInput,
   DateTimePicker,
   RelativeTimeRangePicker,
+  TimeRangeInput,
   Tooltip,
   Drawer,
-  Icon
+  Icon,
 };
