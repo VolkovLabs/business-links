@@ -36,7 +36,7 @@ export default defineConfig(
     'test/*',
     'timescale/*',
     'webpack.config.ts',
-    'server/**',
+    'mcp/**',
     'playwright-report/**',
   ])
 );

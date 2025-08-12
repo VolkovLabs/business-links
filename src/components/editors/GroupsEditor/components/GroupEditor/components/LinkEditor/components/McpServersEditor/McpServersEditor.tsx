@@ -221,7 +221,7 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
                             <InlineField className={styles.fieldUrl} invalid={!isUpdatedUrlValid}>
                               <Input
                                 value={editUrl}
-                                placeholder="Server URL (e.g., http://localhost:3004)"
+                                placeholder="Server URL (e.g., http://mcp-server)"
                                 onChange={(event) => setEditUrl(event.currentTarget.value)}
                                 onKeyDown={(e) => {
                                   if (e.key === 'Enter' && isUpdatedNameValid && isUpdatedUrlValid) {
@@ -351,7 +351,7 @@ export const McpServersEditor: React.FC<Props> = ({ value = [], onChange }) => {
           error="Please enter a valid URL"
         >
           <Input
-            placeholder="http://localhost:3004"
+            placeholder="http://mcp-server"
             value={newServerUrl}
             onChange={(event) => setNewServerUrl(event.currentTarget.value)}
             {...TEST_IDS.mcpServersEditor.newItemUrl.apply()}

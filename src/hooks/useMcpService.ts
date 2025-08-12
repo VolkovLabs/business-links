@@ -140,10 +140,7 @@ export const useMcpService = (addErrorMessage?: (message: string) => void): UseM
 
         for (const server of enabledServers) {
           try {
-            const client = new mcp.Client({
-              name: 'volkovlabs-links-panel',
-              version: '2.1.0',
-            });
+            const client = new mcp.Client(DEFAULT_MCP_CLIENT_CONFIG);
 
             let serverUrl: URL;
             try {
