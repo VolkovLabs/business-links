@@ -94,6 +94,7 @@ export const TEST_IDS = {
     fieldContextPrompt: createSelector('data-testid link-editor field-context-prompt'),
     fieldLlmTemperature: createSelector('data-testid link-editor field-llm-temperature'),
     fieldAssistantName: createSelector('data-testid link-editor field-assistant-name'),
+    fieldUseDefaultMcp: createSelector('data-testid link-editor field-use-default-mcp'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
@@ -148,9 +149,29 @@ export const TEST_IDS = {
     attachButton: createSelector('data-testid-file-upload-input-field'),
     removeButton: createSelector('data-testid chat-drawer remove-button'),
     sendButton: createSelector('data-testid chat-drawer send-button'),
-    messageSender: createSelector('data-testid chat-drawer message-sender'),
+    messageSender: createSelector((name: unknown) => `data-testid chat-drawer message-sender-${name}`),
     inputPanel: createSelector('data-testid chat-drawer input-panel'),
     fileDropzoneOverlay: createSelector('data-testid chat-drawer file-dropzone-overlay'),
+    fileDropzone: createSelector('data-testid chat-drawer file-dropzone'),
+    mcpToolsInfo: createSelector('data-testid chat-drawer mcp-tools-info'),
+  },
+  mcpServersEditor: {
+    root: createSelector('data-testid mcp-servers-editor'),
+    newItem: createSelector('data-testid new-mcp-server'),
+    newItemName: createSelector('data-testid new-mcp-server-name'),
+    newItemUrl: createSelector('data-testid new-mcp-server-url'),
+    buttonAddNew: createSelector('data-testid add-mcp-server'),
+    itemHeader: createSelector((name: unknown) => `data-testid mcp-server-header-${name}`),
+    itemContent: createSelector((name: unknown) => `data-testid mcp-server-content-${name}`),
+    fieldName: createSelector('data-testid mcp-server-name-field'),
+    fieldUrl: createSelector('data-testid mcp-server-url-field'),
+    fieldEnabled: createSelector('data-testid mcp-server-enabled-field'),
+    buttonStartRename: createSelector('data-testid start-rename-mcp-server'),
+    buttonCancelRename: createSelector('data-testid cancel-rename-mcp-server'),
+    buttonSaveRename: createSelector('data-testid save-rename-mcp-server'),
+    buttonRemove: createSelector('data-testid remove-mcp-server'),
+    buttonEdit: createSelector('data-testid edit-mcp-server'),
+    buttonToggleEnabled: createSelector('data-testid toggle-mcp-server-enabled'),
   },
 };
 
@@ -161,6 +182,14 @@ export const STICKY_OPTIONS = [
   { value: true, label: 'Enabled', description: 'Follow when scrolling.' },
   { value: false, label: 'Disabled', description: 'Scroll with dashboard.' },
 ];
+
+/**
+ * Default MCP Client Config
+ */
+export const DEFAULT_MCP_CLIENT_CONFIG = {
+  name: 'volkovlabs-links-panel',
+  version: '2.1.0',
+};
 
 /**
  * Default Grid Column Size

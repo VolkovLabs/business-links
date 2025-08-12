@@ -18,13 +18,13 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 16,
+  "id": 10,
   "links": [],
   "panels": [
     {
       "datasource": {
-        "type": "marcusolsson-static-datasource",
-        "uid": "P1D2C73DC01F2359B"
+        "type": "datasource",
+        "uid": "grafana"
       },
       "description": "",
       "fieldConfig": {
@@ -155,7 +155,19 @@
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "llmapp",
-                "name": "Open LLM App",
+                "mcpServers": [
+                  {
+                    "enabled": true,
+                    "name": "Test 1",
+                    "url": "http://localhost:3005"
+                  },
+                  {
+                    "enabled": true,
+                    "name": "Test 2",
+                    "url": "http://localhost:3006"
+                  }
+                ],
+                "name": "Open LLM App with MCP server",
                 "showCustomIcons": false,
                 "tags": [],
                 "target": "_blank",
@@ -163,7 +175,8 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": "https://volkovlabs.io/"
+                "url": "https://volkovlabs.io/",
+                "useDefaultGrafanaMcp": true
               },
               {
                 "alignContentPosition": "left",
@@ -190,7 +203,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
@@ -217,7 +231,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
@@ -244,7 +259,8 @@
                 "timePickerConfig": {
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               }
             ],
             "manualGridLayout": [],
@@ -354,6 +370,6 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "LLM App",
-  "uid": "bfdd85fb-6830-4735-ac6c-7ceac5c5c843",
-  "version": 2
+  "uid": "f123d3ef-b925-4a70-819d-5e5b2a7459df",
+  "version": 1
 }
