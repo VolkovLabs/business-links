@@ -25,6 +25,12 @@ export const extractParamsByPrefix = (search: string, prefix: string): string =>
   return result.toString();
 };
 
+/**
+ * appendParam
+ * Append params to url
+ * @param currentUrl
+ * @param paramString
+ */
 export const appendParam = (currentUrl: string, paramString: string) => {
   return currentUrl + (currentUrl.includes('?') ? `&${paramString}` : `?${paramString}`);
 };
