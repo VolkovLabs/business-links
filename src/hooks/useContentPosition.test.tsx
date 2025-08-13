@@ -192,7 +192,7 @@ describe('useContentPosition', () => {
     });
 
     await waitFor(() => {
-      expect(window.innerWidth).toBe(500);
+      expect(window.innerWidth).toEqual(500);
     });
   });
 });

@@ -225,6 +225,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             initialPrompt={link.contextPrompt}
             assistantName={link.assistantName}
             llmTemperature={link.llmTemperature}
+            useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
+            mcpServers={link.mcpServers}
           />
         </>
       );
@@ -251,6 +253,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           initialPrompt={link.contextPrompt}
           assistantName={link.assistantName}
           llmTemperature={link.llmTemperature}
+          useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
+          mcpServers={link.mcpServers}
         />
       </>
     );
@@ -341,6 +345,8 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           initialPrompt={link.contextPrompt}
           assistantName={link.assistantName}
           llmTemperature={link.llmTemperature}
+          useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
+          mcpServers={link.mcpServers}
         />
       </>
     );

@@ -49,6 +49,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   customIconUrl: '',
   alignContentPosition: AlignContentPositionType.LEFT,
   hideTooltipOnHover: false,
+  mcpServers: [],
   ...item,
 });
 
@@ -103,6 +104,7 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   id: uuidv4(),
   dropdownConfig: createDropdownConfig(),
   includeKioskMode: false,
+  mcpServers: [],
   ...item,
 });
 

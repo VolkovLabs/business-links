@@ -1,6 +1,7 @@
 import { DropzoneFile, IconName } from '@grafana/ui';
 
-import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig } from './panel';
+import { LlmMessage, LlmRole } from './llm-integrations';
+import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig, McpServerConfig } from './panel';
 
 export interface NestedLinkConfig extends LinkConfig {
   /**
@@ -158,6 +159,20 @@ export interface VisualLink {
    * @type {string}
    */
   assistantName?: string;
+
+  /**
+   * Use default Grafana MCP server
+   *
+   * @type {boolean}
+   */
+  useDefaultGrafanaMcp?: boolean;
+
+  /**
+   * MCP Servers configuration for Business AI
+   *
+   * @type {McpServerConfig[]}
+   */
+  mcpServers?: McpServerConfig[];
 }
 
 /**
@@ -191,9 +206,9 @@ export interface ChatMessage {
   /**
    * Who sent the message
    *
-   * @type {'user' | 'assistant' | 'system'}
+   * @type {LlmRole}
    */
-  sender: 'user' | 'assistant' | 'system';
+  sender: LlmRole;
 
   /**
    * Message content
@@ -229,6 +244,20 @@ export interface ChatMessage {
    * @type {boolean}
    */
   isError?: boolean;
+
+  /**
+   * Tool call ID for MCP tool results
+   *
+   * @type {string}
+   */
+  toolCallId?: string;
+
+  /**
+   * Whether this is a tool call message
+   *
+   * @type {boolean}
+   */
+  isToolCall?: boolean;
 }
 
 /**
@@ -298,25 +327,6 @@ export interface LlmHealthCheck {
 }
 
 /**
- * Chat message for LLM API
- */
-export interface LlmMessage {
-  /**
-   * Message role
-   *
-   * @type {'system' | 'user' | 'assistant'}
-   */
-  role: 'system' | 'user' | 'assistant';
-
-  /**
-   * Message content
-   *
-   * @type {string}
-   */
-  content: string;
-}
-
-/**
  * Properties for the ChatDrawer component
  */
 export interface ChatDrawerProps {
@@ -358,12 +368,6 @@ export interface UseChatMessagesReturn {
    * @type {React.Dispatch<React.SetStateAction<ChatMessage[]>>}
    */
   setMessages: React.Dispatch<React.SetStateAction<ChatMessage[]>>;
-
-  /**
-   * Generate unique message ID
-   *
-   */
-  generateMessageId: () => string;
 
   /**
    * Add multiple messages
