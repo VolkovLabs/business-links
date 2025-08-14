@@ -32,6 +32,7 @@ export const TEST_IDS = {
     fieldFromDateTimePicker: createSelector('data-testid time-picker-editor field-from-date-time-picker'),
     fieldToDateTimePicker: createSelector('data-testid time-picker-editor field-to-date-time-picker'),
     fieldRelativeTimeRange: createSelector('data-testid time-picker-editor field-field-relative-time-range'),
+    fieldTimePickerDifference: createSelector('data-testid time-picker-editor field-time-picker-difference'),
   },
   linkElement: {
     buttonEmptyLink: createSelector((name: unknown) => `data-testid link-element button empty-link-${name}`),

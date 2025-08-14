@@ -5,7 +5,7 @@ import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { filterDashboardsByTags } from './dashboards';
 import { getFieldFromFrame, getFrameBySource } from './fields';
-import { prepareFromAndToParams, timeToSeconds } from './timeRange';
+import { isTimeRangeMatch, prepareFromAndToParams, timeToSeconds } from './timeRange';
 
 /**
  * extractParamsByPrefix
@@ -234,8 +234,18 @@ export const prepareLinksToRender = ({
          */
         const isCurrentTimepicker =
           highlightCurrentTimepicker &&
-          timeToSeconds(pickerTimeRange.from) === timeToSeconds(dashboardTimeRange.from) &&
-          timeToSeconds(pickerTimeRange.to) === timeToSeconds(dashboardTimeRange.to);
+          isTimeRangeMatch(
+            timeToSeconds(pickerTimeRange.from),
+            timeToSeconds(dashboardTimeRange.from),
+            item.timePickerConfig?.type,
+            item.timePickerConfig?.highlightSecondsDiff
+          ) &&
+          isTimeRangeMatch(
+            timeToSeconds(pickerTimeRange.to),
+            timeToSeconds(dashboardTimeRange.to),
+            item.timePickerConfig?.type,
+            item.timePickerConfig?.highlightSecondsDiff
+          );
 
         result.push({
           type: VisualLinkType.TIMEPICKER,

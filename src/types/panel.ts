@@ -118,6 +118,13 @@ export interface TimeConfig {
    * Custom time range
    */
   customTimeRange?: TimeRange;
+
+  /**
+   * The difference between the current field value and the dashboard range for highlighting the selection
+   *
+   * @type {FieldSource}
+   */
+  highlightSecondsDiff?: number;
 }
 
 /**

@@ -203,4 +203,34 @@ describe('LinkEditor', () => {
       })
     );
   });
+
+  it('Should allow change Custom Range', () => {
+    render(
+      getComponent({
+        isHighlightTimePicker: true,
+        value: createLinkConfig({
+          linkType: LinkType.TIMEPICKER,
+          timePickerConfig: createTimeConfig({
+            type: TimeConfigType.FIELD,
+            customTimeRange: undefined,
+            highlightSecondsDiff: 10,
+          }),
+        }),
+      })
+    );
+
+    expect(selectors.fieldTimePickerDifference()).toBeInTheDocument();
+    expect(selectors.fieldTimePickerDifference()).toHaveValue('10');
+
+    fireEvent.change(selectors.fieldTimePickerDifference(), { target: { value: 5 } });
+    fireEvent.blur(selectors.fieldTimePickerDifference(), { target: { value: 5 } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        timePickerConfig: expect.objectContaining({
+          highlightSecondsDiff: 5,
+        }),
+      })
+    );
+  });
 });

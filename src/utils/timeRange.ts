@@ -1,4 +1,7 @@
 import { dateTime, rangeUtil, RelativeTimeRange, TimeOption, TimeRange } from '@grafana/data';
+import dayjs from 'dayjs';
+
+import { TimeConfigType } from '@/types';
 
 /**
  * Formats the given duration in seconds into a human-readable string representation.
@@ -71,6 +74,42 @@ export const timeToSeconds = (time: string | number): number => {
 
   const { from } = rangeUtil.convertRawToRange({ from: raw, to: raw });
   return from.valueOf();
+};
+
+/**
+ * Compare time ranges for pickers
+ * include type of time picker and second difference
+ * into an absolute timestamp in milliseconds.
+ *
+ * @param timeRangeA – number (ms)
+ * @param timeRangeB – number (ms)
+ * @param pickerType
+ * @param timeDifference - number (s)
+ * @returns boolean
+ */
+export const isTimeRangeMatch = (
+  timeRangeA: number,
+  timeRangeB: number,
+  pickerType?: TimeConfigType,
+  timeDifference?: number
+): boolean => {
+  const currentDifference = timeDifference ?? 0;
+
+  if (pickerType === TimeConfigType.CUSTOM) {
+    return timeRangeA === timeRangeB;
+  }
+
+  if (timeRangeA === timeRangeB) {
+    return true;
+  }
+
+  const diffSec = Math.abs(dayjs(timeRangeA).diff(dayjs(timeRangeB), 'second'));
+
+  if (timeRangeA !== timeRangeB && diffSec <= currentDifference) {
+    return true;
+  }
+
+  return false;
 };
 
 /**
