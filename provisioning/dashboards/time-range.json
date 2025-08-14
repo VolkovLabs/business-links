@@ -69,7 +69,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -130,16 +131,20 @@
       },
       "id": 1,
       "options": {
+        "customPadding": 0,
         "dropdowns": [],
         "groups": [
           {
+            "dynamicFontSize": false,
             "gridColumns": 10,
             "gridLayout": false,
+            "gridRowHeight": 16,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": true,
             "items": [
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -147,11 +152,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range from fields",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -167,10 +175,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -178,25 +188,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "1h",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 3600,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-14T13:06:16.832Z",
+                    "raw": {
+                      "from": "now-1h",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -204,25 +224,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "fc494382-d22d-4d7d-889f-ea3067acf7a6",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "6h",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 21600,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-14T08:06:16.832Z",
+                    "raw": {
+                      "from": "now-6h",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -230,25 +260,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "f98ee678-e311-420d-81ce-9782b4ef52b8",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "12h",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 43200,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-14T02:06:16.832Z",
+                    "raw": {
+                      "from": "now-12h",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -256,25 +296,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "f069e3e5-e603-4b05-bb25-714284d8fd98",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "24h",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 86400,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-13T14:06:16.832Z",
+                    "raw": {
+                      "from": "now-1d",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -282,25 +332,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "7d",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 604800,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-07T14:06:16.832Z",
+                    "raw": {
+                      "from": "now-1w",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -308,11 +368,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range only TO from field",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -324,10 +387,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -335,11 +400,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "491ef2ac-27af-407b-aed5-212e218b955d",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range only FROM with field",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -351,10 +419,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -362,26 +432,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "from": 1743524821671,
-                    "to": 1746030427982
+                  "customTimeRange": {
+                    "from": "2025-04-01T16:27:01.671Z",
+                    "raw": {
+                      "from": "2025-04-01T16:27:01.671Z",
+                      "to": "2025-04-30T16:27:07.982Z"
+                    },
+                    "to": "2025-04-30T16:27:07.982Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -389,25 +468,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range From only",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "from": 1743524850656
+                  "customTimeRange": {
+                    "from": "2025-04-01T16:27:30.656Z",
+                    "raw": {
+                      "from": "2025-04-01T16:27:30.656Z",
+                      "to": "2025-08-14T14:06:16.832Z"
+                    },
+                    "to": "2025-08-14T14:06:16.832Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -415,22 +504,31 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "45db9278-a559-4816-8f78-86a896b9f347",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range TO only",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "to": 1746635272039
+                  "customTimeRange": {
+                    "from": "2025-08-14T14:06:16.832Z",
+                    "raw": {
+                      "from": "2025-08-14T14:06:16.832Z",
+                      "to": "2025-05-07T16:27:52.039Z"
+                    },
+                    "to": "2025-05-07T16:27:52.039Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               }
             ],
             "manualGridLayout": [],
@@ -482,15 +580,20 @@
       },
       "id": 4,
       "options": {
+        "customPadding": 0,
         "dropdowns": [],
         "groups": [
           {
+            "dynamicFontSize": false,
             "gridColumns": 10,
             "gridLayout": false,
+            "gridRowHeight": 16,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": true,
             "items": [
               {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -498,11 +601,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -518,7 +624,8 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               }
             ],
             "manualGridLayout": [],
@@ -570,16 +677,20 @@
       },
       "id": 2,
       "options": {
+        "customPadding": 0,
         "dropdowns": [],
         "groups": [
           {
+            "dynamicFontSize": false,
             "gridColumns": 10,
             "gridLayout": true,
+            "gridRowHeight": 16,
             "highlightCurrentLink": false,
             "highlightCurrentTimepicker": true,
             "items": [
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -587,26 +698,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "0eaec070-df28-4c98-a8d9-d6364ab5a938",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "7d",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 604800,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-07T14:06:16.833Z",
+                    "raw": {
+                      "from": "now-1w",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.833Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -614,26 +734,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "46c53ae8-6d10-48ef-87c0-287a759e22ca",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "1h",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "relativeTimeRange": {
-                    "from": 3600,
-                    "to": 0
+                  "customTimeRange": {
+                    "from": "2025-08-14T13:06:16.833Z",
+                    "raw": {
+                      "from": "now-1h",
+                      "to": "now"
+                    },
+                    "to": "2025-08-14T14:06:16.833Z"
                   },
-                  "type": "relative"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -641,11 +770,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "f7ef84c2-8572-409a-9d4c-134e3aa05215",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range from fields",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -661,10 +793,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -672,11 +806,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "2042375e-6c7e-421a-9cd3-3f5fa815a24f",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range only TO from field",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -688,10 +825,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -699,11 +838,14 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "491ef2ac-27af-407b-aed5-212e218b955d",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Range only FROM with field",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -715,10 +857,12 @@
                   "type": "field"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -726,26 +870,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "b36ac3d7-bace-40a5-86c9-c7e02219842b",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "from": 1743524821671,
-                    "to": 1746030427982
+                  "customTimeRange": {
+                    "from": "2025-04-01T16:27:01.671Z",
+                    "raw": {
+                      "from": "2025-04-01T16:27:01.671Z",
+                      "to": "2025-04-30T16:27:07.982Z"
+                    },
+                    "to": "2025-04-30T16:27:07.982Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -753,25 +906,35 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "fb8f25de-211b-4715-9335-a8c171cbf121",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range From only",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "from": 1743524850656
+                  "customTimeRange": {
+                    "from": "2025-04-01T16:27:30.656Z",
+                    "raw": {
+                      "from": "2025-04-01T16:27:30.656Z",
+                      "to": "2025-08-14T14:06:16.833Z"
+                    },
+                    "to": "2025-08-14T14:06:16.833Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
+                "customIconUrl": "",
                 "dashboardUrl": "",
                 "dropdownConfig": {
                   "align": "left",
@@ -779,22 +942,31 @@
                   "type": "dropdown"
                 },
                 "enable": true,
+                "hideTooltipOnHover": false,
                 "id": "45db9278-a559-4816-8f78-86a896b9f347",
+                "includeKioskMode": false,
                 "includeTimeRange": false,
                 "includeVariables": false,
                 "linkType": "timepicker",
                 "name": "Manual range TO only",
+                "showCustomIcons": false,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
-                  "manualTimeRange": {
-                    "to": 1746635272039
+                  "customTimeRange": {
+                    "from": "2025-08-14T14:06:16.833Z",
+                    "raw": {
+                      "from": "2025-08-14T14:06:16.833Z",
+                      "to": "2025-05-07T16:27:52.039Z"
+                    },
+                    "to": "2025-05-07T16:27:52.039Z"
                   },
-                  "type": "manual"
+                  "type": "custom"
                 },
                 "type": "link",
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               }
             ],
             "manualGridLayout": [
@@ -901,6 +1073,115 @@
       ],
       "title": "Date picker Grid",
       "type": "volkovlabs-links-panel"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 19
+      },
+      "id": 5,
+      "options": {
+        "customPadding": 0,
+        "dropdowns": [],
+        "groups": [
+          {
+            "dynamicFontSize": false,
+            "gridColumns": 10,
+            "gridLayout": false,
+            "gridRowHeight": 16,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": true,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "72789af0-4c77-4452-b458-b04c08acc5b6",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "mcpServers": [],
+                "name": "picker",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "running",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "current_time",
+                    "source": "A"
+                  },
+                  "highlightSecondsDiff": 5,
+                  "type": "field"
+                },
+                "url": "",
+                "useDefaultGrafanaMcp": false
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "New"
+          }
+        ],
+        "groupsSorting": false,
+        "sticky": false
+      },
+      "targets": [
+        {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "running",
+                "type": "time",
+                "values": []
+              },
+              {
+                "config": {},
+                "name": "life_of_well",
+                "type": "time",
+                "values": []
+              },
+              {
+                "config": {},
+                "name": "current_time",
+                "type": "time",
+                "values": []
+              }
+            ],
+            "meta": {
+              "custom": {
+                "customCode": "const result = {\n  ...frame,\n  fields: frame.fields.map((field) => {\n    if (field.name === 'running') {\n\n      return ({\n        ...field,\n        values: [\"2025-04-10 00:00:00\"]\n      })\n    }\n\n    if (field.name === 'life_of_well') {\n\n      return ({\n        ...field,\n        values: [\"2024-03-24 21:46:18\"]\n      })\n    }\n\n    if (field.name === 'current_time') {\n      return ({\n        ...field,\n        values: [new Date()]\n      })\n    }\n\n    return field\n  })\n}\n\nreturn Promise.resolve(result);",
+                "valuesEditor": "custom"
+              }
+            }
+          },
+          "refId": "A"
+        }
+      ],
+      "title": "Field picker current",
+      "type": "volkovlabs-links-panel"
     }
   ],
   "preload": false,
@@ -917,5 +1198,5 @@
   "timezone": "browser",
   "title": "Date picker",
   "uid": "belrzzddl9lvke",
-  "version": 5
+  "version": 2
 }

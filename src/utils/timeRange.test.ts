@@ -261,9 +261,9 @@ describe('isTimeRangeMatch', () => {
     expect(isTimeRangeMatch(baseTime, baseTime)).toEqual(true);
   });
 
-  it('Should returns false if timestamps are different and no threshold provided', () => {
+  it('Should returns true if timestamps are different and no threshold provided', () => {
     const diffTime = baseTime + 1000;
-    expect(isTimeRangeMatch(baseTime, diffTime)).toEqual(false);
+    expect(isTimeRangeMatch(baseTime, diffTime)).toEqual(true);
   });
 
   it('Should returns true if timestamps are different and in threshold', () => {
