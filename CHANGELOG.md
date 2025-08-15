@@ -15,6 +15,7 @@ All notable changes to the **Business Links** panel are documented in this file.
 - Updated ESLint configuration ([#60](https://github.com/VolkovLabs/business-links/issues/60)).
 - Updated sticky positioning for dynamic layouts ([#62](https://github.com/VolkovLabs/business-links/issues/62)).
 - Updated manual and relative time picker component to support additional time ranges ([#64](https://github.com/VolkovLabs/business-links/issues/64)).
+- Updated to allow duplicate '?' in link url ([#65](https://github.com/VolkovLabs/business-links/issues/65)).
 
 ## [2.1.0] - 2025-07-06
 
