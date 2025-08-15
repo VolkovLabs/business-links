@@ -23,9 +23,9 @@ const inTestIds = {
 };
 
 /**
- * Mock Table Editor
+ * Mock Group Editor
  */
-const TableEditorMock = () => <div {...inTestIds.groupEditor.apply()} />;
+const GroupEditorMock = () => <div {...inTestIds.groupEditor.apply()} />;
 
 jest.mock('./components', () => ({
   GroupEditor: jest.fn(),
@@ -39,12 +39,15 @@ jest.mock('@/utils', () => ({
   getAllDashboards: jest.fn(),
 }));
 
-describe('TablesEditor', () => {
+describe('GroupsEditor', () => {
   /**
    * Default
    */
   const defaultDropdowns = [{ name: 'Dropdown1', items: [] }];
   const defaultOptionId = 'groups';
+  const defaultItem = {
+    id: defaultOptionId,
+  } as any;
   const group1 = createGroupConfig();
   const group2 = createGroupConfig({ name: 'Group 2' });
 
@@ -80,7 +83,7 @@ describe('TablesEditor', () => {
    * Get Tested Component
    * @param props
    */
-  const getComponent = (props: Partial<Props>) => <GroupsEditor {...(props as any)} />;
+  const getComponent = (props: Partial<Props>) => <GroupsEditor item={defaultItem} {...(props as any)} />;
 
   /**
    * Selectors
@@ -93,7 +96,7 @@ describe('TablesEditor', () => {
   const selectors = getSelectors(screen);
 
   beforeEach(() => {
-    jest.mocked(GroupEditor).mockImplementation(TableEditorMock);
+    jest.mocked(GroupEditor).mockImplementation(GroupEditorMock);
     jest.mocked(getAllDashboards).mockReturnValue(dashboardsMock);
   });
 
