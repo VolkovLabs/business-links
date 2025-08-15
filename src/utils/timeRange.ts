@@ -93,7 +93,7 @@ export const isTimeRangeMatch = (
   pickerType?: TimeConfigType,
   timeDifference?: number
 ): boolean => {
-  const currentDifference = timeDifference ?? 1;
+  const currentDifference = timeDifference ?? 30;
 
   if (pickerType === TimeConfigType.CUSTOM) {
     return timeRangeA === timeRangeB;

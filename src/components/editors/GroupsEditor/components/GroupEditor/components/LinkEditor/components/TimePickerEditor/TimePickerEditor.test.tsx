@@ -204,7 +204,7 @@ describe('LinkEditor', () => {
     );
   });
 
-  it('Should allow change Custom Range', () => {
+  it('Should allow change Difference range', () => {
     render(
       getComponent({
         isHighlightTimePicker: true,
@@ -221,6 +221,36 @@ describe('LinkEditor', () => {
 
     expect(selectors.fieldTimePickerDifference()).toBeInTheDocument();
     expect(selectors.fieldTimePickerDifference()).toHaveValue('10');
+
+    fireEvent.change(selectors.fieldTimePickerDifference(), { target: { value: 5 } });
+    fireEvent.blur(selectors.fieldTimePickerDifference(), { target: { value: 5 } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        timePickerConfig: expect.objectContaining({
+          highlightSecondsDiff: 5,
+        }),
+      })
+    );
+  });
+
+  it('Should allow change Difference range if initial is undefined', () => {
+    render(
+      getComponent({
+        isHighlightTimePicker: true,
+        value: createLinkConfig({
+          linkType: LinkType.TIMEPICKER,
+          timePickerConfig: createTimeConfig({
+            type: TimeConfigType.FIELD,
+            customTimeRange: undefined,
+            highlightSecondsDiff: undefined,
+          }),
+        }),
+      })
+    );
+
+    expect(selectors.fieldTimePickerDifference()).toBeInTheDocument();
+    expect(selectors.fieldTimePickerDifference()).toHaveValue('30');
 
     fireEvent.change(selectors.fieldTimePickerDifference(), { target: { value: 5 } });
     fireEvent.blur(selectors.fieldTimePickerDifference(), { target: { value: 5 } });

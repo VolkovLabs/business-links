@@ -46,7 +46,7 @@ export const timePickerTypeOptions = [
  * Time Picker Editor
  */
 export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data, isHighlightTimePicker }) => {
-  const [highlightSecondsDiff, setHighlightSecondsDiff] = useState(value.timePickerConfig?.highlightSecondsDiff);
+  const [highlightSecondsDiff, setHighlightSecondsDiff] = useState(value.timePickerConfig?.highlightSecondsDiff ?? 30);
 
   return (
     <>
