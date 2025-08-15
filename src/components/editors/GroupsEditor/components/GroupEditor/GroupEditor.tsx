@@ -448,6 +448,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
                           dropdowns={dropdowns}
                           dashboards={dashboards}
                           isGrid={value.gridLayout}
+                          isHighlightTimePicker={value.highlightCurrentTimepicker}
                         />
                       </Collapse>
                     </div>

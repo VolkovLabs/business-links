@@ -25,12 +25,14 @@ describe('migrateTimePickerConfiguration', () => {
 
   it('Should return default config when input is undefined', () => {
     expect(migrateTimePickerConfiguration(undefined)).toEqual({
+      highlightSecondsDiff: 30,
       type: TimeConfigType.FIELD,
     });
   });
 
   it('Should return default config when type is missing', () => {
     expect(migrateTimePickerConfiguration({} as OutdatedTimeConfig)).toEqual({
+      highlightSecondsDiff: 30,
       type: TimeConfigType.FIELD,
     });
   });
@@ -80,6 +82,19 @@ describe('migrateTimePickerConfiguration', () => {
     const config = {
       type: TimeConfigType.CUSTOM,
       customTimeRange: { from: 'now-1h', to: 'now' } as any,
+    };
+
+    expect(migrateTimePickerConfiguration(config)).toEqual({
+      ...config,
+      highlightSecondsDiff: 30,
+    });
+  });
+
+  it('Should return the same config if already valid with time difference', () => {
+    const config = {
+      type: TimeConfigType.CUSTOM,
+      customTimeRange: { from: 'now-1h', to: 'now' } as any,
+      highlightSecondsDiff: 35,
     };
 
     expect(migrateTimePickerConfiguration(config)).toEqual(config);

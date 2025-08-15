@@ -15,6 +15,7 @@ export const migrateTimePickerConfiguration = (timePickerConfig?: OutdatedTimeCo
   if (!timePickerConfig || !timePickerConfig.type) {
     return {
       type: TimeConfigType.FIELD,
+      highlightSecondsDiff: 30,
     };
   }
 
@@ -32,6 +33,7 @@ export const migrateTimePickerConfiguration = (timePickerConfig?: OutdatedTimeCo
     return {
       type: TimeConfigType.CUSTOM,
       customTimeRange: timeRangeResult,
+      highlightSecondsDiff: 30,
     };
   }
 
@@ -58,6 +60,14 @@ export const migrateTimePickerConfiguration = (timePickerConfig?: OutdatedTimeCo
     return {
       type: TimeConfigType.CUSTOM,
       customTimeRange: timeRangeResult,
+      highlightSecondsDiff: 30,
+    };
+  }
+
+  if (!timePickerConfig.highlightSecondsDiff) {
+    return {
+      ...timePickerConfig,
+      highlightSecondsDiff: 30,
     };
   }
 

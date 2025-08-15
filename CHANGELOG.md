@@ -2,20 +2,21 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.0] - Unreleased
+## [2.2.0] - 2025-08-14
 
 ### Added
 
-- Added Grid options for row height and width ([#63](https://github.com/VolkovLabs/business-links/issues/63)).
-- Add MCP Servers functionality ([#56](https://github.com/VolkovLabs/business-links/issues/56)).
+- **Grid Options**: Added support for customizable row height and width. ([#63](https://github.com/VolkovLabs/business-links/issues/63))
+- **MCP Servers**: Introduced new functionality for MCP Servers. ([#56](https://github.com/VolkovLabs/business-links/issues/56))
+- **Timepicker Highlight**: Added option to highlight time differences in the timepicker. ([#66](https://github.com/VolkovLabs/business-links/issues/66))
 
 ### Changed
 
-- Use raw values for time range in URL ([Issue #59](https://github.com/VolkovLabs/business-links/issues/59)).
-- Updated ESLint configuration ([#60](https://github.com/VolkovLabs/business-links/issues/60)).
-- Updated sticky positioning for dynamic layouts ([#62](https://github.com/VolkovLabs/business-links/issues/62)).
-- Updated manual and relative time picker component to support additional time ranges ([#64](https://github.com/VolkovLabs/business-links/issues/64)).
-- Updated to allow duplicate '?' in link url ([#65](https://github.com/VolkovLabs/business-links/issues/65)).
+- **Time Range in URL**: Now using raw values for time range in URLs. ([#59](https://github.com/VolkovLabs/business-links/issues/59))
+- **ESLint Configuration**: Updated ESLint settings for better code quality. ([#60](https://github.com/VolkovLabs/business-links/issues/60))
+- **Sticky Positioning**: Improved sticky positioning for dynamic layouts. ([#62](https://github.com/VolkovLabs/business-links/issues/62))
+- **Time Picker**: Enhanced manual and relative time picker to support additional time ranges. ([#64](https://github.com/VolkovLabs/business-links/issues/64))
+- **Link URL Handling**: Updated to allow duplicate `?` characters in link URLs. ([#65](https://github.com/VolkovLabs/business-links/issues/65))
 
 ## [2.1.0] - 2025-07-06
 

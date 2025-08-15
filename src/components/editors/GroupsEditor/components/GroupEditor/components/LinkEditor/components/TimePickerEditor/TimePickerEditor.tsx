@@ -1,6 +1,7 @@
 import { DataFrame, getDefaultTimeRange, TimeRange } from '@grafana/data';
 import { InlineField, InlineFieldRow, RadioButtonGroup, TimeRangeInput } from '@grafana/ui';
-import React from 'react';
+import { Slider } from '@volkovlabs/components';
+import React, { useState } from 'react';
 
 import { FieldPicker, FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
@@ -16,6 +17,13 @@ interface Props extends EditorProps<LinkConfig> {
    * @type {DataFrame[]}
    */
   data: DataFrame[];
+
+  /**
+   * Is Highlight Time Picker
+   *
+   * @type {boolean}
+   */
+  isHighlightTimePicker?: boolean;
 }
 
 /**
@@ -37,7 +45,9 @@ export const timePickerTypeOptions = [
 /**
  * Time Picker Editor
  */
-export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data }) => {
+export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data, isHighlightTimePicker }) => {
+  const [highlightSecondsDiff, setHighlightSecondsDiff] = useState(value.timePickerConfig?.highlightSecondsDiff ?? 30);
+
   return (
     <>
       {value.linkType === LinkType.TIMEPICKER && (
@@ -100,6 +110,34 @@ export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data }) => 
                   />
                 </InlineField>
               </InlineFieldRow>
+              {isHighlightTimePicker && (
+                <InlineField
+                  label="Time highlight gap"
+                  tooltip="Maximum allowed time difference between measurements for highlight."
+                  labelWidth={20}
+                  grow={true}
+                >
+                  <Slider
+                    value={highlightSecondsDiff}
+                    min={1}
+                    max={60}
+                    step={1}
+                    onChange={(size) => {
+                      setHighlightSecondsDiff(size);
+                    }}
+                    onAfterChange={(size) => {
+                      onChange({
+                        ...value,
+                        timePickerConfig: {
+                          ...value.timePickerConfig,
+                          highlightSecondsDiff: size,
+                        },
+                      });
+                    }}
+                    {...TEST_IDS.timePickerEditor.fieldTimePickerDifference.apply()}
+                  />
+                </InlineField>
+              )}
             </>
           )}
           {value.timePickerConfig?.type === TimeConfigType.CUSTOM && (

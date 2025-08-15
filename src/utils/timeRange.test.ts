@@ -2,12 +2,14 @@ import { RelativeTimeRange, TimeOption } from '@grafana/data';
 
 import {
   formatDuration,
+  isTimeRangeMatch,
   mapRelativeTimeRangeToOption,
   prepareFromAndToParams,
   secondsToRelativeFormat,
   timeToSeconds,
 } from './timeRange';
 import dayjs from 'dayjs';
+import { TimeConfigType } from '@/types';
 
 describe('formatDuration', () => {
   it('Should format seconds correctly', () => {
@@ -228,5 +230,43 @@ describe('prepareFromAndToParams', () => {
       from: '',
       to: '',
     });
+  });
+});
+
+describe('isTimeRangeMatch', () => {
+  const baseTime = 1711305978000; // example timestamp
+
+  it('Should returns true when timestamps are equal', () => {
+    expect(isTimeRangeMatch(baseTime, baseTime)).toEqual(true);
+  });
+
+  it('Should returns true for CUSTOM pickerType only if exact match', () => {
+    const diffTime = baseTime + 1000;
+    expect(isTimeRangeMatch(baseTime, baseTime, TimeConfigType.CUSTOM)).toEqual(true);
+    expect(isTimeRangeMatch(baseTime, diffTime, TimeConfigType.CUSTOM)).toEqual(false);
+  });
+
+  it('Should returns true if difference is within allowed threshold', () => {
+    const diffTime = baseTime + 5000;
+    expect(isTimeRangeMatch(baseTime, diffTime, TimeConfigType.FIELD, 5)).toEqual(true);
+    expect(isTimeRangeMatch(baseTime, diffTime, TimeConfigType.FIELD, 3)).toEqual(false);
+  });
+
+  it('Should returns false if difference exceeds allowed threshold', () => {
+    const diffTime = baseTime + 10000;
+    expect(isTimeRangeMatch(baseTime, diffTime, undefined, 5)).toEqual(false);
+  });
+
+  it('Should returns true if no threshold provided and timestamps equal', () => {
+    expect(isTimeRangeMatch(baseTime, baseTime)).toEqual(true);
+  });
+
+  it('Should returns true if timestamps are different and no threshold provided', () => {
+    const diffTime = baseTime + 1000;
+    expect(isTimeRangeMatch(baseTime, diffTime)).toEqual(true);
+  });
+
+  it('Should returns true if timestamps are different and in threshold', () => {
+    expect(isTimeRangeMatch(1755179814721, 1755179812795, undefined, 33)).toEqual(true);
   });
 });

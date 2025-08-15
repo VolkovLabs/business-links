@@ -54,15 +54,6 @@ The Business Links Panel is part of the **Business Suite**, a collection of open
 
 [![Business Suite for Grafana](https://raw.githubusercontent.com/VolkovLabs/.github/main/business.png)](https://volkovlabs.io/plugins/)
 
-### Enterprise Support
-
-Subscribe to [Business Suite Enterprise](https://volkovlabs.io/pricing/) for:
-
-- Dedicated support via Zendesk
-- Priority feature requests and bug fixes
-- In-person consultations
-- Access to Business Intelligence platform
-
 ## License
 
 Licensed under the [Apache License 2.0](https://github.com/volkovlabs/business-links/blob/main/LICENSE).

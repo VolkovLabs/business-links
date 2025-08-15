@@ -516,6 +516,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: '',
       series: [],
+      highlightCurrentTimepicker: true,
     });
 
     expect(result).toHaveLength(1);
