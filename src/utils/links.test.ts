@@ -2,7 +2,13 @@ import { DataFrame, Field } from '@grafana/data';
 
 import { AlignContentPositionType, LinkConfig, LinkTarget, LinkType, TimeConfigType, VisualLinkType } from '@/types';
 
-import { extractParamsByPrefix, prepareLinksToRender, preparePickerTimeRange, prepareUrlWithParams } from './links';
+import {
+  appendParam,
+  extractParamsByPrefix,
+  prepareLinksToRender,
+  preparePickerTimeRange,
+  prepareUrlWithParams,
+} from './links';
 import { createDropdownConfig } from './test';
 
 /**
@@ -785,5 +791,27 @@ describe('preparePickerTimeRange', () => {
     });
 
     expect(result).toEqual(defaultDashboardTimeRange);
+  });
+});
+
+/**
+ * appendParam
+ */
+describe('appendParam', () => {
+  it('Should add param with "?" if URL has no query params', () => {
+    expect(appendParam('https://example.com', 'foo=bar')).toEqual('https://example.com?foo=bar');
+  });
+
+  it('Should add param with "&" if URL already has query params', () => {
+    expect(appendParam('https://example.com?a=1', 'foo=bar')).toEqual('https://example.com?a=1&foo=bar');
+  });
+
+  it('Should handle empty param as a flag', () => {
+    expect(appendParam('https://example.com', 'kiosk')).toEqual('https://example.com?kiosk');
+    expect(appendParam('https://example.com?a=1', 'kiosk')).toEqual('https://example.com?a=1&kiosk');
+  });
+
+  it('Should not break URL with similar param names', () => {
+    expect(appendParam('https://example.com?foo=1', 'foobar=2')).toEqual('https://example.com?foo=1&foobar=2');
   });
 });

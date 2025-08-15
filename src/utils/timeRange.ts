@@ -113,7 +113,7 @@ export const isTimeRangeMatch = (
 };
 
 /**
- * prepareUrlWithParams
+ * prepareFromAndToParams
  * @param timeRange
  */
 export const prepareFromAndToParams = (timeRange?: TimeRange) => {
