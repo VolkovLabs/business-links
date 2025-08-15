@@ -26,6 +26,16 @@ export const extractParamsByPrefix = (search: string, prefix: string): string =>
 };
 
 /**
+ * appendParam
+ * Append params to url
+ * @param currentUrl
+ * @param paramString
+ */
+export const appendParam = (currentUrl: string, paramString: string) => {
+  return currentUrl + (currentUrl.includes('?') ? `&${paramString}` : `?${paramString}`);
+};
+
+/**
  * prepareUrlWithParams
  * @param includeTimeRange
  * @param includeVariables
@@ -60,25 +70,24 @@ export const prepareUrlWithParams = (
    */
   if (item.includeVariables) {
     const newParams = extractParamsByPrefix(params, 'var-');
-
-    currentUrl = `${currentUrl}?${newParams}`;
+    currentUrl = appendParam(currentUrl, newParams);
   }
 
   /**
    * Apply Time Range
    */
   if (item.includeTimeRange) {
-    const params = prepareFromAndToParams(timeRange);
-    const timeRangeParams = `from=${params.from}&to=${params.to}`;
-    currentUrl = `${currentUrl}${item.includeVariables ? `&${timeRangeParams}` : `?${timeRangeParams}`}`;
+    const { from, to } = prepareFromAndToParams(timeRange);
+    currentUrl = appendParam(currentUrl, `from=${from}&to=${to}`);
   }
 
   /**
    * Apply kiosk param as flag
    */
   if (kioskParam && item.includeKioskMode) {
-    currentUrl = `${currentUrl}${currentUrl.includes('?') ? '&' : '?'}kiosk`;
+    currentUrl = appendParam(currentUrl, 'kiosk');
   }
+
   return currentUrl;
 };
 

@@ -74,7 +74,7 @@ export const timeToSeconds = (time: string | number): number => {
 };
 
 /**
- * prepareUrlWithParams
+ * prepareFromAndToParams
  * @param timeRange
  */
 export const prepareFromAndToParams = (timeRange?: TimeRange) => {
