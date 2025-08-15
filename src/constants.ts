@@ -98,7 +98,7 @@ export const TEST_IDS = {
     fieldUseDefaultMcp: createSelector('data-testid link-editor field-use-default-mcp'),
   },
   groupsEditor: {
-    root: createSelector((name: unknown) => `data-testid group-editor root ${name}`),
+    root: createSelector((name: unknown) => `data-testid groups-editor root ${name}`),
     buttonAddNew: createSelector('data-testid groups-editor button-add-new'),
     buttonRemove: createSelector('data-testid groups-editor button-remove'),
     buttonStartRename: createSelector('data-testid groups-editor button-start-rename'),

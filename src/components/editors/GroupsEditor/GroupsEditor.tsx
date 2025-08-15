@@ -35,7 +35,7 @@ const testIds = TEST_IDS.groupsEditor;
 /**
  * Groups Editor
  */
-export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onChange, value, id }) => {
+export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onChange, value, id, item }) => {
   /**
    * Styles and Theme
    */
@@ -188,7 +188,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   }, [value.length]);
 
   return (
-    <div {...testIds.root.apply(id)}>
+    <div {...testIds.root.apply(item.id)}>
       {value.length > 0 && (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="tables-editor">
