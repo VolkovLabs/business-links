@@ -133,11 +133,34 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
        * Normalize links items
        */
       const normalizedItems = dropdown.items.map((item) => {
+        const normalizedId = !item.id || item.id === undefined ? uuidv4() : item.id;
+
         const normalizedTimePickerConfig = migrateTimePickerConfiguration(item.timePickerConfig);
+
+        const normalizedIncludeKioskMode =
+          !item.includeKioskMode || item.includeKioskMode === undefined ? false : item.includeKioskMode;
+
+        const normalizedShowCustomIcons =
+          !item.showCustomIcons || item.showCustomIcons === undefined ? false : item.showCustomIcons;
+
+        const normalizedCustomIconUrl =
+          !item.customIconUrl || item.customIconUrl === undefined ? '' : item.customIconUrl;
+
+        const normalizedHideTitleOnHover =
+          !item.hideTooltipOnHover || item.hideTooltipOnHover === undefined ? false : item.hideTooltipOnHover;
+
+        const normalizedUseDefaultGrafanaMcp =
+          !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
         return {
           ...item,
+          id: normalizedId,
           timePickerConfig: normalizedTimePickerConfig,
+          includeKioskMode: normalizedIncludeKioskMode,
+          showCustomIcons: normalizedShowCustomIcons,
+          customIconUrl: normalizedCustomIconUrl,
+          hideTooltipOnHover: normalizedHideTitleOnHover,
+          useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
         };
       });
 

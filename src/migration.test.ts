@@ -474,4 +474,252 @@ describe('migration', () => {
       expect(normalizedItem.alignContentPosition).toBe('left');
     });
   });
+
+  describe('Items in dropdowns', () => {
+    it('Should normalize item if "id" in item is undefined ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].id).toEqual('item-1-test-id');
+      expect(items[1].id).toEqual('abc-123');
+    });
+
+    it('Should normalize item if "id" in item is empty string or null ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+      });
+      const item2 = createLinkConfig({
+        id: '',
+      });
+      const item3 = createLinkConfig({
+        id: null,
+      } as any);
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].id).toEqual('item-1-test-id');
+      expect(items[1].id).toEqual('abc-123');
+      expect(items[2].id).toEqual('abc-123');
+    });
+
+    it('Should normalize time config type if it is undefined ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: undefined,
+        },
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: undefined,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[1].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[2].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+    });
+
+    it('Should normalize time config type if it is empty string or null ', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: null as any,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[1].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+      expect(items[2].timePickerConfig?.type).toEqual(TimeConfigType.FIELD);
+    });
+
+    it('Should normalize hideTooltipOnHover to false', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', hideTooltipOnHover: undefined });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.hideTooltipOnHover).toBe(false);
+    });
+
+    it('Should normalize hideTooltipOnHover to false if not specified', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.hideTooltipOnHover).toBe(false);
+    });
+
+    it('Should normalize hideTooltipOnHover ', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', hideTooltipOnHover: true });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.hideTooltipOnHover).toBe(true);
+    });
+
+    it('Should normalize useDefaultGrafanaMcp to false', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', useDefaultGrafanaMcp: undefined });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.hideTooltipOnHover).toBe(false);
+    });
+
+    it('Should normalize useDefaultGrafanaMcp to false if not specified', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.useDefaultGrafanaMcp).toBe(false);
+    });
+
+    it('Should normalize useDefaultGrafanaMcp ', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', useDefaultGrafanaMcp: true });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.useDefaultGrafanaMcp).toBe(true);
+    });
+
+    it('Should normalize showCustomIcons to false', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', showCustomIcons: undefined });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.showCustomIcons).toBe(false);
+    });
+
+    it('Should normalize showCustomIcons to false if not specified', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.showCustomIcons).toBe(false);
+    });
+
+    it('Should normalize showCustomIcons ', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', showCustomIcons: true });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.showCustomIcons).toBe(true);
+    });
+
+    it('Should normalize includeKioskMode to false', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', includeKioskMode: undefined });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.includeKioskMode).toBe(false);
+    });
+
+    it('Should normalize includeKioskMode to false if not specified', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.includeKioskMode).toBe(false);
+    });
+
+    it('Should normalize includeKioskMode ', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', includeKioskMode: true });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.includeKioskMode).toBe(true);
+    });
+
+    it('Should normalize customIconUrl to false', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', customIconUrl: undefined });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.customIconUrl).toBe('');
+    });
+
+    it('Should normalize customIconUrl to false if not specified', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.customIconUrl).toBe('');
+    });
+
+    it('Should normalize customIconUrl ', async () => {
+      const item = createLinkConfig({ id: 'item-1-test-id', customIconUrl: 'url' });
+      const group = createGroupConfig({ items: [item] });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const normalizedItem = result.dropdowns[0].items[0];
+
+      expect(normalizedItem.customIconUrl).toBe('url');
+    });
+  });
 });

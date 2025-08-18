@@ -2,13 +2,13 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.2.0] - 2025-08-14
+## [2.2.0] - 2025-08-18
 
 ### Added
 
 - **Grid Options**: Added support for customizable row height and width. ([#63](https://github.com/VolkovLabs/business-links/issues/63))
 - **MCP Servers**: Introduced new functionality for MCP Servers. ([#56](https://github.com/VolkovLabs/business-links/issues/56))
-- **Timepicker Highlight**: Added option to highlight time differences in the timepicker. ([#66](https://github.com/VolkovLabs/business-links/issues/66))
+- **Timepicker Highlight**: Added option to highlight time differences in the timepicker. ([#66](https://github.com/VolkovLabs/business-links/issues/66), [#67](https://github.com/VolkovLabs/business-links/issues/67))
 
 ### Changed
 

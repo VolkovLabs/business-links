@@ -260,16 +260,7 @@ export const alignContentPositionOptions = [
 /**
  * Link Editor
  */
-export const LinkEditor: React.FC<Props> = ({
-  value,
-  onChange,
-  isGrid,
-  data,
-  dashboards,
-  optionId,
-  dropdowns,
-  isHighlightTimePicker,
-}) => {
+export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, dashboards, optionId, dropdowns }) => {
   /**
    * Icon Options
    */
@@ -465,14 +456,7 @@ export const LinkEditor: React.FC<Props> = ({
           </>
         )}
 
-        {value.linkType === LinkType.TIMEPICKER && (
-          <TimePickerEditor
-            value={value}
-            data={data}
-            onChange={onChange}
-            isHighlightTimePicker={isHighlightTimePicker}
-          />
-        )}
+        {value.linkType === LinkType.TIMEPICKER && <TimePickerEditor value={value} data={data} onChange={onChange} />}
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
         {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (

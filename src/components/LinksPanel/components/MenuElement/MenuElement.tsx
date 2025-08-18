@@ -105,7 +105,11 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
 
             if (nestedLink.linkType === LinkType.LLMAPP) {
               return (
-                <LinkElement key={nestedLink.name} link={nestedLink as unknown as VisualLink} dynamicFontSize={dynamicFontSize} />
+                <LinkElement
+                  key={nestedLink.name}
+                  link={nestedLink as unknown as VisualLink}
+                  dynamicFontSize={dynamicFontSize}
+                />
               );
             }
 
@@ -118,7 +122,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                   fill="outline"
                   size={gridMode ? link.dropdownConfig?.buttonSize : ButtonSize.MD}
                   title={!nestedLink.hideTooltipOnHover ? link.name : undefined}
-                  tooltip={!nestedLink.hideTooltipOnHover ? "Empty URL" : undefined}
+                  tooltip={!nestedLink.hideTooltipOnHover ? 'Empty URL' : undefined}
                   {...testIds.defaultButton.apply(nestedLink.name)}
                 >
                   {nestedLink.name}

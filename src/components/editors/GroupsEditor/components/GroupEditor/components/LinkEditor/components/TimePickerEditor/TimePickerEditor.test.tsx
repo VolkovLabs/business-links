@@ -207,7 +207,6 @@ describe('LinkEditor', () => {
   it('Should allow change Difference range', () => {
     render(
       getComponent({
-        isHighlightTimePicker: true,
         value: createLinkConfig({
           linkType: LinkType.TIMEPICKER,
           timePickerConfig: createTimeConfig({
@@ -237,7 +236,6 @@ describe('LinkEditor', () => {
   it('Should allow change Difference range if initial is undefined', () => {
     render(
       getComponent({
-        isHighlightTimePicker: true,
         value: createLinkConfig({
           linkType: LinkType.TIMEPICKER,
           timePickerConfig: createTimeConfig({
