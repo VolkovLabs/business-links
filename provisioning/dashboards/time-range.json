@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 7,
   "links": [],
   "panels": [
     {
@@ -172,6 +172,7 @@
                     "name": "timeTo",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -208,6 +209,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -244,6 +246,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -280,6 +283,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -316,6 +320,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -352,6 +357,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -384,6 +390,7 @@
                     "name": "timeTo",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -416,6 +423,7 @@
                     "name": "timeFrom",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -452,6 +460,7 @@
                     },
                     "to": "2025-04-30T16:27:07.982Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -488,6 +497,7 @@
                     },
                     "to": "2025-08-14T14:06:16.832Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -524,6 +534,7 @@
                     },
                     "to": "2025-05-07T16:27:52.039Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -621,6 +632,7 @@
                     "name": "timeTo",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -718,6 +730,7 @@
                     },
                     "to": "2025-08-14T14:06:16.833Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -754,6 +767,7 @@
                     },
                     "to": "2025-08-14T14:06:16.833Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -790,6 +804,7 @@
                     "name": "timeTo",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -822,6 +837,7 @@
                     "name": "timeTo",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -854,6 +870,7 @@
                     "name": "timeFrom",
                     "source": "A"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
                 "type": "link",
@@ -890,6 +907,7 @@
                     },
                     "to": "2025-04-30T16:27:07.982Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -926,6 +944,7 @@
                     },
                     "to": "2025-08-14T14:06:16.833Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -962,6 +981,7 @@
                     },
                     "to": "2025-05-07T16:27:52.039Z"
                   },
+                  "highlightSecondsDiff": 30,
                   "type": "custom"
                 },
                 "type": "link",
@@ -1092,7 +1112,87 @@
       "id": 5,
       "options": {
         "customPadding": 0,
-        "dropdowns": [],
+        "dropdowns": [
+          {
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "00864b7d-8727-4f8b-be0a-b34d307adc69",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "mcpServers": [],
+                "name": "Time Picker From drop down 1",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "running",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "current_time",
+                    "source": "A"
+                  },
+                  "highlightSecondsDiff": 50,
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "88769284-4b13-45da-bb03-6c8341e5d785",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "timepicker",
+                "mcpServers": [],
+                "name": "TimePickerFromdropdown2",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "fieldFrom": {
+                    "name": "running",
+                    "source": "A"
+                  },
+                  "fieldTo": {
+                    "name": "life_of_well",
+                    "source": "A"
+                  },
+                  "highlightSecondsDiff": 38,
+                  "type": "field"
+                },
+                "url": ""
+              }
+            ],
+            "name": "2pickerfromdrop"
+          }
+        ],
         "groups": [
           {
             "dynamicFontSize": false,
@@ -1138,6 +1238,34 @@
                 },
                 "url": "",
                 "useDefaultGrafanaMcp": false
+              },
+              {
+                "alignContentPosition": "left",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "row"
+                },
+                "dropdownName": "2pickerfromdrop",
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "2790e122-1f87-4c37-b363-be3a2224d12a",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dropdown",
+                "mcpServers": [],
+                "name": "Dropdown",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
               }
             ],
             "manualGridLayout": [],
