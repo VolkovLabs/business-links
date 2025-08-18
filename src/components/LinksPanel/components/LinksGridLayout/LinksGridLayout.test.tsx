@@ -13,6 +13,7 @@ import { LinkElement } from '../LinkElement';
 import { MenuElement } from '../MenuElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { LinksGridLayout } from './LinksGridLayout';
+import { AnnotationElement } from '../AnnotationElement';
 
 /**
  * Props
@@ -39,6 +40,7 @@ const inTestIds = {
   timePickerElement: createSelector('data-testid time-picker-element'),
   contentElement: createSelector('data-testid content-element'),
   menuElement: createSelector('data-testid menu-element'),
+  annotationElement: createSelector('data-testid annotation-element'),
   buttonLevelsUpdate: createSelector('data-testid button-levels-update'),
 };
 
@@ -58,6 +60,15 @@ const TimePickerMock = () => <div {...inTestIds.timePickerElement.apply()} />;
 
 jest.mock('../TimePickerElement', () => ({
   TimePickerElement: jest.fn(),
+}));
+
+/**
+ * Mock Annotation Element
+ */
+const AnnotationElementMock = () => <div {...inTestIds.annotationElement.apply()} />;
+
+jest.mock('../AnnotationElement', () => ({
+  AnnotationElement: jest.fn(),
 }));
 
 /**
@@ -132,6 +143,7 @@ describe('Grid layout', () => {
     jest.mocked(TimePickerElement).mockImplementation(TimePickerMock);
     jest.mocked(ContentElement).mockImplementation(ContentElementMock);
     jest.mocked(MenuElement).mockImplementation(MenuElementMock);
+    jest.mocked(AnnotationElement).mockImplementation(AnnotationElementMock);
     jest.mocked(locationService.getLocation).mockReturnValue({
       search: '?panel=16',
     } as Location);
@@ -177,12 +189,24 @@ describe('Grid layout', () => {
       type: VisualLinkType.LLMAPP,
     });
 
+    const defaultAnnotationElement = createVisualLinkConfig({
+      name: 'Link6',
+      type: VisualLinkType.ANNOTATION,
+    });
+
     await act(async () =>
       render(
         getComponent({
           width: 400,
           height: 400,
-          links: [defaultLink, defaultTimePickerLink, defaultContentElement, defaultMenuElement, defaultLLMElement],
+          links: [
+            defaultLink,
+            defaultTimePickerLink,
+            defaultContentElement,
+            defaultMenuElement,
+            defaultLLMElement,
+            defaultAnnotationElement,
+          ],
           options: options,
           onOptionsChange: onOptionsChange,
           activeGroup: activeGroup,
@@ -195,6 +219,7 @@ describe('Grid layout', () => {
     expect(selectors.root()).toHaveStyle('height: 362px');
     expect(selectors.timePickerElement()).toBeInTheDocument();
     expect(selectors.menuElement()).toBeInTheDocument();
+    expect(selectors.annotationElement()).toBeInTheDocument();
   });
 
   it('Should render Layout and calculate max height if no title', async () => {

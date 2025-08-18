@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { GRID_COLUMN_SIZE, GRID_ROW_SIZE, TEST_IDS } from '@/constants';
 import {
   AlignContentPositionType,
+  AnnotationLayer,
   DashboardMeta,
   EditorProps,
   GroupConfig,
@@ -64,6 +65,18 @@ interface Props extends EditorProps<GroupConfig> {
    */
   dropdowns?: string[];
 
+  /**
+   * Annotation Layers
+   *
+   * @type {AnnotationLayer[]}
+   */
+  annotationsLayers: AnnotationLayer[];
+
+  /**
+   * Data
+   *
+   * @type {DataFrame[]}
+   */
   data: DataFrame[];
 }
 
@@ -75,7 +88,16 @@ const testIds = TEST_IDS.groupEditor;
 /**
  * Group Editor
  */
-export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dashboards, optionId, dropdowns }) => {
+export const GroupEditor: React.FC<Props> = ({
+  value,
+  name,
+  data,
+  onChange,
+  dashboards,
+  optionId,
+  dropdowns,
+  annotationsLayers,
+}) => {
   /**
    * Styles and Theme
    */
@@ -177,6 +199,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
         alignContentPosition: AlignContentPositionType.LEFT,
         hideTooltipOnHover: false,
         mcpServers: [],
+        annotationKey: '',
       },
     ]);
     setNewLinkName('');
@@ -449,6 +472,7 @@ export const GroupEditor: React.FC<Props> = ({ value, name, data, onChange, dash
                           dashboards={dashboards}
                           isGrid={value.gridLayout}
                           isHighlightTimePicker={value.highlightCurrentTimepicker}
+                          annotationsLayers={annotationsLayers}
                         />
                       </Collapse>
                     </div>

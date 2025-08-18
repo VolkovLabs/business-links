@@ -47,6 +47,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedUseDefaultGrafanaMcp =
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
+        const normalizedAnnotationKey = !item.annotationKey ? '' : item.annotationKey;
+
         return {
           ...item,
           id: normalizedId,
@@ -58,6 +60,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           alignContentPosition: normalizedAlignContentPosition,
           hideTooltipOnHover: normalizedHideTitleOnHover,
           useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
+          annotationKey: normalizedAnnotationKey,
         };
       });
 
@@ -135,9 +138,12 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
       const normalizedItems = dropdown.items.map((item) => {
         const normalizedTimePickerConfig = migrateTimePickerConfiguration(item.timePickerConfig);
 
+        const normalizedAnnotationKey = !item.annotationKey ? '' : item.annotationKey;
+
         return {
           ...item,
           timePickerConfig: normalizedTimePickerConfig,
+          annotationKey: normalizedAnnotationKey,
         };
       });
 

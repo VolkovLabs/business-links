@@ -1,5 +1,6 @@
 import { DropzoneFile, IconName } from '@grafana/ui';
 
+import { AnnotationLayer } from './annotations';
 import { LlmMessage, LlmRole } from './llm-integrations';
 import { AlignContentPositionType, DropdownConfig, HoverMenuPositionType, LinkConfig, McpServerConfig } from './panel';
 
@@ -16,6 +17,7 @@ export interface NestedLinkConfig extends LinkConfig {
  * Visual Link Type
  */
 export enum VisualLinkType {
+  ANNOTATION = 'annotation',
   LINK = 'link',
   TIMEPICKER = 'timepicker',
   HTML = 'html',
@@ -173,6 +175,13 @@ export interface VisualLink {
    * @type {McpServerConfig[]}
    */
   mcpServers?: McpServerConfig[];
+
+  /**
+   * Annotation Layer
+   *
+   * @type {AnnotationLayer}
+   */
+  annotationLayer?: AnnotationLayer | null;
 }
 
 /**

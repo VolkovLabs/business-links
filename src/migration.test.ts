@@ -443,6 +443,52 @@ describe('migration', () => {
       expect(items[2].includeKioskMode).toEqual(true);
     });
 
+    it('Should normalize annotationKey mode', async () => {
+      const item1 = createLinkConfig({
+        annotationKey: undefined,
+      });
+      const item2 = createLinkConfig({
+        annotationKey: 'test',
+      });
+
+      const item3 = createLinkConfig({
+        annotationKey: '',
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].annotationKey).toEqual('');
+      expect(items[1].annotationKey).toEqual('test');
+      expect(items[2].annotationKey).toEqual('');
+    });
+
+    it('Should normalize annotationKey mode for dropdowns', async () => {
+      const item1 = createLinkConfig({
+        annotationKey: undefined,
+      });
+      const item2 = createLinkConfig({
+        annotationKey: 'test',
+      });
+
+      const item3 = createLinkConfig({
+        annotationKey: '',
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].annotationKey).toEqual('');
+      expect(items[1].annotationKey).toEqual('test');
+      expect(items[2].annotationKey).toEqual('');
+    });
+
     it('Should normalize showCustomIcons to false and customIconUrl to empty string', async () => {
       const item = createLinkConfig({ id: 'item-without-icons' });
       const group = createGroupConfig({ items: [item] });
