@@ -283,7 +283,6 @@ export const LinkEditor: React.FC<Props> = ({
   dashboards,
   optionId,
   dropdowns,
-  isHighlightTimePicker,
   annotationsLayers,
 }) => {
   /**
@@ -504,14 +503,7 @@ export const LinkEditor: React.FC<Props> = ({
           </>
         )}
 
-        {value.linkType === LinkType.TIMEPICKER && (
-          <TimePickerEditor
-            value={value}
-            data={data}
-            onChange={onChange}
-            isHighlightTimePicker={isHighlightTimePicker}
-          />
-        )}
+        {value.linkType === LinkType.TIMEPICKER && <TimePickerEditor value={value} data={data} onChange={onChange} />}
         {value.linkType === LinkType.HTML && <ContentEditor value={value} onChange={onChange} />}
 
         {optionId === 'groups' && value.linkType === LinkType.DROPDOWN && (

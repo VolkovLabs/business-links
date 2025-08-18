@@ -471,7 +471,6 @@ export const GroupEditor: React.FC<Props> = ({
                           dropdowns={dropdowns}
                           dashboards={dashboards}
                           isGrid={value.gridLayout}
-                          isHighlightTimePicker={value.highlightCurrentTimepicker}
                           annotationsLayers={annotationsLayers}
                         />
                       </Collapse>
