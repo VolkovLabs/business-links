@@ -1,0 +1,468 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "marcusolsson-static-datasource",
+          "uid": "P1D2C73DC01F2359B"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "red",
+        "name": "New annotation 1 ",
+        "target": {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "time",
+                "type": "time",
+                "values": [1755610938490]
+              },
+              {
+                "config": {},
+                "name": "timeEnd",
+                "type": "time",
+                "values": [1755614538400]
+              },
+              {
+                "config": {},
+                "name": "title",
+                "type": "string",
+                "values": ["Test -1 "]
+              },
+              {
+                "config": {},
+                "name": "text",
+                "type": "string",
+                "values": ["Text Test - 1"]
+              },
+              {
+                "config": {},
+                "name": "id",
+                "type": "string",
+                "values": ["Test id - 1"]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "Anno"
+        }
+      },
+      {
+        "datasource": {
+          "type": "marcusolsson-static-datasource",
+          "uid": "P1D2C73DC01F2359B"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "purple",
+        "name": "New annotation 2 ",
+        "target": {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "time",
+                "type": "time",
+                "values": [1755600240500]
+              },
+              {
+                "config": {},
+                "name": "timeEnd",
+                "type": "time",
+                "values": [1755600240500]
+              },
+              {
+                "config": {},
+                "name": "title",
+                "type": "string",
+                "values": ["Test - 2 "]
+              },
+              {
+                "config": {},
+                "name": "text",
+                "type": "string",
+                "values": ["Text - 2 test"]
+              },
+              {
+                "config": {},
+                "name": "id",
+                "type": "string",
+                "values": ["Ann - 2 "]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "Anno"
+        }
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 16,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "grafana"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "grafana"
+          },
+          "queryType": "randomWalk",
+          "refId": "A"
+        }
+      ],
+      "title": "New panel",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "marcusolsson-static-datasource",
+        "uid": "P1D2C73DC01F2359B"
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "customPadding": 0,
+        "dropdowns": [],
+        "groups": [
+          {
+            "dynamicFontSize": false,
+            "gridColumns": 10,
+            "gridLayout": false,
+            "gridRowHeight": 16,
+            "highlightCurrentLink": false,
+            "highlightCurrentTimepicker": false,
+            "items": [
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "New annotation 1 ",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "bcdd6a06-3574-445c-985a-30806489d90b",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "annotation",
+                "mcpServers": [],
+                "name": "annot-1",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "icon": "external-link-alt",
+                "id": "493fea4a-40e2-4fcb-82eb-7dc521f7a0de",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "New tab",
+                "showCustomIcons": false,
+                "tags": [],
+                "target": "_blank",
+                "timePickerConfig": {
+                  "highlightSecondsDiff": 30,
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/",
+                "useDefaultGrafanaMcp": false
+              },
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "icon": "link",
+                "id": "3d0053cb-3f13-479c-9e95-1e880e9b959f",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "single",
+                "name": "Link",
+                "showCustomIcons": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "highlightSecondsDiff": 30,
+                  "type": "field"
+                },
+                "type": "link",
+                "url": "https://volkovlabs.io/",
+                "useDefaultGrafanaMcp": false
+              },
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "",
+                "customIconUrl": "",
+                "dashboardUrl": "/d/bemcg9ufankzka/button-rows",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "c6b02863-7c76-4e1a-8693-c629d2561048",
+                "includeKioskMode": true,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "dashboard",
+                "name": "kiosk mode support",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "highlightSecondsDiff": 30,
+                  "type": "field"
+                },
+                "url": "",
+                "useDefaultGrafanaMcp": false
+              }
+            ],
+            "manualGridLayout": [],
+            "name": "Links"
+          }
+        ],
+        "groupsSorting": false,
+        "sticky": false
+      },
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "External links",
+      "type": "volkovlabs-links-panel"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 41,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "device1",
+          "value": "device1"
+        },
+        "label": "device",
+        "name": "device",
+        "options": [
+          {
+            "selected": true,
+            "text": "device1",
+            "value": "device1"
+          },
+          {
+            "selected": false,
+            "text": "device2",
+            "value": "device2"
+          },
+          {
+            "selected": false,
+            "text": "device3",
+            "value": "device3"
+          }
+        ],
+        "query": "device1,device2,device3",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "USA",
+          "value": "USA"
+        },
+        "label": "country",
+        "name": "country",
+        "options": [
+          {
+            "selected": true,
+            "text": "USA",
+            "value": "USA"
+          },
+          {
+            "selected": false,
+            "text": "Sweden",
+            "value": "Sweden"
+          },
+          {
+            "selected": false,
+            "text": "Spain",
+            "value": "Spain"
+          },
+          {
+            "selected": false,
+            "text": "Italy",
+            "value": "Italy"
+          }
+        ],
+        "query": "USA,Sweden,Spain,Italy",
+        "type": "custom"
+      },
+      {
+        "current": {
+          "text": "Sweden",
+          "value": "Sweden"
+        },
+        "datasource": {
+          "type": "grafana-postgresql-datasource",
+          "uid": "timescale"
+        },
+        "definition": "select distinct country from devices;",
+        "label": "countrytest",
+        "name": "countrytest",
+        "options": [],
+        "query": "select distinct country from devices;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "2025-08-17T18:00:00.000Z",
+    "to": "2025-08-19T17:59:59.000Z"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Annotations",
+  "uid": "01e3bbce-64b5-4c1a-a753-c3bebd6ff836",
+  "version": 10
+}
