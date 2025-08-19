@@ -381,7 +381,7 @@ export interface LinkConfig {
   useDefaultGrafanaMcp?: boolean;
 
   /**
-   * Show loading spinner for `tool` message instead show temporary and raw message
+   * Show loading spinner for `tool` message
    *
    * @type {boolean}
    */

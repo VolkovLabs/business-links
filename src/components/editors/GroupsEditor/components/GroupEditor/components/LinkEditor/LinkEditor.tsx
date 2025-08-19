@@ -386,7 +386,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             <InlineField
               label="Loading icon"
               labelWidth={20}
-              tooltip="Show loading spinner for `tool` message instead show temporary and raw message"
+              tooltip="Show loading spinner for `tool` message instea of raw messages"
             >
               <InlineSwitch
                 value={value.showLoadingForRawMessage || false}
