@@ -425,7 +425,7 @@ describe('useMcpLlmIntegration', () => {
 
       await result.current.sendMessageWithTools(messages, onToolResult);
 
-      expect(onToolResult).toHaveBeenCalledWith('call_1', '"14:30 UTC"', false, true);
+      expect(onToolResult).toHaveBeenCalledWith('call_1', '"14:30 UTC"', false, undefined);
     });
 
     it('Should include assistant messages even with null content (they may have tool_calls)', async () => {

@@ -226,6 +226,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             assistantName={link.assistantName}
             llmTemperature={link.llmTemperature}
             useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
+            showLoadingForRawMessage={link.showLoadingForRawMessage}
             mcpServers={link.mcpServers}
           />
         </>
@@ -255,6 +256,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           llmTemperature={link.llmTemperature}
           useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
           mcpServers={link.mcpServers}
+          showLoadingForRawMessage={link.showLoadingForRawMessage}
         />
       </>
     );
@@ -346,6 +348,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           assistantName={link.assistantName}
           llmTemperature={link.llmTemperature}
           useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
+          showLoadingForRawMessage={link.showLoadingForRawMessage}
           mcpServers={link.mcpServers}
         />
       </>

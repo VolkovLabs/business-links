@@ -117,6 +117,13 @@ interface ChatDrawerProps {
    * @type {McpServerConfig[]}
    */
   mcpServers?: McpServerConfig[];
+
+  /**
+   * Show Spinner instead raw tool message
+   *
+   * @type {boolean}
+   */
+  showLoadingForRawMessage?: boolean;
 }
 
 /**
@@ -129,6 +136,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   assistantName,
   useDefaultGrafanaMcp,
   mcpServers,
+  showLoadingForRawMessage,
 }) => {
   /**
    * State
@@ -334,7 +342,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       /**
        * Send message with MCP tools support
        */
-      const response = await sendMessageWithTools(llmMessages, onToolResult, mcpServers, useDefaultGrafanaMcp ?? false);
+      const response = await sendMessageWithTools(
+        llmMessages,
+        onToolResult,
+        mcpServers,
+        useDefaultGrafanaMcp ?? false,
+        showLoadingForRawMessage
+      );
 
       /**
        * Update assistant message with response
@@ -370,6 +384,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     sendMessageWithTools,
     mcpServers,
     useDefaultGrafanaMcp,
+    showLoadingForRawMessage,
     updateLastMessage,
   ]);
 

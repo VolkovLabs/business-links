@@ -96,6 +96,7 @@ export const TEST_IDS = {
     fieldLlmTemperature: createSelector('data-testid link-editor field-llm-temperature'),
     fieldAssistantName: createSelector('data-testid link-editor field-assistant-name'),
     fieldUseDefaultMcp: createSelector('data-testid link-editor field-use-default-mcp'),
+    fieldShowSpinner: createSelector('data-testid link-editor field-show-spinner'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid groups-editor root ${name}`),
