@@ -168,6 +168,13 @@ export interface VisualLink {
   useDefaultGrafanaMcp?: boolean;
 
   /**
+   * Show loading spinner for `tool` message
+   *
+   * @type {boolean}
+   */
+  showLoadingForRawMessage?: boolean;
+
+  /**
    * MCP Servers configuration for Business AI
    *
    * @type {McpServerConfig[]}
@@ -258,6 +265,13 @@ export interface ChatMessage {
    * @type {boolean}
    */
   isToolCall?: boolean;
+
+  /**
+   * Flag use to indicate is this message is temporary and not fully completed (for tools messages)
+   *
+   * @type {boolean}
+   */
+  isTemporaryAnswer?: boolean;
 }
 
 /**

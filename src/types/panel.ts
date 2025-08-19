@@ -381,6 +381,13 @@ export interface LinkConfig {
   useDefaultGrafanaMcp?: boolean;
 
   /**
+   * Show loading spinner for `tool` message
+   *
+   * @type {boolean}
+   */
+  showLoadingForRawMessage?: boolean;
+
+  /**
    * MCP Servers configuration for Business AI
    *
    * @type {McpServerConfig[]}

@@ -721,5 +721,73 @@ describe('migration', () => {
 
       expect(normalizedItem.customIconUrl).toBe('url');
     });
+
+    it('Should normalize showLoadingForRawMessage for dropdown items', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+        showLoadingForRawMessage: undefined,
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        showLoadingForRawMessage: false,
+      });
+      const item4 = createLinkConfig({
+        id: undefined,
+        showLoadingForRawMessage: true,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3, item4],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].showLoadingForRawMessage).toBeTruthy();
+      expect(items[1].showLoadingForRawMessage).toBeTruthy();
+      expect(items[2].showLoadingForRawMessage).not.toBeTruthy();
+      expect(items[3].showLoadingForRawMessage).toBeTruthy();
+    });
+
+    it('Should normalize showLoadingForRawMessage for groups items', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+        showLoadingForRawMessage: undefined,
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        showLoadingForRawMessage: false,
+      });
+      const item4 = createLinkConfig({
+        id: undefined,
+        showLoadingForRawMessage: true,
+      });
+      const group = createGroupConfig({
+        items: [item1, item2, item3, item4],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].showLoadingForRawMessage).toBeTruthy();
+      expect(items[1].showLoadingForRawMessage).toBeTruthy();
+      expect(items[2].showLoadingForRawMessage).not.toBeTruthy();
+      expect(items[3].showLoadingForRawMessage).toBeTruthy();
+    });
   });
 });

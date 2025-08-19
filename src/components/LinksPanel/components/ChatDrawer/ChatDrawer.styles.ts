@@ -95,6 +95,10 @@ export const getStyles = (theme: GrafanaTheme2) => {
         }
       }
     `,
+    loadingMessage: css`
+      display: flex;
+      justify-content: space-around;
+    `,
     loadingContainer: css`
       margin-top: ${theme.spacing(1)};
       display: flex;

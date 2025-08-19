@@ -96,7 +96,8 @@ export interface McpLlmIntegration {
     messages: LlmMessage[],
     onToolResult?: (toolCallId: string, content: string, isError?: boolean) => void,
     mcpServers?: McpServerConfig[],
-    useDefaultGrafanaMcp?: boolean
+    useDefaultGrafanaMcp?: boolean,
+    showLoadingForRawMessage?: boolean
   ) => Promise<string>;
 
   /**

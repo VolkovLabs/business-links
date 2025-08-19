@@ -73,9 +73,10 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
   const sendMessageWithTools = useCallback(
     async (
       messages: LlmMessage[],
-      onToolResult?: (toolCallId: string, content: string, isError?: boolean) => void,
+      onToolResult?: (toolCallId: string, content: string, isError?: boolean, isTemporaryAnswer?: boolean) => void,
       mcpServers?: McpServerConfig[],
-      useDefaultGrafanaMcp?: boolean
+      useDefaultGrafanaMcp?: boolean,
+      showLoadingForRawMessage?: boolean
     ): Promise<string> => {
       try {
         const allTools = await mcpService.getAvailableTools(mcpServers, useDefaultGrafanaMcp);
@@ -146,7 +147,7 @@ export const useMcpLlmIntegration = (addErrorMessage?: (message: string) => void
               });
 
               if (onToolResult) {
-                onToolResult(toolCall.id, toolContent, false);
+                onToolResult(toolCall.id, toolContent, false, showLoadingForRawMessage);
               }
             } catch (toolError) {
               const errorContent = `Error executing ${toolCall.function.name}: ${toolError instanceof Error ? toolError.message : 'Unknown error'}`;

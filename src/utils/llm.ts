@@ -33,8 +33,8 @@ export const generateMessageId = (): string => {
  */
 export const createToolResultHandler = (
   addMessages: (messages: ChatMessage[]) => void
-): ((toolCallId: string, content: string, isError?: boolean) => void) => {
-  return (toolCallId: string, content: string, isError?: boolean) => {
+): ((toolCallId: string, content: string, isError?: boolean, isTemporaryAnswer?: boolean) => void) => {
+  return (toolCallId: string, content: string, isError?: boolean, isTemporaryAnswer = false) => {
     const toolMessage: ChatMessage = {
       id: generateMessageId(),
       sender: LlmRole.TOOL,
@@ -42,6 +42,7 @@ export const createToolResultHandler = (
       timestamp: new Date(),
       isError,
       isStreaming: false,
+      isTemporaryAnswer: !!isTemporaryAnswer || false,
     };
     addMessages([toolMessage]);
   };
