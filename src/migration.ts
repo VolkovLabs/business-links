@@ -47,9 +47,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedUseDefaultGrafanaMcp =
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
-        const normalizedShowLoadingForRawMessage = !item.showLoadingForRawMessage
-          ? true
-          : item.showLoadingForRawMessage;
+        const normalizedShowLoadingForRawMessage =
+          item.showLoadingForRawMessage === undefined ? true : item.showLoadingForRawMessage;
 
         return {
           ...item,
@@ -157,9 +156,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedUseDefaultGrafanaMcp =
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
-        const normalizedShowLoadingForRawMessage = !item.showLoadingForRawMessage
-          ? true
-          : item.showLoadingForRawMessage;
+        const normalizedShowLoadingForRawMessage =
+          item.showLoadingForRawMessage === undefined ? true : item.showLoadingForRawMessage;
 
         return {
           ...item,
