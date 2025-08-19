@@ -258,6 +258,13 @@ export interface ChatMessage {
    * @type {boolean}
    */
   isToolCall?: boolean;
+
+  /**
+   * Flag use to indicate is this message is temporary and not fully completed (for tools messages)
+   *
+   * @type {boolean}
+   */
+  isTemporaryAnswer?: boolean;
 }
 
 /**

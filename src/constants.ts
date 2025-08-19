@@ -142,6 +142,7 @@ export const TEST_IDS = {
     drawerCloseButton: createSelector('data-testid chat-drawer close'),
     input: createSelector('data-testid chat-drawer input'),
     message: createSelector((name: unknown) => `data-testid chat-drawer message-${name}`),
+    messageAwait: createSelector((name: unknown) => `data-testid chat-drawer message-${name}-await`),
     attachment: createSelector('data-testid chat-drawer attachment'),
     attachmentImage: createSelector((name: unknown) => `data-testid chat-drawer attachment-image-${name}`),
     attachmentImageIcon: createSelector('data-testid chat-drawer attachment-image-icon'),

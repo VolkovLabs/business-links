@@ -1,5 +1,15 @@
 import { cx } from '@emotion/css';
-import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
+import {
+  Drawer,
+  DropzoneFile,
+  FileDropzone,
+  FileUpload,
+  Icon,
+  IconButton,
+  Spinner,
+  TextArea,
+  useStyles2,
+} from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -333,6 +343,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         ...msg,
         text: response,
         isStreaming: false,
+        isTemporaryAnswer: false,
       }));
 
       setIsLoading(false);
@@ -487,7 +498,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       <div className={styles.messageSender} {...testIds.messageSender.apply(message.sender)}>
                         {getSenderDisplayName(message.sender, customAssistantName)}
                       </div>
-                      <div className={styles.messageText}>{message.text}</div>
+                      {message.isTemporaryAnswer ? (
+                        <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
+                          Answer ...
+                          <Spinner size="md" style={{ marginLeft: '20px' }} />
+                        </div>
+                      ) : (
+                        <div className={styles.messageText}>{message.text}</div>
+                      )}
                       {message.isStreaming && (
                         <div className={styles.loadingContainer}>
                           <span className={styles.loadingDots}>
