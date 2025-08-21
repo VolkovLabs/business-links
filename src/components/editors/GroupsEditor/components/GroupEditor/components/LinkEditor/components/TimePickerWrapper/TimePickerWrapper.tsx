@@ -32,13 +32,15 @@ export const TimePickerWrapper: React.FC<Props> = ({ children }) => {
       }
 
       /**
-       * Get button container and section container
+       * Get button element
+       * to get correct position on page
+       * and section container
        */
-      const button2 = containerRef.current?.querySelector('button') as HTMLElement | null;
+      const buttonElement = containerRef.current?.querySelector('button') as HTMLElement | null;
       const section = document.querySelector('section[role="dialog"]') as HTMLElement | null;
 
-      if (button2 && section) {
-        const rect = button2.getBoundingClientRect();
+      if (buttonElement && section) {
+        const rect = buttonElement.getBoundingClientRect();
         /**
          * Use button position
          * override section container
