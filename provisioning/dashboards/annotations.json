@@ -108,6 +108,54 @@
           },
           "refId": "Anno"
         }
+      },
+      {
+        "datasource": {
+          "type": "marcusolsson-static-datasource",
+          "uid": "P1D2C73DC01F2359B"
+        },
+        "enable": false,
+        "hide": false,
+        "iconColor": "green",
+        "name": "New annotation 3",
+        "target": {
+          "frame": {
+            "fields": [
+              {
+                "config": {},
+                "name": "time",
+                "type": "time",
+                "values": [1755596054284]
+              },
+              {
+                "config": {},
+                "name": "timeEnd",
+                "type": "time",
+                "values": [1755596054284]
+              },
+              {
+                "config": {},
+                "name": "title",
+                "type": "string",
+                "values": [""]
+              },
+              {
+                "config": {},
+                "name": "text",
+                "type": "string",
+                "values": [""]
+              },
+              {
+                "config": {},
+                "name": "id",
+                "type": "string",
+                "values": [""]
+              }
+            ],
+            "meta": {}
+          },
+          "refId": "Anno"
+        }
       }
     ]
   },
@@ -166,7 +214,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": 0
+                "value": null
               },
               {
                 "color": "red",
@@ -258,13 +306,16 @@
                 "mcpServers": [],
                 "name": "annot-1",
                 "showCustomIcons": false,
+                "showLoadingForRawMessage": true,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
+                  "highlightSecondsDiff": 30,
                   "type": "field"
                 },
-                "url": ""
+                "url": "",
+                "useDefaultGrafanaMcp": false
               },
               {
                 "alignContentPosition": "left",
@@ -286,6 +337,7 @@
                 "linkType": "single",
                 "name": "New tab",
                 "showCustomIcons": false,
+                "showLoadingForRawMessage": true,
                 "tags": [],
                 "target": "_blank",
                 "timePickerConfig": {
@@ -316,6 +368,7 @@
                 "linkType": "single",
                 "name": "Link",
                 "showCustomIcons": false,
+                "showLoadingForRawMessage": true,
                 "tags": [],
                 "target": "_self",
                 "timePickerConfig": {
@@ -345,6 +398,7 @@
                 "linkType": "dashboard",
                 "name": "kiosk mode support",
                 "showCustomIcons": false,
+                "showLoadingForRawMessage": true,
                 "showMenuOnHover": false,
                 "tags": [],
                 "target": "_self",
@@ -354,6 +408,62 @@
                 },
                 "url": "",
                 "useDefaultGrafanaMcp": false
+              },
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "New annotation 2 ",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "f8163211-c367-4f68-8c6a-24037a2f5dfe",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "annotation",
+                "mcpServers": [],
+                "name": "Annot2",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
+              },
+              {
+                "alignContentPosition": "left",
+                "annotationKey": "New annotation 3",
+                "customIconUrl": "",
+                "dashboardUrl": "",
+                "dropdownConfig": {
+                  "align": "left",
+                  "buttonSize": "md",
+                  "type": "dropdown"
+                },
+                "enable": true,
+                "hideTooltipOnHover": false,
+                "id": "6ea5d9a3-52ba-4c7a-9484-1268977a1e55",
+                "includeKioskMode": false,
+                "includeTimeRange": false,
+                "includeVariables": false,
+                "linkType": "annotation",
+                "mcpServers": [],
+                "name": "annot3",
+                "showCustomIcons": false,
+                "showMenuOnHover": false,
+                "tags": [],
+                "target": "_self",
+                "timePickerConfig": {
+                  "type": "field"
+                },
+                "url": ""
               }
             ],
             "manualGridLayout": [],
@@ -373,7 +483,7 @@
     }
   ],
   "preload": false,
-  "schemaVersion": 41,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
@@ -464,5 +574,6 @@
   "timezone": "browser",
   "title": "Annotations",
   "uid": "01e3bbce-64b5-4c1a-a753-c3bebd6ff836",
-  "version": 10
+  "version": 4,
+  "weekStart": ""
 }
