@@ -7,6 +7,8 @@ import { FieldPicker, FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import { EditorProps, LinkConfig, LinkType, TimeConfigType } from '@/types';
 
+import { TimePickerWrapper } from '../TimePickerWrapper';
+
 /**
  * Properties
  */
@@ -132,7 +134,7 @@ export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data }) => 
             </>
           )}
           {value.timePickerConfig?.type === TimeConfigType.CUSTOM && (
-            <div>
+            <TimePickerWrapper>
               <InlineField label="Range" grow={true} labelWidth={20}>
                 <TimeRangeInput
                   value={value.timePickerConfig.customTimeRange ?? getDefaultTimeRange()}
@@ -151,7 +153,7 @@ export const TimePickerEditor: React.FC<Props> = ({ value, onChange, data }) => 
                   {...TEST_IDS.timePickerEditor.fieldRelativeTimeRange.apply()}
                 />
               </InlineField>
-            </div>
+            </TimePickerWrapper>
           )}
         </FieldsGroup>
       )}

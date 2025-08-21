@@ -2,11 +2,16 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.3.0] - Unreleased
+## [2.3.0] - 2025-08-21
 
 ### Added
 
 - Add loading Spinner for tool answer ([#69](https://github.com/VolkovLabs/business-links/issues/69))
+- Add wrap for relative time picker to prevent overlap for Grafana 11 ([#71](https://github.com/VolkovLabs/business-links/issues/71))
+
+### Changed
+
+- Convert all date to UTC before compare ([#70](https://github.com/VolkovLabs/business-links/issues/70))
 
 ## [2.2.0] - 2025-08-18
 

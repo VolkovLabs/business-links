@@ -15,7 +15,7 @@ const inTestIds = {
   fieldPicker: createSelector('data-testid field-picker'),
 };
 
-describe('LinkEditor', () => {
+describe('TimePickerEditor', () => {
   /**
    * Selectors
    */
