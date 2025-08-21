@@ -120,21 +120,34 @@ describe('timeToSeconds', () => {
 
   test('Should return the same timestamp for a numeric input (ms)', () => {
     const timestamp = 1747353600000;
-    expect(timeToSeconds(timestamp)).toBe(timestamp);
+    expect(timeToSeconds(timestamp)).toEqual(timestamp);
+  });
+
+  test('Should return the same timestamp for a numeric input (ms)', () => {
+    const timestamp = 1748563200000;
+    expect(timeToSeconds(timestamp)).toEqual(timestamp);
+  });
+
+  test('Should return the timestamp from date converted to utc', () => {
+    const timestamp = 1748563200000;
+    const date = '2025-05-30T00:00:00.000Z';
+
+    const result = timeToSeconds(date);
+    expect(result).toEqual(timestamp);
   });
 
   test('Should convert the ISO date string to a valid timestamp (ms)', () => {
     const isoString = '2021-12-31T23:59:59.000Z';
     const expectedTs = new Date(isoString).getTime();
-    expect(timeToSeconds(isoString)).toBe(expectedTs);
+    expect(timeToSeconds(isoString)).toEqual(expectedTs);
   });
 
   test('Should handle "now" and relative expressions "now-1h"/"now+1h" correctly', () => {
     const baseDate = new Date('2025-05-16T00:00:00Z');
     jest.setSystemTime(baseDate);
-    expect(timeToSeconds('now')).toBe(baseDate.getTime());
-    expect(timeToSeconds('now-1h')).toBe(baseDate.getTime() - 60 * 60 * 1000);
-    expect(timeToSeconds('now+1h')).toBe(baseDate.getTime() + 60 * 60 * 1000);
+    expect(timeToSeconds('now')).toEqual(baseDate.getTime());
+    expect(timeToSeconds('now-1h')).toEqual(baseDate.getTime() - 60 * 60 * 1000);
+    expect(timeToSeconds('now+1h')).toEqual(baseDate.getTime() + 60 * 60 * 1000);
   });
 });
 

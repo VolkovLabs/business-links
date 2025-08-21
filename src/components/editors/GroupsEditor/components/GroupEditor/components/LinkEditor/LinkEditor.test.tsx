@@ -827,6 +827,24 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change Loading spinner Grafana MCP', () => {
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.LLMAPP }),
+      })
+    );
+
+    expect(selectors.fieldShowSpinner()).toBeInTheDocument();
+    fireEvent.click(selectors.fieldShowSpinner());
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        showLoadingForRawMessage: true,
+      })
+    );
+  });
+
   it('Should allow change MCP servers', () => {
     render(
       getComponent({

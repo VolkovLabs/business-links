@@ -430,6 +430,24 @@ export const LinkEditor: React.FC<Props> = ({
               />
             </InlineField>
 
+            <InlineField
+              label="Loading icon"
+              labelWidth={20}
+              tooltip="Show loading spinner for `tool` message instead of raw messages"
+            >
+              <InlineSwitch
+                value={value.showLoadingForRawMessage || false}
+                onChange={(event) => {
+                  const newValue = {
+                    ...value,
+                    showLoadingForRawMessage: event.currentTarget.checked,
+                  };
+                  onChange(newValue);
+                }}
+                {...TEST_IDS.linkEditor.fieldShowSpinner.apply()}
+              />
+            </InlineField>
+
             <FieldsGroup label="MCP Servers" description="Configure external MCP servers for enhanced LLM capabilities">
               <McpServersEditor
                 value={value.mcpServers || []}

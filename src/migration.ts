@@ -48,6 +48,8 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
         const normalizedAnnotationKey = !item.annotationKey ? '' : item.annotationKey;
+        const normalizedShowLoadingForRawMessage =
+          item.showLoadingForRawMessage === undefined ? true : item.showLoadingForRawMessage;
 
         return {
           ...item,
@@ -61,6 +63,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           hideTooltipOnHover: normalizedHideTitleOnHover,
           useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
           annotationKey: normalizedAnnotationKey,
+          showLoadingForRawMessage: normalizedShowLoadingForRawMessage,
         };
       });
 
@@ -156,6 +159,9 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedUseDefaultGrafanaMcp =
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
+        const normalizedShowLoadingForRawMessage =
+          item.showLoadingForRawMessage === undefined ? true : item.showLoadingForRawMessage;
+
         return {
           ...item,
           id: normalizedId,
@@ -166,6 +172,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           customIconUrl: normalizedCustomIconUrl,
           hideTooltipOnHover: normalizedHideTitleOnHover,
           useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
+          showLoadingForRawMessage: normalizedShowLoadingForRawMessage,
         };
       });
 

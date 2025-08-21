@@ -72,7 +72,7 @@ export function formatDuration(seconds: number): string {
 export const timeToSeconds = (time: string | number): number => {
   const raw = typeof time === 'number' ? dateTime(time) : time;
 
-  const { from } = rangeUtil.convertRawToRange({ from: raw, to: raw });
+  const { from } = rangeUtil.convertRawToRange({ from: raw, to: raw }, 'utc');
   return from.valueOf();
 };
 

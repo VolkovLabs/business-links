@@ -469,6 +469,7 @@ export const prepareLinksToRender = ({
           llmTemperature: item.llmTemperature,
           assistantName: item.assistantName,
           useDefaultGrafanaMcp: item.useDefaultGrafanaMcp,
+          showLoadingForRawMessage: item.showLoadingForRawMessage,
           mcpServers: item.mcpServers,
           id: item.id,
           name: item.name,

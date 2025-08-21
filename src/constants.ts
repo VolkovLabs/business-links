@@ -102,6 +102,7 @@ export const TEST_IDS = {
     fieldLlmTemperature: createSelector('data-testid link-editor field-llm-temperature'),
     fieldAssistantName: createSelector('data-testid link-editor field-assistant-name'),
     fieldUseDefaultMcp: createSelector('data-testid link-editor field-use-default-mcp'),
+    fieldShowSpinner: createSelector('data-testid link-editor field-show-spinner'),
   },
   groupsEditor: {
     root: createSelector((name: unknown) => `data-testid groups-editor root ${name}`),
@@ -148,6 +149,7 @@ export const TEST_IDS = {
     drawerCloseButton: createSelector('data-testid chat-drawer close'),
     input: createSelector('data-testid chat-drawer input'),
     message: createSelector((name: unknown) => `data-testid chat-drawer message-${name}`),
+    messageAwait: createSelector((name: unknown) => `data-testid chat-drawer message-${name}-await`),
     attachment: createSelector('data-testid chat-drawer attachment'),
     attachmentImage: createSelector((name: unknown) => `data-testid chat-drawer attachment-image-${name}`),
     attachmentImageIcon: createSelector('data-testid chat-drawer attachment-image-icon'),

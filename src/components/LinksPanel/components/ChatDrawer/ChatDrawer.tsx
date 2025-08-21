@@ -1,5 +1,15 @@
 import { cx } from '@emotion/css';
-import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
+import {
+  Drawer,
+  DropzoneFile,
+  FileDropzone,
+  FileUpload,
+  Icon,
+  IconButton,
+  Spinner,
+  TextArea,
+  useStyles2,
+} from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -107,6 +117,13 @@ interface ChatDrawerProps {
    * @type {McpServerConfig[]}
    */
   mcpServers?: McpServerConfig[];
+
+  /**
+   * Show Spinner instead raw tool message
+   *
+   * @type {boolean}
+   */
+  showLoadingForRawMessage?: boolean;
 }
 
 /**
@@ -119,6 +136,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   assistantName,
   useDefaultGrafanaMcp,
   mcpServers,
+  showLoadingForRawMessage,
 }) => {
   /**
    * State
@@ -324,7 +342,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       /**
        * Send message with MCP tools support
        */
-      const response = await sendMessageWithTools(llmMessages, onToolResult, mcpServers, useDefaultGrafanaMcp ?? false);
+      const response = await sendMessageWithTools(
+        llmMessages,
+        onToolResult,
+        mcpServers,
+        useDefaultGrafanaMcp ?? false,
+        showLoadingForRawMessage
+      );
 
       /**
        * Update assistant message with response
@@ -333,6 +357,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         ...msg,
         text: response,
         isStreaming: false,
+        isTemporaryAnswer: false,
       }));
 
       setIsLoading(false);
@@ -359,6 +384,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     sendMessageWithTools,
     mcpServers,
     useDefaultGrafanaMcp,
+    showLoadingForRawMessage,
     updateLastMessage,
   ]);
 
@@ -487,7 +513,14 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                       <div className={styles.messageSender} {...testIds.messageSender.apply(message.sender)}>
                         {getSenderDisplayName(message.sender, customAssistantName)}
                       </div>
-                      <div className={styles.messageText}>{message.text}</div>
+                      {message.isTemporaryAnswer ? (
+                        <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
+                          Answer ...
+                          <Spinner size="md" style={{ marginLeft: '20px' }} />
+                        </div>
+                      ) : (
+                        <div className={styles.messageText}>{message.text}</div>
+                      )}
                       {message.isStreaming && (
                         <div className={styles.loadingContainer}>
                           <span className={styles.loadingDots}>
