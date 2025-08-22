@@ -1,15 +1,4 @@
-import { cx } from '@emotion/css';
-import {
-  Drawer,
-  DropzoneFile,
-  FileDropzone,
-  FileUpload,
-  Icon,
-  IconButton,
-  TextArea,
-  Tooltip,
-  useStyles2,
-} from '@grafana/ui';
+import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -22,9 +11,9 @@ import {
   useTextareaResize,
 } from '@/hooks';
 import { ChatMessage, LlmMessage, LlmRole, McpServerConfig, McpTool } from '@/types';
-import { createToolResultHandler, generateMessageId, getSenderDisplayName } from '@/utils';
+import { createToolResultHandler, formatFileSize, generateMessageId } from '@/utils';
 
-import { LoadingBar } from '../LoadingBar';
+import { ChatMessageCard } from '../ChatMessageCard/ChatMessageCard';
 import { getStyles } from './ChatDrawer.styles';
 
 /**
@@ -172,7 +161,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     [addMessages]
   );
 
-  const { attachedFiles, formatFileSize, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
+  const { attachedFiles, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
     useFileAttachments(addErrorMessage);
   const { textareaRef, adjustTextareaHeight } = useTextareaResize();
   const { prepareMessageContent, prepareChatHistory } = useLlmService();
@@ -277,7 +266,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     /**
      * Prepare messages
      */
-    const messageContent = prepareMessageContent(inputValue.trim(), attachedFiles, formatFileSize);
+    const messageContent = prepareMessageContent(inputValue.trim(), attachedFiles);
     const userMessage: ChatMessage = {
       id: generateMessageId(),
       sender: LlmRole.USER,
@@ -312,7 +301,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       /**
        * Prepare chat history for MCP
        */
-      const chatHistory = prepareChatHistory(messages, prepareMessageContent, formatFileSize);
+      const chatHistory = prepareChatHistory(messages, prepareMessageContent);
 
       /**
        * Convert to LlmMessage format
@@ -372,7 +361,6 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     prepareMessageContent,
     inputValue,
     attachedFiles,
-    formatFileSize,
     addMessages,
     clearAttachedFiles,
     addErrorMessage,
@@ -489,78 +477,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                 </div>
               )}
 
-              {messages.map((message) =>
-                message.text || (message.attachments && !!message.attachments.length) ? (
-                  <div
-                    key={message.id}
-                    className={cx(
-                      styles.messageRow,
-                      message.sender === LlmRole.USER ? styles.messageRowUser : styles.messageRowAssistant
-                    )}
-                    {...testIds.message.apply(message.text)}
-                  >
-                    <div
-                      className={cx(
-                        styles.messageContent,
-                        message.sender === LlmRole.USER
-                          ? styles.messageContentUser
-                          : message.sender === LlmRole.SYSTEM || message.isError
-                            ? styles.messageContentError
-                            : message.sender === LlmRole.TOOL
-                              ? styles.messageContentTool
-                              : styles.messageContentAssistant
-                      )}
-                    >
-                      <div className={styles.messageSender} {...testIds.messageSender.apply(message.sender)}>
-                        {getSenderDisplayName(message.sender, customAssistantName)}
-                      </div>
-                      {message.isTemporaryAnswer ? (
-                        <Tooltip content={<div>{message.text}</div>} theme="info">
-                          <div className={styles.loadingMessage}>
-                            <Icon size="md" name="gf-ml" />
-                            <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
-                              Answer
-                              <LoadingBar />
-                            </div>
-                          </div>
-                        </Tooltip>
-                      ) : (
-                        <div className={styles.messageText}>{message.text}</div>
-                      )}
-                      {message.isStreaming && <LoadingBar />}
-                      {message.attachments && message.attachments.length > 0 && (
-                        <div className={styles.attachmentsContainer}>
-                          {message.attachments.map((file) =>
-                            file.name ? (
-                              <div key={file.id} {...testIds.attachment.apply()}>
-                                <div className={styles.fileDetails}>
-                                  <span className={styles.fileTypeIcon}>
-                                    {file.type.startsWith('image/') ? (
-                                      <Icon name="gf-landscape" {...testIds.attachmentImageIcon.apply()} />
-                                    ) : (
-                                      <Icon name="file-alt" />
-                                    )}
-                                  </span>
-                                  <span className={styles.fileName}>{file.name}</span>
-                                  <span className={styles.fileSize}>({formatFileSize(file.size)})</span>
-                                  {file.url && (
-                                    <img
-                                      src={file.url}
-                                      alt={file.name}
-                                      {...testIds.attachmentImage.apply(file.name)}
-                                      className={styles.fileThumbnail}
-                                    />
-                                  )}
-                                </div>
-                              </div>
-                            ) : null
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : null
-              )}
+              {messages.map((message) => (
+                <ChatMessageCard message={message} assistantName={assistantName} key={message.id} />
+              ))}
               <div ref={messagesEndRef} />
             </div>
 

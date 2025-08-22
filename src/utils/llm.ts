@@ -1,3 +1,4 @@
+import { formattedValueToString, getValueFormat } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ChatMessage, LlmRole } from '@/types';
@@ -85,4 +86,13 @@ export const filterTemporaryAnswers = (messages: ChatMessage[]): ChatMessage[] =
   }
 
   return messages;
+};
+
+/**
+ * Formats file size in human-readable format
+ * @param fileSizeInBytes - File size in bytes
+ * @returns Formatted file size string
+ */
+export const formatFileSize = (fileSizeInBytes: number): string => {
+  return formattedValueToString(getValueFormat('decbytes')(fileSizeInBytes));
 };

@@ -9,11 +9,6 @@ import * as hooks from '@/hooks';
 import { ChatDrawer, useDropzoneOverlay } from './ChatDrawer';
 
 /**
- * Mock @grafana/ui
- */
-jest.mock('@grafana/ui');
-
-/**
  * Mock @grafana/llm
  */
 jest.mock('@grafana/llm', () => ({
@@ -190,150 +185,6 @@ describe('ChatDrawer', () => {
       expect(selectors.chatDrawer()).toBeInTheDocument();
       expect(selectors.input()).toBeInTheDocument();
       expect(selectors.chatDrawerEmptyState()).toBeInTheDocument();
-    });
-
-    it('Should render messages with all variations (text, streaming, attachments)', async () => {
-      const messages = [
-        {
-          id: '1',
-          sender: LlmRole.USER,
-          text: 'Hello',
-          timestamp: new Date(),
-          attachments: [
-            {
-              id: 'att1',
-              name: 'document.pdf',
-              size: 1024,
-              type: 'application/pdf',
-              url: 'test/document.pdf',
-            },
-            {
-              id: 'att2',
-              name: 'image.png',
-              size: 2048,
-              type: 'image/png',
-              url: 'data:image/png;base64,test',
-            },
-          ],
-        },
-        {
-          id: '2',
-          sender: LlmRole.ASSISTANT,
-          text: 'Hi there!',
-          timestamp: new Date(),
-          isStreaming: false,
-        },
-        {
-          id: '3',
-          sender: LlmRole.ASSISTANT,
-          text: 'Thinking...',
-          timestamp: new Date(),
-          isStreaming: true,
-        },
-      ];
-
-      (hooks.useChatMessages as jest.Mock).mockReturnValue({
-        ...defaultUseChatMessages,
-        messages,
-      });
-
-      await act(async () => render(getComponent({})));
-
-      expect(selectors.message(false, 'Hello')).toBeInTheDocument();
-      expect(selectors.message(false, 'Hi there!')).toBeInTheDocument();
-      expect(selectors.message(false, 'Thinking...')).toBeInTheDocument();
-      expect(selectors.attachmentImage(false, 'document.pdf')).toBeInTheDocument();
-      expect(selectors.attachmentImage(false, 'image.png')).toBeInTheDocument();
-    });
-
-    it('Should render messages from tools', async () => {
-      const messages = [
-        {
-          id: '1',
-          sender: LlmRole.USER,
-          text: 'Hello',
-          timestamp: new Date(),
-          attachments: [
-            {
-              id: 'att1',
-              name: 'document.pdf',
-              size: 1024,
-              type: 'application/pdf',
-              url: 'test/document.pdf',
-            },
-            {
-              id: 'att2',
-              name: 'image.png',
-              size: 2048,
-              type: 'image/png',
-              url: 'data:image/png;base64,test',
-            },
-          ],
-        },
-        {
-          id: '2',
-          sender: LlmRole.TOOL,
-          text: 'Here is list of dashboards',
-          timestamp: new Date(),
-          isStreaming: false,
-        },
-      ];
-
-      (hooks.useChatMessages as jest.Mock).mockReturnValue({
-        ...defaultUseChatMessages,
-        messages,
-      });
-
-      await act(async () => render(getComponent({})));
-
-      expect(selectors.messageSender(false, messages[1].sender)).toBeInTheDocument();
-      expect(selectors.messageSender(false, messages[1].sender)).toHaveTextContent('Tool');
-    });
-
-    it('Should render messages await section', async () => {
-      const messages = [
-        {
-          id: '1',
-          sender: LlmRole.USER,
-          text: 'Hello',
-          timestamp: new Date(),
-          attachments: [
-            {
-              id: 'att1',
-              name: 'document.pdf',
-              size: 1024,
-              type: 'application/pdf',
-              url: 'test/document.pdf',
-            },
-            {
-              id: 'att2',
-              name: 'image.png',
-              size: 2048,
-              type: 'image/png',
-              url: 'data:image/png;base64,test',
-            },
-          ],
-        },
-        {
-          id: '2',
-          sender: LlmRole.TOOL,
-          text: 'Here is list of dashboards',
-          timestamp: new Date(),
-          isStreaming: false,
-          isTemporaryAnswer: true,
-        },
-      ];
-
-      (hooks.useChatMessages as jest.Mock).mockReturnValue({
-        ...defaultUseChatMessages,
-        messages,
-      });
-
-      await act(async () => render(getComponent({})));
-
-      expect(selectors.messageSender(false, messages[1].sender)).toBeInTheDocument();
-      expect(selectors.messageSender(false, messages[1].sender)).toHaveTextContent('Tool');
-      expect(selectors.messageAwait(false, messages[1].id)).toBeInTheDocument();
     });
   });
 
@@ -937,43 +788,6 @@ describe('ChatDrawer', () => {
     await act(async () => render(getComponent({})));
 
     expect(selectors.attachmentImage(false, 'pic2.png')).toBeInTheDocument();
-  });
-
-  it('Should render image icon and <img> for image attachment in message', async () => {
-    const messages = [
-      {
-        id: '1',
-        sender: LlmRole.USER,
-        text: 'msg',
-        timestamp: new Date(),
-        attachments: [{ id: 'img1', name: 'pic.png', size: 100, type: 'image/png', url: 'data:image/png;base64,abc' }],
-      },
-    ];
-    (hooks.useChatMessages as jest.Mock).mockReturnValue({
-      ...defaultUseChatMessages,
-      messages,
-    });
-    await act(async () => render(getComponent({})));
-    expect(selectors.attachmentImageIcon()).toBeInTheDocument();
-  });
-
-  it('Should render pulsingDot when message is streaming', async () => {
-    const messages = [
-      {
-        id: '1',
-        sender: LlmRole.ASSISTANT,
-        text: 'Thinking...',
-        timestamp: new Date(),
-        isStreaming: true,
-      },
-    ];
-    (hooks.useChatMessages as jest.Mock).mockReturnValue({
-      ...defaultUseChatMessages,
-      messages,
-    });
-    await act(async () => render(getComponent({})));
-
-    expect(selectors.message(false, 'Thinking...')).toBeInTheDocument();
   });
 
   describe('File dropzone and upload integration', () => {
