@@ -47,3 +47,42 @@ export const createToolResultHandler = (
     addMessages([toolMessage]);
   };
 };
+
+/**
+ * Filter all temporary messages
+ * if the last message is not a temporary
+ * we need filter all prev. messages with isTemporaryAnswer key
+ * @param messages - array of messages
+ */
+export const filterTemporaryAnswers = (messages: ChatMessage[]): ChatMessage[] => {
+  if (messages.length === 0) {
+    return messages;
+  }
+
+  /**
+   * Get last message
+   */
+  const lastObject = messages[messages.length - 1];
+
+  /**
+   * The last message is temporary - return array as this
+   */
+  if (lastObject.hasOwnProperty('isTemporaryAnswer') && lastObject.isTemporaryAnswer) {
+    return messages;
+  }
+
+  /**
+   * If some messages contain isTemporaryAnswer as true
+   */
+  const isMessagesContainsTemporaryMessages = messages.some((message) => message.isTemporaryAnswer);
+
+  if (!lastObject.isTemporaryAnswer && isMessagesContainsTemporaryMessages) {
+    /**
+     * Filtered messages
+     */
+    const filteredArray = messages.filter((obj) => !obj.isTemporaryAnswer);
+    return filteredArray;
+  }
+
+  return messages;
+};

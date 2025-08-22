@@ -10,11 +10,12 @@ import {
   LinkConfig,
   LinkTarget,
   LinkType,
+  LlmRole,
   PanelOptions,
   TimeConfig,
   TimeConfigType,
 } from '@/types';
-import { NestedLinkConfig, VisualLink, VisualLinkType } from '@/types/links';
+import { ChatMessage, NestedLinkConfig, VisualLink, VisualLinkType } from '@/types/links';
 
 /**
  * Create Dropdown Config
@@ -113,5 +114,16 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
  */
 export const createTimeConfig = (item: Partial<TimeConfig> = {}): TimeConfig => ({
   type: TimeConfigType.RELATIVE,
+  ...item,
+});
+
+/**
+ * Create Chat Message Config
+ */
+export const createChatMessage = (item: Partial<ChatMessage> = {}): ChatMessage => ({
+  id: 'message-id',
+  sender: LlmRole.ASSISTANT,
+  text: '',
+  timestamp: new Date(),
   ...item,
 });
