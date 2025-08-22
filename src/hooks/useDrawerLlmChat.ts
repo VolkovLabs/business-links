@@ -14,6 +14,7 @@ import {
   UseLlmServiceReturn,
   UseTextareaResizeReturn,
 } from '@/types';
+import { filterTemporaryAnswers } from '@/utils';
 
 /**
  * Configuration constants for the chat drawer
@@ -72,7 +73,8 @@ export const useChatMessages = (): UseChatMessagesReturn => {
       }
       const updated = [...prev];
       updated[updated.length - 1] = updater(updated[updated.length - 1]);
-      return updated;
+      const filteredMessages = filterTemporaryAnswers(updated);
+      return filteredMessages;
     });
   }, []);
 
