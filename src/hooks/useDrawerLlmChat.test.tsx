@@ -107,12 +107,6 @@ describe('useFileAttachments', () => {
     expect(result.current.attachedFiles).toEqual([]);
   });
 
-  it('Should format file size correctly', () => {
-    const { result } = renderHook(() => useFileAttachments());
-    expect(result.current.formatFileSize(0)).toEqual('0 B');
-    expect(result.current.formatFileSize(1024 * 1024)).toEqual('1.05 MB');
-  });
-
   it('Should ignore null and empty file attachments', () => {
     const { result } = renderHook(() => useFileAttachments());
     act(() => result.current.handleFileAttachment([]));
@@ -582,7 +576,7 @@ describe('useLlmService', () => {
     const { result } = renderHook(() => useLlmService());
     const prepareMessageContent = result.current.prepareMessageContent;
 
-    expect(prepareMessageContent('Hi', [], () => 'X')).toEqual('Hi');
+    expect(prepareMessageContent('Hi', [])).toEqual('Hi');
 
     const file: AttachedFile = {
       id: '1',
@@ -591,7 +585,7 @@ describe('useLlmService', () => {
       type: 'text/plain',
       content: 'txt',
     };
-    const message1 = prepareMessageContent('T', [file], () => '5 B');
+    const message1 = prepareMessageContent('T', [file]);
     expect(message1).toContain('```');
     expect(message1).toContain('txt');
 
@@ -602,7 +596,7 @@ describe('useLlmService', () => {
       type: 'image/jpeg',
       content: 'data',
     };
-    const message2 = prepareMessageContent('T', [file2], () => '5 B');
+    const message2 = prepareMessageContent('T', [file2]);
     expect(message2).toContain('[Image: a.jpg]');
 
     const file3: AttachedFile = {
@@ -612,7 +606,7 @@ describe('useLlmService', () => {
       type: 'application/json',
       content: '{"key": "value"}',
     };
-    const message3 = prepareMessageContent('T', [file3], () => '10 B');
+    const message3 = prepareMessageContent('T', [file3]);
     expect(message3).toContain('```');
     expect(message3).toContain('{"key": "value"}');
 
@@ -623,7 +617,7 @@ describe('useLlmService', () => {
       type: 'application/pdf',
       content: 'pdf-content',
     };
-    const message4 = prepareMessageContent('T', [file4], () => '100 B');
+    const message4 = prepareMessageContent('T', [file4]);
     expect(message4).not.toContain('```');
     expect(message4).not.toContain('[Image:');
     expect(message4).toContain('doc.pdf (100 B)');
@@ -647,7 +641,7 @@ describe('useLlmService', () => {
       { id: '6', text: 'Z', sender: LlmRole.USER, timestamp: new Date(), attachments: [] },
     ];
     const mockPC = jest.fn((t, files) => `${t}:${files.length}`);
-    const history = prepareChatHistory(msgs, mockPC, () => '');
+    const history = prepareChatHistory(msgs, mockPC);
     expect(history).toHaveLength(5);
     expect(history[0]).toEqual({ role: LlmRole.USER, content: 'U' });
     expect(history[1]).toEqual({ role: LlmRole.ASSISTANT, content: 'A' });

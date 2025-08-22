@@ -28,125 +28,6 @@ export const getStyles = (theme: GrafanaTheme2) => {
       color: ${theme.colors.text.secondary};
       margin-top: ${theme.spacing(2.5)};
     `,
-    messageRow: css`
-      display: flex;
-    `,
-    messageRowUser: css`
-      justify-content: flex-end;
-    `,
-    messageRowAssistant: css`
-      justify-content: flex-start;
-    `,
-    messageContent: css`
-      max-width: 70%;
-      padding: ${theme.spacing(1.5, 2)};
-      border-radius: ${theme.shape.radius.default};
-      box-shadow: ${theme.shadows.z1};
-      word-break: break-word;
-    `,
-    messageContentUser: css`
-      background: ${theme.colors.primary.main};
-      color: ${theme.colors.primary.contrastText};
-    `,
-    messageContentAssistant: css`
-      background: ${theme.colors.background.secondary};
-      color: ${theme.colors.text.primary};
-    `,
-    messageContentSystem: css`
-      background: ${theme.colors.error.main};
-      color: ${theme.colors.error.contrastText};
-      border-left: 4px solid ${theme.colors.error.border};
-    `,
-    messageContentError: css`
-      background: ${theme.colors.error.main};
-      color: ${theme.colors.error.contrastText};
-      border-left: 4px solid ${theme.colors.error.border};
-      font-weight: ${theme.typography.fontWeightMedium};
-    `,
-    messageContentTool: css`
-      background: ${theme.colors.background.secondary};
-      color: ${theme.colors.text.primary};
-    `,
-    messageSender: css`
-      font-size: ${theme.typography.bodySmall.fontSize};
-      opacity: 0.7;
-      margin-bottom: ${theme.spacing(0.5)};
-      text-transform: capitalize;
-    `,
-    messageText: css`
-      white-space: pre-wrap;
-    `,
-    pulsingDot: css`
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      margin-left: ${theme.spacing(0.5)};
-      background-color: currentColor;
-      border-radius: 50%;
-      animation: pulse 1.5s ease-in-out infinite;
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.3;
-        }
-      }
-    `,
-    loadingMessage: css`
-      display: flex;
-      justify-content: space-around;
-    `,
-    loadingContainer: css`
-      margin-top: ${theme.spacing(1)};
-      display: flex;
-      align-items: center;
-    `,
-
-    loadingDots: css`
-      display: inline-flex;
-      align-items: center;
-      gap: ${theme.spacing(0.25)};
-    `,
-    loadingDot: css`
-      width: 6px;
-      height: 6px;
-      background-color: currentColor;
-      border-radius: 50%;
-      animation: loadingDot 1.4s ease-in-out infinite both;
-
-      &:nth-child(1) {
-        animation-delay: -0.32s;
-      }
-
-      &:nth-child(2) {
-        animation-delay: -0.16s;
-      }
-
-      &:nth-child(3) {
-        animation-delay: 0s;
-      }
-
-      @keyframes loadingDot {
-        0%,
-        80%,
-        100% {
-          transform: scale(0);
-          opacity: 0.5;
-        }
-        40% {
-          transform: scale(1);
-          opacity: 1;
-        }
-      }
-    `,
-    attachmentsContainer: css`
-      margin-top: ${theme.spacing(1)};
-      border-top: 1px solid ${theme.colors.border.weak};
-      padding-top: ${theme.spacing(1)};
-    `,
     attachmentItem: css`
       display: flex;
       align-items: center;
@@ -154,12 +35,6 @@ export const getStyles = (theme: GrafanaTheme2) => {
       font-size: ${theme.typography.bodySmall.fontSize};
       opacity: 0.8;
       margin-bottom: ${theme.spacing(0.5)};
-    `,
-    attachmentImage: css`
-      max-width: 100px;
-      max-height: 100px;
-      border-radius: ${theme.shape.radius.default};
-      margin-top: ${theme.spacing(0.5)};
     `,
     inputPanel: css`
       padding: ${theme.spacing(2)};
