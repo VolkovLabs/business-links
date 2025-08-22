@@ -6,8 +6,8 @@ import {
   FileUpload,
   Icon,
   IconButton,
-  Spinner,
   TextArea,
+  Tooltip,
   useStyles2,
 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
@@ -24,6 +24,7 @@ import {
 import { ChatMessage, LlmMessage, LlmRole, McpServerConfig, McpTool } from '@/types';
 import { createToolResultHandler, generateMessageId, getSenderDisplayName } from '@/utils';
 
+import { LoadingBar } from '../LoadingBar';
 import { getStyles } from './ChatDrawer.styles';
 
 /**
@@ -514,23 +515,19 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                         {getSenderDisplayName(message.sender, customAssistantName)}
                       </div>
                       {message.isTemporaryAnswer ? (
-                        <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
-                          Answer ...
-                          <Spinner size="md" style={{ marginLeft: '20px' }} />
-                        </div>
+                        <Tooltip content={<div>{message.text}</div>} theme="info">
+                          <div className={styles.loadingMessage}>
+                            <Icon size="md" name="gf-ml" />
+                            <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
+                              Answer
+                              <LoadingBar />
+                            </div>
+                          </div>
+                        </Tooltip>
                       ) : (
                         <div className={styles.messageText}>{message.text}</div>
                       )}
-                      {message.isStreaming && (
-                        <div className={styles.loadingContainer}>
-                          <span className={styles.loadingDots}>
-                            <span className={styles.loadingDot} />
-                            <span className={styles.loadingDot} />
-                            <span className={styles.loadingDot} />
-                          </span>
-                        </div>
-                      )}
-
+                      {message.isStreaming && <LoadingBar />}
                       {message.attachments && message.attachments.length > 0 && (
                         <div className={styles.attachmentsContainer}>
                           {message.attachments.map((file) =>

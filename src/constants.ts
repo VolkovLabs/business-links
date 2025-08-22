@@ -161,6 +161,9 @@ export const TEST_IDS = {
     fileDropzone: createSelector('data-testid chat-drawer file-dropzone'),
     mcpToolsInfo: createSelector('data-testid chat-drawer mcp-tools-info'),
   },
+  loadingBar: {
+    root: createSelector('data-testid loading-bar root'),
+  },
   mcpServersEditor: {
     root: createSelector('data-testid mcp-servers-editor'),
     newItem: createSelector('data-testid new-mcp-server'),

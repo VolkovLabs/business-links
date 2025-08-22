@@ -98,6 +98,8 @@ export const getStyles = (theme: GrafanaTheme2) => {
     loadingMessage: css`
       display: flex;
       justify-content: space-around;
+      align-items: center;
+      gap: ${theme.spacing(1)};
     `,
     loadingContainer: css`
       margin-top: ${theme.spacing(1)};
