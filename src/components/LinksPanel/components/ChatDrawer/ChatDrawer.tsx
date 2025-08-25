@@ -1,3 +1,4 @@
+import { InterpolateFunction } from '@grafana/data';
 import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
@@ -114,6 +115,13 @@ interface ChatDrawerProps {
    * @type {boolean}
    */
   showLoadingForRawMessage?: boolean;
+
+  /**
+   * ReplaceVariables
+   *
+   * @type {InterpolateFunction}
+   */
+  replaceVariables: InterpolateFunction;
 }
 
 /**
@@ -127,6 +135,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   useDefaultGrafanaMcp,
   mcpServers,
   showLoadingForRawMessage,
+  replaceVariables,
 }) => {
   /**
    * State
@@ -266,11 +275,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     /**
      * Prepare messages
      */
-    const messageContent = prepareMessageContent(inputValue.trim(), attachedFiles);
+    const currentValue = replaceVariables(inputValue.trim());
+
+    const messageContent = prepareMessageContent(currentValue, attachedFiles);
     const userMessage: ChatMessage = {
       id: generateMessageId(),
       sender: LlmRole.USER,
-      text: inputValue.trim(),
+      text: currentValue,
       timestamp: new Date(),
       attachments: [...attachedFiles],
     };
@@ -303,6 +314,8 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
        */
       const chatHistory = prepareChatHistory(messages, prepareMessageContent);
 
+      const currentInitialPrompt = initialPrompt ? replaceVariables(initialPrompt) : '';
+
       /**
        * Convert to LlmMessage format
        */
@@ -310,7 +323,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         {
           role: LlmRole.SYSTEM,
           content:
-            initialPrompt ||
+            currentInitialPrompt ||
             `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.${
               mcpEnabled && availableTools?.length > 0
                 ? ` You also have access to ${availableTools?.length} MCP tools that you can use to gather real-time information about the system. Use these tools when appropriate to provide more accurate and up-to-date information.`
@@ -358,8 +371,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     }
   }, [
     checkAvailability,
-    prepareMessageContent,
+    replaceVariables,
     inputValue,
+    prepareMessageContent,
     attachedFiles,
     addMessages,
     clearAttachedFiles,

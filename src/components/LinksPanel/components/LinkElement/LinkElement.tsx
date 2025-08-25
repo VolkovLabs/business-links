@@ -1,4 +1,5 @@
 import { cx } from '@emotion/css';
+import { InterpolateFunction } from '@grafana/data';
 import { Button, Dropdown, Icon, LinkButton, MenuItem, Tooltip, useStyles2 } from '@grafana/ui';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -45,12 +46,25 @@ interface Props {
    * @type {boolean}
    */
   dynamicFontSize?: boolean;
+
+  /**
+   * ReplaceVariables
+   *
+   * @type {InterpolateFunction}
+   */
+  replaceVariables: InterpolateFunction;
 }
 
 /**
  * Links Element
  */
-export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = false, dynamicFontSize = false }) => {
+export const LinkElement: React.FC<Props> = ({
+  link,
+  replaceVariables,
+  buttonSize,
+  gridMode = false,
+  dynamicFontSize = false,
+}) => {
   /**
    * Styles
    */
@@ -228,6 +242,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
             useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
             showLoadingForRawMessage={link.showLoadingForRawMessage}
             mcpServers={link.mcpServers}
+            replaceVariables={replaceVariables}
           />
         </>
       );
@@ -257,6 +272,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
           mcpServers={link.mcpServers}
           showLoadingForRawMessage={link.showLoadingForRawMessage}
+          replaceVariables={replaceVariables}
         />
       </>
     );
@@ -350,6 +366,7 @@ export const LinkElement: React.FC<Props> = ({ link, buttonSize, gridMode = fals
           useDefaultGrafanaMcp={link.useDefaultGrafanaMcp}
           showLoadingForRawMessage={link.showLoadingForRawMessage}
           mcpServers={link.mcpServers}
+          replaceVariables={replaceVariables}
         />
       </>
     );
