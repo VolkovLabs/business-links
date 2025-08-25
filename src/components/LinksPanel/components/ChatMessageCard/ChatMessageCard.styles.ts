@@ -53,6 +53,36 @@ export const getStyles = (theme: GrafanaTheme2) => {
     `,
     messageText: css`
       padding-left: ${theme.spacing(2)};
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: ${theme.spacing(1)};
+        margin-bottom: ${theme.spacing(1)};
+        font-size: ${theme.typography.bodySmall.fontSize};
+      }
+
+      th {
+        background: ${theme.colors.background.elevated};
+        color: ${theme.colors.text.primary};
+        text-align: left;
+        padding: ${theme.spacing(1)};
+        border: 1px solid ${theme.colors.border.weak};
+        font-weight: ${theme.typography.fontWeightBold};
+      }
+
+      td {
+        padding: ${theme.spacing(1)};
+        border: 1px solid ${theme.colors.border.weak};
+      }
+
+      tr:nth-of-type(even) {
+        background: ${theme.colors.border.medium};
+      }
+
+      tr:hover {
+        background: ${theme.colors.background.canvas};
+      }
     `,
     loadingMessage: css`
       display: flex;
