@@ -258,17 +258,32 @@ export const LinksGridLayout: React.FC<Props> = ({
                   <ContentElement link={link} panelData={data} gridMode={true} replaceVariables={replaceVariables} />
                 )}
                 {link.type === VisualLinkType.LINK && (
-                  <LinkElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
+                  <LinkElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                    replaceVariables={replaceVariables}
+                  />
                 )}
                 {link.type === VisualLinkType.TIMEPICKER && (
                   <TimePickerElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
                 )}
                 {link.type === VisualLinkType.MENU && (
-                  <MenuElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
+                  <MenuElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                    replaceVariables={replaceVariables}
+                  />
                 )}
                 {link.type === VisualLinkType.ANNOTATION && <AnnotationElement key={link.name} link={link} />}
                 {link.type === VisualLinkType.LLMAPP && (
-                  <LinkElement link={link} gridMode={true} dynamicFontSize={currentDynamicFontSize} />
+                  <LinkElement
+                    link={link}
+                    gridMode={true}
+                    dynamicFontSize={currentDynamicFontSize}
+                    replaceVariables={replaceVariables}
+                  />
                 )}
               </div>
               {isEditMode && (

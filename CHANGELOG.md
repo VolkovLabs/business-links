@@ -6,7 +6,14 @@ All notable changes to the **Business Links** panel are documented in this file.
 
 ### Added
 
-- Add loading Spinner for tool answer ([#69](https://github.com/VolkovLabs/business-links/issues/69))
+- Added loading Spinner for tool answer ([#69](https://github.com/VolkovLabs/business-links/issues/69))
+- Added wrap for relative time picker to prevent overlap for Grafana 11 ([#71](https://github.com/VolkovLabs/business-links/issues/71))
+- Added Markdown support and Tooltip for temporary messages for LLM Chat ([#73](https://github.com/VolkovLabs/business-links/issues/73))
+- Add replace variable to LLM Chat ([#74](https://github.com/VolkovLabs/business-links/issues/74))
+
+### Changed
+
+- Convert all date to UTC before compare ([#70](https://github.com/VolkovLabs/business-links/issues/70))
 
 ## [2.2.0] - 2025-08-18
 

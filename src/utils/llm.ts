@@ -1,3 +1,4 @@
+import { formattedValueToString, getValueFormat } from '@grafana/data';
 import { v4 as uuidv4 } from 'uuid';
 
 import { ChatMessage, LlmRole } from '@/types';
@@ -46,4 +47,52 @@ export const createToolResultHandler = (
     };
     addMessages([toolMessage]);
   };
+};
+
+/**
+ * Filter all temporary messages
+ * if the last message is not a temporary
+ * we need filter all prev. messages with isTemporaryAnswer key
+ * @param messages - array of messages
+ */
+export const filterTemporaryAnswers = (messages: ChatMessage[]): ChatMessage[] => {
+  if (messages.length === 0) {
+    return messages;
+  }
+
+  /**
+   * Get last message
+   */
+  const lastObject = messages[messages.length - 1];
+
+  /**
+   * The last message is temporary - return array as this
+   */
+  if (lastObject.hasOwnProperty('isTemporaryAnswer') && lastObject.isTemporaryAnswer) {
+    return messages;
+  }
+
+  /**
+   * If some messages contain isTemporaryAnswer as true
+   */
+  const isMessagesContainsTemporaryMessages = messages.some((message) => message.isTemporaryAnswer);
+
+  if (!lastObject.isTemporaryAnswer && isMessagesContainsTemporaryMessages) {
+    /**
+     * Filtered messages
+     */
+    const filteredArray = messages.filter((obj) => !obj.isTemporaryAnswer);
+    return filteredArray;
+  }
+
+  return messages;
+};
+
+/**
+ * Formats file size in human-readable format
+ * @param fileSizeInBytes - File size in bytes
+ * @returns Formatted file size string
+ */
+export const formatFileSize = (fileSizeInBytes: number): string => {
+  return formattedValueToString(getValueFormat('decbytes')(fileSizeInBytes));
 };

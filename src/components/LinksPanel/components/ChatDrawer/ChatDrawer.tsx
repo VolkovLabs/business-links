@@ -1,15 +1,5 @@
-import { cx } from '@emotion/css';
-import {
-  Drawer,
-  DropzoneFile,
-  FileDropzone,
-  FileUpload,
-  Icon,
-  IconButton,
-  Spinner,
-  TextArea,
-  useStyles2,
-} from '@grafana/ui';
+import { InterpolateFunction } from '@grafana/data';
+import { Drawer, DropzoneFile, FileDropzone, FileUpload, Icon, IconButton, TextArea, useStyles2 } from '@grafana/ui';
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -22,8 +12,9 @@ import {
   useTextareaResize,
 } from '@/hooks';
 import { ChatMessage, LlmMessage, LlmRole, McpServerConfig, McpTool } from '@/types';
-import { createToolResultHandler, generateMessageId, getSenderDisplayName } from '@/utils';
+import { createToolResultHandler, formatFileSize, generateMessageId } from '@/utils';
 
+import { ChatMessageCard } from '../ChatMessageCard/ChatMessageCard';
 import { getStyles } from './ChatDrawer.styles';
 
 /**
@@ -124,6 +115,13 @@ interface ChatDrawerProps {
    * @type {boolean}
    */
   showLoadingForRawMessage?: boolean;
+
+  /**
+   * ReplaceVariables
+   *
+   * @type {InterpolateFunction}
+   */
+  replaceVariables: InterpolateFunction;
 }
 
 /**
@@ -137,6 +135,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
   useDefaultGrafanaMcp,
   mcpServers,
   showLoadingForRawMessage,
+  replaceVariables,
 }) => {
   /**
    * State
@@ -171,7 +170,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     [addMessages]
   );
 
-  const { attachedFiles, formatFileSize, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
+  const { attachedFiles, handleFileAttachment, removeAttachedFile, clearAttachedFiles } =
     useFileAttachments(addErrorMessage);
   const { textareaRef, adjustTextareaHeight } = useTextareaResize();
   const { prepareMessageContent, prepareChatHistory } = useLlmService();
@@ -276,11 +275,13 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     /**
      * Prepare messages
      */
-    const messageContent = prepareMessageContent(inputValue.trim(), attachedFiles, formatFileSize);
+    const currentValue = replaceVariables(inputValue.trim());
+
+    const messageContent = prepareMessageContent(currentValue, attachedFiles);
     const userMessage: ChatMessage = {
       id: generateMessageId(),
       sender: LlmRole.USER,
-      text: inputValue.trim(),
+      text: currentValue,
       timestamp: new Date(),
       attachments: [...attachedFiles],
     };
@@ -311,7 +312,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
       /**
        * Prepare chat history for MCP
        */
-      const chatHistory = prepareChatHistory(messages, prepareMessageContent, formatFileSize);
+      const chatHistory = prepareChatHistory(messages, prepareMessageContent);
+
+      const currentInitialPrompt = initialPrompt ? replaceVariables(initialPrompt) : '';
 
       /**
        * Convert to LlmMessage format
@@ -320,7 +323,7 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
         {
           role: LlmRole.SYSTEM,
           content:
-            initialPrompt ||
+            currentInitialPrompt ||
             `You are a helpful ${customAssistantName} integrated into Grafana dashboard. You can analyze text files, images, and documents that users attach.${
               mcpEnabled && availableTools?.length > 0
                 ? ` You also have access to ${availableTools?.length} MCP tools that you can use to gather real-time information about the system. Use these tools when appropriate to provide more accurate and up-to-date information.`
@@ -368,10 +371,10 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     }
   }, [
     checkAvailability,
-    prepareMessageContent,
+    replaceVariables,
     inputValue,
+    prepareMessageContent,
     attachedFiles,
-    formatFileSize,
     addMessages,
     clearAttachedFiles,
     addErrorMessage,
@@ -488,82 +491,9 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
                 </div>
               )}
 
-              {messages.map((message) =>
-                message.text || (message.attachments && !!message.attachments.length) ? (
-                  <div
-                    key={message.id}
-                    className={cx(
-                      styles.messageRow,
-                      message.sender === LlmRole.USER ? styles.messageRowUser : styles.messageRowAssistant
-                    )}
-                    {...testIds.message.apply(message.text)}
-                  >
-                    <div
-                      className={cx(
-                        styles.messageContent,
-                        message.sender === LlmRole.USER
-                          ? styles.messageContentUser
-                          : message.sender === LlmRole.SYSTEM || message.isError
-                            ? styles.messageContentError
-                            : message.sender === LlmRole.TOOL
-                              ? styles.messageContentTool
-                              : styles.messageContentAssistant
-                      )}
-                    >
-                      <div className={styles.messageSender} {...testIds.messageSender.apply(message.sender)}>
-                        {getSenderDisplayName(message.sender, customAssistantName)}
-                      </div>
-                      {message.isTemporaryAnswer ? (
-                        <div className={styles.loadingMessage} {...testIds.messageAwait.apply(message.id)}>
-                          Answer ...
-                          <Spinner size="md" style={{ marginLeft: '20px' }} />
-                        </div>
-                      ) : (
-                        <div className={styles.messageText}>{message.text}</div>
-                      )}
-                      {message.isStreaming && (
-                        <div className={styles.loadingContainer}>
-                          <span className={styles.loadingDots}>
-                            <span className={styles.loadingDot} />
-                            <span className={styles.loadingDot} />
-                            <span className={styles.loadingDot} />
-                          </span>
-                        </div>
-                      )}
-
-                      {message.attachments && message.attachments.length > 0 && (
-                        <div className={styles.attachmentsContainer}>
-                          {message.attachments.map((file) =>
-                            file.name ? (
-                              <div key={file.id} {...testIds.attachment.apply()}>
-                                <div className={styles.fileDetails}>
-                                  <span className={styles.fileTypeIcon}>
-                                    {file.type.startsWith('image/') ? (
-                                      <Icon name="gf-landscape" {...testIds.attachmentImageIcon.apply()} />
-                                    ) : (
-                                      <Icon name="file-alt" />
-                                    )}
-                                  </span>
-                                  <span className={styles.fileName}>{file.name}</span>
-                                  <span className={styles.fileSize}>({formatFileSize(file.size)})</span>
-                                  {file.url && (
-                                    <img
-                                      src={file.url}
-                                      alt={file.name}
-                                      {...testIds.attachmentImage.apply(file.name)}
-                                      className={styles.fileThumbnail}
-                                    />
-                                  )}
-                                </div>
-                              </div>
-                            ) : null
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : null
-              )}
+              {messages.map((message) => (
+                <ChatMessageCard message={message} assistantName={assistantName} key={message.id} />
+              ))}
               <div ref={messagesEndRef} />
             </div>
 

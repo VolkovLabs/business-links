@@ -1,4 +1,5 @@
 import { cx } from '@emotion/css';
+import { InterpolateFunction } from '@grafana/data';
 import { Button, LinkButton, useStyles2 } from '@grafana/ui';
 import React, { useMemo } from 'react';
 
@@ -40,12 +41,19 @@ interface Props {
    * @type {boolean}
    */
   dynamicFontSize?: boolean;
+
+  /**
+   * ReplaceVariables
+   *
+   * @type {InterpolateFunction}
+   */
+  replaceVariables: InterpolateFunction;
 }
 
 /**
  * Menu Element
  */
-export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFontSize = false }) => {
+export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFontSize = false, replaceVariables }) => {
   /**
    * Styles
    */
@@ -83,7 +91,12 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
   return (
     <>
       {link.dropdownConfig?.type === DropdownType.DROPDOWN && (
-        <LinkElement link={currentDropdownLink} gridMode={gridMode} dynamicFontSize={dynamicFontSize} />
+        <LinkElement
+          link={currentDropdownLink}
+          gridMode={gridMode}
+          dynamicFontSize={dynamicFontSize}
+          replaceVariables={replaceVariables}
+        />
       )}
       {link.dropdownConfig?.type === DropdownType.ROW && (
         <div
@@ -114,6 +127,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                   key={nestedLink.name}
                   link={nestedLink as unknown as VisualLink}
                   dynamicFontSize={dynamicFontSize}
+                  replaceVariables={replaceVariables}
                 />
               );
             }

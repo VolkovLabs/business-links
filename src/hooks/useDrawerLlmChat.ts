@@ -1,4 +1,3 @@
-import { formattedValueToString, getValueFormat } from '@grafana/data';
 import { llm } from '@grafana/llm';
 import { DropzoneFile } from '@grafana/ui';
 import { useCallback, useRef, useState } from 'react';
@@ -14,6 +13,7 @@ import {
   UseLlmServiceReturn,
   UseTextareaResizeReturn,
 } from '@/types';
+import { filterTemporaryAnswers, formatFileSize } from '@/utils';
 
 /**
  * Configuration constants for the chat drawer
@@ -72,7 +72,8 @@ export const useChatMessages = (): UseChatMessagesReturn => {
       }
       const updated = [...prev];
       updated[updated.length - 1] = updater(updated[updated.length - 1]);
-      return updated;
+      const filteredMessages = filterTemporaryAnswers(updated);
+      return filteredMessages;
     });
   }, []);
 
@@ -95,15 +96,6 @@ export const useChatMessages = (): UseChatMessagesReturn => {
  */
 export const useFileAttachments = (addErrorMessage?: (message: string) => void): UseFileAttachmentsReturn => {
   const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
-
-  /**
-   * Formats file size in human-readable format
-   * @param fileSizeInBytes - File size in bytes
-   * @returns Formatted file size string
-   */
-  const formatFileSize = useCallback((fileSizeInBytes: number): string => {
-    return formattedValueToString(getValueFormat('decbytes')(fileSizeInBytes));
-  }, []);
 
   /**
    * Validates if file type is allowed
@@ -188,7 +180,7 @@ export const useFileAttachments = (addErrorMessage?: (message: string) => void):
         }
       });
     },
-    [formatFileSize, isFileSizeValid, isFileTypeAllowed, addErrorMessage]
+    [isFileSizeValid, isFileTypeAllowed, addErrorMessage]
   );
 
   /**
@@ -208,7 +200,6 @@ export const useFileAttachments = (addErrorMessage?: (message: string) => void):
 
   return {
     attachedFiles,
-    formatFileSize,
     handleFileAttachment,
     removeAttachedFile,
     clearAttachedFiles,
@@ -296,51 +287,42 @@ export const useLlmService = (): UseLlmServiceReturn => {
    * Prepares message content including file attachments
    * @param text - User's text input
    * @param files - Attached files
-   * @param formatFileSize - File size formatter function
    * @returns Formatted message content
    */
-  const prepareMessageContent = useCallback(
-    (text: string, files: AttachedFile[], formatFileSize: (bytes: number) => string): string => {
-      let content = text;
+  const prepareMessageContent = useCallback((text: string, files: AttachedFile[]): string => {
+    let content = text;
 
-      if (files.length > 0) {
-        content += '\n\n**Attached files:**\n';
-        files.forEach((file) => {
-          content += `- ${file.name} (${formatFileSize(file.size)})\n`;
+    if (files.length > 0) {
+      content += '\n\n**Attached files:**\n';
+      files.forEach((file) => {
+        content += `- ${file.name} (${formatFileSize(file.size)})\n`;
 
-          if (file.type.startsWith('text/') || file.type === 'application/json') {
-            content += `\`\`\`\n${file.content}\n\`\`\`\n`;
-          } else if (file.type.startsWith('image/')) {
-            content += `[Image: ${file.name}]\n`;
-          }
-        });
-      }
+        if (file.type.startsWith('text/') || file.type === 'application/json') {
+          content += `\`\`\`\n${file.content}\n\`\`\`\n`;
+        } else if (file.type.startsWith('image/')) {
+          content += `[Image: ${file.name}]\n`;
+        }
+      });
+    }
 
-      return content;
-    },
-    []
-  );
+    return content;
+  }, []);
 
   /**
    * Converts chat messages to LLM API format
    * @param messages - Chat messages
    * @param prepareContent - Content preparation function
-   * @param formatFileSize - File size formatter function
    * @returns Array of LLM messages
    */
   const prepareChatHistory = useCallback(
-    (
-      messages: ChatMessage[],
-      prepareContent: (text: string, files: AttachedFile[], formatFileSize: (bytes: number) => string) => string,
-      formatFileSize: (bytes: number) => string
-    ): LlmMessage[] => {
+    (messages: ChatMessage[], prepareContent: (text: string, files: AttachedFile[]) => string): LlmMessage[] => {
       return messages
         .filter((message) => !message.isStreaming)
         .map((messageItem) => ({
           role: messageItem.sender === LlmRole.USER ? LlmRole.USER : LlmRole.ASSISTANT,
           content:
             messageItem.sender === LlmRole.USER && messageItem.attachments && messageItem.attachments.length > 0
-              ? prepareContent(messageItem.text, messageItem.attachments, formatFileSize)
+              ? prepareContent(messageItem.text, messageItem.attachments)
               : messageItem.text,
         }));
     },

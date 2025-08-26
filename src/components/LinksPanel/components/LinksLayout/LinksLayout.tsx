@@ -64,7 +64,7 @@ export const LinksLayout: React.FC<Props> = ({ activeGroup, panelData, replaceVa
             return <TimePickerElement key={link.name} link={link} />;
           }
           if (link.type === VisualLinkType.MENU) {
-            return <MenuElement key={link.name} link={link} />;
+            return <MenuElement key={link.name} link={link} replaceVariables={replaceVariables} />;
           }
           if (link.type === VisualLinkType.HTML) {
             return (
@@ -74,7 +74,7 @@ export const LinksLayout: React.FC<Props> = ({ activeGroup, panelData, replaceVa
           if (link.type === VisualLinkType.ANNOTATION) {
             return <AnnotationElement key={link.name} link={link} />;
           }
-          return <LinkElement key={link.name} link={link} />;
+          return <LinkElement key={link.name} link={link} replaceVariables={replaceVariables} />;
         })}
     </div>
   );

@@ -417,12 +417,6 @@ export interface UseFileAttachmentsReturn {
   attachedFiles: AttachedFile[];
 
   /**
-   * Format file size in human-readable format
-   *
-   */
-  formatFileSize: (bytes: number) => string;
-
-  /**
    * Handle file attachment from FileDropzone
    *
    */
@@ -474,7 +468,7 @@ export interface UseLlmServiceReturn {
    *
    * @type {(text: string, files: AttachedFile[], formatFileSize: (bytes: number) => string) => string}
    */
-  prepareMessageContent: (text: string, files: AttachedFile[], formatFileSize: (bytes: number) => string) => string;
+  prepareMessageContent: (text: string, files: AttachedFile[]) => string;
 
   /**
    * Prepare chat history for LLM API
@@ -483,8 +477,7 @@ export interface UseLlmServiceReturn {
    */
   prepareChatHistory: (
     messages: ChatMessage[],
-    prepareContent: (text: string, files: AttachedFile[], formatFileSize: (bytes: number) => string) => string,
-    formatFileSize: (bytes: number) => string
+    prepareContent: (text: string, files: AttachedFile[]) => string
   ) => LlmMessage[];
 
   /**
