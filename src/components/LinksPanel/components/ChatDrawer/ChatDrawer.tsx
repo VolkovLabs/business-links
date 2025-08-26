@@ -428,6 +428,23 @@ export const ChatDrawer: React.FC<ChatDrawerProps> = ({
     }
   }, [isOpen, initializeMcpTools]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    /**
+     * Need time to mount element after render drawer
+     */
+    const time = setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current?.focus();
+      }
+    }, 100);
+
+    return () => clearTimeout(time);
+  }, [isOpen, textareaRef]);
+
   /**
    * Handles drag and drop events for the file dropzone overlay
    */
