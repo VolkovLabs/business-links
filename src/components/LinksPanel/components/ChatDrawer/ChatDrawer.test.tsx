@@ -172,11 +172,13 @@ describe('ChatDrawer', () => {
     jest.useRealTimers();
   });
 
+  const replaceVariables = jest.fn((string) => string);
+
   /**
    * Get component
    */
   const getComponent = (props: Partial<Props>) => {
-    return <ChatDrawer isOpen={true} onClose={mockOnClose} {...props} />;
+    return <ChatDrawer replaceVariables={replaceVariables} isOpen={true} onClose={mockOnClose} {...props} />;
   };
 
   describe('Rendering', () => {
@@ -292,7 +294,11 @@ describe('ChatDrawer', () => {
         },
       ]);
 
-      await act(async () => render(getComponent({})));
+      const replaceVariables = jest.fn((string) => string);
+
+      await act(async () =>
+        render(getComponent({ replaceVariables: replaceVariables, initialPrompt: 'Initial prompt' }))
+      );
 
       const textarea = selectors.input();
       const sendButton = selectors.sendButton();
@@ -315,6 +321,9 @@ describe('ChatDrawer', () => {
           isStreaming: true,
         }),
       ]);
+
+      expect(replaceVariables).toHaveBeenCalledWith('Test message');
+      expect(replaceVariables).toHaveBeenCalledWith('Initial prompt');
 
       expect(mockSendMessageWithTools).toHaveBeenCalled();
       expect(mockClearAttachedFiles).toHaveBeenCalled();
@@ -541,7 +550,7 @@ describe('ChatDrawer', () => {
   });
 
   it('Should not send message if input empty', async () => {
-    await act(async () => render(<ChatDrawer isOpen onClose={jest.fn()} />));
+    await act(async () => render(<ChatDrawer isOpen onClose={jest.fn()} replaceVariables={replaceVariables} />));
     const textarea = selectors.input();
     await act(async () => {
       fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
