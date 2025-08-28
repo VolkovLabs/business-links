@@ -154,6 +154,47 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should sanitize wrong url and show error and keep wrong value in input to show user', () => {
+    render(getComponent({ optionId: 'groups' }));
+
+    expect(selectors.fieldUrl()).toBeInTheDocument();
+    expect(selectors.fieldUrl()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldUrl(), { target: { value: 'javascript:alert(document.domain)' } });
+
+    expect(selectors.fieldUrl()).toHaveValue('javascript:alert(document.domain)');
+    expect(onChange).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: '',
+      })
+    );
+  });
+
+  it('Should reset error and allow to enter new value after sanitize', () => {
+    render(getComponent({ optionId: 'groups' }));
+
+    expect(selectors.fieldUrl()).toBeInTheDocument();
+    expect(selectors.fieldUrl()).toHaveValue('');
+
+    fireEvent.change(selectors.fieldUrl(), { target: { value: 'javascript:alert(document.domain)' } });
+
+    expect(selectors.fieldUrl()).toHaveValue('javascript:alert(document.domain)');
+    expect(onChange).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: '',
+      })
+    );
+
+    fireEvent.change(selectors.fieldUrl(), { target: { value: 'new url' } });
+
+    expect(selectors.fieldUrl()).toHaveValue('new url');
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: 'new url',
+      })
+    );
+  });
+
   it('Should allow change contextPrompt for Business AI link type', () => {
     render(getComponent({ optionId: 'groups', value: createLinkConfig({ linkType: LinkType.LLMAPP }) }));
 

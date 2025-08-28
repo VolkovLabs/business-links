@@ -4,6 +4,7 @@ apps:
   - type: grafana-llm-app
     enabled: true
     jsonData:
+      enableDevSandbox: true
       openAI:
         disabled: false
         organizationId: ${OPENAI_ORG_ID}

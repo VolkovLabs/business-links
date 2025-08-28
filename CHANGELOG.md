@@ -2,18 +2,26 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.3.0] - Unreleased
+## [2.4.0] - Unreleased
 
 ### Added
 
-- Added loading Spinner for tool answer ([#69](https://github.com/VolkovLabs/business-links/issues/69))
-- Added wrap for relative time picker to prevent overlap for Grafana 11 ([#71](https://github.com/VolkovLabs/business-links/issues/71))
-- Added Markdown support and Tooltip for temporary messages for LLM Chat ([#73](https://github.com/VolkovLabs/business-links/issues/73))
-- Add replace variable to LLM Chat ([#74](https://github.com/VolkovLabs/business-links/issues/74))
+- Added sanitize url check. ([#77](https://github.com/VolkovLabs/business-links/issues/77))
+
+## [2.3.0] - 2025-08-26
+
+We're excited to announce the release of version 2.3.0 of Business Links! This update brings new features, enhancements, and bug fixes to improve your experience with the plugin in Grafana. Below are the key changes in this release.
+
+### Added
+
+- **Loading Spinner for Tool Answers** - Added a loading spinner to indicate when a tool answer is being processed. ([#69](https://github.com/VolkovLabs/business-links/issues/69))
+- **Relative Time Picker Wrap for Grafana 11** - Implemented a wrap for the relative time picker to prevent overlap issues in Grafana 11. ([#71](https://github.com/VolkovLabs/business-links/issues/71))
+- **Markdown Support and Tooltip for LLM Chat** - Added Markdown formatting support and tooltips for temporary messages in LLM Chat. ([#73](https://github.com/VolkovLabs/business-links/issues/73))
+- **Variable Replacement in LLM Chat** - Introduced support for replacing variables in LLM Chat for dynamic content. ([#74](https://github.com/VolkovLabs/business-links/issues/74))
 
 ### Changed
 
-- Convert all date to UTC before compare ([#70](https://github.com/VolkovLabs/business-links/issues/70))
+- **UTC Date Conversion** - Updated all date comparisons to use UTC format for consistency and accuracy. ([#70](https://github.com/VolkovLabs/business-links/issues/70))
 
 ## [2.2.0] - 2025-08-18
 

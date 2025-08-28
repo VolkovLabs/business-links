@@ -61,7 +61,7 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
       .addCustomEditor({
         id: 'groups',
         path: 'groups',
-        name: '',
+        name: ' ',
         editor: GroupsEditor,
         category: ['Layout'],
         defaultValue: [],
@@ -69,7 +69,7 @@ export const plugin = new PanelPlugin<PanelOptions>(LinksPanel)
       .addCustomEditor({
         id: 'dropdowns',
         path: 'dropdowns',
-        name: '',
+        name: ' ',
         description: 'Set nested list of items',
         editor: GroupsEditor,
         category: ['Menu'],
