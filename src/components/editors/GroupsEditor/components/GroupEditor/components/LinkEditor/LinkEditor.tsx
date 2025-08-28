@@ -1,4 +1,4 @@
-import { DataFrame, IconName, SelectableValue } from '@grafana/data';
+import { DataFrame, IconName, SelectableValue, textUtil } from '@grafana/data';
 import {
   getAvailableIcons,
   InlineField,
@@ -10,7 +10,7 @@ import {
   TextArea,
 } from '@grafana/ui';
 import { Slider } from '@volkovlabs/components';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
@@ -262,6 +262,15 @@ export const alignContentPositionOptions = [
  */
 export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, dashboards, optionId, dropdowns }) => {
   /**
+   * Errors State
+   */
+  const [errors, setErrors] = useState({
+    url: '',
+  });
+
+  const [currentUrl, setCurrentUrl] = useState(value.url);
+
+  /**
    * Icon Options
    */
   const iconOptions = useMemo((): Array<SelectableValue<string>> => {
@@ -416,14 +425,40 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
         )}
 
         {value.linkType === LinkType.SINGLE && (
-          <InlineField label="URL" grow={true} labelWidth={20}>
+          <InlineField label="URL" grow={true} labelWidth={20} error={errors.url} invalid={!!errors.url}>
             <Input
-              value={value.url}
+              value={currentUrl}
               onChange={(event) => {
+                let urlValue = event.currentTarget.value;
+
+                if (errors.url) {
+                  setErrors((prev) => ({
+                    ...prev,
+                    url: '',
+                  }));
+                }
+
+                if (!!event.currentTarget.value) {
+                  urlValue = textUtil.sanitizeUrl(event.currentTarget.value);
+
+                  if (event.currentTarget.value !== urlValue) {
+                    setErrors((prev) => ({
+                      ...prev,
+                      url: 'Wrong text content',
+                    }));
+
+                    setCurrentUrl(event.currentTarget.value);
+
+                    return;
+                  }
+                }
+
                 onChange({
                   ...value,
-                  url: event.currentTarget.value,
+                  url: urlValue,
                 });
+
+                setCurrentUrl(urlValue);
               }}
               {...TEST_IDS.linkEditor.fieldUrl.apply()}
             />

@@ -2,6 +2,12 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - Unreleased
+
+### Added
+
+- Added sanitize url check. ([#77](https://github.com/VolkovLabs/business-links/issues/77))
+
 ## [2.3.0] - 2025-08-26
 
 We're excited to announce the release of version 2.3.0 of Business Links! This update brings new features, enhancements, and bug fixes to improve your experience with the plugin in Grafana. Below are the key changes in this release.
