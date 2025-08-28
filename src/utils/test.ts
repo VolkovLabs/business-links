@@ -51,6 +51,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   alignContentPosition: AlignContentPositionType.LEFT,
   hideTooltipOnHover: false,
   mcpServers: [],
+  annotationKey: '',
   ...item,
 });
 
@@ -106,6 +107,7 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   dropdownConfig: createDropdownConfig(),
   includeKioskMode: false,
   mcpServers: [],
+  annotationKey: '',
   ...item,
 });
 

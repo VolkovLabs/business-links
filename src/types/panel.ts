@@ -21,6 +21,7 @@ export type RecursivePartial<T> = {
  * Link type
  */
 export enum LinkType {
+  ANNOTATION = 'annotation',
   SINGLE = 'single',
   DROPDOWN = 'dropdown',
   TAGS = 'tags',
@@ -266,6 +267,13 @@ export interface LinkConfig {
    * @type {string}
    */
   dashboardUrl: string;
+
+  /**
+   * Annotation key
+   *
+   * @type {string}
+   */
+  annotationKey: string;
 
   /**
    * Icon

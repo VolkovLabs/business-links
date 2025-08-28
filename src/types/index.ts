@@ -1,3 +1,4 @@
+export * from './annotations';
 export * from './dashboards';
 export * from './editor';
 export * from './links';

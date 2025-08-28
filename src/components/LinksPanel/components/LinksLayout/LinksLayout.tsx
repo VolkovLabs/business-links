@@ -5,6 +5,7 @@ import React from 'react';
 import { TEST_IDS } from '@/constants';
 import { GroupConfig, VisualLink, VisualLinkType } from '@/types';
 
+import { AnnotationElement } from '../AnnotationElement';
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
 import { MenuElement } from '../MenuElement';
@@ -69,6 +70,9 @@ export const LinksLayout: React.FC<Props> = ({ activeGroup, panelData, replaceVa
             return (
               <ContentElement key={link.name} link={link} panelData={panelData} replaceVariables={replaceVariables} />
             );
+          }
+          if (link.type === VisualLinkType.ANNOTATION) {
+            return <AnnotationElement key={link.name} link={link} />;
           }
           return <LinkElement key={link.name} link={link} replaceVariables={replaceVariables} />;
         })}

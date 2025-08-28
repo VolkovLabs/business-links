@@ -3,7 +3,7 @@ import { getJestSelectors } from '@volkovlabs/jest-selectors';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { useSavedState } from '@/hooks';
+import { useSavedState, useAnnotations } from '@/hooks';
 import { LinkType } from '@/types';
 import { createGroupConfig, createLinkConfig, createPanelOptions, getAllDashboards } from '@/utils';
 
@@ -22,8 +22,15 @@ jest.mock('@/utils', () => ({
   getAllDashboards: jest.fn(),
 }));
 
+/**
+ * Mock hooks
+ */
 jest.mock('../../hooks/useSavedState', () => ({
   useSavedState: jest.fn(jest.requireActual('../../hooks/useSavedState').useSavedState),
+}));
+
+jest.mock('../../hooks/useAnnotations', () => ({
+  useAnnotations: jest.fn(),
 }));
 
 /**
@@ -84,6 +91,7 @@ describe('LinksPanel', () => {
       return str;
     });
     jest.mocked(useSavedState).mockImplementation(jest.requireActual('../../hooks/useSavedState').useSavedState);
+    jest.mocked(useAnnotations).mockReturnValue([]);
   });
 
   afterEach(() => {

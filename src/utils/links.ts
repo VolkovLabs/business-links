@@ -1,6 +1,6 @@
 import { DataFrame, dateTime, InterpolateFunction, TimeRange } from '@grafana/data';
 
-import { DashboardMeta, GroupConfig, LinkConfig, LinkType, TimeConfig, TimeConfigType } from '@/types';
+import { AnnotationLayer, DashboardMeta, GroupConfig, LinkConfig, LinkType, TimeConfig, TimeConfigType } from '@/types';
 import { VisualLink, VisualLinkType } from '@/types/links';
 
 import { filterDashboardsByTags } from './dashboards';
@@ -189,6 +189,7 @@ export const prepareLinksToRender = ({
   highlightCurrentLink,
   highlightCurrentTimepicker,
   series,
+  annotationsLayers = [],
 }: {
   currentGroup?: GroupConfig;
   dropdowns: GroupConfig[];
@@ -200,6 +201,7 @@ export const prepareLinksToRender = ({
   highlightCurrentLink?: boolean;
   highlightCurrentTimepicker?: boolean;
   series: DataFrame[];
+  annotationsLayers?: AnnotationLayer[];
 }): VisualLink[] => {
   /**
    * Return empty [] if no groups
@@ -268,6 +270,29 @@ export const prepareLinksToRender = ({
           icon: item.icon,
           alignContentPosition: item.alignContentPosition,
           hideTooltipOnHover: item.hideTooltipOnHover,
+        });
+        break;
+      }
+
+      /**
+       * Annotation
+       */
+      case LinkType.ANNOTATION: {
+        let currentAnnotationLayer = null;
+
+        if (annotationsLayers.length > 0) {
+          const layer = annotationsLayers.find((annotationLayer) => annotationLayer.state.name === item.annotationKey);
+          if (layer) {
+            currentAnnotationLayer = layer;
+          }
+        }
+
+        result.push({
+          type: VisualLinkType.ANNOTATION,
+          id: item.id,
+          name: item.name,
+          annotationLayer: currentAnnotationLayer,
+          links: [],
         });
         break;
       }
@@ -393,14 +418,19 @@ export const prepareLinksToRender = ({
             highlightCurrentLink,
             highlightCurrentTimepicker,
             series,
+            annotationsLayers,
           });
         }
 
         const dropdownLinks = nestedLinks.flatMap((nestedLink) => {
-          if (nestedLink.type === VisualLinkType.TIMEPICKER || nestedLink.type === VisualLinkType.LLMAPP) {
+          if (
+            nestedLink.type === VisualLinkType.TIMEPICKER ||
+            nestedLink.type === VisualLinkType.LLMAPP ||
+            nestedLink.type === VisualLinkType.ANNOTATION
+          ) {
             return [
               {
-                linkType: nestedLink.type === VisualLinkType.TIMEPICKER ? LinkType.TIMEPICKER : LinkType.LLMAPP,
+                linkType: nestedLink.type,
                 ...nestedLink,
               },
             ] as unknown as LinkConfig[];

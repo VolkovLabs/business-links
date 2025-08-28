@@ -6,6 +6,7 @@ import { Collapse } from '@volkovlabs/components';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
+import { useAnnotations } from '@/hooks';
 import { DashboardMeta, GroupConfig, PanelOptions } from '@/types';
 import { getAllDashboards, reorder } from '@/utils';
 
@@ -52,13 +53,17 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   const [dashboards, setDashboards] = useState<DashboardMeta[]>([]);
 
   /**
+   * Annotations Layers
+   */
+  const annotationsLayers = useAnnotations();
+
+  /**
    * List of available dropdowns
    */
   const availableDropdowns = useMemo(() => {
     return options?.dropdowns?.map((dropdown) => dropdown.name);
   }, [options?.dropdowns]);
 
-  /**
   /**
    * Change Items
    */
@@ -313,6 +318,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
                             dashboards={dashboards}
                             optionId={id}
                             dropdowns={availableDropdowns}
+                            annotationsLayers={annotationsLayers}
                             onChange={(newGroup: GroupConfig) => {
                               const updatedGroups = value.map((group) => {
                                 if (group.name === newGroup.name) {
