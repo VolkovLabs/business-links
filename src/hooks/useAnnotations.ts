@@ -14,9 +14,8 @@ export const useAnnotations = () => {
     return sceneGraph.getDataLayers(sceneModel) as unknown as AnnotationDataLayer[];
   }, [sceneModel]);
 
-  const testLayers = useMemo(() => getAnnotations(), [getAnnotations]);
-
-  const annotationsLayers = testLayers.flatMap((layer) => {
+  const layers = useMemo(() => getAnnotations(), [getAnnotations]);
+  const annotationsLayers = layers.flatMap((layer) => {
     return layer.state.annotationLayers;
   });
 

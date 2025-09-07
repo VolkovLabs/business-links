@@ -91,7 +91,7 @@ const linkTypeOptionMap = {
   [LinkType.ANNOTATION]: {
     value: LinkType.ANNOTATION,
     label: 'Annotation toggler',
-    description: 'Available since 11.5.0 version',
+    description: 'Allows to display and hide annotations.',
   },
   [LinkType.SINGLE]: {
     value: LinkType.SINGLE,

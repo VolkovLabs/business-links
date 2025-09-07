@@ -2,11 +2,12 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.4.0] - Unreleased
+## [2.4.0] - 2025-09-07
 
 ### Added
 
-- Added sanitize url check. ([#77](https://github.com/VolkovLabs/business-links/issues/77))
+- **Sanitize URL Check**: Introduced a new feature to sanitize URLs to prevent potential security issues and ensure safe link handling. This addresses concerns related to malicious or malformed URLs. ([#77](https://github.com/VolkovLabs/business-links/issues/77))
+- **Annotation Toggle**: Added the ability to toggle annotations on or off, giving users more control over the visibility of annotations in the interface. This enhances user experience by allowing customization based on preference. ([#68](https://github.com/VolkovLabs/business-links/issues/68))
 
 ## [2.3.0] - 2025-08-26
 
