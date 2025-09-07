@@ -323,6 +323,33 @@ describe('LinkEditor', () => {
     );
   });
 
+  it('Should allow change annotation layer for', () => {
+    const annotationsMock = [
+      { state: { key: 'annotation/1', name: 'annotation-1' } },
+      { state: { key: 'annotation/2', name: 'annotation-2' } },
+      { state: { key: 'annotation/3', name: 'annotation-3' } },
+    ] as any;
+
+    render(
+      getComponent({
+        optionId: 'dropdowns',
+        value: createLinkConfig({ linkType: LinkType.ANNOTATION, dashboardUrl: 'annotation-1' }),
+        annotationsLayers: annotationsMock,
+      })
+    );
+
+    expect(selectors.fieldAnnotationLayer()).toBeInTheDocument();
+    expect(selectors.fieldAnnotationLayer()).toHaveValue('annotation-1');
+
+    fireEvent.change(selectors.fieldAnnotationLayer(), { target: { values: 'annotation-3' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        annotationKey: 'annotation-3',
+      })
+    );
+  });
+
   it('Should allow change dropdown for DROPDOWN type', () => {
     const dropdowns = ['dropdown-1', 'dropdown-2', 'dropdown-3'];
     render(

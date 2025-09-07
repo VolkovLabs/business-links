@@ -47,6 +47,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
         const normalizedUseDefaultGrafanaMcp =
           !item.useDefaultGrafanaMcp || item.useDefaultGrafanaMcp === undefined ? false : item.useDefaultGrafanaMcp;
 
+        const normalizedAnnotationKey = !item.annotationKey ? '' : item.annotationKey;
         const normalizedShowLoadingForRawMessage =
           item.showLoadingForRawMessage === undefined ? true : item.showLoadingForRawMessage;
 
@@ -61,6 +62,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           alignContentPosition: normalizedAlignContentPosition,
           hideTooltipOnHover: normalizedHideTitleOnHover,
           useDefaultGrafanaMcp: normalizedUseDefaultGrafanaMcp,
+          annotationKey: normalizedAnnotationKey,
           showLoadingForRawMessage: normalizedShowLoadingForRawMessage,
         };
       });
@@ -141,6 +143,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
 
         const normalizedTimePickerConfig = migrateTimePickerConfiguration(item.timePickerConfig);
 
+        const normalizedAnnotationKey = !item.annotationKey ? '' : item.annotationKey;
         const normalizedIncludeKioskMode =
           !item.includeKioskMode || item.includeKioskMode === undefined ? false : item.includeKioskMode;
 
@@ -163,6 +166,7 @@ export const getMigratedOptions = async (panel: PanelModel<OutdatedPanelOptions>
           ...item,
           id: normalizedId,
           timePickerConfig: normalizedTimePickerConfig,
+          annotationKey: normalizedAnnotationKey,
           includeKioskMode: normalizedIncludeKioskMode,
           showCustomIcons: normalizedShowCustomIcons,
           customIconUrl: normalizedCustomIconUrl,

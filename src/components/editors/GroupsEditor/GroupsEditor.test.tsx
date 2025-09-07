@@ -5,7 +5,7 @@ import React from 'react';
 
 import { TEST_IDS } from '@/constants';
 import { createGroupConfig, createLinkConfig, getAllDashboards } from '@/utils';
-
+import { useAnnotations } from '@/hooks';
 import { GroupEditor } from './components';
 import { GroupsEditor } from './GroupsEditor';
 
@@ -37,6 +37,13 @@ jest.mock('./components', () => ({
 jest.mock('@/utils', () => ({
   ...jest.requireActual('@/utils'),
   getAllDashboards: jest.fn(),
+}));
+
+/**
+ * Mock hooks
+ */
+jest.mock('@/hooks', () => ({
+  useAnnotations: jest.fn(),
 }));
 
 describe('GroupsEditor', () => {
@@ -98,6 +105,7 @@ describe('GroupsEditor', () => {
   beforeEach(() => {
     jest.mocked(GroupEditor).mockImplementation(GroupEditorMock);
     jest.mocked(getAllDashboards).mockReturnValue(dashboardsMock);
+    jest.mocked(useAnnotations).mockReturnValue([]);
   });
 
   it('Should render tables', async () => {

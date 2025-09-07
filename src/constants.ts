@@ -53,6 +53,11 @@ export const TEST_IDS = {
   timePickerElement: {
     buttonPicker: createSelector((name: unknown) => `data-testid time-picker-element button-picker-${name}`),
   },
+  annotationElement: {
+    enableField: createSelector(`data-testid annotation-element enable-field`),
+    label: createSelector(`data-testid annotation-element label`),
+    root: createSelector(`data-testid annotation-element root`),
+  },
   menuElement: {
     root: createSelector('data-testid menu-element'),
     link: createSelector((name: unknown) => `data-testid menu-element link-${name}`),
@@ -76,6 +81,7 @@ export const TEST_IDS = {
     fieldIncludeVariables: createSelector('data-testid link-editor field-include-variables'),
     fieldIncludeKioskMode: createSelector('data-testid link-editor field-include-kiosk-mode'),
     fieldDashboard: createSelector('data-testid link-editor field-dashboard'),
+    fieldAnnotationLayer: createSelector('data-testid link-editor field-annotation-layer'),
     fieldDropdown: createSelector('data-testid link-editor field-dropdown'),
     fieldHoverPosition: createSelector('data-testid link-editor field-hover-position'),
     fieldIcon: createSelector('data-testid link-editor field-icon'),

@@ -180,6 +180,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
+          annotationKey: '',
         },
       ],
     };
@@ -218,6 +219,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
+          annotationKey: '',
         },
       ],
     };
@@ -258,6 +260,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
+          annotationKey: '',
         },
       ],
     };
@@ -296,6 +299,7 @@ describe('prepareLinksToRender', () => {
             dropdownName: '',
             id: 'test-link0-dp-id',
             dropdownConfig: createDropdownConfig(),
+            annotationKey: '',
           },
         ],
       },
@@ -318,6 +322,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: 'Nested',
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
+          annotationKey: '',
         },
       ],
     };
@@ -356,6 +361,7 @@ describe('prepareLinksToRender', () => {
             dropdownName: '',
             id: 'test-link0-dp-id',
             dropdownConfig: createDropdownConfig(),
+            annotationKey: '',
           },
           {
             name: 'Link-2',
@@ -371,6 +377,7 @@ describe('prepareLinksToRender', () => {
             dropdownName: '',
             id: 'test-link0-dp-id-2',
             dropdownConfig: createDropdownConfig(),
+            annotationKey: '',
           },
         ],
       },
@@ -393,6 +400,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: 'Nested',
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
+          annotationKey: '',
         },
       ],
     };
@@ -431,6 +439,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '/d/urldashboard1',
           dropdownName: '',
           id: 'test-link0-id',
+          annotationKey: '',
         },
       ],
     };
@@ -467,6 +476,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '/d/urldashboard1',
           dropdownName: '',
           id: 'test-link0-id',
+          annotationKey: '',
         },
       ],
     };
@@ -503,6 +513,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '',
           dropdownName: '',
           id: 'test-link0-id',
+          annotationKey: '',
         },
       ],
     };
@@ -517,6 +528,7 @@ describe('prepareLinksToRender', () => {
       dashboardId: '',
       series: [],
       highlightCurrentTimepicker: true,
+      annotationsLayers: [],
     });
 
     expect(result).toHaveLength(1);
@@ -546,6 +558,7 @@ describe('prepareLinksToRender', () => {
           htmlConfig: {
             content: 'line',
           },
+          annotationKey: '',
         },
       ],
     };
@@ -559,6 +572,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: '',
       series: [],
+      annotationsLayers: [],
     });
 
     expect(result).toHaveLength(1);
@@ -568,6 +582,144 @@ describe('prepareLinksToRender', () => {
       links: [],
       name: 'HTML',
       type: VisualLinkType.HTML,
+    });
+  });
+
+  it('Should generate ANNOTATION link correctly with empty key', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'ANNOTATION',
+          enable: true,
+          linkType: LinkType.ANNOTATION,
+          url: '',
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          annotationKey: '',
+        },
+      ],
+    } as any;
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+      annotationsLayers: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      id: 'test-link0-id',
+      links: [],
+      name: 'ANNOTATION',
+      type: VisualLinkType.ANNOTATION,
+      annotationLayer: null,
+    });
+  });
+
+  it('Should generate ANNOTATION link correctly with empty layers', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'ANNOTATION',
+          enable: true,
+          linkType: LinkType.ANNOTATION,
+          url: '',
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          annotationKey: 'annotation-layer',
+        },
+      ],
+    } as any;
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+      annotationsLayers: [],
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      id: 'test-link0-id',
+      links: [],
+      name: 'ANNOTATION',
+      type: VisualLinkType.ANNOTATION,
+      annotationLayer: null,
+    });
+  });
+
+  it('Should generate ANNOTATION link correctly with layer', () => {
+    const currentGroup = {
+      name: 'Test',
+      items: [
+        {
+          name: 'ANNOTATION',
+          enable: true,
+          linkType: LinkType.ANNOTATION,
+          url: '',
+          tags: [],
+          dashboardUrl: '',
+          dropdownName: '',
+          id: 'test-link0-id',
+          annotationKey: 'annotation-layer',
+        },
+      ],
+    } as any;
+
+    const result = prepareLinksToRender({
+      currentGroup,
+      dropdowns: [],
+      replaceVariables,
+      timeRange,
+      dashboards,
+      params: '',
+      dashboardId: '',
+      series: [],
+      annotationsLayers: [
+        {
+          state: {
+            name: 'annotation-layer',
+            key: 'annotation-layer-key-1',
+          },
+        },
+        {
+          state: {
+            name: 'annotation-layer-2',
+            key: 'annotation-layer-key-2',
+          },
+        },
+      ] as any,
+    });
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({
+      id: 'test-link0-id',
+      links: [],
+      name: 'ANNOTATION',
+      type: VisualLinkType.ANNOTATION,
+      annotationLayer: {
+        state: {
+          name: 'annotation-layer',
+          key: 'annotation-layer-key-1',
+        },
+      },
     });
   });
 
@@ -597,6 +749,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           includeKioskMode: false,
+          annotationKey: '',
         },
       ],
     };
@@ -610,6 +763,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: '',
       series: [],
+      annotationsLayers: [],
     });
 
     expect(result).toHaveLength(1);
@@ -643,6 +797,7 @@ describe('prepareLinksToRender', () => {
           dashboardUrl: '/d/urldashboard1',
           dropdownName: '',
           id: 'llm-1',
+          annotationKey: '',
         },
       ],
     };
@@ -656,6 +811,7 @@ describe('prepareLinksToRender', () => {
       params: '',
       dashboardId: '1',
       series: [],
+      annotationsLayers: [],
     });
 
     expect(result).toHaveLength(1);

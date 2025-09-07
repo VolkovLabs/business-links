@@ -1,3 +1,4 @@
+export * from './AnnotationElement';
 export * from './ContentElement';
 export * from './LinkElement';
 export * from './LinksGridLayout';

@@ -7,6 +7,7 @@ import { TEST_IDS } from '@/constants';
 import { ButtonSize, DropdownAlign, DropdownType, LinkType } from '@/types';
 import { VisualLink } from '@/types/links';
 
+import { AnnotationElement } from '../AnnotationElement';
 import { LinkElement } from '../LinkElement';
 import { TimePickerElement } from '../TimePickerElement';
 import { getStyles } from './MenuElement.styles';
@@ -66,7 +67,7 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
      * Nested Links without TIMEPICKER type
      */
     const filteredLinks = link.links.filter((nestedLinks) => {
-      return nestedLinks.linkType !== LinkType.TIMEPICKER;
+      return nestedLinks.linkType !== LinkType.TIMEPICKER && nestedLinks.linkType !== LinkType.ANNOTATION;
     });
 
     return {
@@ -114,6 +115,10 @@ export const MenuElement: React.FC<Props> = ({ link, gridMode = false, dynamicFo
                   buttonSize={gridMode ? link.dropdownConfig?.buttonSize : ButtonSize.MD}
                 />
               );
+            }
+
+            if (nestedLink.linkType === LinkType.ANNOTATION) {
+              return <AnnotationElement key={nestedLink.name} link={nestedLink as unknown as VisualLink} />;
             }
 
             if (nestedLink.linkType === LinkType.LLMAPP) {

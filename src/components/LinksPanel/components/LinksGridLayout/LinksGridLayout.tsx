@@ -11,6 +11,7 @@ import ReactGridLayout from 'react-grid-layout';
 import { GRID_COLUMN_SIZE, GRID_MARGIN_GAP, GRID_ROW_SIZE, PANEL_TITLE_HEIGHT, TEST_IDS } from '@/constants';
 import { GroupConfig, PanelOptions, VisualLink, VisualLinkType } from '@/types';
 
+import { AnnotationElement } from '../AnnotationElement';
 import { ContentElement } from '../ContentElement';
 import { LinkElement } from '../LinkElement';
 import { MenuElement } from '../MenuElement';
@@ -275,6 +276,7 @@ export const LinksGridLayout: React.FC<Props> = ({
                     replaceVariables={replaceVariables}
                   />
                 )}
+                {link.type === VisualLinkType.ANNOTATION && <AnnotationElement key={link.name} link={link} />}
                 {link.type === VisualLinkType.LLMAPP && (
                   <LinkElement
                     link={link}

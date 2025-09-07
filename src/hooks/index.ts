@@ -1,3 +1,4 @@
+export * from './useAnnotations';
 export * from './useContentPosition';
 export * from './useDrawerLlmChat';
 export * from './useElementResize';

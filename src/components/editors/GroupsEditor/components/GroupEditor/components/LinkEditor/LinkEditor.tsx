@@ -16,6 +16,7 @@ import { FieldsGroup } from '@/components';
 import { TEST_IDS } from '@/constants';
 import {
   AlignContentPositionType,
+  AnnotationLayer,
   ButtonSize,
   DashboardMeta,
   DropdownAlign,
@@ -74,12 +75,24 @@ interface Props extends EditorProps<LinkConfig> {
    * @type {boolean}
    */
   isHighlightTimePicker?: boolean;
+
+  /**
+   * Available dropdowns
+   *
+   * @type {AnnotationLayer[]}
+   */
+  annotationsLayers?: AnnotationLayer[];
 }
 
 /**
  * Link Type Option Map
  */
 const linkTypeOptionMap = {
+  [LinkType.ANNOTATION]: {
+    value: LinkType.ANNOTATION,
+    label: 'Annotation toggler',
+    description: 'Allows to display and hide annotations.',
+  },
   [LinkType.SINGLE]: {
     value: LinkType.SINGLE,
     label: 'Link',
@@ -121,6 +134,7 @@ const linkTypeOptionMap = {
  * Link Type Options
  */
 export const linkTypeOptions = [
+  linkTypeOptionMap[LinkType.ANNOTATION],
   linkTypeOptionMap[LinkType.LLMAPP],
   linkTypeOptionMap[LinkType.DASHBOARD],
   linkTypeOptionMap[LinkType.HTML],
@@ -134,6 +148,7 @@ export const linkTypeOptions = [
  * Link Type Options in dropdown editor
  */
 export const linkTypeOptionsInDropdown = [
+  linkTypeOptionMap[LinkType.ANNOTATION],
   linkTypeOptionMap[LinkType.LLMAPP],
   linkTypeOptionMap[LinkType.DASHBOARD],
   linkTypeOptionMap[LinkType.SINGLE],
@@ -260,7 +275,26 @@ export const alignContentPositionOptions = [
 /**
  * Link Editor
  */
-export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, dashboards, optionId, dropdowns }) => {
+export const LinkEditor: React.FC<Props> = ({
+  value,
+  onChange,
+  isGrid,
+  data,
+  dashboards,
+  optionId,
+  dropdowns,
+  annotationsLayers,
+}) => {
+  /**
+   * Annotations Layers options
+   */
+  const availableAnnotationsOptions = useMemo(() => {
+    return annotationsLayers?.map((layer) => ({
+      value: layer.state.name,
+      label: layer.state.name,
+    }));
+  }, [annotationsLayers]);
+
   /**
    * Errors State
    */
@@ -321,6 +355,19 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
             {...TEST_IDS.linkEditor.fieldLinkType.apply()}
           />
         </InlineField>
+
+        {value.linkType === LinkType.ANNOTATION && (
+          <InlineField label="Annotation" grow={true} labelWidth={20}>
+            <Select
+              options={availableAnnotationsOptions}
+              value={value.annotationKey}
+              onChange={(event) => {
+                onChange({ ...value, annotationKey: event.value! });
+              }}
+              {...TEST_IDS.linkEditor.fieldAnnotationLayer.apply()}
+            />
+          </InlineField>
+        )}
 
         {value.linkType === LinkType.LLMAPP && (
           <>
@@ -611,7 +658,7 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
           )}
       </FieldsGroup>
 
-      {value.linkType !== LinkType.HTML && (
+      {value.linkType !== LinkType.HTML && value.linkType !== LinkType.ANNOTATION && (
         <FieldsGroup label="Configuration">
           <InlineField label="Use custom icon" grow={true} labelWidth={20}>
             <InlineSwitch
@@ -708,7 +755,8 @@ export const LinkEditor: React.FC<Props> = ({ value, onChange, isGrid, data, das
       {value.linkType !== LinkType.TIMEPICKER &&
         value.linkType !== LinkType.HTML &&
         value.linkType !== LinkType.DROPDOWN &&
-        value.linkType !== LinkType.LLMAPP && (
+        value.linkType !== LinkType.LLMAPP &&
+        value.linkType !== LinkType.ANNOTATION && (
           <FieldsGroup label="Include">
             <InlineField
               label="Support kiosk mode"

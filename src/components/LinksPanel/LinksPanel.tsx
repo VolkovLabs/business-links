@@ -4,7 +4,7 @@ import { Alert, ToolbarButton, ToolbarButtonRow, useStyles2 } from '@grafana/ui'
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { TEST_IDS } from '@/constants';
-import { useContentPosition, useGrafanaLocationService, useSavedState } from '@/hooks';
+import { useAnnotations, useContentPosition, useGrafanaLocationService, useSavedState } from '@/hooks';
 import { DashboardMeta, PanelOptions } from '@/types';
 import { getAllDashboards, prepareLinksToRender } from '@/utils';
 
@@ -39,6 +39,11 @@ export const LinksPanel: React.FC<Props> = ({
    * Styles
    */
   const styles = useStyles2(getStyles);
+
+  /**
+   * Current annotations Layers
+   */
+  const annotationsLayers = useAnnotations();
 
   /**
    * Ref`s
@@ -91,16 +96,18 @@ export const LinksPanel: React.FC<Props> = ({
       highlightCurrentLink: activeGroup?.highlightCurrentLink,
       highlightCurrentTimepicker: activeGroup?.highlightCurrentTimepicker,
       series: data.series,
+      annotationsLayers: annotationsLayers,
     });
   }, [
     activeGroup,
-    dashboards,
-    currentDashboardId,
-    data.series,
     options.dropdowns,
     replaceVariables,
     timeRange,
-    location,
+    dashboards,
+    location.search,
+    currentDashboardId,
+    data.series,
+    annotationsLayers,
   ]);
 
   /**
