@@ -34,6 +34,7 @@ export const LinksPanel: React.FC<Props> = ({
   title,
   data,
   onOptionsChange,
+  eventBus,
 }) => {
   /**
    * Styles
@@ -43,7 +44,7 @@ export const LinksPanel: React.FC<Props> = ({
   /**
    * Current annotations Layers
    */
-  const annotationsLayers = useAnnotations();
+  const annotationsLayers = useAnnotations({ eventBus: eventBus });
 
   /**
    * Ref`s
