@@ -7,6 +7,7 @@ All notable changes to the **Business Links** panel are documented in this file.
 ### Changed
 
 - Update annotation hook ([#78](https://github.com/VolkovLabs/business-links/issues/78)).
+- Add Exclude variable from links ([#79](https://github.com/VolkovLabs/business-links/issues/79)).
 
 ## [2.4.0] - 2025-09-07
 
