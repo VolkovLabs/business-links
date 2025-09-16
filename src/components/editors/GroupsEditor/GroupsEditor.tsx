@@ -36,7 +36,7 @@ const testIds = TEST_IDS.groupsEditor;
 /**
  * Groups Editor
  */
-export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onChange, value, id, item }) => {
+export const GroupsEditor: React.FC<Props> = ({ context: { options, eventBus, data }, onChange, value, id, item }) => {
   /**
    * Styles and Theme
    */
@@ -55,7 +55,7 @@ export const GroupsEditor: React.FC<Props> = ({ context: { options, data }, onCh
   /**
    * Annotations Layers
    */
-  const annotationsLayers = useAnnotations();
+  const annotationsLayers = useAnnotations({ eventBus: eventBus });
 
   /**
    * List of available dropdowns
