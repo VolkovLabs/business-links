@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createSelector, getJestSelectors } from '@volkovlabs/jest-selectors';
+import { getTemplateSrv, TemplateSrv } from '@grafana/runtime';
 import React from 'react';
 
 import { TEST_IDS } from '@/constants';
@@ -24,6 +25,15 @@ const inTestIds = {
   contentEditor: createSelector('data-testid content-editor'),
   mcpServersEditor: createSelector('data-testid mcp-server-editor'),
 };
+
+/**
+ * Mock getTemplateSrv
+ */
+jest.mock('@grafana/runtime', () => ({
+  getTemplateSrv: jest.fn(() => ({
+    getVariables: jest.fn(() => []),
+  })),
+}));
 
 /**
  * Mock TimePickerEditor
@@ -108,6 +118,12 @@ describe('LinkEditor', () => {
     jest.mocked(TimePickerEditor).mockImplementation(TimePickerEditorMock);
     jest.mocked(ContentEditor).mockImplementation(ContentEditorMock);
     jest.mocked(McpServersEditor).mockImplementation(McpServersEditorMock);
+    jest.mocked(getTemplateSrv).mockImplementation(
+      () =>
+        ({
+          getVariables: jest.fn().mockReturnValue([]),
+        }) as Partial<TemplateSrv> as TemplateSrv
+    );
   });
 
   it('Should allow to change Link Type to Dropdown for groups', () => {
@@ -620,7 +636,55 @@ describe('LinkEditor', () => {
     );
   });
 
-  it('Should allow change Include Time Range', () => {
+  it('Should allow change Include Variables', () => {
+    (getTemplateSrv as jest.Mock).mockReturnValue({
+      getVariables: jest.fn().mockReturnValue([{ name: 'device' }, { name: 'country' }]),
+    });
+
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.SINGLE, includeVariables: true }),
+      })
+    );
+
+    expect(selectors.fieldExcludeVariables()).toBeInTheDocument();
+
+    fireEvent.change(selectors.fieldExcludeVariables(), { target: { values: 'country' } });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        excludeVariables: ['country'],
+      })
+    );
+  });
+
+  it('Should allow change Include as array values', () => {
+    (getTemplateSrv as jest.Mock).mockReturnValue({
+      getVariables: jest.fn().mockReturnValue([{ name: 'device' }, { name: 'country' }]),
+    });
+
+    render(
+      getComponent({
+        optionId: 'groups',
+        value: createLinkConfig({ linkType: LinkType.SINGLE, includeVariables: true }),
+      })
+    );
+
+    expect(selectors.fieldExcludeVariables()).toBeInTheDocument();
+
+    fireEvent.change(selectors.fieldExcludeVariables(), {
+      target: { values: [{ value: 'country' }, { value: 'device' }] },
+    });
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        excludeVariables: ['country', 'device'],
+      })
+    );
+  });
+
+  it('Should allow change Exclude Variables', () => {
     render(
       getComponent({
         optionId: 'groups',

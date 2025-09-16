@@ -12,13 +12,17 @@ import { isTimeRangeMatch, prepareFromAndToParams, timeToSeconds } from './timeR
  * @param search
  * @param prefix
  */
-export const extractParamsByPrefix = (search: string, prefix: string): string => {
+export const extractParamsByPrefix = (search: string, prefix: string, excludedVariables: string[] = []): string => {
   const params = new URLSearchParams(search);
   const result = new URLSearchParams();
 
   for (const [key, value] of params.entries()) {
     if (key.startsWith(prefix)) {
-      result.append(key, value);
+      const variableName = key.slice(prefix.length);
+
+      if (!excludedVariables.includes(variableName)) {
+        result.append(key, value);
+      }
     }
   }
 
@@ -69,7 +73,7 @@ export const prepareUrlWithParams = (
    * Apply all variables states
    */
   if (item.includeVariables) {
-    const newParams = extractParamsByPrefix(params, 'var-');
+    const newParams = extractParamsByPrefix(params, 'var-', item.excludeVariables ?? []);
     currentUrl = appendParam(currentUrl, newParams);
   }
 
@@ -316,7 +320,6 @@ export const prepareLinksToRender = ({
        */
       case LinkType.SINGLE: {
         const preparedUrl = prepareUrlWithParams(item, timeRange, replaceVariables, params, item.url);
-
         /**
          * Is current dashboard/link
          */

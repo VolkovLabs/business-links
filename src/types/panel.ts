@@ -248,6 +248,13 @@ export interface LinkConfig {
   includeVariables: boolean;
 
   /**
+   * Exclude variables
+   *
+   * @type {string[]}
+   */
+  excludeVariables: string[];
+
+  /**
    * Open in new tab or current
    *
    * @type {LinkTarget}

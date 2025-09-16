@@ -76,6 +76,12 @@ const SelectMock = ({
 }: any) => (
   <select
     onChange={(event: any) => {
+      if (isMulti && Array.isArray(event.currentTarget.values)) {
+        if (onChange) {
+          onChange(event.currentTarget.values);
+        }
+        return;
+      }
       const plainOptions = options.reduce(
         (acc: SelectableValue[], option: SelectableValue) => acc.concat(option.options ? option.options : option),
         []

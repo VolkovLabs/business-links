@@ -1,4 +1,5 @@
 import { DataFrame, IconName, SelectableValue, textUtil } from '@grafana/data';
+import { getTemplateSrv } from '@grafana/runtime';
 import {
   getAvailableIcons,
   InlineField,
@@ -338,6 +339,12 @@ export const LinkEditor: React.FC<Props> = ({
       label: dropdown,
     }));
   }, [dropdowns]);
+
+  const variables = getTemplateSrv().getVariables();
+  const variableOptions = variables.map((vr) => ({
+    label: vr.name,
+    value: vr.name,
+  }));
 
   return (
     <div {...TEST_IDS.linkEditor.root.apply(value.name)}>
@@ -799,6 +806,23 @@ export const LinkEditor: React.FC<Props> = ({
                 {...TEST_IDS.linkEditor.fieldIncludeVariables.apply()}
               />
             </InlineField>
+            {value.includeVariables && (
+              <InlineField label="Exclude variables" grow={true} labelWidth={20}>
+                <Select
+                  options={variableOptions}
+                  value={value.excludeVariables}
+                  isMulti={true}
+                  isClearable={true}
+                  onChange={(event) => {
+                    const values = Array.isArray(event) ? event : [event];
+                    if (event) {
+                      onChange({ ...value, excludeVariables: values.map((item) => item.value) });
+                    }
+                  }}
+                  {...TEST_IDS.linkEditor.fieldExcludeVariables.apply()}
+                />
+              </InlineField>
+            )}
           </FieldsGroup>
         )}
     </div>

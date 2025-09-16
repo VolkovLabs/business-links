@@ -835,5 +835,65 @@ describe('migration', () => {
       expect(items[2].showLoadingForRawMessage).not.toBeTruthy();
       expect(items[3].showLoadingForRawMessage).toBeTruthy();
     });
+
+    it('Should normalize excludeVariables for groups items', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+        excludeVariables: undefined,
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        excludeVariables: ['country'],
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { groups: [group] } } as any);
+      const items = result.groups[0].items;
+      expect(items[0].excludeVariables).toEqual([]);
+      expect(items[1].excludeVariables).toEqual([]);
+      expect(items[2].excludeVariables).toEqual(['country']);
+    });
+
+    it('Should normalize excludeVariables for dropdown items', async () => {
+      const item1 = createLinkConfig({
+        id: 'item-1-test-id',
+        timePickerConfig: {
+          type: TimeConfigType.FIELD,
+        },
+        excludeVariables: undefined,
+      });
+      const item2 = createLinkConfig({
+        id: undefined,
+        timePickerConfig: {
+          type: '',
+        } as any,
+      });
+      const item3 = createLinkConfig({
+        id: undefined,
+        excludeVariables: ['country'],
+      });
+
+      const group = createGroupConfig({
+        items: [item1, item2, item3],
+      });
+
+      const result = await getMigratedOptions({ options: { dropdowns: [group] } } as any);
+      const items = result.dropdowns[0].items;
+      expect(items[0].excludeVariables).toEqual([]);
+      expect(items[1].excludeVariables).toEqual([]);
+      expect(items[2].excludeVariables).toEqual(['country']);
+    });
   });
 });
