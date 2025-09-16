@@ -200,6 +200,7 @@ export const GroupEditor: React.FC<Props> = ({
         hideTooltipOnHover: false,
         mcpServers: [],
         annotationKey: '',
+        excludeVariables: [],
       },
     ]);
     setNewLinkName('');

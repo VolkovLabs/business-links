@@ -26,6 +26,36 @@ describe('extractParamsByPrefix', () => {
     const result = extractParamsByPrefix(search, 'var-');
     expect(result).toEqual('');
   });
+
+  it('Should exclude specified variables from result', () => {
+    const search = 'var-host=server01&var-env=prod&var-region=us-east';
+    const result = extractParamsByPrefix(search, 'var-', ['env']);
+    expect(result).toEqual('var-host=server01&var-region=us-east');
+  });
+
+  it('Should exclude multiple variables from result', () => {
+    const search = 'var-host=server01&var-env=prod&var-region=us-east&var-port=8080';
+    const result = extractParamsByPrefix(search, 'var-', ['env', 'port']);
+    expect(result).toEqual('var-host=server01&var-region=us-east');
+  });
+
+  it('Should return empty string when all matching variables are excluded', () => {
+    const search = 'var-host=server01&var-env=prod&unrelated=value';
+    const result = extractParamsByPrefix(search, 'var-', ['host', 'env']);
+    expect(result).toEqual('');
+  });
+
+  it('Should work correctly when excludedVariables contains non-existing variables', () => {
+    const search = 'var-host=server01&var-env=prod';
+    const result = extractParamsByPrefix(search, 'var-', ['nonexistent', 'env']);
+    expect(result).toEqual('var-host=server01');
+  });
+
+  it('Should work correctly with empty excludedVariables array', () => {
+    const search = 'var-host=server01&var-env=prod';
+    const result = extractParamsByPrefix(search, 'var-', []);
+    expect(result).toEqual('var-host=server01&var-env=prod');
+  });
 });
 
 /**
@@ -181,6 +211,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -220,6 +251,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -261,6 +293,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -300,6 +333,7 @@ describe('prepareLinksToRender', () => {
             id: 'test-link0-dp-id',
             dropdownConfig: createDropdownConfig(),
             annotationKey: '',
+            excludeVariables: [],
           },
         ],
       },
@@ -323,6 +357,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -362,6 +397,7 @@ describe('prepareLinksToRender', () => {
             id: 'test-link0-dp-id',
             dropdownConfig: createDropdownConfig(),
             annotationKey: '',
+            excludeVariables: [],
           },
           {
             name: 'Link-2',
@@ -378,6 +414,7 @@ describe('prepareLinksToRender', () => {
             id: 'test-link0-dp-id-2',
             dropdownConfig: createDropdownConfig(),
             annotationKey: '',
+            excludeVariables: [],
           },
         ],
       },
@@ -401,6 +438,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           dropdownConfig: createDropdownConfig(),
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -440,6 +478,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -477,6 +516,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -514,6 +554,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'test-link0-id',
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -559,6 +600,7 @@ describe('prepareLinksToRender', () => {
             content: 'line',
           },
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -750,6 +792,7 @@ describe('prepareLinksToRender', () => {
           id: 'test-link0-id',
           includeKioskMode: false,
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };
@@ -798,6 +841,7 @@ describe('prepareLinksToRender', () => {
           dropdownName: '',
           id: 'llm-1',
           annotationKey: '',
+          excludeVariables: [],
         },
       ],
     };

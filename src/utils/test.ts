@@ -52,6 +52,7 @@ export const createLinkConfig = (item: Partial<LinkConfig> = {}): LinkConfig => 
   hideTooltipOnHover: false,
   mcpServers: [],
   annotationKey: '',
+  excludeVariables: [],
   ...item,
 });
 
@@ -108,6 +109,7 @@ export const createNestedLinkConfig = (item: Partial<NestedLinkConfig> = {}): Ne
   includeKioskMode: false,
   mcpServers: [],
   annotationKey: '',
+  excludeVariables: [],
   ...item,
 });
 
