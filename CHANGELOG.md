@@ -2,7 +2,11 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.4.0] - Unreleased
+## [2.3.1] - 2025-09-29
+
+## Security Update
+
+- CVE-2025-58746: A malicious actor with Editor privileges can escalate their privileges to Administrator and perform arbitrary administrative actions.
 
 ### Added
 
