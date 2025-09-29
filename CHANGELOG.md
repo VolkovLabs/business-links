@@ -2,12 +2,12 @@
 
 All notable changes to the **Business Links** panel are documented in this file. This changelog follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2.5.0] - Unreleased
+## [2.5.0] - 2025-09-29
 
 ### Changed
 
-- Update annotation hook ([#78](https://github.com/VolkovLabs/business-links/issues/78)).
-- Add Exclude variable from links ([#79](https://github.com/VolkovLabs/business-links/issues/79)).
+- **Updated Annotation Hook**: Enhanced the annotation hook functionality to improve integration and performance. ([Issue #78](https://github.com/VolkovLabs/business-links/issues/78))
+- **Added Exclude Variable for Links**: Introduced the ability to exclude specific variables from being applied to links, providing more control over link behavior. ([Issue #79](https://github.com/VolkovLabs/business-links/issues/79))
 
 ## [2.4.0] - 2025-09-07
 
